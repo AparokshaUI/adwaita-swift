@@ -121,11 +121,11 @@ brew install libadwaita
 - The programming language [Swift][17]
 - [SourceDocs][18] used for generating the [docs][19]
 
-[1]:	#Goals
-[2]:	#Widgets
-[3]:	#Installation
-[4]:	#Usage
-[5]:	#Thanks
+[1]:	#goals
+[2]:	#widgets
+[3]:	#installation
+[4]:	#usage
+[5]:	#thanks
 [6]:	https://gnome.pages.gitlab.gnome.org/libadwaita/doc/1-latest/index.html
 [7]:	https://docs.gtk.org/gtk4/
 [8]:	https://github.com/david-swift/Adwaita/issues
