@@ -1,0 +1,89 @@
+//
+//  InspectorWrapper.swift
+//  Adwaita
+//
+//  Created by david-swift on 10.09.23.
+//
+
+import GTUI
+
+/// A widget which executes a custom code on the GTUI widget when being created.
+struct InspectorWrapper: Widget {
+
+    /// The custom code to edit the widget.
+    var modify: (NativeWidgetPeer?) -> Void
+    /// The wrapped view.
+    var content: View
+
+    /// Get the content's container.
+    /// - Returns: The content's container.
+    func container() -> ViewStorage {
+        let storage = content.storage()
+        modify(storage.view)
+        return storage
+    }
+
+    /// Update the content.
+    /// - Parameter storage: The content's storage.
+    func update(_ storage: ViewStorage) {
+        content.updateStorage(storage)
+    }
+
+}
+
+extension View {
+
+    /// Modify a GTUI widget before being displayed.
+    /// - Parameter modify: Modify the widget.
+    /// - Returns: A view.
+    public func inspect(_ modify: @escaping (NativeWidgetPeer?) -> Void) -> View {
+        InspectorWrapper(modify: modify, content: self)
+    }
+
+    /// Add padding around a view.
+    /// - Parameters:
+    ///   - padding: The size of the padding.
+    ///   - edges: The edges which are affected by the padding.
+    /// - Returns: A view.
+    public func padding(_ padding: Int = 10, _ edges: Set<Edge> = .all) -> View {
+        inspect { _ = $0?.padding(padding, edges) }
+    }
+
+    /// Enable or disable the horizontal expansion.
+    /// - Parameter enabled: Whether it is enabled or disabled.
+    /// - Returns: A view.
+    public func hexpand(_ enabled: Bool = true) -> View {
+        inspect { _ = $0?.hexpand() }
+    }
+
+    /// Enable or disable the vertical expansion.
+    /// - Parameter enabled: Whether it is enabled or disabled.
+    /// - Returns: A view.
+    public func vexpand(_ enabled: Bool = true) -> View {
+        inspect { _ = $0?.vexpand() }
+    }
+
+    /// Set the view's minimal width or height.
+    /// - Parameters:
+    ///   - minWidth: The minimal width.
+    ///   - minHeight: The minimal height.
+    /// - Returns: A view.
+    public func frame(minWidth: Int? = nil, minHeight: Int? = nil) -> View {
+        inspect { _ = $0?.frame(minWidth: minWidth, minHeight: minHeight) }
+    }
+
+    /// Set the view's maximal size.
+    /// - Parameter maxSize: The maximal size.
+    /// - Returns: A view.
+    public func frame(maxSize: Int? = nil) -> View {
+        inspect { _ = $0?.frame(maxSize: maxSize) }
+    }
+
+    /// Set the view's transition.
+    /// - Parameter transition: The transition.
+    /// - Returns: A view.
+    public func transition(_ transition: Transition) -> View {
+        inspect { $0?.fields[.transition] = transition }
+    }
+
+}

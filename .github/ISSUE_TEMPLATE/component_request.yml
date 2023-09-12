@@ -1,0 +1,37 @@
+name: Components request
+description: Suggest an idea for a new component
+title: Description of the component request
+labels: enhancement
+
+body:
+  - type: textarea
+    attributes:
+      label: Why would you like to add a new component?
+      placeholder: >-
+      	A clear and concise description of why the component should be added.
+    validations:
+      required: false
+
+  - type: textarea
+    attributes:
+      label: Name the equivalents in GTUI.
+      placeholder: >-
+        A list of the equivalents in the GTUI library in SwiftGui (see dependencies).
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Describe your idea for the implementation.
+      placeholder: >-
+        What could the implementation be like in Adwaita?
+    validations:
+      required: false
+
+  - type: textarea
+    attributes:
+      label: Additional context
+      placeholder: >-
+        Add any other context about the component request here.
+    validations:
+      required: false
