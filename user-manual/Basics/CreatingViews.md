@@ -1,6 +1,6 @@
 # Creating Views
 
-This is a beginner tutorial. We will create a simple “Hello, world!" app using _Adwaita_.
+This is a beginner tutorial. We will create a simple "Hello, world!" app using _Adwaita_.
 
 ## Create the Swift Package
 1. Open your terminal client and navigate to a directory you want to create the package in (e.g. `~/Documents/`).
@@ -11,15 +11,15 @@ This is a beginner tutorial. We will create a simple “Hello, world!" app using
 
 ## Add the Dependency
 1. Open the `Package.swift` file.
-2. Add the following line of code after `name: “HelloWorld”,`:
+2. Add the following line of code after `name: "HelloWorld",`:
 ```
-dependencies: [.package(url: “https://github.com/david-swift/Adwaita”, from: “0.1.0”)],
+dependencies: [.package(url: "https://github.com/david-swift/Adwaita", from: "0.1.0")],
 ```
 
 ## Create the App
 1. Navigate to `Sources/main.swift`.
 2. An app that uses the _Adwaita_ framework has a structure that conforms to the `App` protocol. The `scene` property returns one or more windows which provide content for display. An `@main` attribute marks it as the entry point of the app.
-   Replace `print(“Hello, world!”)` by your first app. We will later define `HelloWindow`:
+   Replace `print("Hello, world!")` by your first app. We will later define `HelloWindow`:
 ```swift
 @main
 struct HelloWorld: App {
@@ -40,7 +40,7 @@ struct HelloWorld: App {
 struct HelloWindow: WindowScene {
 
     var view: Body {
-        Text(“Hello, world!")
+        Text("Hello, world!")
             .padding()
     }
 
@@ -54,7 +54,7 @@ struct HelloWindow: WindowScene {
 
     var view: Body {
         HeaderBar.empty()
-        Text(“Hello, world!")
+        Text("Hello, world!")
             .padding()
     }
 
