@@ -6,7 +6,7 @@ This is a beginner tutorial. We will create a simple "Hello, world!" app using _
 1. Open your terminal client and navigate to a directory you want to create the package in (e.g. `~/Documents/`).
 2. Create a new folder for the package using `mkdir HelloWorld`.
 3. Enter the newly created folder using `cd HelloWorld`.
-4. Run `swift package init —type executable` for creating a new Swift package.
+4. Run `swift package init --type executable` for creating a new Swift package.
 5. Open the Swift package. If you are using GNOME Builder, click on `Select a Folder…` in the view that appears after opening Builder and open the `HelloWorld` folder.
 
 ## Add the Dependency

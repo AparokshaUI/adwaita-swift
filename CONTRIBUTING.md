@@ -23,7 +23,7 @@ Open the project folder in GNOME Builder, Xcode or another IDE.
 
 ### 3. Understand the Project Structure
 - The `README.md` file contains a description of the app or package.
-- The `Contributors.md` file contains the names or user names of all the contributors with a link to their GitHub profile.
+- The `Contributors.md` file contains the names or usernames of all the contributors with a link to their GitHub profile.
 - The `LICENSE.md` contains an GPL-3.0 license.
 - `CONTRIBUTING.md` is this file.
 - Directory `Icons` that contains PNG and PXD (Pixelmator Pro) files for the images used in the app and guides.

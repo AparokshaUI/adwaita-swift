@@ -56,7 +56,7 @@ Creates a simple counter view:
 
 ## Goals
 
-_Adwaita_’s main goal is to provide an easy-to-use interface for creating GNOME apps. The back end should stay as simple as possible, while not limiting the possibilities there are with [Libadwaita][6] and [GTK][7].
+_Adwaita_’s main goal is to provide an easy-to-use interface for creating GNOME apps. The backend should stay as simple as possible, while not limiting the possibilities there are with [Libadwaita][6] and [GTK][7].
 
 If you want to use _Adwaita_ in a project, but there are widgets missing, open an [issue on GitHub][8].
 
