@@ -29,6 +29,11 @@ Initialize a header bar.
   - start: The start content.
   - end: The end content.
 
+### `empty()`
+
+Initialize an empty header bar.
+- Returns: The header bar.
+
 ### `start(start:)`
 
 Initialize a header bar with only views at the start.

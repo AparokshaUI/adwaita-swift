@@ -29,6 +29,12 @@ public struct HeaderBar: Widget {
         self.end = end()
     }
 
+    /// Initialize an empty header bar.
+    /// - Returns: The header bar.
+    public static func empty() -> Self {
+        .init(start: { }, end: { })
+    }
+
     /// Initialize a header bar with only views at the start.
     /// - Parameter start: The views.
     /// - Returns: The header bar.
