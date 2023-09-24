@@ -2,10 +2,7 @@
 
 # `WindowScene`
 
-## Methods
-### `getWindow(app:)`
+## Properties
+### `body`
 
-Get the `GTUI.Window` with the content.
-- Parameters:
-    - app: The application.
-- Returns: The window.
+The window scene's body is itself.

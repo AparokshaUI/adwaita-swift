@@ -30,13 +30,27 @@ public class GTUIApp: Application {
     /// The entry point of the application.
     override public func onActivate() {
         let body = body()
-        for windowScene in body.scene {
-            let window = GTUI.Window(app: self)
-            let child = windowScene.storage()
-            let view = child.view
-            window.setChild(view)
-            sceneStorage.append(.init(window: window, view: child))
-            window.show()
+        for windowScene in body.scene.windows() {
+            for _ in 0..<windowScene.open {
+                sceneStorage.append(windowScene.createWindow(app: self))
+            }
+        }
+    }
+
+    /// Focus the window with a certain id. Create the window if it doesn't already exist.
+    /// - Parameters:
+    ///     - id: The window's id.
+    public func showWindow(_ id: String) {
+        sceneStorage.last { $0.id == id && !$0.destroy }?.window.show() ?? addWindow(id)
+    }
+
+    /// Add a new window with the content of the window with a certain id.
+    /// - Parameters:
+    ///     - id: The window's id.
+    public func addWindow(_ id: String) {
+        if let window = body().scene.windows().first(where: { $0.id == id }) {
+            sceneStorage.append(window.createWindow(app: self))
+            showWindow(id)
         }
     }
 }

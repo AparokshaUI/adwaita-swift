@@ -5,8 +5,12 @@
 
 ## Basics
 
-* [Creating Views][3]
+* [Hello World][3]
+* [Creating Views][4]
+* [Windows][5]
 
 [1]:	README.md
 [2]:	user-manual/GettingStarted.md
-[3]:	user-manual/Basics/CreatingViews.md
+[3]:	user-manual/Basics/HelloWorld.md
+[4]:    user-manual/Basics/CreatingViews.md
+[5]:    user-manual/Basics/Windows.md

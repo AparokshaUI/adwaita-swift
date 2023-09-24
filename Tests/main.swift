@@ -16,12 +16,24 @@ struct Counter: App {
     var app: GTUIApp!
 
     var scene: Scene {
-        CounterWindow()
+        Window(id: "toggle") { _ in
+            Button("Add Window") {
+                app.addWindow("content-view")
+            }
+            .padding()
+            Button("Show Window") {
+                app.showWindow("content-view")
+            }
+            .padding(10, .horizontal.add(.bottom))
+        }
+        Window(id: "content-view", open: 0) { _ in
+            ContentView()
+        }
     }
 
 }
 
-struct CounterWindow: WindowScene {
+struct ContentView: View {
 
     @State private var count = 0
 

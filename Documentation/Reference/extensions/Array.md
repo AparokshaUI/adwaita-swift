@@ -14,6 +14,11 @@ Update a collection of views with a collection of view storages.
 - Parameters:
     - storage: The collection of view storages.
 
+### `windows()`
+
+Get the content of an array of window scene groups.
+- Returns: The array of windows.
+
 ### `checkIndex(_:)`
 
 Check if a given index is valid for the array.

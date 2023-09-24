@@ -32,6 +32,16 @@ extension Array where Element == View {
 
 }
 
+extension Array where Element == WindowSceneGroup {
+
+    /// Get the content of an array of window scene groups.
+    /// - Returns: The array of windows.
+    public func windows() -> [WindowScene] {
+        flatMap { $0.windows() }
+    }
+
+}
+
 extension Array {
 
     /// Accesses the element at the specified position safely.

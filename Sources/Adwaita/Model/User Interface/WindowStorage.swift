@@ -8,18 +8,24 @@
 import GTUI
 
 /// A storage for an app's window.
-class WindowStorage {
+public class WindowStorage {
 
+    /// The window's identifier.
+    public var id: String
+    /// Whether the reference to the window should disappear in the next update.
+    public var destroy = false
     /// The GTUI window.
-    var window: Window
+    public var window: GTUI.Window
     /// The content's storage.
-    var view: ViewStorage
+    public var view: ViewStorage
 
     /// Initialize a window storage.
     /// - Parameters:
+    ///   - id: The window's identifier.
     ///   - window: The GTUI window.
     ///   - view: The content's storage.
-    init(window: Window, view: ViewStorage) {
+    public init(id: String, window: GTUI.Window, view: ViewStorage) {
+        self.id = id
         self.window = window
         self.view = view
     }

@@ -28,3 +28,15 @@ Initialize the GTUI application.
 ### `onActivate()`
 
 The entry point of the application.
+
+### `showWindow(_:)`
+
+Focus the window with a certain id. Create the window if it doesn't already exist.
+- Parameters:
+    - id: The window's id.
+
+### `addWindow(_:)`
+
+Add a new window with the content of the window with a certain id.
+- Parameters:
+    - id: The window's id.

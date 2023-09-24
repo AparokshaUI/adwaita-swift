@@ -108,18 +108,20 @@ brew install libadwaita
 
 ### Basics
 
-* [Creating Views][12]
+* [Hello World][12]
+* [Creating Views][13]
+* [Windows][14]
 
 ## Thanks
 
 ### Dependencies
-- [SwiftGui][13] licensed under the [GPL-3.0 license][14]
+- [SwiftGui][15] licensed under the [GPL-3.0 license][16]
 
 ### Other Thanks
-- The [contributors][15]
-- [SwiftLint][16] for checking whether code style conventions are violated
-- The programming language [Swift][17]
-- [SourceDocs][18] used for generating the [docs][19]
+- The [contributors][17]
+- [SwiftLint][18] for checking whether code style conventions are violated
+- The programming language [Swift][19]
+- [SourceDocs][20] used for generating the [docs][21]
 
 [1]:	#goals
 [2]:	#widgets
@@ -132,13 +134,15 @@ brew install libadwaita
 [9]:	https://github.com/JCWasmx86/SwiftGui
 [10]:	https://brew.sh
 [11]:	user-manual/GettingStarted.md
-[12]:	user-manual/Basics/CreatingViews.md
-[13]:	https://github.com/JCWasmx86/SwiftGui
-[14]:	https://github.com/JCWasmx86/SwiftGui/blob/main/COPYING
-[15]:	Contributors.md
-[16]:	https://github.com/realm/SwiftLint
-[17]:	https://github.com/apple/swift
-[18]:	https://github.com/SourceDocs/SourceDocs
-[19]:	Documentation/Reference/README.md
+[12]:	user-manual/Basics/HelloWorld.md
+[13]:   user-manual/Basics/CreatingViews.md
+[14]:   user-manual/Basics/Windows.md
+[15]:	https://github.com/JCWasmx86/SwiftGui
+[16]:	https://github.com/JCWasmx86/SwiftGui/blob/main/COPYING
+[17]:	Contributors.md
+[18]:	https://github.com/realm/SwiftLint
+[19]:	https://github.com/apple/swift
+[20]:	https://github.com/SourceDocs/SourceDocs
+[21]:	Documentation/Reference/README.md
 
 [image-1]: Icons/Screenshot.png

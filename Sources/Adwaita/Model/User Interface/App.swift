@@ -46,10 +46,16 @@ extension App {
         var appInstance = self.init()
         appInstance.app = GTUIApp(appInstance.id) { appInstance }
         GTUIApp.updateHandlers.append {
-            for (windowIndex, window) in appInstance.scene.enumerated() {
-                if let stored = appInstance.app.sceneStorage[safe: windowIndex] {
-                    window.widget().updateStorage(stored.view)
+            var removeIndices: [Int] = []
+            for (index, window) in appInstance.app.sceneStorage.enumerated() {
+                if window.destroy {
+                    removeIndices.insert(index, at: 0)
+                } else if let scene = appInstance.scene.windows().first(where: { $0.id == window.id }) {
+                    scene.update(window)
                 }
+            }
+            for index in removeIndices {
+                appInstance.app.sceneStorage.remove(at: index)
             }
         }
         appInstance.app.run()

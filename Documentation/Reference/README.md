@@ -7,6 +7,7 @@
 -   [View](protocols/View.md)
 -   [Widget](protocols/Widget.md)
 -   [WindowScene](protocols/WindowScene.md)
+-   [WindowSceneGroup](protocols/WindowSceneGroup.md)
 
 ## Structs
 
@@ -19,6 +20,7 @@
 -   [Text](structs/Text.md)
 -   [UpdateObserver](structs/UpdateObserver.md)
 -   [VStack](structs/VStack.md)
+-   [Window](structs/Window.md)
 
 ## Classes
 
@@ -42,6 +44,8 @@
 -   [String](extensions/String.md)
 -   [View](extensions/View.md)
 -   [Widget](extensions/Widget.md)
+-   [WindowScene](extensions/WindowScene.md)
+-   [WindowSceneGroup](extensions/WindowSceneGroup.md)
 
 ## Typealiases
 
