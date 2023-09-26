@@ -49,7 +49,7 @@ Creates a simple counter view:
 
 ![Counter Example][image-1]
 
-More examples are available in the [Demo app][1]:
+More examples are available in the [demo app][1]:
 
 ![Demo App][image-2]
 

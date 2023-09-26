@@ -13,7 +13,7 @@ brew install libadwaita
 Install `libadwaita-devel` or `libadwaita` (or something similar, based on the package manager) as well as `gtk4-devel`, `gtk4` or similar.
 
 ## Development
-Subtasks is an open source project. Visit the [GitHub repository][2] for bug reports, feature requests, pull requests and more information.
+Adwaita is an open source project. Visit the [GitHub repository][2] for bug reports, feature requests, pull requests and more information.
 
 [1]:	https://brew.sh
-[2]:	https://github.com/david-swift/Subtasks-macOS
+[2]:	https://github.com/david-swift/Adwaita
