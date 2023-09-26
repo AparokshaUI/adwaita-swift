@@ -26,7 +26,7 @@ let package = Package(
             dependencies: [.product(name: "GTUI", package: "swiftgui")]
         ),
         .executableTarget(
-            name: "Counter",
+            name: "Swift Adwaita Demo",
             dependencies: ["Adwaita"],
             path: "Tests"
         )

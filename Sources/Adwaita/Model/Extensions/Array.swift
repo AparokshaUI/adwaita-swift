@@ -7,7 +7,10 @@
 
 import GTUI
 
-extension Array where Element == View {
+extension Array: View where Element == View {
+
+    /// The array's view body is the array itself.
+    public var view: Body { self }
 
     /// Get a widget from a collection of views.
     /// - Returns: A widget.

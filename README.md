@@ -27,16 +27,19 @@ struct Example: View {
     @State private var count = 0
 
     var view: Body {
-        HeaderBar.start {
-            Button(icon: .default(icon: .goPrevious)) {
-                count -= 1
-            }
-            Button(icon: .default(icon: .goNext)) {
-                count += 1
-            }
-        }
         Text("\(count)")
+            .style("title-1")
             .padding(50)
+            .topToolbar {
+                HeaderBar.start {
+                    Button(icon: .default(icon: .goPrevious)) {
+                        count -= 1
+                    }
+                    Button(icon: .default(icon: .goNext)) {
+                        count += 1
+                    }
+                }
+            }
     }
 
 }
@@ -46,49 +49,66 @@ Creates a simple counter view:
 
 ![Counter Example][image-1]
 
+More examples are available in the [Demo app][1]:
+
+![Demo App][image-2]
+
 ## Table of Contents
 
-- [Goals][1]
-- [Widgets][2]
-- [Installation][3]
-- [Usage][4]
-- [Thanks][5]
+- [Goals][2]
+- [Widgets][3]
+- [Installation][4]
+- [Usage][5]
+- [Thanks][6]
 
 ## Goals
 
-_Adwaita_’s main goal is to provide an easy-to-use interface for creating GNOME apps. The backend should stay as simple as possible, while not limiting the possibilities there are with [Libadwaita][6] and [GTK][7].
+_Adwaita_’s main goal is to provide an easy-to-use interface for creating GNOME apps. The backend should stay as simple as possible, while not limiting the possibilities there are with [Libadwaita][7] and [GTK][8].
 
-If you want to use _Adwaita_ in a project, but there are widgets missing, open an [issue on GitHub][8].
+If you want to use _Adwaita_ in a project, but there are widgets missing, open an [issue on GitHub][9].
 
 ## Widgets
 
-| Name       | Description                                                       | Widget       |
-| ---------- | ----------------------------------------------------------------- | ------------ |
-| Button     | A widget that triggers a function when being clicked.             | GtkButton    |
-| EitherView | A widget that displays one of its child views based on a boolean. | GtkStack     |
-| HeaderBar  | A widget for creating custom title bars for windows.              | GtkHeaderBar |
-| Text       | A widget for displaying a small amount of text.                   | GtkLabel     |
-| VStack     | A widget which arranges child widgets into a single column.       | GtkBox       |
+| Name                 | Description                                                       | Widget                 |
+| -------------------- | ----------------------------------------------------------------- | ---------------------- |
+| Button               | A widget that triggers a function when being clicked.             | GtkButton              |
+| EitherView           | A widget that displays one of its child views based on a boolean. | GtkStack               |
+| HeaderBar            | A widget for creating custom title bars for windows.              | GtkHeaderBar           |
+| Text                 | A widget for displaying a small amount of text.                   | GtkLabel               |
+| VStack               | A widget which arranges child widgets into a single column.       | GtkBox                 |
+| HStack               | A widget which arranges child widgets into a single row.          | GtkBox                 |
+| List                 | A widget which arranges child widgets vertically into rows.       | GtkListBox             |
+| NavigationSplitView  | A widget presenting sidebar and content side by side.             | AdwNavigationSplitView |
+| ScrollView           | A container that makes its child scrollable.                      | GtkScrolledWindow      |
+| StatusPage           | A page with an icon, title, and optionally description and widget.| AdwStatusPage          |
+| StateWrapper         | A wrapper not affecting the UI which stores state information.    | -                      |
 
 ### View Modifiers
 
 | Syntax                       | Description                                                                            |
 | ---------------------------- | -------------------------------------------------------------------------------------- |
-| `inspect(_:)`                | Edit the underlying [GTUI][9] widget.                                                  |
+| `inspect(_:)`                | Edit the underlying [GTUI][10] widget.                                                  |
 | `padding(_:_:)`              | Add empty space around a view.                                                         |
 | `hexpand(_:)`                | Enable or disable the horizontal expansion of a view.                                  |
 | `vexpand(_:)`                | Enable or disable the vertical expansion of a view.                                    |
+| `halign(_:)`                 | Set the horizontal alignment of a view.                                                |
+| `valign(_:)`                 | Set the vertical alignment of a view.                                                  |
 | `frame(minWidth:minHeight:)` | Set the view’s minimal width or height.                                                |
 | `frame(maxSize:)`            | Set the view’s maximal size.                                                           |
-| `transition(_:)`             | Assign a transition with the view that is used if it is a direct child of a HeaderBar. |
+| `transition(_:)`             | Assign a transition with the view that is used if it is a direct child of an EitherView. |
 | `onUpdate(_:)`               | Run a function every time a view gets updated.                                         |
+| `navigationTitle(_:)`        | Add a title that is used if the view is a direct child of a NavigationView.            |
+| `style(_:)`                  | Add a style class to the view.                                                         |
+| `onAppear(_:)`               | Run when the view is rendered for the first time.                                      |
+| `topToolbar(visible:_:)`             | Add a native toolbar to the view. Normally, it contains a HeaderBar.                   |
+| `bottomToolbar(visible:_:)`          | Add a native bottom toolbar to the view.                                               |
 
 ## Installation
 ### Dependencies
 If you are using a Linux distribution, install `libadwaita-devel` or `libadwaita` (or something similar, based on the package manager) as well as `gtk4-devel`, `gtk4` or similar.
 
 On macOS, follow these steps:
-1. Install [Homebrew][10].
+1. Install [Homebrew][11].
 2. Install Libadwaita (and thereby GTK 4):
 ```
 brew install libadwaita
@@ -104,45 +124,52 @@ brew install libadwaita
 
 ## Usage
 
-* [Getting Started][11]
+* [Getting Started][12]
 
 ### Basics
 
-* [Hello World][12]
-* [Creating Views][13]
-* [Windows][14]
+* [Hello World][13]
+* [Creating Views][14]
+* [Windows][15]
+
+### Advanced
+
+* [Creating Widgets][16]
 
 ## Thanks
 
 ### Dependencies
-- [SwiftGui][15] licensed under the [GPL-3.0 license][16]
+- [SwiftGui][17] licensed under the [GPL-3.0 license][18]
 
 ### Other Thanks
-- The [contributors][17]
-- [SwiftLint][18] for checking whether code style conventions are violated
-- The programming language [Swift][19]
-- [SourceDocs][20] used for generating the [docs][21]
+- The [contributors][19]
+- [SwiftLint][20] for checking whether code style conventions are violated
+- The programming language [Swift][21]
+- [SourceDocs][22] used for generating the [docs][23]
 
-[1]:	#goals
-[2]:	#widgets
-[3]:	#installation
-[4]:	#usage
-[5]:	#thanks
-[6]:	https://gnome.pages.gitlab.gnome.org/libadwaita/doc/1-latest/index.html
-[7]:	https://docs.gtk.org/gtk4/
-[8]:	https://github.com/david-swift/Adwaita/issues
-[9]:	https://github.com/JCWasmx86/SwiftGui
-[10]:	https://brew.sh
-[11]:	user-manual/GettingStarted.md
-[12]:	user-manual/Basics/HelloWorld.md
-[13]:   user-manual/Basics/CreatingViews.md
-[14]:   user-manual/Basics/Windows.md
-[15]:	https://github.com/JCWasmx86/SwiftGui
-[16]:	https://github.com/JCWasmx86/SwiftGui/blob/main/COPYING
-[17]:	Contributors.md
-[18]:	https://github.com/realm/SwiftLint
-[19]:	https://github.com/apple/swift
-[20]:	https://github.com/SourceDocs/SourceDocs
-[21]:	Documentation/Reference/README.md
+[1]:    Tests/
+[2]:	#goals
+[3]:	#widgets
+[4]:	#installation
+[5]:	#usage
+[6]:	#thanks
+[7]:	https://gnome.pages.gitlab.gnome.org/libadwaita/doc/1-latest/index.html
+[8]:	https://docs.gtk.org/gtk4/
+[9]:	https://github.com/david-swift/Adwaita/issues
+[10]:	https://github.com/JCWasmx86/SwiftGui
+[11]:	https://brew.sh
+[12]:	user-manual/GettingStarted.md
+[13]:	user-manual/Basics/HelloWorld.md
+[14]: user-manual/Basics/CreatingViews.md
+[15]: user-manual/Basics/Windows.md
+[16]: user-manual/Advanced/CreatingWidgets.md
+[17]:	https://github.com/JCWasmx86/SwiftGui
+[18]:	https://github.com/JCWasmx86/SwiftGui/blob/main/COPYING
+[19]:	Contributors.md
+[20]:	https://github.com/realm/SwiftLint
+[21]:	https://github.com/apple/swift
+[22]:	https://github.com/SourceDocs/SourceDocs
+[23]:	Documentation/Reference/README.md
 
 [image-1]: Icons/Screenshot.png
+[image-2]: Icons/Demo.png

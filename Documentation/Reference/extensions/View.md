@@ -44,6 +44,18 @@ Enable or disable the vertical expansion.
 - Parameter enabled: Whether it is enabled or disabled.
 - Returns: A view.
 
+### `halign(_:)`
+
+Set the horizontal alignment.
+- Parameter align: The alignment.
+- Returns: A view.
+
+### `valign(_:)`
+
+Set the vertical alignment.
+- Parameter align: The alignment.
+- Returns: A view.
+
 ### `frame(minWidth:minHeight:)`
 
 Set the view's minimal width or height.
@@ -62,6 +74,40 @@ Set the view's maximal size.
 
 Set the view's transition.
 - Parameter transition: The transition.
+- Returns: A view.
+
+### `navigationTitle(_:)`
+
+Set the view's navigation title.
+- Parameter label: The navigation title.
+- Returns: A view.
+
+### `style(_:)`
+
+Add a style class to the view.
+- Parameter style: The style class.
+- Returns: A view.
+
+### `onAppear(_:)`
+
+Run a function when the view appears for the first time.
+- Parameter closure: The function.
+- Returns: A view.
+
+### `topToolbar(visible:_:)`
+
+Add a top toolbar to the view.
+- Parameters:
+  - toolbar: The toolbar's content.
+  - visible: Whether the toolbar is visible.
+- Returns: A view.
+
+### `bottomToolbar(visible:_:)`
+
+Add a bottom toolbar to the view.
+- Parameters:
+  - toolbar: The toolbar's content.
+  - visible: Whether the toolbar is visible.
 - Returns: A view.
 
 ### `onUpdate(_:)`

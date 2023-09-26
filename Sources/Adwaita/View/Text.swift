@@ -1,5 +1,5 @@
 //
-//  HeaderBar.swift
+//  Text.swift
 //  Adwaita
 //
 //  Created by david-swift on 23.08.23.

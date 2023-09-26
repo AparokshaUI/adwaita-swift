@@ -15,7 +15,7 @@ The view's content.
 
 ### `state`
 
-The view's state (used in `VStack`).
+The view's state (used in `StateWrapper`).
 
 ## Methods
 ### `init(_:content:state:)`

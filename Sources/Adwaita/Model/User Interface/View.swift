@@ -41,7 +41,7 @@ extension View {
                     state[label] = value
                 }
             }
-            return VStack(content: { view }, state: state)
+            return StateWrapper(content: { view }, state: state)
         }
     }
 
@@ -50,6 +50,8 @@ extension View {
     func updateStorage(_ storage: ViewStorage) {
         if let widget = self as? Widget {
             widget.update(storage)
+        } else {
+            StateWrapper { self }.update(storage)
         }
     }
 

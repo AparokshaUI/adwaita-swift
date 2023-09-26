@@ -11,5 +11,7 @@ extension String {
     static var mainContent: Self { "main" }
     /// A label for the transition data in a GTUI widget's fields.
     static var transition: Self { "transition" }
+    /// A label for the navigation label in a GTUI widget's fields.
+    static var navigationLabel: Self { "navigation-label" }
 
 }

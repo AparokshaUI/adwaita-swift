@@ -1,8 +1,8 @@
 **STRUCT**
 
-# `VStack`
+# `HStack`
 
-A GtkBox equivalent.
+A horizontal GtkBox equivalent.
 
 ## Properties
 ### `content`
@@ -12,7 +12,7 @@ The content.
 ## Methods
 ### `init(content:)`
 
-Initialize a `VStack`.
+Initialize a `HStack`.
 - Parameter content: The view content.
 
 ### `update(_:)`

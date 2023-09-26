@@ -2,6 +2,11 @@
 
 # `Array`
 
+## Properties
+### `view`
+
+The array's view body is the array itself.
+
 ## Methods
 ### `widget()`
 

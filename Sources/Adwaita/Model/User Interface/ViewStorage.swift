@@ -14,7 +14,7 @@ public class ViewStorage {
     public var view: NativeWidgetPeer
     /// The view's content.
     public var content: [String: [ViewStorage]]
-    /// The view's state (used in `VStack`).
+    /// The view's state (used in `StateWrapper`).
     public var state: [String: StateProtocol]
 
     /// Initialize a view storage.

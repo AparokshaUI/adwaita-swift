@@ -118,14 +118,6 @@ custom_rules:
         message: 'Spaces should be used instead of tabs.'
         severity: warning
 
-    string_literals:
-        name: 'String Literals'
-        regex: '(".*")|("""(.|\n)*""")'
-        message: 'String literals should not be used. Disable this rule in String and LocalizedStringResource extensions.'
-        match_kinds:
-            - string
-        severity: warning
-
     # Thanks to the creator of the SwiftLint rule
     # "empty_first_line"
     # https://github.com/coteditor/CotEditor/blob/main/.swiftlint.yml

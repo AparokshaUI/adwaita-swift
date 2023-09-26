@@ -1,19 +1,19 @@
 //
-//  VStack.swift
+//  HStack.swift
 //  Adwaita
 //
-//  Created by david-swift on 23.08.23.
+//  Created by david-swift on 26.09.23.
 //
 
 import GTUI
 
-/// A GtkBox equivalent.
-public struct VStack: Widget {
+/// A horizontal GtkBox equivalent.
+public struct HStack: Widget {
 
     /// The content.
     var content: () -> Body
 
-    /// Initialize a `VStack`.
+    /// Initialize a `HStack`.
     /// - Parameter content: The view content.
     public init(@ViewBuilder content: @escaping () -> Body) {
         self.content = content
@@ -28,7 +28,7 @@ public struct VStack: Widget {
     /// Get a view storage.
     /// - Returns: The view storage.
     public func container() -> ViewStorage {
-        let box: Box = .init(horizontal: false)
+        let box: Box = .init(horizontal: true)
         var content: [ViewStorage] = []
         for element in self.content() {
             let widget = element.storage()

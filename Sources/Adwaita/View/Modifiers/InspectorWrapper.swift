@@ -63,6 +63,20 @@ extension View {
         inspect { _ = $0?.vexpand() }
     }
 
+    /// Set the horizontal alignment.
+    /// - Parameter align: The alignment.
+    /// - Returns: A view.
+    public func halign(_ align: Alignment) -> View {
+        inspect { _ = $0?.halign(align) }
+    }
+
+    /// Set the vertical alignment.
+    /// - Parameter align: The alignment.
+    /// - Returns: A view.
+    public func valign(_ align: Alignment) -> View {
+        inspect { _ = $0?.valign(align) }
+    }
+
     /// Set the view's minimal width or height.
     /// - Parameters:
     ///   - minWidth: The minimal width.
@@ -84,6 +98,27 @@ extension View {
     /// - Returns: A view.
     public func transition(_ transition: Transition) -> View {
         inspect { $0?.fields[.transition] = transition }
+    }
+
+    /// Set the view's navigation title.
+    /// - Parameter label: The navigation title.
+    /// - Returns: A view.
+    public func navigationTitle(_ label: String) -> View {
+        inspect { $0?.fields[.navigationLabel] = label }
+    }
+
+    /// Add a style class to the view.
+    /// - Parameter style: The style class.
+    /// - Returns: A view.
+    public func style(_ style: String) -> View {
+        inspect { _ = $0?.addStyle(style) }
+    }
+
+    /// Run a function when the view appears for the first time.
+    /// - Parameter closure: The function.
+    /// - Returns: A view.
+    public func onAppear(_ closure: @escaping () -> Void) -> View {
+        inspect { _ in closure() }
     }
 
 }
