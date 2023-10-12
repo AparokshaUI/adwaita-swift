@@ -14,17 +14,25 @@ public struct HeaderBar: Widget {
     var start: Body
     /// The end content of the header bar.
     var end: Body
+    /// Whether the title buttons are visible.
+    var titleButtons: Bool
+    /// The view acting as the title of the header bar.
+    var headerBarTitle: Body?
 
     /// The start content's id.
     let startID = "start"
     /// The end content's id.
     let endID = "end"
+    /// The title's id.
+    let titleID = "title"
 
     /// Initialize a header bar.
     /// - Parameters:
+    ///   - titleButtons: Whether the title buttons (e.g. close button) are visible.
     ///   - start: The start content.
     ///   - end: The end content.
-    public init(@ViewBuilder start: () -> Body, @ViewBuilder end: () -> Body) {
+    public init(titleButtons: Bool = true, @ViewBuilder start: () -> Body, @ViewBuilder end: () -> Body) {
+        self.titleButtons = titleButtons
         self.start = start()
         self.end = end()
     }
@@ -52,8 +60,14 @@ public struct HeaderBar: Widget {
     /// Update a header bar's view storage.
     /// - Parameter storage: The view storage.
     public func update(_ storage: ViewStorage) {
+        if let bar = storage.view as? GTUI.HeaderBar {
+            _ = bar.showTitleButtons(titleButtons)
+        }
         start.update(storage.content[startID] ?? [])
         end.update(storage.content[endID] ?? [])
+        if let first = storage.content[titleID]?.first {
+            headerBarTitle?.widget().update(first)
+        }
     }
 
     /// Get the container for a header bar.
@@ -72,7 +86,25 @@ public struct HeaderBar: Widget {
             _ = bar.packEnd(element.view)
             endContent.append(element)
         }
-        return .init(bar, content: [startID: startContent, endID: endContent])
+        let title = headerBarTitle?.widget().container()
+        let titleStorage: [ViewStorage]
+        if let title {
+            _ = bar.titleWidget(title.view)
+            titleStorage = [title]
+        } else {
+            titleStorage = []
+        }
+        _ = bar.showTitleButtons(titleButtons)
+        return .init(bar, content: [startID: startContent, endID: endContent, titleID: titleStorage])
+    }
+
+    /// Set the title widget for the header bar.
+    /// - Parameter view: The widget in the header bar.
+    /// - Returns: The header bar.
+    public func headerBarTitle(@ViewBuilder view: () -> Body) -> Self {
+        var newSelf = self
+        newSelf.headerBarTitle = view()
+        return newSelf
     }
 
 }

@@ -7,7 +7,7 @@
 
 import GTUI
 
-/// A widget which executes a custom code on the GTUI widget when being created.
+/// A widget which executes a custom code on the GTUI widget when being created and updated.
 struct InspectorWrapper: Widget {
 
     /// The custom code to edit the widget.
@@ -27,13 +27,14 @@ struct InspectorWrapper: Widget {
     /// - Parameter storage: The content's storage.
     func update(_ storage: ViewStorage) {
         content.updateStorage(storage)
+        modify(storage.view)
     }
 
 }
 
 extension View {
 
-    /// Modify a GTUI widget before being displayed.
+    /// Modify a GTUI widget before being displayed and when being updated.
     /// - Parameter modify: Modify the widget.
     /// - Returns: A view.
     public func inspect(_ modify: @escaping (NativeWidgetPeer?) -> Void) -> View {
@@ -84,13 +85,6 @@ extension View {
     /// - Returns: A view.
     public func frame(minWidth: Int? = nil, minHeight: Int? = nil) -> View {
         inspect { _ = $0?.frame(minWidth: minWidth, minHeight: minHeight) }
-    }
-
-    /// Set the view's maximal size.
-    /// - Parameter maxSize: The maximal size.
-    /// - Returns: A view.
-    public func frame(maxSize: Int? = nil) -> View {
-        inspect { _ = $0?.frame(maxSize: maxSize) }
     }
 
     /// Set the view's transition.

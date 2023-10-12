@@ -20,7 +20,7 @@ The identifier of the selected element.
 ## Methods
 ### `init(_:selection:content:)`
 
-Initialize `ForEach`.
+Initialize `List`.
 - Parameters:
   - elements: The elements.
   - selection: The identifier of the selected element.

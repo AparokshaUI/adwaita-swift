@@ -9,7 +9,7 @@
 public protocol WindowSceneGroup {
 
     /// The group's content.
-    @SceneBuilder var body: Scene { get }
+    @SceneBuilder var scene: Scene { get }
 
 }
 
@@ -19,7 +19,7 @@ extension WindowSceneGroup {
     /// - Returns: The windows.
     func windows() -> [WindowScene] {
         var content: [WindowScene] = []
-        for element in body {
+        for element in scene {
             if let window = element as? WindowScene {
                 content.append(window)
             } else {

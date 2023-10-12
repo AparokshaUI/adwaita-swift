@@ -17,7 +17,7 @@ public struct List<Element>: Widget where Element: Identifiable {
     /// The identifier of the selected element.
     @Binding var selection: Element.ID
 
-    /// Initialize `ForEach`.
+    /// Initialize `List`.
     /// - Parameters:
     ///   - elements: The elements.
     ///   - selection: The identifier of the selected element.

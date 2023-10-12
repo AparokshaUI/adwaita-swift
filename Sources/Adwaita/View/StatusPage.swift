@@ -25,10 +25,15 @@ public struct StatusPage: Widget {
     ///   - icon: The icon.
     ///   - description: Additional details.
     ///   - content: Additional content.
-    public init(_ title: String, icon: Icon, description: String = "", @ViewBuilder content: () -> Body = { [] }) {
+    public init(
+        _ title: String,
+        icon: Icon? = nil,
+        description: String = "",
+        @ViewBuilder content: () -> Body = { [] }
+    ) {
         self.title = title
         self.description = description
-        self.icon = icon
+        self.icon = icon ?? .custom(name: "")
         self.content = content()
     }
 

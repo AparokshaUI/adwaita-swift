@@ -15,7 +15,7 @@ public struct Window: WindowScene {
     /// The window's identifier.
     public var id: String
     /// The window's content.
-    var content: (GTUI.Window) -> Body
+    var content: (GTUIWindow) -> Body
     /// Whether an instance of the window type should be opened when the app is starting up.
     public var `open`: Int
 
@@ -24,7 +24,7 @@ public struct Window: WindowScene {
     ///   - id: The identifier.
     ///   - open: The number of instances of the window type when the app is starting.
     ///   - content: The window's content.
-    public init(id: String, `open`: Int = 1, @ViewBuilder content: @escaping (GTUI.Window) -> Body) {
+    public init(id: String, `open`: Int = 1, @ViewBuilder content: @escaping (GTUIWindow) -> Body) {
         self.content = content
         self.id = id
         self.open = open
@@ -47,8 +47,8 @@ public struct Window: WindowScene {
     /// Get the window.
     /// - Parameter app: The application.
     /// - Returns: The window.
-    func createGTUIWindow(app: GTUIApp) -> GTUI.Window {
-        let window = GTUI.Window(app: app)
+    func createGTUIWindow(app: GTUIApp) -> GTUIWindow {
+        let window = GTUIWindow(app: app)
         window.show()
         return window
     }
@@ -56,7 +56,7 @@ public struct Window: WindowScene {
     /// Get the storage of the content view.
     /// - Parameter window: The window.
     /// - Returns: The storage of the content of the window.
-    func getViewStorage(window: GTUI.Window) -> ViewStorage {
+    func getViewStorage(window: GTUIWindow) -> ViewStorage {
         let storage = content(window).widget().container()
         window.setChild(storage.view)
         return storage

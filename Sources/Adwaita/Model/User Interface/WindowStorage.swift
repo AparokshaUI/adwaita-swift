@@ -15,7 +15,7 @@ public class WindowStorage {
     /// Whether the reference to the window should disappear in the next update.
     public var destroy = false
     /// The GTUI window.
-    public var window: GTUI.Window
+    public var window: GTUIWindow
     /// The content's storage.
     public var view: ViewStorage
 
@@ -24,7 +24,7 @@ public class WindowStorage {
     ///   - id: The window's identifier.
     ///   - window: The GTUI window.
     ///   - view: The content's storage.
-    public init(id: String, window: GTUI.Window, view: ViewStorage) {
+    public init(id: String, window: GTUIWindow, view: ViewStorage) {
         self.id = id
         self.window = window
         self.view = view

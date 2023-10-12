@@ -14,19 +14,39 @@ struct WindowsDemo: View {
     var app: GTUIApp!
 
     var view: Body {
-        VStack {
-            Button("Show Window") {
-                app.showWindow("content")
+        HStack {
+            VStack {
+                Button("Show Window") {
+                    app.showWindow("content")
+                }
+                .hexpand()
+                Button("Add Window") {
+                    app.addWindow("main")
+                }
+                .hexpand()
             }
+            .valign(.center)
+            .style("linked")
             .padding()
-            Button("Add Window") {
-                app.addWindow("main")
-            }
-            .padding(10, .horizontal.add(.bottom))
         }
-        .topToolbar {
-            HeaderBar.empty()
+        .frame(maxSize: 100)
+    }
+
+    struct WindowContent: View {
+
+        var window: GTUIWindow
+
+        var view: Body {
+            Text("This window exists at most once.")
+                .padding()
+                .topToolbar {
+                    HeaderBar.empty()
+                }
+                .onAppear {
+                    window.setDefaultSize(width: 400, height: 250)
+                }
         }
+
     }
 
 }

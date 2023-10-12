@@ -8,28 +8,39 @@
 // swiftlint:disable missing_docs
 
 import Adwaita
+import GTUI
 
 struct CounterDemo: View {
 
     @State private var count = 0
 
     var view: Body {
-        description
-            .topToolbar {
-                HeaderBar.start {
-                    Button(icon: .default(icon: .goPrevious)) {
-                        count -= 1
-                    }
-                    Button(icon: .default(icon: .goNext)) {
-                        count += 1
-                    }
-                }
+        VStack {
+            HStack {
+                CountButton(count: $count, icon: .goPrevious) { $0 -= 1 }
+                Text("\(count)")
+                    .style("title-1")
+                    .frame(minWidth: 100)
+                CountButton(count: $count, icon: .goNext) { $0 += 1 }
             }
+            .halign(.center)
+        }
+        .valign(.center)
+        .padding()
     }
 
-    @ViewBuilder private var description: Body {
-        Text("\(count)")
-            .style("title-1")
+    private struct CountButton: View {
+
+        @Binding var count: Int
+        var icon: Icon.DefaultIcon
+        var action: (inout Int) -> Void
+
+        var view: Body {
+            Button(icon: .default(icon: icon)) {
+                action(&count)
+            }
+            .style("circular")
+        }
     }
 
 }

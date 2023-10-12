@@ -13,6 +13,14 @@ The start content of the header bar.
 
 The end content of the header bar.
 
+### `titleButtons`
+
+Whether the title buttons are visible.
+
+### `headerBarTitle`
+
+The view acting as the title of the header bar.
+
 ### `startID`
 
 The start content's id.
@@ -21,11 +29,16 @@ The start content's id.
 
 The end content's id.
 
+### `titleID`
+
+The title's id.
+
 ## Methods
-### `init(start:end:)`
+### `init(titleButtons:start:end:)`
 
 Initialize a header bar.
 - Parameters:
+  - titleButtons: Whether the title buttons (e.g. close button) are visible.
   - start: The start content.
   - end: The end content.
 
@@ -55,3 +68,9 @@ Update a header bar's view storage.
 
 Get the container for a header bar.
 - Returns: The view storage.
+
+### `headerBarTitle(view:)`
+
+Set the title widget for the header bar.
+- Parameter view: The widget in the header bar.
+- Returns: The header bar.

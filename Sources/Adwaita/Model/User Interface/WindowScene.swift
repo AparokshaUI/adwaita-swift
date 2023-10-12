@@ -27,6 +27,6 @@ public protocol WindowScene: WindowSceneGroup {
 extension WindowScene {
 
     /// The window scene's body is itself.
-    @SceneBuilder public var body: Scene { self }
+    @SceneBuilder public var scene: Scene { self }
 
 }

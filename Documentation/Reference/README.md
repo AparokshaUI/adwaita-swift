@@ -13,6 +13,7 @@
 
 -   [Binding](structs/Binding.md)
 -   [Button](structs/Button.md)
+-   [Clamp](structs/Clamp.md)
 -   [EitherView](structs/EitherView.md)
 -   [HStack](structs/HStack.md)
 -   [HeaderBar](structs/HeaderBar.md)
@@ -57,6 +58,7 @@
 ## Typealiases
 
 -   [Body](typealiases/Body.md)
+-   [GTUIWindow](typealiases/GTUIWindow.md)
 -   [Scene](typealiases/Scene.md)
 -   [SceneBuilder](typealiases/SceneBuilder.md)
 

@@ -57,7 +57,11 @@ public enum ViewBuilder {
     /// - Parameter component: An optional component.
     /// - Returns: A nonoptional component.
     public static func buildOptional(_ component: Component?) -> Component {
-        component ?? .components([])
+        if let component {
+            return .element(EitherView(true, { buildFinalResult(component) }, else: nil))
+        } else {
+            return .element(EitherView(false, nil) { [] })
+        }
     }
 
     /// Enables support for `if`-`else` and `switch` statements.

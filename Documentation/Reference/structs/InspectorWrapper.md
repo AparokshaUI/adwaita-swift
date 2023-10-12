@@ -2,7 +2,7 @@
 
 # `InspectorWrapper`
 
-A widget which executes a custom code on the GTUI widget when being created.
+A widget which executes a custom code on the GTUI widget when being created and updated.
 
 ## Properties
 ### `modify`
