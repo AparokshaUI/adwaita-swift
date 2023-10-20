@@ -42,3 +42,23 @@ Update a button's view storage.
 
 Get a button's view storage.
 - Returns: The button's view storage.
+
+### `keyboardShortcut(_:window:)`
+
+Create a keyboard shortcut for an application window from a button.
+
+Note that the keyboard shortcut is available after the view has been visible for the first time.
+- Parameters:
+    - shortcut: The keyboard shortcut.
+    - window: The application window.
+- Returns: The button.
+
+### `keyboardShortcut(_:app:)`
+
+Create a keyboard shortcut for an application from a button.
+
+Note that the keyboard shortcut is available after the view has been visible for the first time.
+- Parameters:
+    - shortcut: The keyboard shortcut.
+    - window: The application.
+- Returns: The button.

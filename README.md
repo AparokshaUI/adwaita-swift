@@ -85,23 +85,56 @@ If you want to use _Adwaita_ in a project, but there are widgets missing, open a
 
 ### View Modifiers
 
-| Syntax                       | Description                                                                            |
-| ---------------------------- | -------------------------------------------------------------------------------------- |
+| Syntax                       | Description                                                                             |
+| ---------------------------- | --------------------------------------------------------------------------------------- |
 | `inspect(_:)`                | Edit the underlying [GTUI][10] widget.                                                  |
-| `padding(_:_:)`              | Add empty space around a view.                                                         |
-| `hexpand(_:)`                | Enable or disable the horizontal expansion of a view.                                  |
-| `vexpand(_:)`                | Enable or disable the vertical expansion of a view.                                    |
-| `halign(_:)`                 | Set the horizontal alignment of a view.                                                |
-| `valign(_:)`                 | Set the vertical alignment of a view.                                                  |
-| `frame(minWidth:minHeight:)` | Set the view’s minimal width or height.                                                |
-| `frame(maxSize:)`            | Set the view’s maximal size.                                                           |
-| `transition(_:)`             | Assign a transition with the view that is used if it is a direct child of an EitherView. |
-| `onUpdate(_:)`               | Run a function every time a view gets updated.                                         |
-| `navigationTitle(_:)`        | Add a title that is used if the view is a direct child of a NavigationView.            |
-| `style(_:)`                  | Add a style class to the view.                                                         |
-| `onAppear(_:)`               | Run when the view is rendered for the first time.                                      |
-| `topToolbar(visible:_:)`             | Add a native toolbar to the view. Normally, it contains a HeaderBar.                   |
-| `bottomToolbar(visible:_:)`          | Add a native bottom toolbar to the view.                                               |
+| `padding(_:_:)`              | Add empty space around a view.                                                          |
+| `hexpand(_:)`                | Enable or disable the horizontal expansion of a view.                                   |
+| `vexpand(_:)`                | Enable or disable the vertical expansion of a view.                                     |
+| `halign(_:)`                 | Set the horizontal alignment of a view.                                                 |
+| `valign(_:)`                 | Set the vertical alignment of a view.                                                   |
+| `frame(minWidth:minHeight:)` | Set the view’s minimal width or height.                                                 |
+| `frame(maxSize:)`            | Set the view’s maximal size.                                                            |
+| `transition(_:)`             | Assign a transition with the view that is used if it is a direct child of an EitherView.|
+| `onUpdate(_:)`               | Run a function every time a view gets updated.                                          |
+| `navigationTitle(_:)`        | Add a title that is used if the view is a direct child of a NavigationView.             |
+| `style(_:)`                  | Add a style class to the view.                                                          |
+| `onAppear(_:)`               | Run when the view is rendered for the first time.                                       |
+| `topToolbar(visible:_:)`     | Add a native toolbar to the view. Normally, it contains a HeaderBar.                    |
+| `bottomToolbar(visible:_:)`  | Add a native bottom toolbar to the view.                                                |
+
+### `Button` Modifiers
+| Syntax                       | Description                                                                             |
+| ---------------------------- | --------------------------------------------------------------------------------------- |
+| `keyboardShortcut(_:window:)`| Create a keyboard shortcut for the window with the button's action.                     |
+| `keyboardShortcut(_:app:)`   | Create a keyboard shortcut for the application with the button's action.                |
+
+### `HeaderBar` Modifiers
+| Syntax                       | Description                                                                             |
+| ---------------------------- | --------------------------------------------------------------------------------------- |
+| `headerBarTitle(view:)`      | Customize the title view in the header bar.                                             |
+
+### `List` Modifiers
+| Syntax                       | Description                                                                             |
+| ---------------------------- | --------------------------------------------------------------------------------------- |
+| `sidebarStyle()`             | Change the style of the list to match a sidebar.                                        |
+
+### Window Types
+| Name                 | Description                                                       | Widget                 |
+| -------------------- | ----------------------------------------------------------------- | ---------------------- |
+| Window               | A simple application window.                                      | AdwApplicationWindow   |
+
+### Window Modifiers
+| Syntax                          | Description                                                                             |
+| ------------------------------- | --------------------------------------------------------------------------------------- |
+| `appKeyboardShortcut(_:action:)`| Create a keyboard shortcut available in the whole the application.                      |
+| `quitShortcut()`                | Create a keyboard shortcut for quitting the application with "Ctrl + q".                |
+
+### `Window` Modifiers
+| Syntax                          | Description                                                                             |
+| ------------------------------- | --------------------------------------------------------------------------------------- |
+| `keyboardShortcut(_:action:)`   | Create a keyboard shortcut available in one window.                                     |
+| `closeShortcut()`               | Create a keyboard shortcut for closing the window with "Ctrl + w".                      |
 
 ## Installation
 ### Dependencies
@@ -131,21 +164,22 @@ brew install libadwaita
 * [Hello World][13]
 * [Creating Views][14]
 * [Windows][15]
+* [Keyboard Shortcuts][16]
 
 ### Advanced
 
-* [Creating Widgets][16]
+* [Creating Widgets][17]
 
 ## Thanks
 
 ### Dependencies
-- [SwiftGui][17] licensed under the [GPL-3.0 license][18]
+- [SwiftGui][18] licensed under the [GPL-3.0 license][19]
 
 ### Other Thanks
-- The [contributors][19]
-- [SwiftLint][20] for checking whether code style conventions are violated
-- The programming language [Swift][21]
-- [SourceDocs][22] used for generating the [docs][23]
+- The [contributors][20]
+- [SwiftLint][21] for checking whether code style conventions are violated
+- The programming language [Swift][22]
+- [SourceDocs][23] used for generating the [docs][24]
 
 [1]:    Tests/
 [2]:	#goals
@@ -160,16 +194,17 @@ brew install libadwaita
 [11]:	https://brew.sh
 [12]:	user-manual/GettingStarted.md
 [13]:	user-manual/Basics/HelloWorld.md
-[14]: user-manual/Basics/CreatingViews.md
-[15]: user-manual/Basics/Windows.md
-[16]: user-manual/Advanced/CreatingWidgets.md
-[17]:	https://github.com/JCWasmx86/SwiftGui
-[18]:	https://github.com/JCWasmx86/SwiftGui/blob/main/COPYING
-[19]:	Contributors.md
-[20]:	https://github.com/realm/SwiftLint
-[21]:	https://github.com/apple/swift
-[22]:	https://github.com/SourceDocs/SourceDocs
-[23]:	Documentation/Reference/README.md
+[14]:   user-manual/Basics/CreatingViews.md
+[15]:   user-manual/Basics/Windows.md
+[16]:   user-manual/Basics/KeyboardShortcuts.md
+[17]:   user-manual/Advanced/CreatingWidgets.md
+[18]:	https://github.com/JCWasmx86/SwiftGui
+[19]:	https://github.com/JCWasmx86/SwiftGui/blob/main/COPYING
+[20]:	Contributors.md
+[21]:	https://github.com/realm/SwiftLint
+[22]:	https://github.com/apple/swift
+[23]:	https://github.com/SourceDocs/SourceDocs
+[24]:	Documentation/Reference/README.md
 
 [image-1]: Icons/Screenshot.png
 [image-2]: Icons/Demo.png

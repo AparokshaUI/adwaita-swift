@@ -11,6 +11,7 @@
 
 ## Structs
 
+-   [ApplicationWindow](structs/ApplicationWindow.md)
 -   [Binding](structs/Binding.md)
 -   [Button](structs/Button.md)
 -   [Clamp](structs/Clamp.md)
@@ -58,6 +59,7 @@
 ## Typealiases
 
 -   [Body](typealiases/Body.md)
+-   [GTUIApplicationWindow](typealiases/GTUIApplicationWindow.md)
 -   [GTUIWindow](typealiases/GTUIWindow.md)
 -   [Scene](typealiases/Scene.md)
 -   [SceneBuilder](typealiases/SceneBuilder.md)

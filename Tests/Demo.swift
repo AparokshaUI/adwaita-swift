@@ -20,6 +20,9 @@ struct Demo: App {
         Window(id: "main") { window in
             DemoContent(window: window, app: app)
         }
+        .appKeyboardShortcut("n".ctrl()) { $0.addWindow("main") }
+        .closeShortcut()
+        .quitShortcut()
         HelperWindows()
     }
 
@@ -29,9 +32,11 @@ struct Demo: App {
             Window(id: "content", open: 0) { window in
                 WindowsDemo.WindowContent(window: window)
             }
+            .closeShortcut()
             Window(id: "toolbar-demo", open: 0) { window in
                 ToolbarDemo.WindowContent(window: window)
             }
+            .closeShortcut()
         }
 
     }

@@ -13,6 +13,10 @@ The window type's identifier.
 
 The number of instances of the window at the startup.
 
+### `appShortcuts`
+
+The keyboard shortcuts on the application's level.
+
 ## Methods
 ### `createWindow(app:)`
 
@@ -20,7 +24,9 @@ Get the storage for the window.
 - Parameter app: The application.
 - Returns: The storage.
 
-### `update(_:)`
+### `update(_:app:)`
 
 Update a window storage's content.
-- Parameter storage: The storage to update.
+- Parameters:
+    - storage: The storage to update.
+    - app: The application.

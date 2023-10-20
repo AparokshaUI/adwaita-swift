@@ -1,8 +1,8 @@
 **STRUCT**
 
-# `Window`
+# `ApplicationWindow`
 
-A structure representing a simple window type.
+A structure representing an application window type.
 
 Note that multiple instances of a window can be opened at the same time.
 
@@ -18,6 +18,10 @@ The window's content.
 ### `open`
 
 Whether an instance of the window type should be opened when the app is starting up.
+
+### `shortcuts`
+
+The keyboard shortcuts.
 
 ### `appShortcuts`
 
@@ -53,6 +57,22 @@ Get the storage of the content view.
 ### `update(_:app:)`
 
 Update a window storage's content.
+- Parameter storage: The storage to update.
+
+### `keyboardShortcut(_:action:)`
+
+Add a keyboard shortcut.
 - Parameters:
-    - storage: The storage to update.
-    - app: The application.
+    - shortcut: The keyboard shortcut.
+    - action: The closure to execute when the keyboard shortcut is pressed.
+- Returns: The window.
+
+### `updateShortcuts(window:)`
+
+Update the keyboard shortcuts.
+- Parameter window: The application window.
+
+### `closeShortcut()`
+
+Add the shortcut "<Ctrl>w" which closes the window.
+- Returns: The window.

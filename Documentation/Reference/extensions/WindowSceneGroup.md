@@ -8,7 +8,9 @@
 Get the windows described by the group.
 - Returns: The windows.
 
-### `update(_:)`
+### `update(_:app:)`
 
 Update the windows described by the group.
-- Parameter storage: The window's storage.
+- Parameters:
+    - storage: The window's storage.
+    - app: The application.

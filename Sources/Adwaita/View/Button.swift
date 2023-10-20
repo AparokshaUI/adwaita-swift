@@ -67,4 +67,28 @@ public struct Button: Widget {
         }
     }
 
+    /// Create a keyboard shortcut for an application window from a button.
+    ///
+    /// Note that the keyboard shortcut is available after the view has been visible for the first time.
+    /// - Parameters:
+    ///     - shortcut: The keyboard shortcut.
+    ///     - window: The application window.
+    /// - Returns: The button.
+    public func keyboardShortcut(_ shortcut: String, window: GTUIApplicationWindow) -> Self {
+        window.addKeyboardShortcut(shortcut, id: shortcut, handler: handler)
+        return self
+    }
+
+    /// Create a keyboard shortcut for an application from a button.
+    ///
+    /// Note that the keyboard shortcut is available after the view has been visible for the first time.
+    /// - Parameters:
+    ///     - shortcut: The keyboard shortcut.
+    ///     - window: The application.
+    /// - Returns: The button.
+    public func keyboardShortcut(_ shortcut: String, app: GTUIApp) -> Self {
+        app.addKeyboardShortcut(shortcut, id: shortcut, handler: handler)
+        return self
+    }
+
 }

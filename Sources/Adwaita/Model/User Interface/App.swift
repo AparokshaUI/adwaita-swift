@@ -51,7 +51,7 @@ extension App {
                 if window.destroy {
                     removeIndices.insert(index, at: 0)
                 } else if let scene = appInstance.scene.windows().first(where: { $0.id == window.id }) {
-                    scene.update(window)
+                    scene.update(window, app: appInstance.app)
                 }
             }
             for index in removeIndices {

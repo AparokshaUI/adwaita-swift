@@ -30,11 +30,13 @@ extension WindowSceneGroup {
     }
 
     /// Update the windows described by the group.
-    /// - Parameter storage: The window's storage.
-    func update(_ storage: [WindowStorage]) {
+    /// - Parameters:
+    ///     - storage: The window's storage.
+    ///     - app: The application.
+    func update(_ storage: [WindowStorage], app: GTUIApp) {
         for (index, window) in windows().enumerated() {
             if let storage = storage[safe: index] {
-                window.update(storage)
+                window.update(storage, app: app)
             }
         }
     }
