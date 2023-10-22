@@ -78,6 +78,7 @@ If you want to use _Adwaita_ in a project, but there are widgets missing, open a
 | VStack               | A widget which arranges child widgets into a single column.       | GtkBox                 |
 | HStack               | A widget which arranges child widgets into a single row.          | GtkBox                 |
 | List                 | A widget which arranges child widgets vertically into rows.       | GtkListBox             |
+| Menu                 | A widget showing a button that toggles the appearance of a menu.  | GtkMenuButton          |
 | NavigationSplitView  | A widget presenting sidebar and content side by side.             | AdwNavigationSplitView |
 | ScrollView           | A container that makes its child scrollable.                      | GtkScrolledWindow      |
 | StatusPage           | A page with an icon, title, and optionally description and widget.| AdwStatusPage          |
@@ -134,7 +135,19 @@ If you want to use _Adwaita_ in a project, but there are widgets missing, open a
 | Syntax                          | Description                                                                             |
 | ------------------------------- | --------------------------------------------------------------------------------------- |
 | `keyboardShortcut(_:action:)`   | Create a keyboard shortcut available in one window.                                     |
-| `closeShortcut()`               | Create a keyboard shortcut for closing the window with "Ctrl + w".                      |
+| `closeShortcut()`               | Create a keyboard shortcut for closing the window with "Ctrl + w". 
+
+### Menu Widgets
+| Name                 | Description                                                       | Widget                 |
+| -------------------- | ----------------------------------------------------------------- | ---------------------- |
+| MenuButton           | A button in a menu.                                               | GMenuItem              |
+| MenuSection          | A collection of menu widgets grouped with lines.                  | GMenuItem              |
+| Submenu              | A collection of menu widgets grouped by navigation.               | GMenuItem              |
+
+### `MenuButton` Modifiers
+| Syntax                          | Description                                                                             |
+| ------------------------------- | --------------------------------------------------------------------------------------- |
+| `keyboardShortcut(_:)`          | Assign a keyboard shortcut to the button's action.                                      |
 
 ## Installation
 ### Dependencies

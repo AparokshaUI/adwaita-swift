@@ -3,6 +3,8 @@
 ## Protocols
 
 -   [App](protocols/App.md)
+-   [MenuItem](protocols/MenuItem.md)
+-   [MenuItemGroup](protocols/MenuItemGroup.md)
 -   [StateProtocol](protocols/StateProtocol.md)
 -   [View](protocols/View.md)
 -   [Widget](protocols/Widget.md)
@@ -11,7 +13,6 @@
 
 ## Structs
 
--   [ApplicationWindow](structs/ApplicationWindow.md)
 -   [Binding](structs/Binding.md)
 -   [Button](structs/Button.md)
 -   [Clamp](structs/Clamp.md)
@@ -20,11 +21,15 @@
 -   [HeaderBar](structs/HeaderBar.md)
 -   [InspectorWrapper](structs/InspectorWrapper.md)
 -   [List](structs/List.md)
+-   [Menu](structs/Menu.md)
+-   [MenuButton](structs/MenuButton.md)
+-   [MenuSection](structs/MenuSection.md)
 -   [NavigationSplitView](structs/NavigationSplitView.md)
 -   [ScrollView](structs/ScrollView.md)
 -   [State](structs/State.md)
 -   [StateWrapper](structs/StateWrapper.md)
 -   [StatusPage](structs/StatusPage.md)
+-   [Submenu](structs/Submenu.md)
 -   [Text](structs/Text.md)
 -   [ToolbarView](structs/ToolbarView.md)
 -   [UpdateObserver](structs/UpdateObserver.md)
@@ -49,6 +54,8 @@
 
 -   [App](extensions/App.md)
 -   [Array](extensions/Array.md)
+-   [MenuItem](extensions/MenuItem.md)
+-   [MenuItemGroup](extensions/MenuItemGroup.md)
 -   [NativeWidgetPeer](extensions/NativeWidgetPeer.md)
 -   [String](extensions/String.md)
 -   [View](extensions/View.md)
@@ -61,6 +68,8 @@
 -   [Body](typealiases/Body.md)
 -   [GTUIApplicationWindow](typealiases/GTUIApplicationWindow.md)
 -   [GTUIWindow](typealiases/GTUIWindow.md)
+-   [MenuBuilder](typealiases/MenuBuilder.md)
+-   [MenuContent](typealiases/MenuContent.md)
 -   [Scene](typealiases/Scene.md)
 -   [SceneBuilder](typealiases/SceneBuilder.md)
 

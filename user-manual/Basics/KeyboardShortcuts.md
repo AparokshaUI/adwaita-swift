@@ -70,6 +70,29 @@ struct HelloWorld: App {
 }
 ```
 
+## Create Shortcuts from a Menu
+The most elegant way for adding keyboard shortcuts is in many cases adding them via menus.
+Here is an example using a menu button:
+```swift
+struct TestView: View {
+
+    var app: GTUIApp
+
+    var view: Body {
+        Menu(icon: .default(icon: .openMenu), app: app) {
+            MenuButton("New Window", window: false) {
+                app.addWindow("main")
+            }
+            // Add a keyboard shortcut to the app.
+            .keyboardShortcut("n".ctrl())
+        }
+    }
+
+}
+```
+Add the keyboard shortcut to a single window by specifying the `window` parameter in the initializer of `Menu`,
+and removing `window: false` in the initializer of `MenuButton`.
+
 ## Create Shortcuts from a Button
 It's possible to easily create a keyboard shortcut from a button.
 Use `appKeyboardShortcut` instead of `keyboardShortcut` for shortcuts on an application level.

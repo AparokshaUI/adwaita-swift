@@ -20,9 +20,6 @@ struct Demo: App {
         Window(id: "main") { window in
             DemoContent(window: window, app: app)
         }
-        .appKeyboardShortcut("n".ctrl()) { $0.addWindow("main") }
-        .closeShortcut()
-        .quitShortcut()
         HelperWindows()
     }
 
@@ -44,7 +41,7 @@ struct Demo: App {
     struct DemoContent: View {
 
         @State private var selection: Page = .welcome
-        var window: GTUIWindow
+        var window: GTUIApplicationWindow
         var app: GTUIApp!
 
         var view: Body {
@@ -58,7 +55,24 @@ struct Demo: App {
                     .sidebarStyle()
                 }
                 .topToolbar {
-                    HeaderBar.empty()
+                    HeaderBar.end {
+                        Menu(icon: .default(icon: .openMenu), app: app, window: window) {
+                            MenuButton("New Window", window: false) {
+                                app.addWindow("main")
+                            }
+                            .keyboardShortcut("n".ctrl())
+                            MenuButton("Close Window") {
+                                window.close()
+                            }
+                            .keyboardShortcut("w".ctrl())
+                            MenuSection {
+                                MenuButton("Quit", window: false) {
+                                    app.quit()
+                                }
+                                .keyboardShortcut("q".ctrl())
+                            }
+                        }
+                    }
                 }
                 .navigationTitle("Demo")
             } content: {
