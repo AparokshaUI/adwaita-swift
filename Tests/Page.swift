@@ -18,13 +18,19 @@ enum Page: String, Identifiable, CaseIterable {
     case toolbar
     case transition
     case dice
+    case overlayWindow
 
     var id: Self {
         self
     }
 
     var label: String {
-        rawValue.capitalized
+        switch self {
+        case .overlayWindow:
+            return "Overlay Window"
+        default:
+            return rawValue.capitalized
+        }
     }
 
     var icon: GTUI.Icon? {
@@ -50,6 +56,8 @@ enum Page: String, Identifiable, CaseIterable {
             return "A slide transition between two views."
         case .dice:
             return "Roll the dice."
+        case .overlayWindow:
+            return "A window on top of another window."
         }
     }
 
@@ -68,6 +76,8 @@ enum Page: String, Identifiable, CaseIterable {
             TransitionDemo()
         case .dice:
             DiceDemo()
+        case .overlayWindow:
+            OverlayWindowDemo(app: app)
         }
     }
 

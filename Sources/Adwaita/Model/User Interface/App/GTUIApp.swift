@@ -32,8 +32,9 @@ public class GTUIApp: Application {
         let body = body()
         for windowScene in body.scene.windows() {
             for _ in 0..<windowScene.open {
-                sceneStorage.append(windowScene.createWindow(app: self))
+                addWindow(windowScene.id)
             }
+            setParentWindows()
         }
     }
 
@@ -48,9 +49,21 @@ public class GTUIApp: Application {
     /// - Parameters:
     ///     - id: The window's id.
     public func addWindow(_ id: String) {
-        if let window = body().scene.windows().first(where: { $0.id == id }) {
-            sceneStorage.append(window.createWindow(app: self))
+        State<Any>.updateViews()
+        if let window = body().scene.windows().last(where: { $0.id == id }) {
+            let window = window.createWindow(app: self)
+            sceneStorage.append(window)
+            setParentWindows()
             showWindow(id)
         }
+    }
+
+    /// Set the parents of every window having a parent window.
+    func setParentWindows() {
+      for window in sceneStorage {
+        if let parent = sceneStorage.first { $0.id == window.parentID } {
+            window.window.setParent(parent.window)
+        }
+      }
     }
 }

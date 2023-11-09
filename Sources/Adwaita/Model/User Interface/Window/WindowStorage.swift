@@ -12,6 +12,8 @@ public class WindowStorage {
 
     /// The window's identifier.
     public var id: String
+    /// The identifier of the window's parent window.
+    public var parentID: String?
     /// Whether the reference to the window should disappear in the next update.
     public var destroy = false
     /// The GTUI window.

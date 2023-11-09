@@ -20,6 +20,12 @@ struct Demo: App {
         Window(id: "main") { window in
             DemoContent(window: window, app: app)
         }
+        .overlay {
+            Window(id: "overlay", open: 0) { window in
+                OverlayWindowDemo.WindowContent(window: window)
+            }
+            .keyboardShortcut("Escape") { $0.close() }
+        }
         HelperWindows()
     }
 

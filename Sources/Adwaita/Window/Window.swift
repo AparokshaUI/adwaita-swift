@@ -18,6 +18,8 @@ public struct Window: WindowScene {
     var content: (GTUIApplicationWindow) -> Body
     /// Whether an instance of the window type should be opened when the app is starting up.
     public var `open`: Int
+    /// The identifier of the window's parent.
+    public var parentID: String?
     /// The keyboard shortcuts.
     var shortcuts: [String: (GTUIApplicationWindow) -> Void] = [:]
     /// The keyboard shortcuts on the app level.
@@ -45,6 +47,7 @@ public struct Window: WindowScene {
             windowStorage.destroy = true
             return false
         }
+        windowStorage.parentID = parentID
         return windowStorage
     }
 
@@ -78,6 +81,17 @@ public struct Window: WindowScene {
             updateShortcuts(window: window)
             updateAppShortcuts(app: app)
         }
+    }
+
+    /// Add windows that overlay the last instance of this window if presented.
+    /// - Parameter windows: The windows.
+    /// - Returns: The new windows and this window.
+    public func overlay(@SceneBuilder windows: () -> [WindowSceneGroup]) -> [WindowScene] {
+        windows().windows().map { window in
+            var newWindow = window
+            newWindow.parentID = id
+            return newWindow
+        } + [self]
     }
 
     /// Add a keyboard shortcut.

@@ -12,6 +12,8 @@ public protocol WindowScene: WindowSceneGroup {
 
     /// The window type's identifier.
     var id: String { get }
+    /// The identifier of the window's parent window.
+    var parentID: String? { get set }
     /// The number of instances of the window at the startup.
     var `open`: Int { get }
     /// The keyboard shortcuts on the application's level.
