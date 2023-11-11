@@ -18,7 +18,7 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(url: "https://github.com/david-swift/SwiftGui", branch: "main")
+        .package(url: "https://github.com/david-swift/SwiftGui", from: "0.1.0")
     ],
     targets: [
         .target(
