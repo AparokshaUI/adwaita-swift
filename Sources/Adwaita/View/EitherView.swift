@@ -42,11 +42,13 @@ public struct EitherView: Widget {
     }
 
     /// Update an `EitherView`'s storage.
-    /// - Parameter storage: The view storage.
-    public func update(_ storage: ViewStorage) {
+    /// - Parameters:
+    ///     - storage: The view storage.
+    ///     - modifiers: Modify views before being updated.
+    public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
         let stack = storage.view as? Stack
-        updateContent(storage, state: true, stack: stack)
-        updateContent(storage, state: false, stack: stack)
+        updateContent(storage, state: true, stack: stack, modifiers: modifiers)
+        updateContent(storage, state: false, stack: stack, modifiers: modifiers)
         if isTrue, let trueView = storage.content["\(true)"]?.last?.view {
             setVisible(stack, view: trueView)
         } else if !isTrue, let falseView = storage.content["\(false)"]?.last?.view {
@@ -59,11 +61,12 @@ public struct EitherView: Widget {
     ///   - storage: The view storage.
     ///   - state: Whether it is the true or false view.
     ///   - stack: The stack.
-    private func updateContent(_ storage: ViewStorage, state: Bool, stack: Stack?) {
-        let activeView = (state ? trueView : falseView)?.widget()
+    ///   - modifiers: Modify views before being updated.
+    private func updateContent(_ storage: ViewStorage, state: Bool, stack: Stack?, modifiers: [(View) -> View]) {
+        let activeView = (state ? trueView : falseView)?.widget(modifiers: modifiers)
         if let view = storage.content["\(state)"]?[safe: 0] {
-            activeView?.updateStorage(view)
-        } else if let view = activeView?.storage() {
+            activeView?.updateStorage(view, modifiers: modifiers)
+        } else if let view = activeView?.storage(modifiers: modifiers) {
             _ = stack?.append(view.view)
             storage.content["\(state)"] = [view]
         }
@@ -78,17 +81,18 @@ public struct EitherView: Widget {
     }
 
     /// Get a GtkStack view storage.
+    /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: The view storage.
-    public func container() -> ViewStorage {
+    public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let stack = Stack()
         var content: [String: [ViewStorage]] = [:]
         if let trueView {
-            let view = trueView.widget().storage()
+            let view = trueView.widget(modifiers: modifiers).storage(modifiers: modifiers)
             _ = stack.append(view.view)
             content["\(true)"] = [view]
         }
         if let falseView {
-            let view = falseView.widget().storage()
+            let view = falseView.widget(modifiers: modifiers).storage(modifiers: modifiers)
             _ = stack.append(view.view)
             content["\(false)"] = [view]
         }

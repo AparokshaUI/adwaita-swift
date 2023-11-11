@@ -26,12 +26,15 @@ Whether the toolbar is visible.
 The identifier of the toolbar content.
 
 ## Methods
-### `container()`
+### `container(modifiers:)`
 
 Get the container of the toolbar view widget.
+- Parameter modifiers: Modify views before being updated.
 - Returns: The view storage.
 
-### `update(_:)`
+### `update(_:modifiers:)`
 
 Update the view storage of the toolbar view widget.
-- Parameter storage: The view storage.
+- Parameters:
+    - storage: The view storage.
+    - modifiers: Modify views before being updated.

@@ -20,17 +20,20 @@ public struct ScrollView: Widget {
     }
 
     /// Update a view storage.
-    /// - Parameter storage: The view storage.
-    public func update(_ storage: ViewStorage) {
+    /// - Parameters:
+    ///     - storage: The view storage.
+    ///     - modifiers: Modify views before being updated.
+    public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
         if let first = storage.content[.mainContent]?.first {
-          content().widget().update(first)
+          content().widget(modifiers: modifiers).update(first, modifiers: modifiers)
         }
     }
 
     /// Get a view storage.
+    /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: The view storage.
-    public func container() -> ViewStorage {
-        let container = content().widget().container()
+    public func container(modifiers: [(View) -> View]) -> ViewStorage {
+        let container = content().widget(modifiers: modifiers).container(modifiers: modifiers)
         return .init(Scrolled().setChild(container.view), content: [.mainContent: [container]])
     }
 

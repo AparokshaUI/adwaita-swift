@@ -16,15 +16,16 @@ struct TransitionDemo: View {
     var view: Body {
         VStack {
             if firstView {
-                content("First View")
+                Text("First View")
                     .transition(.slideDown)
                     .style("accent")
             } else {
-                content("Second View")
+                Text("Second View")
                     .transition(.slideUp)
                     .style("success")
             }
         }
+        .modifyContent(Text.self) { $0.style("title-2").padding() }
         .style("card")
         .frame(maxSize: 200)
         .padding()
@@ -34,12 +35,6 @@ struct TransitionDemo: View {
         .style("pill")
         .padding()
         .frame(maxSize: 100)
-    }
-
-    private func content(_ text: String) -> View {
-        Text(text)
-            .style("title-2")
-            .padding()
     }
 
 }

@@ -58,35 +58,38 @@ public struct HeaderBar: Widget {
     }
 
     /// Update a header bar's view storage.
-    /// - Parameter storage: The view storage.
-    public func update(_ storage: ViewStorage) {
+    /// - Parameters:
+    ///     - storage: The view storage.
+    ///     - modifiers: Modify views before being updated.
+    public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
         if let bar = storage.view as? GTUI.HeaderBar {
             _ = bar.showTitleButtons(titleButtons)
         }
-        start.update(storage.content[startID] ?? [])
-        end.update(storage.content[endID] ?? [])
+        start.update(storage.content[startID] ?? [], modifiers: modifiers)
+        end.update(storage.content[endID] ?? [], modifiers: modifiers)
         if let first = storage.content[titleID]?.first {
-            headerBarTitle?.widget().update(first)
+            headerBarTitle?.widget(modifiers: modifiers).update(first, modifiers: modifiers)
         }
     }
 
     /// Get the container for a header bar.
+    /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: The view storage.
-    public func container() -> ViewStorage {
+    public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let bar: GTUI.HeaderBar = .init()
         var startContent: [ViewStorage] = []
         var endContent: [ViewStorage] = []
         for element in start {
-            let element = element.storage()
+            let element = element.storage(modifiers: modifiers)
             _ = bar.packStart(element.view)
             startContent.append(element)
         }
         for element in end {
-            let element = element.storage()
+            let element = element.storage(modifiers: modifiers)
             _ = bar.packEnd(element.view)
             endContent.append(element)
         }
-        let title = headerBarTitle?.widget().container()
+        let title = headerBarTitle?.widget(modifiers: modifiers).container(modifiers: modifiers)
         let titleStorage: [ViewStorage]
         if let title {
             _ = bar.titleWidget(title.view)

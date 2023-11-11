@@ -14,12 +14,15 @@ The content.
 The maximum size.
 
 ## Methods
-### `update(_:)`
+### `update(_:modifiers:)`
 
 Update a view storage.
-- Parameter storage: The view storage.
+- Parameters:
+    - storage: The view storage.
+    - modifiers: Modify views before being updated.
 
-### `container()`
+### `container(modifiers:)`
 
 Get a view storage.
+- Parameter modifiers: Modify views before being updated.
 - Returns: The view storage.

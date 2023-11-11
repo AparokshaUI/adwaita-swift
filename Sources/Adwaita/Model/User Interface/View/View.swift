@@ -30,9 +30,11 @@ public protocol View {
 extension View {
 
     /// Wrap the view into a widget.
+    /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: The widget.
-    public func widget() -> Widget {
-        if let peer = self as? Widget {
+    public func widget(modifiers: [(View) -> View]) -> Widget {
+        let modified = getModified(modifiers: modifiers)
+        if let peer = modified as? Widget {
             return peer
         } else {
             var state: [String: StateProtocol] = [:]
@@ -46,19 +48,31 @@ extension View {
     }
 
     /// Update a storage to a view.
-    /// - Parameter storage: The storage.
-    func updateStorage(_ storage: ViewStorage) {
-        if let widget = self as? Widget {
-            widget.update(storage)
+    /// - Parameters:
+    ///     - storage: The storage.
+    ///     - modifiers: Modify views before being updated.
+    func updateStorage(_ storage: ViewStorage, modifiers: [(View) -> View]) {
+        let modified = getModified(modifiers: modifiers)
+        if let widget = modified as? Widget {
+            widget.update(storage, modifiers: modifiers)
         } else {
-            StateWrapper { self }.update(storage)
+            StateWrapper { self }.update(storage, modifiers: modifiers)
         }
     }
 
     /// Get a storage.
+    /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: The storage.
-    func storage() -> ViewStorage {
-        widget().container()
+    func storage(modifiers: [(View) -> View]) -> ViewStorage {
+        widget(modifiers: modifiers).container(modifiers: modifiers)
+    }
+
+    func getModified(modifiers: [(View) -> View]) -> View {
+        var modified: View = self
+        for modifier in modifiers {
+            modified = modifier(modified)
+        }
+        return modified
     }
 
 }

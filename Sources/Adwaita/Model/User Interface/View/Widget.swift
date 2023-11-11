@@ -11,10 +11,13 @@ import GTUI
 public protocol Widget: View {
 
     /// The view storage.
-    func container() -> ViewStorage
+    /// - Parameter modifiers: Modify views before being updated.
+    func container(modifiers: [(View) -> View]) -> ViewStorage
     /// Update the stored content.
-    /// - Parameter storage: The storage to update.
-    func update(_ storage: ViewStorage)
+    /// - Parameters:
+    ///     - storage: The storage to update.
+    ///     - modifiers: Modify views before being updated
+    func update(_ storage: ViewStorage, modifiers: [(View) -> View])
 
 }
 

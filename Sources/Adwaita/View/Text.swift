@@ -20,8 +20,10 @@ public struct Text: Widget {
     }
 
     /// Update the view storage of the text widget.
-    /// - Parameter storage: The view storage.
-    public func update(_ storage: ViewStorage) {
+    /// - Parameters:
+    ///     - storage: The view storage.
+    ///     - modifiers: Modify views before being updated.
+    public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
         if let label = storage.view as? MarkupLabel {
             label.setText(text)
         }
@@ -29,7 +31,7 @@ public struct Text: Widget {
 
     /// Get the container of the text widget.
     /// - Returns: The view storage.
-    public func container() -> ViewStorage {
+    public func container(modifiers: [(View) -> View]) -> ViewStorage {
         .init(MarkupLabel(self.text))
     }
 

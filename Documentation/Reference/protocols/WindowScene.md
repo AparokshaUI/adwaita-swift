@@ -9,6 +9,10 @@ A structure representing the content for a certain window type.
 
 The window type's identifier.
 
+### `parentID`
+
+The identifier of the window's parent window.
+
 ### `open`
 
 The number of instances of the window at the startup.

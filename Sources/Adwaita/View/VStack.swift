@@ -20,18 +20,21 @@ public struct VStack: Widget {
     }
 
     /// Update a view storage.
-    /// - Parameter storage: The view storage.
-    public func update(_ storage: ViewStorage) {
-        content().update(storage.content[.mainContent] ?? [])
+    /// - Parameters:
+    ///     - storage: The view storage.
+    ///     - modifiers: Modify views before being updated.
+    public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
+        content().update(storage.content[.mainContent] ?? [], modifiers: modifiers)
     }
 
     /// Get a view storage.
+    /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: The view storage.
-    public func container() -> ViewStorage {
+    public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let box: Box = .init(horizontal: false)
         var content: [ViewStorage] = []
         for element in self.content() {
-            let widget = element.storage()
+            let widget = element.storage(modifiers: modifiers)
             _ = box.append(widget.view)
             content.append(widget)
         }

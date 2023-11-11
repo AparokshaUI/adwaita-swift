@@ -63,8 +63,10 @@ public struct Menu: Widget {
     }
 
     /// Update a button's view storage.
-    /// - Parameter storage: The view storage.
-    public func update(_ storage: ViewStorage) {
+    /// - Parameters:
+    ///     - storage: The view storage.
+    ///     - modifiers: Modify views before being updated.
+    public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
         if let button = storage.view as? GTUI.MenuButton {
             let content = button.getContent()
             if let label {
@@ -81,8 +83,9 @@ public struct Menu: Widget {
     }
 
     /// Get a button's view storage.
+    /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: The button's view storage.
-    public func container() -> ViewStorage {
+    public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let button: GTUI.MenuButton
         if let icon {
             button = .init(label, icon: icon)

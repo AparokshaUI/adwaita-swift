@@ -16,17 +16,20 @@ struct UpdateObserver: Widget {
     var content: View
 
     /// Get the content's container.
+    /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: The content's container.
-    func container() -> ViewStorage {
+    func container(modifiers: [(View) -> View]) -> ViewStorage {
         onUpdate()
-        return content.storage()
+        return content.storage(modifiers: modifiers)
     }
 
     /// Update the content.
-    /// - Parameter storage: The content's storage.
-    func update(_ storage: ViewStorage) {
+    /// - Parameters:
+    ///     - storage: The content's storage.
+    ///     - modifiers: Modify views before being updated.
+    func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
         onUpdate()
-        content.updateStorage(storage)
+        content.updateStorage(storage, modifiers: modifiers)
     }
 
 }

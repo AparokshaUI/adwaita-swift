@@ -23,13 +23,14 @@ struct ToolbarView: Widget {
     let toolbarID = "toolbar"
 
     /// Get the container of the toolbar view widget.
+    /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: The view storage.
-    func container() -> ViewStorage {
-        let content = content.storage()
+    func container(modifiers: [(View) -> View]) -> ViewStorage {
+        let content = content.storage(modifiers: modifiers)
         let view = GTUI.ToolbarView(content.view)
         var toolbarContent: [ViewStorage] = []
         for item in toolbar() {
-            let storage = item.storage()
+            let storage = item.storage(modifiers: modifiers)
             toolbarContent.append(storage)
             if bottom {
                 _ = view.addBottomBar(storage.view)
@@ -46,14 +47,16 @@ struct ToolbarView: Widget {
     }
 
     /// Update the view storage of the toolbar view widget.
-    /// - Parameter storage: The view storage.
-    func update(_ storage: ViewStorage) {
+    /// - Parameters:
+    ///     - storage: The view storage.
+    ///     - modifiers: Modify views before being updated.
+    func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
         if let mainContent = storage.content[.mainContent]?.first {
-            content.widget().update(mainContent)
+            content.widget(modifiers: modifiers).update(mainContent, modifiers: modifiers)
         }
         if let toolbar = storage.content[toolbarID] {
             for (index, content) in toolbar.enumerated() {
-                self.toolbar()[safe: index]?.updateStorage(content)
+                self.toolbar()[safe: index]?.updateStorage(content, modifiers: modifiers)
             }
         }
         if let view = storage.view as? GTUI.ToolbarView {

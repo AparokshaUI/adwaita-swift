@@ -66,7 +66,7 @@ public struct Window: WindowScene {
     /// - Returns: The storage of the content of the window.
     func getViewStorage(window: GTUIApplicationWindow) -> ViewStorage {
         let content = content(window)
-        let storage = content.widget().container()
+        let storage = content.widget(modifiers: []).container(modifiers: [])
         window.setChild(storage.view)
         updateShortcuts(window: window)
         return storage
@@ -77,7 +77,7 @@ public struct Window: WindowScene {
     public func update(_ storage: WindowStorage, app: GTUIApp) {
         if let window = storage.window as? GTUIApplicationWindow {
             let content = content(window)
-            content.widget().updateStorage(storage.view)
+            content.widget(modifiers: []).updateStorage(storage.view, modifiers: [])
             updateShortcuts(window: window)
             updateAppShortcuts(app: app)
         }

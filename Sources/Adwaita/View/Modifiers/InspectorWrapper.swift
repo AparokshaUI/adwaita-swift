@@ -16,17 +16,20 @@ struct InspectorWrapper: Widget {
     var content: View
 
     /// Get the content's container.
+    /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: The content's container.
-    func container() -> ViewStorage {
-        let storage = content.storage()
+    func container(modifiers: [(View) -> View]) -> ViewStorage {
+        let storage = content.storage(modifiers: modifiers)
         modify(storage.view)
         return storage
     }
 
     /// Update the content.
-    /// - Parameter storage: The content's storage.
-    func update(_ storage: ViewStorage) {
-        content.updateStorage(storage)
+    /// - Parameters:
+    ///     - storage: The content's storage.
+    ///     - modifiers: Modify views before being updated.
+    func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
+        content.updateStorage(storage, modifiers: modifiers)
         modify(storage.view)
     }
 

@@ -5,11 +5,14 @@
 A widget is a view that know about its GTUI widget.
 
 ## Methods
-### `container()`
+### `container(modifiers:)`
 
 The view storage.
+- Parameter modifiers: Modify views before being updated.
 
-### `update(_:)`
+### `update(_:modifiers:)`
 
 Update the stored content.
-- Parameter storage: The storage to update.
+- Parameters:
+    - storage: The storage to update.
+    - modifiers: Modify views before being updated

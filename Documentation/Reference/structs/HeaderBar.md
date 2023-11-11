@@ -59,14 +59,17 @@ Initialize a header bar with only views at the end.
 - Parameter start: The views.
 - Returns: The header bar.
 
-### `update(_:)`
+### `update(_:modifiers:)`
 
 Update a header bar's view storage.
-- Parameter storage: The view storage.
+- Parameters:
+    - storage: The view storage.
+    - modifiers: Modify views before being updated.
 
-### `container()`
+### `container(modifiers:)`
 
 Get the container for a header bar.
+- Parameter modifiers: Modify views before being updated.
 - Returns: The view storage.
 
 ### `headerBarTitle(view:)`

@@ -33,20 +33,23 @@ public struct List<Element>: Widget where Element: Identifiable {
     }
 
     /// Update a view storage.
-    /// - Parameter storage: The view storage.
-    public func update(_ storage: ViewStorage) {
+    /// - Parameters:
+    ///     - storage: The view storage.
+    ///     - modifiers: Modify views before being updated.
+    public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
         if let box = storage.view as? ListBox {
             updateSelection(box: box)
         }
     }
 
     /// Get a view storage.
+    /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: The view storage.
-    public func container() -> ViewStorage {
+    public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let box: ListBox = .init()
         var content: [ViewStorage] = []
         for element in elements {
-            let widget = self.content(element).widget().container()
+            let widget = self.content(element).widget(modifiers: modifiers).container(modifiers: modifiers)
             _ = box.append(widget.view)
             content.append(widget)
         }

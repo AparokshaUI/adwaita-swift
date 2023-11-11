@@ -19,6 +19,10 @@ The window's content.
 
 Whether an instance of the window type should be opened when the app is starting up.
 
+### `parentID`
+
+The identifier of the window's parent.
+
 ### `shortcuts`
 
 The keyboard shortcuts.
@@ -58,6 +62,12 @@ Get the storage of the content view.
 
 Update a window storage's content.
 - Parameter storage: The storage to update.
+
+### `overlay(windows:)`
+
+Add windows that overlay the last instance of this window if presented.
+- Parameter windows: The windows.
+- Returns: The new windows and this window.
 
 ### `keyboardShortcut(_:action:)`
 

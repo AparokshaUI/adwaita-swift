@@ -34,18 +34,21 @@ Initialize an `EitherView`.
   - trueView:  The view that is presented if `isTrue` is true.
   - falseView: The view that is presented if `isTrue` is false.
 
-### `update(_:)`
+### `update(_:modifiers:)`
 
 Update an `EitherView`'s storage.
-- Parameter storage: The view storage.
+- Parameters:
+    - storage: The view storage.
+    - modifiers: Modify views before being updated.
 
-### `updateContent(_:state:stack:)`
+### `updateContent(_:state:stack:modifiers:)`
 
 Update the content of a view in the view storage.
 - Parameters:
   - storage: The view storage.
   - state: Whether it is the true or false view.
   - stack: The stack.
+  - modifiers: Modify views before being updated.
 
 ### `setVisible(_:view:)`
 
@@ -54,7 +57,8 @@ Set the visible content page.
   - stack: The stack.
   - view: The visible view.
 
-### `container()`
+### `container(modifiers:)`
 
 Get a GtkStack view storage.
+- Parameter modifiers: Modify views before being updated.
 - Returns: The view storage.

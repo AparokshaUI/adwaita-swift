@@ -33,14 +33,17 @@ Initialize a button.
   - label: The buttons label.
   - handler: The button's action handler.
 
-### `update(_:)`
+### `update(_:modifiers:)`
 
 Update a button's view storage.
-- Parameter storage: The view storage.
+- Parameters:
+    - storage: The view storage.
+    - modifiers: Modify views before being updated.
 
-### `container()`
+### `container(modifiers:)`
 
 Get a button's view storage.
+- Parameter modifiers: Modify views before being updated.
 - Returns: The button's view storage.
 
 ### `keyboardShortcut(_:window:)`

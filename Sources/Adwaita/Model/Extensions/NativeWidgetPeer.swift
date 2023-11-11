@@ -10,12 +10,15 @@ import GTUI
 extension NativeWidgetPeer: Widget {
 
     /// A `GTUI.NativeWidgetPeer` is static.
-    /// - Parameter storage: The view storage.
-    public func update(_ storage: ViewStorage) { }
+    /// - Parameters:
+    ///     - storage: The view storage.
+    ///     - modifiers: Modify views before being updated.
+    public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) { }
 
     /// A `GTUI.NativeWidgetPeer`'s container is itself.
+    /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: The view storage.
-    public func container() -> ViewStorage {
+    public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let bold = "\(modifier(code: 1))"
         let yellow = 33
         let warning = "\(modifier(code: yellow))\(bold)"

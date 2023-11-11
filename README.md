@@ -103,6 +103,8 @@ If you want to use _Adwaita_ in a project, but there are widgets missing, open a
 | `onAppear(_:)`               | Run when the view is rendered for the first time.                                       |
 | `topToolbar(visible:_:)`     | Add a native toolbar to the view. Normally, it contains a HeaderBar.                    |
 | `bottomToolbar(visible:_:)`  | Add a native bottom toolbar to the view.                                                |
+| `modifyContent(_:modify:)`   | Replace all occurrences of a certain view type with another view.                       |
+| `stopModifiers()`            | Ignore all the `modifyContent(_:modify:)` modifiers from higher above in the view tree. |
 
 ### `Button` Modifiers
 | Syntax                       | Description                                                                             |

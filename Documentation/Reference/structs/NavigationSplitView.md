@@ -29,12 +29,15 @@ Initialize a navigation split view.
   - sidebar: The sidebar content.
   - content: The main content.
 
-### `container()`
+### `container(modifiers:)`
 
 Get the container of the navigation split view widget.
+- Parameter modifiers: Modify views before being updated.
 - Returns: The view storage.
 
-### `update(_:)`
+### `update(_:modifiers:)`
 
 Update the view storage of the navigation split view widget.
-- Parameter storage: The view storage.
+- Parameters:
+    - storage: The view storage.
+    - modifiers: Modify views before being updated.

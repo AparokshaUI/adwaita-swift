@@ -30,17 +30,18 @@ public struct NavigationSplitView: Widget {
     }
 
     /// Get the container of the navigation split view widget.
+    /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: The view storage.
-    public func container() -> ViewStorage {
+    public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let splitView: GTUI.NavigationSplitView = .init()
         var content: [String: [ViewStorage]] = [:]
 
-        let sidebar = sidebar().widget().container()
+        let sidebar = sidebar().widget(modifiers: modifiers).container(modifiers: modifiers)
         let label = sidebar.view.fields[.navigationLabel] as? String ?? ""
         _ = splitView.sidebar(sidebar.view, title: label)
         content[sidebarID] = [sidebar]
 
-        let mainContent = self.content().widget().container()
+        let mainContent = self.content().widget(modifiers: modifiers).container(modifiers: modifiers)
         let mainLabel = mainContent.view.fields[.navigationLabel] as? String ?? ""
         _ = splitView.content(mainContent.view, title: mainLabel)
         content[contentID] = [mainContent]
@@ -49,13 +50,15 @@ public struct NavigationSplitView: Widget {
     }
 
     /// Update the view storage of the navigation split view widget.
-    /// - Parameter storage: The view storage.
-    public func update(_ storage: ViewStorage) {
+    /// - Parameters:
+    ///     - storage: The view storage.
+    ///     - modifiers: Modify views before being updated.
+    public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
         if let storage = storage.content[contentID]?[safe: 0] {
-            content().widget().update(storage)
+            content().widget(modifiers: modifiers).update(storage, modifiers: modifiers)
         }
         if let storage = storage.content[sidebarID]?[safe: 0] {
-            sidebar().widget().update(storage)
+            sidebar().widget(modifiers: modifiers).update(storage, modifiers: modifiers)
         }
     }
 

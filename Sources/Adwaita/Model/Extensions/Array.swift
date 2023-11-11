@@ -13,22 +13,30 @@ extension Array: View where Element == View {
     public var view: Body { self }
 
     /// Get a widget from a collection of views.
+    /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: A widget.
-    public func widget() -> Widget {
-        if count == 1, let widget = self[safe: 0]?.widget() {
+    public func widget(modifiers: [(View) -> View]) -> Widget {
+        if count == 1, let widget = self[safe: 0]?.widget(modifiers: modifiers) {
             return widget
         } else {
-            return VStack { self }
+            var modified = self
+            for (index, view) in modified.enumerated() {
+                for modifier in modifiers {
+                    modified[index] = modifier(view)
+                }
+            }
+            return VStack { modified }
         }
     }
 
     /// Update a collection of views with a collection of view storages.
     /// - Parameters:
     ///     - storage: The collection of view storages.
-    public func update(_ storage: [ViewStorage]) {
+    ///     - modifiers: Modify views before being updated.
+    public func update(_ storage: [ViewStorage], modifiers: [(View) -> View]) {
         for (index, element) in enumerated() {
             if let storage = storage[safe: index] {
-                element.widget().updateStorage(storage)
+                element.widget(modifiers: modifiers).updateStorage(storage, modifiers: modifiers)
             }
         }
     }

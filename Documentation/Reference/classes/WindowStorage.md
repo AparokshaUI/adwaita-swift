@@ -9,6 +9,10 @@ A storage for an app's window.
 
 The window's identifier.
 
+### `parentID`
+
+The identifier of the window's parent window.
+
 ### `destroy`
 
 Whether the reference to the window should disappear in the next update.

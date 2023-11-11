@@ -1,17 +1,17 @@
 **STRUCT**
 
-# `InspectorWrapper`
+# `ContentModifier`
 
-A widget which executes a custom code on the GTUI widget when being created and updated.
+A widget which replaces views of a specific type in its content.
 
 ## Properties
-### `modify`
-
-The custom code to edit the widget.
-
 ### `content`
 
 The wrapped view.
+
+### `modify`
+
+The closure for the modification.
 
 ## Methods
 ### `container(modifiers:)`
@@ -26,3 +26,8 @@ Update the content.
 - Parameters:
     - storage: The content's storage.
     - modifiers: Modify views before being updated.
+
+### `modifyView(_:)`
+
+Apply the modifier to a view.
+- Parameter view: The view.

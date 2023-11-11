@@ -3,25 +3,39 @@
 # `View`
 
 ## Methods
-### `widget()`
+### `widget(modifiers:)`
 
 Wrap the view into a widget.
+- Parameter modifiers: Modify views before being updated.
 - Returns: The widget.
 
-### `updateStorage(_:)`
+### `updateStorage(_:modifiers:)`
 
 Update a storage to a view.
-- Parameter storage: The storage.
+- Parameters:
+    - storage: The storage.
+    - modifiers: Modify views before being updated.
 
-### `storage()`
+### `storage(modifiers:)`
 
 Get a storage.
+- Parameter modifiers: Modify views before being updated.
 - Returns: The storage.
+
+### `getModified(modifiers:)`
 
 ### `frame(maxSize:)`
 
 Set the view's maximal size.
 - Parameter maxSize: The maximal size.
+- Returns: A view.
+
+### `modifyContent(_:modify:)`
+
+Replace every occurrence of a certain view type in the content.
+- Parameters:
+    - type: The view type.
+    - modify: Modify the view.
 - Returns: A view.
 
 ### `inspect(_:)`
@@ -92,6 +106,11 @@ Add a style class to the view.
 
 Run a function when the view appears for the first time.
 - Parameter closure: The function.
+- Returns: A view.
+
+### `stopModifiers()`
+
+Remove all of the content modifiers for the wrapped views.
 - Returns: A view.
 
 ### `topToolbar(visible:_:)`

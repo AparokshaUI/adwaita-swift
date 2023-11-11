@@ -15,12 +15,14 @@ The content.
 Initialize a text widget.
 - Parameter text: The content.
 
-### `update(_:)`
+### `update(_:modifiers:)`
 
 Update the view storage of the text widget.
-- Parameter storage: The view storage.
+- Parameters:
+    - storage: The view storage.
+    - modifiers: Modify views before being updated.
 
-### `container()`
+### `container(modifiers:)`
 
 Get the container of the text widget.
 - Returns: The view storage.

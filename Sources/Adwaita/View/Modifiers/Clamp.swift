@@ -16,20 +16,23 @@ struct Clamp: Widget {
     var maxSize: Int
 
     /// Update a view storage.
-    /// - Parameter storage: The view storage.
-    func update(_ storage: ViewStorage) {
+    /// - Parameters:
+    ///     - storage: The view storage.
+    ///     - modifiers: Modify views before being updated.
+    func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
         if let clamp = storage.view as? GTUI.Clamp {
             _ = clamp.maximumSize(maxSize)
         }
         if let storage = storage.content[.mainContent]?[safe: 0] {
-            content.widget().update(storage)
+            content.widget(modifiers: modifiers).update(storage, modifiers: modifiers)
         }
     }
 
     /// Get a view storage.
+    /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: The view storage.
-    func container() -> ViewStorage {
-        let container = content.storage()
+    func container(modifiers: [(View) -> View]) -> ViewStorage {
+        let container = content.storage(modifiers: modifiers)
         let clamp: GTUI.Clamp = .init(container.view)
         _ = clamp.maximumSize(maxSize)
         return .init(clamp, content: [.mainContent: [container]])

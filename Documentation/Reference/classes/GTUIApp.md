@@ -40,3 +40,7 @@ Focus the window with a certain id. Create the window if it doesn't already exis
 Add a new window with the content of the window with a certain id.
 - Parameters:
     - id: The window's id.
+
+### `setParentWindows()`
+
+Set the parents of every window having a parent window.

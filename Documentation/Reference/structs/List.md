@@ -26,14 +26,17 @@ Initialize `List`.
   - selection: The identifier of the selected element.
   - content: The view for an element.
 
-### `update(_:)`
+### `update(_:modifiers:)`
 
 Update a view storage.
-- Parameter storage: The view storage.
+- Parameters:
+    - storage: The view storage.
+    - modifiers: Modify views before being updated.
 
-### `container()`
+### `container(modifiers:)`
 
 Get a view storage.
+- Parameter modifiers: Modify views before being updated.
 - Returns: The view storage.
 
 ### `updateSelection(box:)`

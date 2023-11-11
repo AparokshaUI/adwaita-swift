@@ -31,22 +31,25 @@ public struct StateWrapper: Widget {
     }
 
     /// Update a view storage.
-    /// - Parameter storage: The view storage.
-    public func update(_ storage: ViewStorage) {
+    /// - Parameters:
+    ///     - storage: The view storage.
+    ///     - modifiers: Modify views before being updated.
+    public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
         for property in state {
             if let value = storage.state[property.key]?.value {
                 property.value.value = value
             }
         }
         if let storage = storage.content[.mainContent]?.first {
-            content().widget().update(storage)
+            content().widget(modifiers: modifiers).update(storage, modifiers: modifiers)
         }
     }
 
     /// Get a view storage.
+    /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: The view storage.
-    public func container() -> ViewStorage {
-        let content = content().widget().container()
+    public func container(modifiers: [(View) -> View]) -> ViewStorage {
+        let content = content().widget(modifiers: modifiers).container(modifiers: modifiers)
         return .init(content.view, content: [.mainContent: [content]], state: state)
     }
 

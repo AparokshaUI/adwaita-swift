@@ -61,7 +61,7 @@ public class GTUIApp: Application {
     /// Set the parents of every window having a parent window.
     func setParentWindows() {
       for window in sceneStorage {
-        if let parent = sceneStorage.first { $0.id == window.parentID } {
+        if let parent = sceneStorage.first(where: { $0.id == window.parentID }) {
             window.window.setParent(parent.window)
         }
       }

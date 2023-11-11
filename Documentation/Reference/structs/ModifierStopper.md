@@ -1,14 +1,10 @@
 **STRUCT**
 
-# `InspectorWrapper`
+# `ModifierStopper`
 
-A widget which executes a custom code on the GTUI widget when being created and updated.
+Remove all of the content modifiers for the wrapped views.
 
 ## Properties
-### `modify`
-
-The custom code to edit the widget.
-
 ### `content`
 
 The wrapped view.

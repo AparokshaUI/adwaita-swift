@@ -45,12 +45,15 @@ Initialize a menu button.
   - window: The application window.
   - content: The menu's content.
 
-### `update(_:)`
+### `update(_:modifiers:)`
 
 Update a button's view storage.
-- Parameter storage: The view storage.
+- Parameters:
+    - storage: The view storage.
+    - modifiers: Modify views before being updated.
 
-### `container()`
+### `container(modifiers:)`
 
 Get a button's view storage.
+- Parameter modifiers: Modify views before being updated.
 - Returns: The button's view storage.

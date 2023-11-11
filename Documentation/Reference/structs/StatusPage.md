@@ -31,12 +31,15 @@ Initialize a status page widget.
   - description: Additional details.
   - content: Additional content.
 
-### `update(_:)`
+### `update(_:modifiers:)`
 
 Update the view storage of the text widget.
-- Parameter storage: The view storage.
+- Parameters:
+    - storage: The view storage.
+    - modifiers: Modify views before being updated.
 
-### `container()`
+### `container(modifiers:)`
 
 Get the container of the text widget.
+- Parameter modifiers: Modify views before being updated.
 - Returns: The view storage.

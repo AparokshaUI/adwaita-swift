@@ -40,8 +40,10 @@ public struct Button: Widget {
     }
 
     /// Update a button's view storage.
-    /// - Parameter storage: The view storage.
-    public func update(_ storage: ViewStorage) {
+    /// - Parameters:
+    ///     - storage: The view storage.
+    ///     - modifiers: Modify views before being updated.
+    public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
         if let button = storage.view as? GTUI.Button {
             let content = button.getContent()
             if let label {
@@ -58,8 +60,9 @@ public struct Button: Widget {
     }
 
     /// Get a button's view storage.
+    /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: The button's view storage.
-    public func container() -> ViewStorage {
+    public func container(modifiers: [(View) -> View]) -> ViewStorage {
         if let icon {
             return .init(GTUI.Button(label, icon: icon).handler(handler))
         } else {

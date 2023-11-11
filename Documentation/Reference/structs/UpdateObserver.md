@@ -14,12 +14,15 @@ The function.
 The content.
 
 ## Methods
-### `container()`
+### `container(modifiers:)`
 
 Get the content's container.
+- Parameter modifiers: Modify views before being updated.
 - Returns: The content's container.
 
-### `update(_:)`
+### `update(_:modifiers:)`
 
 Update the content.
-- Parameter storage: The content's storage.
+- Parameters:
+    - storage: The content's storage.
+    - modifiers: Modify views before being updated.

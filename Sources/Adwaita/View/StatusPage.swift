@@ -38,20 +38,23 @@ public struct StatusPage: Widget {
     }
 
     /// Update the view storage of the text widget.
-    /// - Parameter storage: The view storage.
-    public func update(_ storage: ViewStorage) {
+    /// - Parameters:
+    ///     - storage: The view storage.
+    ///     - modifiers: Modify views before being updated.
+    public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
         if let statusPage = storage.view as? GTUI.StatusPage {
             _ = statusPage.title(title).description(description).icon(icon)
         }
         if let storage = storage.content[.mainContent]?.first {
-            content.widget().update(storage)
+            content.widget(modifiers: modifiers).update(storage, modifiers: modifiers)
         }
     }
 
     /// Get the container of the text widget.
+    /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: The view storage.
-    public func container() -> ViewStorage {
-        let child = content.widget().container()
+    public func container(modifiers: [(View) -> View]) -> ViewStorage {
+        let child = content.widget(modifiers: []).container(modifiers: modifiers)
         return .init(
             GTUI.StatusPage().title(title).description(description).icon(icon).child(child.view),
             content: [.mainContent: [child]]

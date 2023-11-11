@@ -46,7 +46,7 @@ struct Demo: App {
 
     struct DemoContent: View {
 
-        @State private var selection: Page = .welcome
+        @State private var selection: Page = .transition
         var window: GTUIApplicationWindow
         var app: GTUIApp!
 

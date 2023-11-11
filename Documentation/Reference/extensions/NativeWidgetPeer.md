@@ -3,14 +3,17 @@
 # `NativeWidgetPeer`
 
 ## Methods
-### `update(_:)`
+### `update(_:modifiers:)`
 
 A `GTUI.NativeWidgetPeer` is static.
-- Parameter storage: The view storage.
+- Parameters:
+    - storage: The view storage.
+    - modifiers: Modify views before being updated.
 
-### `container()`
+### `container(modifiers:)`
 
 A `GTUI.NativeWidgetPeer`'s container is itself.
+- Parameter modifiers: Modify views before being updated.
 - Returns: The view storage.
 
 ### `modifier(code:)`
