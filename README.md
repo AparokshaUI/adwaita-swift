@@ -135,7 +135,8 @@ If you want to use _Adwaita_ in a project, but there are widgets missing, open a
 | Syntax                          | Description                                                                             |
 | ------------------------------- | --------------------------------------------------------------------------------------- |
 | `keyboardShortcut(_:action:)`   | Create a keyboard shortcut available in one window.                                     |
-| `closeShortcut()`               | Create a keyboard shortcut for closing the window with "Ctrl + w". 
+| `closeShortcut()`               | Create a keyboard shortcut for closing the window with "Ctrl + w".                      |
+| `overlay(windows:)`             | Add windows that attach to a window of this type when being presented.                  |
 
 ### Menu Widgets
 | Name                 | Description                                                       | Widget                 |

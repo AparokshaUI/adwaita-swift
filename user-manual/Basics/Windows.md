@@ -14,7 +14,7 @@ Whenever the last one disappears, the app terminates.
 @main
 struct HelloWorld: App {
 
-    let id = "io.github.david-swift.HelloWorld"
+    let id = "io.github.david_swift.HelloWorld"
     var app: GTUIApp!
 
     var scene: Scene {
@@ -42,7 +42,7 @@ Another use case is showing a window:
 @main
 struct HelloWorld: App {
 
-    let id = "io.github.david-swift.HelloWorld"
+    let id = "io.github.david_swift.HelloWorld"
     var app: GTUIApp!
 
     var scene: Scene {
@@ -75,7 +75,7 @@ if you want to add and focus another instance of a window type:
 @main
 struct HelloWorld: App {
 
-    let id = "io.github.david-swift.HelloWorld"
+    let id = "io.github.david_swift.HelloWorld"
     var app: GTUIApp!
 
     var scene: Scene {
@@ -104,7 +104,7 @@ It's possible to customize how many windows are being presented at the app's sta
 @main
 struct HelloWorld: App {
 
-    let id = "io.github.david-swift.HelloWorld"
+    let id = "io.github.david_swift.HelloWorld"
     var app: GTUIApp!
 
     var scene: Scene {
@@ -121,6 +121,31 @@ struct HelloWorld: App {
                 app.addWindow("content")
             }
             .padding()
+        }
+    }
+
+}
+```
+
+## Add Modal Windows
+Modal windows are windows that attach to another window.
+Currently, it makes only sense to attach modal windows to windows that don't exist more than once.
+```swift
+@main
+struct HelloWorld: App {
+
+    let id = "io.github.david_swift.HelloWorld"
+    var app: GTUIApp!
+
+    var scene: Scene {
+        Window(id: "content") { _ in
+            // ...
+        }
+        // Add modal windows
+        .overlay {
+            Window(id: "overlay") { _ in
+                // ...
+            }
         }
     }
 

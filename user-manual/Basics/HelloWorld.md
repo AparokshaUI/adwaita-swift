@@ -28,7 +28,7 @@ import Adwaita
 @main
 struct HelloWorld: App {
 
-    let id = "io.github.david-swift.HelloWorld"
+    let id = "io.github.david_swift.HelloWorld"
     var app: GTUIApp!
 
     var scene: Scene {
@@ -53,7 +53,7 @@ import Adwaita
 @main
 struct HelloWorld: App {
 
-    let id = "io.github.david-swift.HelloWorld"
+    let id = "io.github.david_swift.HelloWorld"
     var app: GTUIApp!
 
     var scene: Scene {
