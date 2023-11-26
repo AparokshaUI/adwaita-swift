@@ -5,7 +5,7 @@
 //  Created by david-swift on 05.08.23.
 //
 
-import GTUI
+import Libadwaita
 
 /// The GTUI application.
 public class GTUIApp: Application {

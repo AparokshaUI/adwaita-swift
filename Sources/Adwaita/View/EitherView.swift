@@ -5,7 +5,7 @@
 //  Created by david-swift on 22.08.23.
 //
 
-import GTUI
+import Libadwaita
 
 /// An equivalent to GtkStack for two views.
 public struct EitherView: Widget {

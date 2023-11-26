@@ -5,7 +5,7 @@
 //  Created by david-swift on 11.11.23.
 //
 
-import GTUI
+import Libadwaita
 
 /// Remove all of the content modifiers for the wrapped views.
 struct ModifierStopper: Widget {

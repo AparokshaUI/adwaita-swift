@@ -5,7 +5,7 @@
 //  Created by david-swift on 31.08.23.
 //
 
-import GTUI
+import Libadwaita
 
 /// Store a rendered view in a view storage.
 public class ViewStorage {

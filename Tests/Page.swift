@@ -8,7 +8,7 @@
 // swiftlint:disable missing_docs implicitly_unwrapped_optional
 
 import Adwaita
-import GTUI
+import Libadwaita
 
 enum Page: String, Identifiable, CaseIterable {
 
@@ -33,7 +33,7 @@ enum Page: String, Identifiable, CaseIterable {
         }
     }
 
-    var icon: GTUI.Icon? {
+    var icon: Libadwaita.Icon? {
         switch self {
         case .welcome:
             return .default(icon: .gnomeAdwaita1Demo)

@@ -5,7 +5,7 @@
 //  Created by david-swift on 22.10.23.
 //
 
-import GTUI
+import Libadwaita
 
 /// A button widget for menus.
 public struct MenuButton: MenuItem {
@@ -35,7 +35,7 @@ public struct MenuButton: MenuItem {
     ///   - menu: The menu.
     ///   - app: The application containing the menu.
     ///   - window: The application window containing the menu.
-    public func addMenuItem(menu: GTUI.Menu, app: GTUIApp, window: GTUIApplicationWindow?) {
+    public func addMenuItem(menu: Libadwaita.Menu, app: GTUIApp, window: GTUIApplicationWindow?) {
         if let window, preferApplicationWindow {
             _ = menu.append(label, window: window, shortcut: shortcut, handler: handler)
         } else {

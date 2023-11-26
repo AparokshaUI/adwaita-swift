@@ -5,7 +5,7 @@
 //  Created by david-swift on 23.08.23.
 //
 
-import GTUI
+import Libadwaita
 
 /// A GtkBox equivalent.
 public struct VStack: Widget {

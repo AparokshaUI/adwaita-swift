@@ -5,7 +5,7 @@
 //  Created by david-swift on 10.09.23.
 //
 
-import GTUI
+import Libadwaita
 
 /// A button widget.
 public struct Button: Widget {
@@ -44,7 +44,7 @@ public struct Button: Widget {
     ///     - storage: The view storage.
     ///     - modifiers: Modify views before being updated.
     public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
-        if let button = storage.view as? GTUI.Button {
+        if let button = storage.view as? Libadwaita.Button {
             let content = button.getContent()
             if let label {
                 if icon == nil {
@@ -64,9 +64,9 @@ public struct Button: Widget {
     /// - Returns: The button's view storage.
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
         if let icon {
-            return .init(GTUI.Button(label, icon: icon).handler(handler))
+            return .init(Libadwaita.Button(label, icon: icon).handler(handler))
         } else {
-            return .init(GTUI.Button(label ?? .init()).handler(handler))
+            return .init(Libadwaita.Button(label ?? .init()).handler(handler))
         }
     }
 

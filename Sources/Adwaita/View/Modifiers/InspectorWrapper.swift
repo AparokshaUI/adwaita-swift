@@ -5,7 +5,7 @@
 //  Created by david-swift on 10.09.23.
 //
 
-import GTUI
+import Libadwaita
 
 /// A widget which executes a custom code on the GTUI widget when being created and updated.
 struct InspectorWrapper: Widget {

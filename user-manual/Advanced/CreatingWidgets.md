@@ -2,7 +2,7 @@
 
 Widgets are special views that do not provide a collection of other views as a content,
 but have functions that are called when creating or updating the view.
-Normally, a widget manages a GTK or Libadwaita widget using [SwiftGui][1].
+Normally, a widget manages a GTK or Libadwaita widget using [Libadwaita][1].
 
 ## Recreate the `Text` widget
 In this tutorial, we will recreate the text widget.
@@ -40,7 +40,7 @@ func container() -> ViewStorage {
     .init(MarkupLabel(self.text))
 }
 ```
-`MarkupLabel` is defined in [SwiftGui][1].
+`MarkupLabel` is defined in [Libadwaita][1].
 
 ## The `update(_:)` Function
 Whenever a state of the app changes, the `update(_:)` function of the widget gets called.
@@ -60,5 +60,5 @@ In that case, use the `ViewStorage`'s `content` property for storing their view 
 In the `update(_:)` function, update the children's storages.
 An example showcasing how to implement containers is the [VStack][2].
 
-[1]:	https://github.com/JCWasmx86/SwiftGui
+[1]:	https://github.com/AparokshaUI/Libadwaita
 [2]:    ../../Sources/Adwaita/View/VStack.swift

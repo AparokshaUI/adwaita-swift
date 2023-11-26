@@ -5,7 +5,7 @@
 //  Created by david-swift on 22.10.23.
 //
 
-import GTUI
+import Libadwaita
 
 /// A structure conforming to `MenuItemGroup` can be added to the content accepting a menu.
 public protocol MenuItemGroup {
@@ -19,7 +19,7 @@ extension MenuItemGroup {
 
     /// Add the menu items described by the group to a menu.
     /// - Parameter menu: The menu.
-    func addMenuItems(menu: GTUI.Menu, app: GTUIApp, window: GTUIApplicationWindow?) {
+    func addMenuItems(menu: Libadwaita.Menu, app: GTUIApp, window: GTUIApplicationWindow?) {
         for element in content {
             if let item = element as? MenuItem {
                 item.addMenuItem(menu: menu, app: app, window: window)

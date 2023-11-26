@@ -5,7 +5,7 @@
 //  Created by david-swift on 23.08.23.
 //
 
-import GTUI
+import Libadwaita
 
 /// A header bar widget.
 public struct HeaderBar: Widget {
@@ -62,7 +62,7 @@ public struct HeaderBar: Widget {
     ///     - storage: The view storage.
     ///     - modifiers: Modify views before being updated.
     public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
-        if let bar = storage.view as? GTUI.HeaderBar {
+        if let bar = storage.view as? Libadwaita.HeaderBar {
             _ = bar.showTitleButtons(titleButtons)
         }
         start.update(storage.content[startID] ?? [], modifiers: modifiers)
@@ -76,7 +76,7 @@ public struct HeaderBar: Widget {
     /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: The view storage.
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
-        let bar: GTUI.HeaderBar = .init()
+        let bar: Libadwaita.HeaderBar = .init()
         var startContent: [ViewStorage] = []
         var endContent: [ViewStorage] = []
         for element in start {

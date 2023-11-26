@@ -5,7 +5,7 @@
 //  Created by david-swift on 06.08.23.
 //
 
-import GTUI
+import Libadwaita
 
 extension Array: View where Element == View {
 

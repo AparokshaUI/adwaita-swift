@@ -5,7 +5,7 @@
 //  Created by david-swift on 24.09.23.
 //
 
-import GTUI
+import Libadwaita
 
 /// A navigation split view widget.
 public struct NavigationSplitView: Widget {
@@ -33,7 +33,7 @@ public struct NavigationSplitView: Widget {
     /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: The view storage.
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
-        let splitView: GTUI.NavigationSplitView = .init()
+        let splitView: Libadwaita.NavigationSplitView = .init()
         var content: [String: [ViewStorage]] = [:]
 
         let sidebar = sidebar().widget(modifiers: modifiers).container(modifiers: modifiers)

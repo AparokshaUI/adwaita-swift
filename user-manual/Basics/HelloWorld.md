@@ -15,7 +15,7 @@ This is a beginner tutorial. We will create a simple "Hello, world!" app using _
 1. Open the `Package.swift` file.
 2. Add the following line of code after `name: "HelloWorld",`:
 ```
-dependencies: [.package(url: "https://github.com/david-swift/Adwaita", from: "0.1.1")],
+dependencies: [.package(url: "https://github.com/AparokshaUI/Adwaita", from: "0.1.1")],
 ```
 
 ## Create the App

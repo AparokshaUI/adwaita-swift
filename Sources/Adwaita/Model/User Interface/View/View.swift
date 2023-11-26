@@ -5,7 +5,7 @@
 //  Created by david-swift on 05.08.23.
 //
 
-import GTUI
+import Libadwaita
 
 /// A structure conforming to `View` is referred to as a view.
 /// It can be part of a body.

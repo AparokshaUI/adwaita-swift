@@ -5,7 +5,7 @@
 //  Created by david-swift on 21.10.23.
 //
 
-import GTUI
+import Libadwaita
 
 /// A menu button widget.
 public struct Menu: Widget {
@@ -67,7 +67,7 @@ public struct Menu: Widget {
     ///     - storage: The view storage.
     ///     - modifiers: Modify views before being updated.
     public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
-        if let button = storage.view as? GTUI.MenuButton {
+        if let button = storage.view as? Libadwaita.MenuButton {
             let content = button.getContent()
             if let label {
                 if icon == nil {
@@ -86,7 +86,7 @@ public struct Menu: Widget {
     /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: The button's view storage.
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
-        let button: GTUI.MenuButton
+        let button: Libadwaita.MenuButton
         if let icon {
             button = .init(label, icon: icon)
         } else {

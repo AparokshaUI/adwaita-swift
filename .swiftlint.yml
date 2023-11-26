@@ -96,7 +96,7 @@ disabled_rules:
 custom_rules:
     github_issue:
         name: 'GitHub Issue'
-        regex: '//.(TODO|FIXME):.(?!.*(https://github\.com/david-swift/Adwaita/issues/\d))'
+        regex: '//.(TODO|FIXME):.(?!.*(https://github\.com/AparokshaUI/Adwaita/issues/\d))'
         message: 'The related GitHub issue must be included in a TODO or FIXME.'
         severity: warning
     

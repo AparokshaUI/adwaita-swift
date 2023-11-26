@@ -8,7 +8,7 @@
 // swiftlint:disable missing_docs
 
 import Adwaita
-import GTUI
+import Libadwaita
 
 struct CounterDemo: View {
 

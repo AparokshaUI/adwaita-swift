@@ -18,12 +18,12 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(url: "https://github.com/david-swift/SwiftGui", from: "0.1.0")
+        .package(url: "https://github.com/AparokshaUI/Libadwaita", from: "0.1.0")
     ],
     targets: [
         .target(
             name: "Adwaita",
-            dependencies: [.product(name: "GTUI", package: "swiftgui")]
+            dependencies: [.product(name: "Libadwaita", package: "Libadwaita")]
         ),
         .executableTarget(
             name: "Swift Adwaita Demo",

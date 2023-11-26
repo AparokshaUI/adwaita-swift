@@ -5,7 +5,7 @@
 //  Created by david-swift on 26.09.23.
 //
 
-import GTUI
+import Libadwaita
 
 /// A storage for `@State` properties.
 public struct StateWrapper: Widget {

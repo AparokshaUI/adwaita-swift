@@ -12,7 +12,7 @@ import Adwaita
 @main
 struct Demo: App {
 
-    let id = "io.github.david-swift.Demo"
+    let id = "io.github.AparokshaUI.Demo"
     var app: GTUIApp!
     @State private var toolbar = false
 

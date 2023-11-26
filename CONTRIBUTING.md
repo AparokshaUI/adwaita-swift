@@ -9,7 +9,7 @@ Just open a new issue on GitHub and describe the bug. It helps if your descripti
 Just open a new issue on GitHub and describe the idea. Thank you very much for your contribution!
 
 ### Suggest a New Component
-If you want to be able to access a component from Libadwaita or GTK that is currently not available in Adwaita, you can add it to [SwiftGui](https://github.com/JCWasmx86/SwiftGui). 
+If you want to be able to access a component from Libadwaita or GTK that is currently not available in Adwaita, you can add it to [Libadwaita](https://github.com/AparokshaUI/Libadwaita). 
 If you want to add an Adwaita interface for an already existing GTUI widget, open an issue.
 
 ## Pull Requests

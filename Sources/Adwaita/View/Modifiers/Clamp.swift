@@ -5,7 +5,7 @@
 //  Created by david-swift on 12.10.23.
 //
 
-import GTUI
+import Libadwaita
 
 /// A horizontal AdwClamp equivalent.
 struct Clamp: Widget {
@@ -20,7 +20,7 @@ struct Clamp: Widget {
     ///     - storage: The view storage.
     ///     - modifiers: Modify views before being updated.
     func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
-        if let clamp = storage.view as? GTUI.Clamp {
+        if let clamp = storage.view as? Libadwaita.Clamp {
             _ = clamp.maximumSize(maxSize)
         }
         if let storage = storage.content[.mainContent]?[safe: 0] {
@@ -33,7 +33,7 @@ struct Clamp: Widget {
     /// - Returns: The view storage.
     func container(modifiers: [(View) -> View]) -> ViewStorage {
         let container = content.storage(modifiers: modifiers)
-        let clamp: GTUI.Clamp = .init(container.view)
+        let clamp: Libadwaita.Clamp = .init(container.view)
         _ = clamp.maximumSize(maxSize)
         return .init(clamp, content: [.mainContent: [container]])
     }

@@ -5,7 +5,7 @@
 //  Created by david-swift on 31.08.23.
 //
 
-import GTUI
+import Libadwaita
 
 /// A storage for an app's window.
 public class WindowStorage {

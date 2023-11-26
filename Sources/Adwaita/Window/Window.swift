@@ -5,7 +5,7 @@
 //  Created by david-swift on 14.09.23.
 //
 
-import GTUI
+import Libadwaita
 
 /// A structure representing an application window type.
 ///

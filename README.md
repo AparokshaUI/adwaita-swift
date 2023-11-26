@@ -8,7 +8,7 @@
   User Manual
   </a>
   ·
-  <a href="https://github.com/david-swift/Adwaita">
+  <a href="https://github.com/AparokshaUI/Adwaita">
   GitHub
   </a>
   ·
@@ -88,7 +88,7 @@ If you want to use _Adwaita_ in a project, but there are widgets missing, open a
 
 | Syntax                       | Description                                                                             |
 | ---------------------------- | --------------------------------------------------------------------------------------- |
-| `inspect(_:)`                | Edit the underlying [GTUI][10] widget.                                                  |
+| `inspect(_:)`                | Edit the underlying [Libadwaita][10] widget.                                            |
 | `padding(_:_:)`              | Add empty space around a view.                                                          |
 | `hexpand(_:)`                | Enable or disable the horizontal expansion of a view.                                   |
 | `vexpand(_:)`                | Enable or disable the vertical expansion of a view.                                     |
@@ -168,7 +168,7 @@ brew install libadwaita
 2. Open the `Package.swift` file.
 3. Into the `Package` initializer, under `dependencies`, paste:
 ```swift
-.package(url: "https://github.com/david-swift/Adwaita", from: "0.1.0")   
+.package(url: "https://github.com/AparokshaUI/Adwaita", from: "0.1.0")   
 ```
 
 ## Usage
@@ -189,7 +189,7 @@ brew install libadwaita
 ## Thanks
 
 ### Dependencies
-- [SwiftGui][18] licensed under the [GPL-3.0 license][19]
+- [Libadwaita][18] licensed under the [GPL-3.0 license][19]
 
 ### Other Thanks
 - The [contributors][20]
@@ -205,8 +205,8 @@ brew install libadwaita
 [6]:	#thanks
 [7]:	https://gnome.pages.gitlab.gnome.org/libadwaita/doc/1-latest/index.html
 [8]:	https://docs.gtk.org/gtk4/
-[9]:	https://github.com/david-swift/Adwaita/issues
-[10]:	https://github.com/JCWasmx86/SwiftGui
+[9]:	https://github.com/AparokshaUI/Adwaita/issues
+[10]:	https://github.com/AparokshaUI/Libadwaita
 [11]:	https://brew.sh
 [12]:	user-manual/GettingStarted.md
 [13]:	user-manual/Basics/HelloWorld.md
@@ -214,8 +214,8 @@ brew install libadwaita
 [15]:   user-manual/Basics/Windows.md
 [16]:   user-manual/Basics/KeyboardShortcuts.md
 [17]:   user-manual/Advanced/CreatingWidgets.md
-[18]:	https://github.com/JCWasmx86/SwiftGui
-[19]:	https://github.com/JCWasmx86/SwiftGui/blob/main/COPYING
+[18]:	https://github.com/AparokshaUI/Libadwaita
+[19]:	https://github.com/AparokshaUI/Libadwaita/blob/main/LICENSE.md
 [20]:	Contributors.md
 [21]:	https://github.com/realm/SwiftLint
 [22]:	https://github.com/apple/swift

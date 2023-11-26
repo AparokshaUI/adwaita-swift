@@ -5,7 +5,7 @@
 //  Created by david-swift on 25.09.23.
 //
 
-import GTUI
+import Libadwaita
 
 /// A status page widget.
 public struct StatusPage: Widget {
@@ -42,7 +42,7 @@ public struct StatusPage: Widget {
     ///     - storage: The view storage.
     ///     - modifiers: Modify views before being updated.
     public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
-        if let statusPage = storage.view as? GTUI.StatusPage {
+        if let statusPage = storage.view as? Libadwaita.StatusPage {
             _ = statusPage.title(title).description(description).icon(icon)
         }
         if let storage = storage.content[.mainContent]?.first {
@@ -56,7 +56,7 @@ public struct StatusPage: Widget {
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let child = content.widget(modifiers: []).container(modifiers: modifiers)
         return .init(
-            GTUI.StatusPage().title(title).description(description).icon(icon).child(child.view),
+            Libadwaita.StatusPage().title(title).description(description).icon(icon).child(child.view),
             content: [.mainContent: [child]]
         )
     }

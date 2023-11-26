@@ -5,7 +5,7 @@
 //  Created by david-swift on 12.10.23.
 //
 
-import GTUI
+import Libadwaita
 
 /// A GTUI window.
-public typealias GTUIWindow = GTUI.Window
+public typealias GTUIWindow = Libadwaita.Window

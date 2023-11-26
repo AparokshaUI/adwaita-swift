@@ -5,7 +5,7 @@
 //  Created by david-swift on 24.09.23.
 //
 
-import GTUI
+import Libadwaita
 
 /// A toolbar view widget.
 struct ToolbarView: Widget {
@@ -27,7 +27,7 @@ struct ToolbarView: Widget {
     /// - Returns: The view storage.
     func container(modifiers: [(View) -> View]) -> ViewStorage {
         let content = content.storage(modifiers: modifiers)
-        let view = GTUI.ToolbarView(content.view)
+        let view = Libadwaita.ToolbarView(content.view)
         var toolbarContent: [ViewStorage] = []
         for item in toolbar() {
             let storage = item.storage(modifiers: modifiers)
@@ -59,7 +59,7 @@ struct ToolbarView: Widget {
                 self.toolbar()[safe: index]?.updateStorage(content, modifiers: modifiers)
             }
         }
-        if let view = storage.view as? GTUI.ToolbarView {
+        if let view = storage.view as? Libadwaita.ToolbarView {
             if bottom {
                 view.setRevealBottomBar(visible)
             } else {

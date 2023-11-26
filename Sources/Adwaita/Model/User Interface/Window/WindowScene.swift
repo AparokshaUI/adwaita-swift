@@ -5,7 +5,7 @@
 //  Created by david-swift on 05.08.23.
 //
 
-import GTUI
+import Libadwaita
 
 /// A structure representing the content for a certain window type.
 public protocol WindowScene: WindowSceneGroup {

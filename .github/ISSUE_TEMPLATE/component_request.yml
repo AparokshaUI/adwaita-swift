@@ -14,9 +14,9 @@ body:
 
   - type: textarea
     attributes:
-      label: Name the equivalents in GTUI.
+      label: Name the equivalents in Libadwaita.
       placeholder: >-
-        A list of the equivalents in the GTUI library in SwiftGui (see dependencies).
+        A list of the equivalents in the Libadwaita library (see dependencies).
     validations:
       required: true
 

@@ -5,7 +5,7 @@
 //  Created by david-swift on 11.11.23.
 //
 
-import GTUI
+import Libadwaita
 
 /// A widget which replaces views of a specific type in its content.
 struct ContentModifier<Content>: Widget where Content: View {

@@ -5,7 +5,7 @@
 //  Created by david-swift on 25.09.23.
 //
 
-import GTUI
+import Libadwaita
 
 /// A list box widget.
 public struct List<Element>: Widget where Element: Identifiable {

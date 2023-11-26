@@ -5,5 +5,5 @@
 ## Methods
 ### `vertical()`
 
-Initialize a vertical `GTUI.Box`.
+Initialize a vertical `Libadwaita.Box`.
 - Returns: The vertical box.

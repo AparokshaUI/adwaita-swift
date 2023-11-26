@@ -5,7 +5,7 @@
 //  Created by david-swift on 16.08.23.
 //
 
-import GTUI
+import Libadwaita
 
 /// A widget is a view that know about its GTUI widget.
 public protocol Widget: View {

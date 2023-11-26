@@ -5,14 +5,14 @@
 ## Methods
 ### `update(_:modifiers:)`
 
-A `GTUI.NativeWidgetPeer` is static.
+A `Libadwaita.NativeWidgetPeer` is static.
 - Parameters:
     - storage: The view storage.
     - modifiers: Modify views before being updated.
 
 ### `container(modifiers:)`
 
-A `GTUI.NativeWidgetPeer`'s container is itself.
+A `Libadwaita.NativeWidgetPeer`'s container is itself.
 - Parameter modifiers: Modify views before being updated.
 - Returns: The view storage.
 

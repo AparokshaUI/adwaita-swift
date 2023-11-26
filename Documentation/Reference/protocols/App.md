@@ -8,7 +8,7 @@ A structure conforming to `App` is the entry point of your app.
 @main
 struct Test: App {
 
-    let id = "io.github.david-swift.TestApp"
+    let id = "io.github.AparokshaUI.TestApp"
     var app: GTUIApp!
 
     var scene: Scene {
