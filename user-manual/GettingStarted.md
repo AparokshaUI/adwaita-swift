@@ -15,5 +15,9 @@ Install `libadwaita-devel` or `libadwaita` (or something similar, based on the p
 ## Development
 Adwaita is an open source project. Visit the [GitHub repository][2] for bug reports, feature requests, pull requests and more information.
 
+## Template Repository
+A template repository for Adwaita app projects is available [here][3].
+
 [1]:	https://brew.sh
 [2]:	https://github.com/AparokshaUI/Adwaita
+[3]:    https://github.com/AparokshaUI/AdwaitaTemplate

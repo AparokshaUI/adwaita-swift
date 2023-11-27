@@ -173,6 +173,8 @@ brew install libadwaita
 
 ## Usage
 
+I recommend using the [template repository](https://github.com/AparokshaUI/AdwaitaTemplate) as a starting point.
+
 * [Getting Started][12]
 
 ### Basics
