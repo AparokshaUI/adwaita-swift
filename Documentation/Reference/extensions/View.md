@@ -102,10 +102,10 @@ Add a style class to the view.
 - Parameter style: The style class.
 - Returns: A view.
 
-### `onAppear(_:)`
+### `onUpdate(_:)`
 
-Run a function when the view appears for the first time.
-- Parameter closure: The function.
+Run a function when the view gets an update.
+- Parameter onUpdate: The function.
 - Returns: A view.
 
 ### `stopModifiers()`
@@ -127,10 +127,4 @@ Add a bottom toolbar to the view.
 - Parameters:
   - toolbar: The toolbar's content.
   - visible: Whether the toolbar is visible.
-- Returns: A view.
-
-### `onUpdate(_:)`
-
-Run a function when the view gets an update.
-- Parameter onUpdate: The function.
 - Returns: A view.

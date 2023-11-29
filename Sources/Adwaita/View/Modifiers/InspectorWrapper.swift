@@ -111,11 +111,11 @@ extension View {
         inspect { _ = $0?.addStyle(style) }
     }
 
-    /// Run a function when the view appears for the first time.
-    /// - Parameter closure: The function.
+    /// Run a function when the view gets an update.
+    /// - Parameter onUpdate: The function.
     /// - Returns: A view.
-    public func onAppear(_ closure: @escaping () -> Void) -> View {
-        inspect { _ in closure() }
+    public func onUpdate(_ onUpdate: @escaping () -> Void) -> View {
+        inspect { _ in onUpdate() }
     }
 
 }

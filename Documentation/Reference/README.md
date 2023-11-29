@@ -34,7 +34,6 @@
 -   [Submenu](structs/Submenu.md)
 -   [Text](structs/Text.md)
 -   [ToolbarView](structs/ToolbarView.md)
--   [UpdateObserver](structs/UpdateObserver.md)
 -   [VStack](structs/VStack.md)
 -   [Window](structs/Window.md)
 

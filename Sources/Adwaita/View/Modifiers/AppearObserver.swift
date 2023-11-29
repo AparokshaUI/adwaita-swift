@@ -1,17 +1,17 @@
 //
-//  UpdateObserver.swift
+//  AppearObserver.swift
 //  Adwaita
 //
-//  Created by david-swift on 10.09.23.
+//  Created by david-swift on 29.11.23.
 //
 
 import Libadwaita
 
-/// A widget which executes a custom code when being updated.
-struct UpdateObserver: Widget {
+/// A widget which executes a custom code when being rendered for the first time.
+struct AppearObserver: Widget {
 
     /// The function.
-    var onUpdate: () -> Void
+    var onAppear: () -> Void
     /// The content.
     var content: View
 
@@ -19,7 +19,7 @@ struct UpdateObserver: Widget {
     /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: The content's container.
     func container(modifiers: [(View) -> View]) -> ViewStorage {
-        onUpdate()
+        onAppear()
         return content.storage(modifiers: modifiers)
     }
 
@@ -28,7 +28,6 @@ struct UpdateObserver: Widget {
     ///     - storage: The content's storage.
     ///     - modifiers: Modify views before being updated.
     func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
-        onUpdate()
         content.updateStorage(storage, modifiers: modifiers)
     }
 
@@ -36,11 +35,11 @@ struct UpdateObserver: Widget {
 
 extension View {
 
-    /// Run a function when the view gets an update.
-    /// - Parameter onUpdate: The function.
+    /// Run a function when the view appears for the first time.
+    /// - Parameter closure: The function.
     /// - Returns: A view.
-    public func onUpdate(_ onUpdate: @escaping () -> Void) -> View {
-        UpdateObserver(onUpdate: onUpdate, content: self)
+    public func onAppear(_ closure: @escaping () -> Void) -> View {
+        AppearObserver(onAppear: closure, content: self)
     }
 
 }
