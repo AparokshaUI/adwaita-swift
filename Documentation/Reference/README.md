@@ -13,6 +13,7 @@
 
 ## Structs
 
+-   [AppearObserver](structs/AppearObserver.md)
 -   [Binding](structs/Binding.md)
 -   [Button](structs/Button.md)
 -   [Clamp](structs/Clamp.md)
@@ -28,11 +29,13 @@
 -   [ModifierStopper](structs/ModifierStopper.md)
 -   [NavigationSplitView](structs/NavigationSplitView.md)
 -   [ScrollView](structs/ScrollView.md)
+-   [Signal](structs/Signal.md)
 -   [State](structs/State.md)
 -   [StateWrapper](structs/StateWrapper.md)
 -   [StatusPage](structs/StatusPage.md)
 -   [Submenu](structs/Submenu.md)
 -   [Text](structs/Text.md)
+-   [ToastOverlay](structs/ToastOverlay.md)
 -   [ToolbarView](structs/ToolbarView.md)
 -   [VStack](structs/VStack.md)
 -   [Window](structs/Window.md)

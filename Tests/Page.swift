@@ -19,6 +19,7 @@ enum Page: String, Identifiable, CaseIterable {
     case transition
     case dice
     case overlayWindow
+    case toast
 
     var id: Self {
         self
@@ -36,7 +37,7 @@ enum Page: String, Identifiable, CaseIterable {
     var icon: Libadwaita.Icon? {
         switch self {
         case .welcome:
-            return .default(icon: .gnomeAdwaita1Demo)
+            return .default(icon: .emojiNature)
         default:
             return nil
         }
@@ -58,11 +59,13 @@ enum Page: String, Identifiable, CaseIterable {
             return "Roll the dice."
         case .overlayWindow:
             return "A window on top of another window."
+        case .toast:
+            return "Show a notification inside of your app."
         }
     }
 
     @ViewBuilder
-    func view(app: GTUIApp!) -> Body {
+    func view(app: GTUIApp!, toast: Signal) -> Body {
         switch self {
         case .welcome:
             []
@@ -78,6 +81,8 @@ enum Page: String, Identifiable, CaseIterable {
             DiceDemo()
         case .overlayWindow:
             OverlayWindowDemo(app: app)
+        case .toast:
+            ToastDemo(toast: toast)
         }
     }
 

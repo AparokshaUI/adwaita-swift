@@ -86,25 +86,27 @@ If you want to use _Adwaita_ in a project, but there are widgets missing, open a
 
 ### View Modifiers
 
-| Syntax                       | Description                                                                             |
-| ---------------------------- | --------------------------------------------------------------------------------------- |
-| `inspect(_:)`                | Edit the underlying [Libadwaita][10] widget.                                            |
-| `padding(_:_:)`              | Add empty space around a view.                                                          |
-| `hexpand(_:)`                | Enable or disable the horizontal expansion of a view.                                   |
-| `vexpand(_:)`                | Enable or disable the vertical expansion of a view.                                     |
-| `halign(_:)`                 | Set the horizontal alignment of a view.                                                 |
-| `valign(_:)`                 | Set the vertical alignment of a view.                                                   |
-| `frame(minWidth:minHeight:)` | Set the view’s minimal width or height.                                                 |
-| `frame(maxSize:)`            | Set the view’s maximal size.                                                            |
-| `transition(_:)`             | Assign a transition with the view that is used if it is a direct child of an EitherView.|
-| `onUpdate(_:)`               | Run a function every time a view gets updated.                                          |
-| `navigationTitle(_:)`        | Add a title that is used if the view is a direct child of a NavigationView.             |
-| `style(_:)`                  | Add a style class to the view.                                                          |
-| `onAppear(_:)`               | Run when the view is rendered for the first time.                                       |
-| `topToolbar(visible:_:)`     | Add a native toolbar to the view. Normally, it contains a HeaderBar.                    |
-| `bottomToolbar(visible:_:)`  | Add a native bottom toolbar to the view.                                                |
-| `modifyContent(_:modify:)`   | Replace all occurrences of a certain view type with another view.                       |
-| `stopModifiers()`            | Ignore all the `modifyContent(_:modify:)` modifiers from higher above in the view tree. |
+| Syntax                            | Description                                                                             |
+| --------------------------------- | --------------------------------------------------------------------------------------- |
+| `inspect(_:)`                     | Edit the underlying [Libadwaita][10] widget.                                            |
+| `padding(_:_:)`                   | Add empty space around a view.                                                          |
+| `hexpand(_:)`                     | Enable or disable the horizontal expansion of a view.                                   |
+| `vexpand(_:)`                     | Enable or disable the vertical expansion of a view.                                     |
+| `halign(_:)`                      | Set the horizontal alignment of a view.                                                 |
+| `valign(_:)`                      | Set the vertical alignment of a view.                                                   |
+| `frame(minWidth:minHeight:)`      | Set the view’s minimal width or height.                                                 |
+| `frame(maxSize:)`                 | Set the view’s maximal size.                                                            |
+| `transition(_:)`                  | Assign a transition with the view that is used if it is a direct child of an EitherView.|
+| `onUpdate(_:)`                    | Run a function every time a view gets updated.                                          |
+| `navigationTitle(_:)`             | Add a title that is used if the view is a direct child of a NavigationView.             |
+| `style(_:)`                       | Add a style class to the view.                                                          |
+| `onAppear(_:)`                    | Run when the view is rendered for the first time.                                       |
+| `topToolbar(visible:_:)`          | Add a native toolbar to the view. Normally, it contains a HeaderBar.                    |
+| `bottomToolbar(visible:_:)`       | Add a native bottom toolbar to the view.                                                |
+| `modifyContent(_:modify:)`        | Replace all occurrences of a certain view type with another view.                       |
+| `stopModifiers()`                 | Ignore all the `modifyContent(_:modify:)` modifiers from higher above in the view tree. |
+| `toast(_:signal:)`                | Show a toast on top of the view whenever the signal gets activated.                     |
+| `toast(_:signal:button:handler:)` | Show a toast with a button on top of the view whenever the signal gets activated.       |
 
 ### `Button` Modifiers
 | Syntax                       | Description                                                                             |

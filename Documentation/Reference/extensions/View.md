@@ -24,6 +24,12 @@ Get a storage.
 
 ### `getModified(modifiers:)`
 
+### `onAppear(_:)`
+
+Run a function when the view appears for the first time.
+- Parameter closure: The function.
+- Returns: A view.
+
 ### `frame(maxSize:)`
 
 Set the view's maximal size.
@@ -111,6 +117,24 @@ Run a function when the view gets an update.
 ### `stopModifiers()`
 
 Remove all of the content modifiers for the wrapped views.
+- Returns: A view.
+
+### `toast(_:signal:)`
+
+Present a toast when the signal gets activated.
+- Parameters:
+    - title: The title of the toast.
+    - signal: The signal which activates the presentation of a toast.
+- Returns: A view.
+
+### `toast(_:signal:button:handler:)`
+
+Present a toast with a button when the signal gets activated.
+- Parameters:
+    - title: The title of the toast.
+    - signal: The signal which activates the presentation of a toast.
+    - button: The button's label.
+    - handler: The handler for the button.
 - Returns: A view.
 
 ### `topToolbar(visible:_:)`

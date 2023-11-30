@@ -46,7 +46,8 @@ struct Demo: App {
 
     struct DemoContent: View {
 
-        @State private var selection: Page = .transition
+        @State private var selection: Page = .welcome
+        @State private var toast: Signal = .init()
         var window: GTUIApplicationWindow
         var app: GTUIApp!
 
@@ -87,11 +88,12 @@ struct Demo: App {
                     icon: selection.icon,
                     description: selection.description
                 ) {
-                    selection.view(app: app)
+                    selection.view(app: app, toast: toast)
                 }
                 .topToolbar {
                     HeaderBar.empty()
                 }
+                .toast("This is a toast!", signal: toast)
             }
             .onAppear {
                 window.setDefaultSize(width: 650, height: 450)
