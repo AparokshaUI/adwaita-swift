@@ -14,6 +14,10 @@
 
 * [Creating Widgets][7]
 
+## Information
+
+* [Widgets](user-manual/Information/Widgets.md)
+
 [1]:	README.md
 [2]:	user-manual/GettingStarted.md
 [3]:	user-manual/Basics/HelloWorld.md
