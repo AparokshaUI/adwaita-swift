@@ -103,7 +103,9 @@ public struct Window: WindowScene {
     public func update(_ storage: WindowStorage, app: GTUIApp) {
         if let window = storage.window as? GTUIApplicationWindow {
             let content = content(window)
-            content.widget(modifiers: []).updateStorage(storage.view, modifiers: [])
+            if let view = storage.view {
+                content.widget(modifiers: []).updateStorage(view, modifiers: [])
+            }
             updateShortcuts(window: window)
             updateAppShortcuts(app: app)
         }

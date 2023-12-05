@@ -13,6 +13,7 @@
 
 ## Structs
 
+-   [AboutWindow](structs/AboutWindow.md)
 -   [AppearObserver](structs/AppearObserver.md)
 -   [Binding](structs/Binding.md)
 -   [Button](structs/Button.md)

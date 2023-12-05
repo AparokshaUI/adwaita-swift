@@ -19,7 +19,7 @@ public class WindowStorage {
     /// The GTUI window.
     public var window: GTUIWindow
     /// The content's storage.
-    public var view: ViewStorage
+    public var view: ViewStorage?
     /// The file dialog for the window.
     public var fileDialog: FileDialog
 
@@ -28,7 +28,7 @@ public class WindowStorage {
     ///   - id: The window's identifier.
     ///   - window: The GTUI window.
     ///   - view: The content's storage.
-    public init(id: String, window: GTUIWindow, view: ViewStorage) {
+    public init(id: String, window: GTUIWindow, view: ViewStorage?) {
         self.id = id
         self.window = window
         self.view = view

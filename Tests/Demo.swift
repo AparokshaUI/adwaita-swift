@@ -21,6 +21,9 @@ struct Demo: App {
             DemoContent(window: window, app: app)
         }
         .overlay {
+            AboutWindow(id: "about", appName: "Demo", developer: "david-swift", version: "Test")
+                .icon(.default(icon: .emojiNature))
+                .website(.init(string: "david-swift.gitbook.io/adwaita"))
             Window(id: "overlay", open: 0) { window in
                 OverlayWindowDemo.WindowContent(window: window)
             }
@@ -73,10 +76,9 @@ struct Demo: App {
                             }
                             .keyboardShortcut("w".ctrl())
                             MenuSection {
-                                MenuButton("Quit", window: false) {
-                                    app.quit()
-                                }
-                                .keyboardShortcut("q".ctrl())
+                                MenuButton("About", window: false) { app.showWindow("about") }
+                                MenuButton("Quit", window: false) { app.quit() }
+                                    .keyboardShortcut("q".ctrl())
                             }
                         }
                     }

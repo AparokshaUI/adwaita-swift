@@ -61,6 +61,7 @@ This is an overview of the available widgets and other components in _Adwaita_.
 | Name                 | Description                                                       | Widget                 |
 | -------------------- | ----------------------------------------------------------------- | ---------------------- |
 | Window               | A simple application window.                                      | AdwApplicationWindow   |
+| AboutWindow          | A GNOME about window.                                             | AdwAboutWindow         |
 
 ### Window Modifiers
 | Syntax                          | Description                                                                             |
@@ -69,11 +70,19 @@ This is an overview of the available widgets and other components in _Adwaita_.
 | `quitShortcut()`                | Create a keyboard shortcut for quitting the application with "Ctrl + q".                |
 
 ### `Window` Modifiers
-| Syntax                          | Description                                                                             |
-| ------------------------------- | --------------------------------------------------------------------------------------- |
-| `keyboardShortcut(_:action:)`   | Create a keyboard shortcut available in one window.                                     |
-| `closeShortcut()`               | Create a keyboard shortcut for closing the window with "Ctrl + w".                      |
-| `overlay(windows:)`             | Add windows that attach to a window of this type when being presented.                  |
+| Syntax                                                             | Description                                                                             |
+| ------------------------------------------------------------------ | --------------------------------------------------------------------------------------- |
+| `keyboardShortcut(_:action:)`                                      | Create a keyboard shortcut available in one window.                                     |
+| `closeShortcut()`                                                  | Create a keyboard shortcut for closing the window with "Ctrl + w".                      |
+| `overlay(windows:)`                                                | Add windows that attach to a window of this type when being presented.                  |
+| `fileImporter(_:initialFolder:extensions:folders:onOpen:onClose:)` | Add an import file dialog.                                                              |
+| `fileExporter(_:initialFolder:initialName:onSave:onClose:)`        | Add an export file dialog.                                                              |
+
+### `AboutWindow` Modifiers
+| Syntax          | Description                                                                             |
+| --------------- | --------------------------------------------------------------------------------------- |
+| `icon(_:)`      | Set the app icon.                                                                       |
+| `website(_:)`   | Set the app's website                                                                   |
 
 ### Menu Widgets
 | Name                 | Description                                                       | Widget                 |
