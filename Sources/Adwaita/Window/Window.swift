@@ -5,6 +5,9 @@
 //  Created by david-swift on 14.09.23.
 //
 
+// swiftlint:disable discouraged_optional_collection
+
+import Foundation
 import Libadwaita
 
 /// A structure representing an application window type.
@@ -24,6 +27,28 @@ public struct Window: WindowScene {
     var shortcuts: [String: (GTUIApplicationWindow) -> Void] = [:]
     /// The keyboard shortcuts on the app level.
     public var appShortcuts: [String: (GTUIApp) -> Void] = [:]
+    /// The signal for the file importer.
+    var fileImporter: Signal = .init()
+    /// The signal for the file exporter.
+    var fileExporter: Signal = .init()
+    /// The initial folder for the file importer.
+    var initialImporterFolder: URL?
+    /// The initial folder for the file exporter.
+    var initialExporterFolder: URL?
+    /// The initial file name for the file exporter.
+    var initialName: String?
+    /// The accepted extensions for the file importer.
+    var extensions: [String]?
+    /// Whether folders are accepted in the file importer.
+    var folders = false
+    /// The closure to run when the import is successful.
+    var importerResult: ((URL) -> Void)?
+    /// The closure to run when the export is successful.
+    var exporterResult: ((URL) -> Void)?
+    /// The closure to run when the import is not successful.
+    var importerCancel: (() -> Void)?
+    /// The closure to run when the export is not successful.
+    var exporterCancel: (() -> Void)?
 
     /// Create a window type with a certain identifier and user interface.
     /// - Parameters:
@@ -48,6 +73,7 @@ public struct Window: WindowScene {
             return false
         }
         windowStorage.parentID = parentID
+        updateFileDialog(storage: windowStorage)
         return windowStorage
     }
 
@@ -81,6 +107,7 @@ public struct Window: WindowScene {
             updateShortcuts(window: window)
             updateAppShortcuts(app: app)
         }
+        updateFileDialog(storage: storage)
     }
 
     /// Add windows that overlay the last instance of this window if presented.
@@ -92,6 +119,55 @@ public struct Window: WindowScene {
             newWindow.parentID = id
             return newWindow
         } + [self]
+    }
+
+    /// Add an importer file dialog to the window.
+    /// - Parameters:
+    ///     - signal: The signal for opening the dialog.
+    ///     - initialFolder: The URL to the folder open when being opened.
+    ///     - extensions: The accepted file extensions.
+    ///     - folders: Whether folders are accepted.
+    ///     - onOpen: Run this when a file for importing has been chosen.
+    ///     - onClose: Run this when the user cancelled the action.
+    public func fileImporter(
+        _ signal: Signal,
+        initialFolder: URL? = nil,
+        extensions: [String]? = nil,
+        folders: Bool = false,
+        onOpen: @escaping (URL) -> Void,
+        onClose: @escaping () -> Void
+    ) -> Self {
+        var newSelf = self
+        newSelf.fileImporter = signal
+        newSelf.initialImporterFolder = initialFolder
+        newSelf.extensions = extensions
+        newSelf.folders = folders
+        newSelf.importerResult = onOpen
+        newSelf.importerCancel = onClose
+        return newSelf
+    }
+
+    /// Add an exporter file dialog to the window.
+    /// - Parameters:
+    ///     - signal: The signal for opening the dialog.
+    ///     - initialFolder: The URL to the folder open when being opened.
+    ///     - initialName: The default file name.
+    ///     - onSave: Run this when a path for exporting has been chosen.
+    ///     - onClose: Run this when the user cancelled the action.
+    public func fileExporter(
+        _ signal: Signal,
+        initialFolder: URL? = nil,
+        initialName: String? = nil,
+        onSave: @escaping (URL) -> Void,
+        onClose: @escaping () -> Void
+    ) -> Self {
+        var newSelf = self
+        newSelf.fileExporter = signal
+        newSelf.initialExporterFolder = initialFolder
+        newSelf.initialName = initialName
+        newSelf.exporterResult = onSave
+        newSelf.exporterCancel = onClose
+        return newSelf
     }
 
     /// Add a keyboard shortcut.
@@ -113,6 +189,20 @@ public struct Window: WindowScene {
         }
     }
 
+    /// Open a file importer or exporter if a signal has been activated and update changes.
+    /// - Parameter storage: The window storage.
+    func updateFileDialog(storage: WindowStorage) {
+        storage.fileDialog.setExtensions(extensions, folders: folders)
+        if let initialName {
+            storage.fileDialog.setInitialName(initialName)
+        }
+        if fileImporter.update, let importerResult, let importerCancel {
+            storage.fileDialog.open(folder: initialImporterFolder, importerResult, onClose: importerCancel)
+        } else if fileExporter.update, let exporterResult, let exporterCancel {
+            storage.fileDialog.save(folder: initialExporterFolder, exporterResult, onClose: exporterCancel)
+        }
+    }
+
     /// Add the shortcut "<Ctrl>w" which closes the window.
     /// - Returns: The window.
     public func closeShortcut() -> Self {
@@ -120,3 +210,5 @@ public struct Window: WindowScene {
     }
 
 }
+
+// swiftlint:enable discouraged_optional_collection

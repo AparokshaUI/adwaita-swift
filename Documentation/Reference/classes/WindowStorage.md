@@ -25,6 +25,10 @@ The GTUI window.
 
 The content's storage.
 
+### `fileDialog`
+
+The file dialog for the window.
+
 ## Methods
 ### `init(id:window:view:)`
 

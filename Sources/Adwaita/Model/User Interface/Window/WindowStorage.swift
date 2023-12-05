@@ -20,6 +20,8 @@ public class WindowStorage {
     public var window: GTUIWindow
     /// The content's storage.
     public var view: ViewStorage
+    /// The file dialog for the window.
+    public var fileDialog: FileDialog
 
     /// Initialize a window storage.
     /// - Parameters:
@@ -30,6 +32,7 @@ public class WindowStorage {
         self.id = id
         self.window = window
         self.view = view
+        fileDialog = .init(window)
     }
 
 }

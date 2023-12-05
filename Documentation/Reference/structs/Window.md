@@ -31,6 +31,50 @@ The keyboard shortcuts.
 
 The keyboard shortcuts on the app level.
 
+### `fileImporter`
+
+The signal for the file importer.
+
+### `fileExporter`
+
+The signal for the file exporter.
+
+### `initialImporterFolder`
+
+The initial folder for the file importer.
+
+### `initialExporterFolder`
+
+The initial folder for the file exporter.
+
+### `initialName`
+
+The initial file name for the file exporter.
+
+### `extensions`
+
+The accepted extensions for the file importer.
+
+### `folders`
+
+Whether folders are accepted in the file importer.
+
+### `importerResult`
+
+The closure to run when the import is successful.
+
+### `exporterResult`
+
+The closure to run when the export is successful.
+
+### `importerCancel`
+
+The closure to run when the import is not successful.
+
+### `exporterCancel`
+
+The closure to run when the export is not successful.
+
 ## Methods
 ### `init(id:open:content:)`
 
@@ -69,6 +113,27 @@ Add windows that overlay the last instance of this window if presented.
 - Parameter windows: The windows.
 - Returns: The new windows and this window.
 
+### `fileImporter(_:initialFolder:extensions:folders:onOpen:onClose:)`
+
+Add an importer file dialog to the window.
+- Parameters:
+    - signal: The signal for opening the dialog.
+    - initialFolder: The URL to the folder open when being opened.
+    - extensions: The accepted file extensions.
+    - folders: Whether folders are accepted.
+    - onOpen: Run this when a file for importing has been chosen.
+    - onClose: Run this when the user cancelled the action.
+
+### `fileExporter(_:initialFolder:initialName:onSave:onClose:)`
+
+Add an exporter file dialog to the window.
+- Parameters:
+    - signal: The signal for opening the dialog.
+    - initialFolder: The URL to the folder open when being opened.
+    - initialName: The default file name.
+    - onSave: Run this when a path for exporting has been chosen.
+    - onClose: Run this when the user cancelled the action.
+
 ### `keyboardShortcut(_:action:)`
 
 Add a keyboard shortcut.
@@ -81,6 +146,11 @@ Add a keyboard shortcut.
 
 Update the keyboard shortcuts.
 - Parameter window: The application window.
+
+### `updateFileDialog(storage:)`
+
+Open a file importer or exporter if a signal has been activated and update changes.
+- Parameter storage: The window storage.
 
 ### `closeShortcut()`
 
