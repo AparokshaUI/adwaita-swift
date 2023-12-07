@@ -12,11 +12,12 @@ import Adwaita
 struct OverlayWindowDemo: View {
 
     var app: GTUIApp!
+    var window: GTUIApplicationWindow
 
     var view: Body {
         VStack {
             Button("Show Window") {
-                app.showWindow("overlay")
+                app.addWindow("overlay", parent: window)
             }
             .style("pill")
             .frame(maxSize: 100)

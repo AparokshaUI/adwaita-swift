@@ -69,7 +69,7 @@ It should be used for opening windows that cannot be presented more than once
 and for moving a window that is already open into the foreground.
 
 ## Adding Windows
-You can call the `addWindow(_:)` function instead of the `showWindow(_:)`
+You can call the `addWindow(_:parent:)` function instead of the `showWindow(_:)`
 if you want to add and focus another instance of a window type:
 ```swift
 @main
@@ -94,6 +94,18 @@ struct HelloWorld: App {
         }
     }
 
+}
+```
+It can be used to add an overlay window to a certain instance of a window type
+by specifying the `parent` parameter, e.g. in the example above:
+```swift
+Window(id: "control") { window in
+    HeaderBar.empty()
+    Button("Add Child Window") {
+        // Add the new instance as a child window of this window
+        app.addWindow("content", parent: window)
+    }
+    .padding()
 }
 ```
 

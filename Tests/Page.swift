@@ -65,7 +65,7 @@ enum Page: String, Identifiable, CaseIterable {
     }
 
     @ViewBuilder
-    func view(app: GTUIApp!, toast: Signal) -> Body {
+    func view(app: GTUIApp!, window: GTUIApplicationWindow, toast: Signal) -> Body {
         switch self {
         case .welcome:
             []
@@ -80,7 +80,7 @@ enum Page: String, Identifiable, CaseIterable {
         case .dice:
             DiceDemo()
         case .overlayWindow:
-            OverlayWindowDemo(app: app)
+            OverlayWindowDemo(app: app, window: window)
         case .toast:
             ToastDemo(toast: toast)
         }

@@ -76,7 +76,7 @@ struct Demo: App {
                             }
                             .keyboardShortcut("w".ctrl())
                             MenuSection {
-                                MenuButton("About", window: false) { app.showWindow("about") }
+                                MenuButton("About") { app.addWindow("about", parent: window); print(window.nativePtr) }
                                 MenuButton("Quit", window: false) { app.quit() }
                                     .keyboardShortcut("q".ctrl())
                             }
@@ -90,7 +90,7 @@ struct Demo: App {
                     icon: selection.icon,
                     description: selection.description
                 ) {
-                    selection.view(app: app, toast: toast)
+                    selection.view(app: app, window: window, toast: toast)
                 }
                 .topToolbar {
                     HeaderBar.empty()

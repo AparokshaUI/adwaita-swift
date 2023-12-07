@@ -17,6 +17,10 @@ The app's content.
 
 The scenes that are displayed.
 
+### `overwriteParentID`
+
+A string signaling that the parent should not be overwritten.
+
 ## Methods
 ### `init(_:body:)`
 
@@ -35,11 +39,12 @@ Focus the window with a certain id. Create the window if it doesn't already exis
 - Parameters:
     - id: The window's id.
 
-### `addWindow(_:)`
+### `addWindow(_:parent:)`
 
 Add a new window with the content of the window with a certain id.
 - Parameters:
     - id: The window's id.
+    - parent: The parent window.
 
 ### `setParentWindows()`
 

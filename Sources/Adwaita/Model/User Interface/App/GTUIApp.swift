@@ -17,6 +17,8 @@ public class GTUIApp: Application {
     var body: () -> App
     /// The scenes that are displayed.
     var sceneStorage: [WindowStorage] = []
+    /// A string signaling that the parent should not be overwritten.
+    let overwriteParentID = "overwrite-parent"
 
     /// Initialize the GTUI application.
     /// - Parameters:
@@ -48,11 +50,16 @@ public class GTUIApp: Application {
     /// Add a new window with the content of the window with a certain id.
     /// - Parameters:
     ///     - id: The window's id.
-    public func addWindow(_ id: String) {
+    ///     - parent: The parent window.
+    public func addWindow(_ id: String, parent: GTUIWindow? = nil) {
         State<Any>.updateViews()
         if let window = body().scene.windows().last(where: { $0.id == id }) {
             let window = window.createWindow(app: self)
             sceneStorage.append(window)
+            if let parent {
+                window.window.setParent(parent)
+                window.window.fields[overwriteParentID] = true
+            }
             setParentWindows()
             showWindow(id)
         }
@@ -60,7 +67,7 @@ public class GTUIApp: Application {
 
     /// Set the parents of every window having a parent window.
     func setParentWindows() {
-      for window in sceneStorage {
+      for window in sceneStorage where !(window.window.fields[overwriteParentID] as? Bool ?? false) {
         if let parent = sceneStorage.first(where: { $0.id == window.parentID }) {
             window.window.setParent(parent.window)
         }
