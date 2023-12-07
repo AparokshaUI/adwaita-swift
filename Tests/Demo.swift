@@ -20,6 +20,7 @@ struct Demo: App {
         Window(id: "main") { window in
             DemoContent(window: window, app: app)
         }
+        .defaultSize(width: 650, height: 450)
         .overlay {
             AboutWindow(id: "about", appName: "Demo", developer: "david-swift", version: "Test")
                 .icon(.default(icon: .emojiNature))
@@ -28,6 +29,7 @@ struct Demo: App {
                 OverlayWindowDemo.WindowContent(window: window)
             }
             .keyboardShortcut("Escape") { $0.close() }
+            .defaultSize(width: 300, height: 200)
         }
         HelperWindows()
     }
@@ -35,14 +37,18 @@ struct Demo: App {
     struct HelperWindows: WindowSceneGroup {
 
         var scene: Scene {
-            Window(id: "content", open: 0) { window in
-                WindowsDemo.WindowContent(window: window)
+            Window(id: "content", open: 0) { _ in
+                WindowsDemo.WindowContent()
+            }
+            .resizable(false)
+            .closeShortcut()
+            .defaultSize(width: 400, height: 250)
+            Window(id: "toolbar-demo", open: 0) { _ in
+                ToolbarDemo.WindowContent()
             }
             .closeShortcut()
-            Window(id: "toolbar-demo", open: 0) { window in
-                ToolbarDemo.WindowContent(window: window)
-            }
-            .closeShortcut()
+            .defaultSize(width: 400, height: 250)
+            .title("Toolbar Demo")
         }
 
     }
@@ -76,7 +82,7 @@ struct Demo: App {
                             }
                             .keyboardShortcut("w".ctrl())
                             MenuSection {
-                                MenuButton("About") { app.addWindow("about", parent: window); print(window.nativePtr) }
+                                MenuButton("About") { app.addWindow("about", parent: window) }
                                 MenuButton("Quit", window: false) { app.quit() }
                                     .keyboardShortcut("q".ctrl())
                             }
@@ -96,9 +102,6 @@ struct Demo: App {
                     HeaderBar.empty()
                 }
                 .toast("This is a toast!", signal: toast)
-            }
-            .onAppear {
-                window.setDefaultSize(width: 650, height: 450)
             }
         }
 

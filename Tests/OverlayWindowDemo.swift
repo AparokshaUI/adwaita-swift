@@ -5,7 +5,7 @@
 //  Created by david-swift on 09.11.23.
 //
 
-// swiftlint:disable missing_docs implicitly_unwrapped_optional no_magic_numbers
+// swiftlint:disable missing_docs implicitly_unwrapped_optional
 
 import Adwaita
 
@@ -42,13 +42,10 @@ struct OverlayWindowDemo: View {
             .topToolbar {
                 HeaderBar.empty()
             }
-            .onAppear {
-                window.setDefaultSize(width: 300, height: 200)
-            }
         }
 
     }
 
 }
 
-// swiftlint:enable missing_docs implicitly_unwrapped_optional no_magic_numbers
+// swiftlint:enable missing_docs implicitly_unwrapped_optional

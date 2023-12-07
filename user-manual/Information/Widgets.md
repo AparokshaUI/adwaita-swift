@@ -77,6 +77,10 @@ This is an overview of the available widgets and other components in _Adwaita_.
 | `overlay(windows:)`                                                | Add windows that attach to a window of this type when being presented.                  |
 | `fileImporter(_:initialFolder:extensions:folders:onOpen:onClose:)` | Add an import file dialog.                                                              |
 | `fileExporter(_:initialFolder:initialName:onSave:onClose:)`        | Add an export file dialog.                                                              |
+| `defaultSize(width:height:)`                                       | Set the window's initial size.                                                          |
+| `title(_:)`                                                        | Set the window's title.                                                                 |
+| `resizable(_:)`                                                    | Set the window's resizability.                                                          |
+| `deletable(_:)`                                                    | Set the window's deletability.                                                          |
 
 ### `AboutWindow` Modifiers
 | Syntax          | Description                                                                             |

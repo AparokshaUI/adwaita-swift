@@ -75,6 +75,22 @@ The closure to run when the import is not successful.
 
 The closure to run when the export is not successful.
 
+### `defaultSize`
+
+The default window size.
+
+### `title`
+
+The window's title.
+
+### `resizable`
+
+Whether the window is resizable.
+
+### `deletable`
+
+Whether the window is deletable.
+
 ## Methods
 ### `init(id:open:content:)`
 
@@ -106,6 +122,11 @@ Get the storage of the content view.
 
 Update a window storage's content.
 - Parameter storage: The storage to update.
+
+### `setProperties(window:)`
+
+Set some general propreties of the window.
+- Parameter window: The window.
 
 ### `overlay(windows:)`
 
@@ -155,4 +176,30 @@ Open a file importer or exporter if a signal has been activated and update chang
 ### `closeShortcut()`
 
 Add the shortcut "<Ctrl>w" which closes the window.
+- Returns: The window.
+
+### `defaultSize(width:height:)`
+
+Set the window's default size.
+- Parameters:
+    - width: The window's width.
+    - height: The window's height.
+- Returns: The window.
+
+### `title(_:)`
+
+Set the window's title.
+- Parameter title: The title.
+- Returns: The window.
+
+### `resizable(_:)`
+
+Set whether the window is resizable.
+- Parameter resizable: The resizability.
+- Returns: The window.
+
+### `deletable(_:)`
+
+Set whether the window is deletable.
+- Parameter resizable: The deletability.
 - Returns: The window.

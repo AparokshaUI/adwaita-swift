@@ -49,6 +49,14 @@ public struct Window: WindowScene {
     var importerCancel: (() -> Void)?
     /// The closure to run when the export is not successful.
     var exporterCancel: (() -> Void)?
+    /// The default window size.
+    var defaultSize: (Int, Int)?
+    /// The window's title.
+    var title: String?
+    /// Whether the window is resizable.
+    var resizable = true
+    /// Whether the window is deletable.
+    var deletable = true
 
     /// Create a window type with a certain identifier and user interface.
     /// - Parameters:
@@ -94,6 +102,7 @@ public struct Window: WindowScene {
         let content = content(window)
         let storage = content.widget(modifiers: []).container(modifiers: [])
         window.setChild(storage.view)
+        setProperties(window: window)
         updateShortcuts(window: window)
         return storage
     }
@@ -106,10 +115,22 @@ public struct Window: WindowScene {
             if let view = storage.view {
                 content.widget(modifiers: []).updateStorage(view, modifiers: [])
             }
+            setProperties(window: window)
             updateShortcuts(window: window)
             updateAppShortcuts(app: app)
         }
         updateFileDialog(storage: storage)
+    }
+
+    /// Set some general propreties of the window.
+    /// - Parameter window: The window.
+    func setProperties(window: GTUIApplicationWindow) {
+        window.setDefaultSize(width: defaultSize?.0, height: defaultSize?.1)
+        if let title {
+            window.setTitle(title)
+        }
+        window.setResizability(resizable)
+        window.setDeletability(deletable)
     }
 
     /// Add windows that overlay the last instance of this window if presented.
@@ -209,6 +230,44 @@ public struct Window: WindowScene {
     /// - Returns: The window.
     public func closeShortcut() -> Self {
         keyboardShortcut("w".ctrl()) { $0.close() }
+    }
+
+    /// Set the window's default size.
+    /// - Parameters:
+    ///     - width: The window's width.
+    ///     - height: The window's height.
+    /// - Returns: The window.
+    public func defaultSize(width: Int, height: Int) -> Self {
+        var newSelf = self
+        newSelf.defaultSize = (width, height)
+        return newSelf
+    }
+
+    /// Set the window's title.
+    /// - Parameter title: The title.
+    /// - Returns: The window.
+    public func title(_ title: String) -> Self {
+        var newSelf = self
+        newSelf.title = title
+        return newSelf
+    }
+
+    /// Set whether the window is resizable.
+    /// - Parameter resizable: The resizability.
+    /// - Returns: The window.
+    public func resizable(_ resizable: Bool) -> Self {
+        var newSelf = self
+        newSelf.resizable = resizable
+        return newSelf
+    }
+
+    /// Set whether the window is deletable.
+    /// - Parameter resizable: The deletability.
+    /// - Returns: The window.
+    public func deletable(_ deletable: Bool) -> Self {
+        var newSelf = self
+        newSelf.deletable = deletable
+        return newSelf
     }
 
 }

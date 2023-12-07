@@ -5,7 +5,7 @@
 //  Created by david-swift on 25.09.23.
 //
 
-// swiftlint:disable missing_docs implicitly_unwrapped_optional no_magic_numbers
+// swiftlint:disable missing_docs implicitly_unwrapped_optional
 
 import Adwaita
 
@@ -34,16 +34,11 @@ struct WindowsDemo: View {
 
     struct WindowContent: View {
 
-        var window: GTUIWindow
-
         var view: Body {
             Text("This window exists at most once.")
                 .padding()
                 .topToolbar {
                     HeaderBar.empty()
-                }
-                .onAppear {
-                    window.setDefaultSize(width: 400, height: 250)
                 }
         }
 
@@ -51,4 +46,4 @@ struct WindowsDemo: View {
 
 }
 
-// swiftlint:enable missing_docs implicitly_unwrapped_optional no_magic_numbers
+// swiftlint:enable missing_docs implicitly_unwrapped_optional

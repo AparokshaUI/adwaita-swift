@@ -27,7 +27,6 @@ struct ToolbarDemo: View {
 
         @State private var visible = false
         @State private var moreContent = false
-        var window: GTUIWindow
 
         var view: Body {
             VStack {
@@ -49,9 +48,6 @@ struct ToolbarDemo: View {
             }
             .topToolbar {
                 HeaderBar.empty()
-            }
-            .onAppear {
-                window.setDefaultSize(width: 400, height: 250)
             }
         }
 
