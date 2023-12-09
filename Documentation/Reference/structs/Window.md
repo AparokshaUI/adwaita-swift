@@ -31,50 +31,6 @@ The keyboard shortcuts.
 
 The keyboard shortcuts on the app level.
 
-### `fileImporter`
-
-The signal for the file importer.
-
-### `fileExporter`
-
-The signal for the file exporter.
-
-### `initialImporterFolder`
-
-The initial folder for the file importer.
-
-### `initialExporterFolder`
-
-The initial folder for the file exporter.
-
-### `initialName`
-
-The initial file name for the file exporter.
-
-### `extensions`
-
-The accepted extensions for the file importer.
-
-### `folders`
-
-Whether folders are accepted in the file importer.
-
-### `importerResult`
-
-The closure to run when the import is successful.
-
-### `exporterResult`
-
-The closure to run when the export is successful.
-
-### `importerCancel`
-
-The closure to run when the import is not successful.
-
-### `exporterCancel`
-
-The closure to run when the export is not successful.
-
 ### `defaultSize`
 
 The default window size.
@@ -90,6 +46,10 @@ Whether the window is resizable.
 ### `deletable`
 
 Whether the window is deletable.
+
+### `signals`
+
+The signals for the importers and exporters.
 
 ## Methods
 ### `init(id:open:content:)`
@@ -167,11 +127,6 @@ Add a keyboard shortcut.
 
 Update the keyboard shortcuts.
 - Parameter window: The application window.
-
-### `updateFileDialog(storage:)`
-
-Open a file importer or exporter if a signal has been activated and update changes.
-- Parameter storage: The window storage.
 
 ### `closeShortcut()`
 

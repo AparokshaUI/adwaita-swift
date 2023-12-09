@@ -10,6 +10,7 @@
 -   [Widget](protocols/Widget.md)
 -   [WindowScene](protocols/WindowScene.md)
 -   [WindowSceneGroup](protocols/WindowSceneGroup.md)
+-   [WindowType](protocols/WindowType.md)
 
 ## Structs
 
@@ -20,6 +21,7 @@
 -   [Clamp](structs/Clamp.md)
 -   [ContentModifier](structs/ContentModifier.md)
 -   [EitherView](structs/EitherView.md)
+-   [FileDialog](structs/FileDialog.md)
 -   [HStack](structs/HStack.md)
 -   [HeaderBar](structs/HeaderBar.md)
 -   [InspectorWrapper](structs/InspectorWrapper.md)
@@ -59,6 +61,8 @@
 
 -   [App](extensions/App.md)
 -   [Array](extensions/Array.md)
+-   [GTUIWindow](extensions/GTUIWindow.md)
+-   [Libadwaita.FileDialog](extensions/Libadwaita.FileDialog.md)
 -   [MenuItem](extensions/MenuItem.md)
 -   [MenuItemGroup](extensions/MenuItemGroup.md)
 -   [NativeWidgetPeer](extensions/NativeWidgetPeer.md)

@@ -9,6 +9,10 @@ A type that signalizes an action.
 
 An action is signalized by toggling a boolean to `true` and back to `false`.
 
+### `id`
+
+A signal has a unique identifier.
+
 ### `update`
 
 Whether the action has caused an update.

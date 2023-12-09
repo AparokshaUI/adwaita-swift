@@ -19,15 +19,11 @@ Whether the reference to the window should disappear in the next update.
 
 ### `window`
 
-The GTUI window.
+The window.
 
 ### `view`
 
 The content's storage.
-
-### `fileDialog`
-
-The file dialog for the window.
 
 ## Methods
 ### `init(id:window:view:)`
@@ -35,5 +31,5 @@ The file dialog for the window.
 Initialize a window storage.
 - Parameters:
   - id: The window's identifier.
-  - window: The GTUI window.
+  - window: The window.
   - view: The content's storage.

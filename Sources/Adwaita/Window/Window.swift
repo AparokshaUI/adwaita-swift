@@ -27,28 +27,6 @@ public struct Window: WindowScene {
     var shortcuts: [String: (GTUIApplicationWindow) -> Void] = [:]
     /// The keyboard shortcuts on the app level.
     public var appShortcuts: [String: (GTUIApp) -> Void] = [:]
-    /// The signal for the file importer.
-    var fileImporter: Signal = .init()
-    /// The signal for the file exporter.
-    var fileExporter: Signal = .init()
-    /// The initial folder for the file importer.
-    var initialImporterFolder: URL?
-    /// The initial folder for the file exporter.
-    var initialExporterFolder: URL?
-    /// The initial file name for the file exporter.
-    var initialName: String?
-    /// The accepted extensions for the file importer.
-    var extensions: [String]?
-    /// Whether folders are accepted in the file importer.
-    var folders = false
-    /// The closure to run when the import is successful.
-    var importerResult: ((URL) -> Void)?
-    /// The closure to run when the export is successful.
-    var exporterResult: ((URL) -> Void)?
-    /// The closure to run when the import is not successful.
-    var importerCancel: (() -> Void)?
-    /// The closure to run when the export is not successful.
-    var exporterCancel: (() -> Void)?
     /// The default window size.
     var defaultSize: (Int, Int)?
     /// The window's title.
@@ -57,6 +35,8 @@ public struct Window: WindowScene {
     var resizable = true
     /// Whether the window is deletable.
     var deletable = true
+    /// The signals for the importers and exporters.
+    var signals: [Signal] = []
 
     /// Create a window type with a certain identifier and user interface.
     /// - Parameters:
@@ -81,7 +61,6 @@ public struct Window: WindowScene {
             return false
         }
         windowStorage.parentID = parentID
-        updateFileDialog(storage: windowStorage)
         return windowStorage
     }
 
@@ -119,7 +98,11 @@ public struct Window: WindowScene {
             updateShortcuts(window: window)
             updateAppShortcuts(app: app)
         }
-        updateFileDialog(storage: storage)
+        for signal in signals where signal.update {
+            Task {
+                app.showWindow(signal.id.uuidString)
+            }
+        }
     }
 
     /// Set some general propreties of the window.
@@ -159,15 +142,20 @@ public struct Window: WindowScene {
         folders: Bool = false,
         onOpen: @escaping (URL) -> Void,
         onClose: @escaping () -> Void
-    ) -> Self {
+    ) -> Scene {
         var newSelf = self
-        newSelf.fileImporter = signal
-        newSelf.initialImporterFolder = initialFolder
-        newSelf.extensions = extensions
-        newSelf.folders = folders
-        newSelf.importerResult = onOpen
-        newSelf.importerCancel = onClose
+        newSelf.signals.append(signal)
         return newSelf
+            .overlay {
+                FileDialog(
+                    importer: signal.id.uuidString,
+                    initialFolder: initialFolder,
+                    extensions: extensions,
+                    folders: folders,
+                    onOpen: onOpen,
+                    onClose: onClose
+                )
+            }
     }
 
     /// Add an exporter file dialog to the window.
@@ -183,14 +171,19 @@ public struct Window: WindowScene {
         initialName: String? = nil,
         onSave: @escaping (URL) -> Void,
         onClose: @escaping () -> Void
-    ) -> Self {
+    ) -> Scene {
         var newSelf = self
-        newSelf.fileExporter = signal
-        newSelf.initialExporterFolder = initialFolder
-        newSelf.initialName = initialName
-        newSelf.exporterResult = onSave
-        newSelf.exporterCancel = onClose
+        newSelf.signals.append(signal)
         return newSelf
+            .overlay {
+                FileDialog(
+                    exporter: signal.id.uuidString,
+                    initialFolder: initialFolder,
+                    initialName: initialName,
+                    onSave: onSave,
+                    onClose: onClose
+                )
+            }
     }
 
     /// Add a keyboard shortcut.
@@ -209,20 +202,6 @@ public struct Window: WindowScene {
     func updateShortcuts(window: GTUIApplicationWindow) {
         for shortcut in shortcuts {
             window.addKeyboardShortcut(shortcut.key, id: shortcut.key) { shortcut.value(window) }
-        }
-    }
-
-    /// Open a file importer or exporter if a signal has been activated and update changes.
-    /// - Parameter storage: The window storage.
-    func updateFileDialog(storage: WindowStorage) {
-        storage.fileDialog.setExtensions(extensions, folders: folders)
-        if let initialName {
-            storage.fileDialog.setInitialName(initialName)
-        }
-        if fileImporter.update, let importerResult, let importerCancel {
-            storage.fileDialog.open(folder: initialImporterFolder, importerResult, onClose: importerCancel)
-        } else if fileExporter.update, let exporterResult, let exporterCancel {
-            storage.fileDialog.save(folder: initialExporterFolder, exporterResult, onClose: exporterCancel)
         }
     }
 

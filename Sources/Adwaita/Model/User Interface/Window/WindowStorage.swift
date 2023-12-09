@@ -16,23 +16,20 @@ public class WindowStorage {
     public var parentID: String?
     /// Whether the reference to the window should disappear in the next update.
     public var destroy = false
-    /// The GTUI window.
-    public var window: GTUIWindow
+    /// The window.
+    public var window: WindowType
     /// The content's storage.
     public var view: ViewStorage?
-    /// The file dialog for the window.
-    public var fileDialog: FileDialog
 
     /// Initialize a window storage.
     /// - Parameters:
     ///   - id: The window's identifier.
-    ///   - window: The GTUI window.
+    ///   - window: The window.
     ///   - view: The content's storage.
-    public init(id: String, window: GTUIWindow, view: ViewStorage?) {
+    public init(id: String, window: WindowType, view: ViewStorage?) {
         self.id = id
         self.window = window
         self.view = view
-        fileDialog = .init(window)
     }
 
 }

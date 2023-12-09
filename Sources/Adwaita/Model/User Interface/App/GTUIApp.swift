@@ -57,7 +57,7 @@ public class GTUIApp: Application {
             let window = window.createWindow(app: self)
             sceneStorage.append(window)
             if let parent {
-                window.window.setParent(parent)
+                window.window.setParentWindow(parent)
                 window.window.fields[overwriteParentID] = true
             }
             setParentWindows()
@@ -69,7 +69,7 @@ public class GTUIApp: Application {
     func setParentWindows() {
       for window in sceneStorage where !(window.window.fields[overwriteParentID] as? Bool ?? false) {
         if let parent = sceneStorage.first(where: { $0.id == window.parentID }) {
-            window.window.setParent(parent.window)
+            window.window.setParentWindow(parent.window)
         }
       }
     }
