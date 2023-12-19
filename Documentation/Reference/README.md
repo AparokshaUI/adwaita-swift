@@ -40,6 +40,7 @@
 -   [Submenu](structs/Submenu.md)
 -   [Text](structs/Text.md)
 -   [ToastOverlay](structs/ToastOverlay.md)
+-   [Toggle](structs/Toggle.md)
 -   [ToolbarView](structs/ToolbarView.md)
 -   [VStack](structs/VStack.md)
 -   [Window](structs/Window.md)

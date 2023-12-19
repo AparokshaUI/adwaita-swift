@@ -10,6 +10,7 @@ This is an overview of the available widgets and other components in _Adwaita_.
 | Text                 | A widget for displaying a small amount of text.                   | GtkLabel               |
 | VStack               | A widget which arranges child widgets into a single column.       | GtkBox                 |
 | HStack               | A widget which arranges child widgets into a single row.          | GtkBox                 |
+| Toggle               | A button with two possible states, on and off.                    | GtkToggleButton        |
 | List                 | A widget which arranges child widgets vertically into rows.       | GtkListBox             |
 | Menu                 | A widget showing a button that toggles the appearance of a menu.  | GtkMenuButton          |
 | NavigationSplitView  | A widget presenting sidebar and content side by side.             | AdwNavigationSplitView |
