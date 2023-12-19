@@ -13,6 +13,7 @@ This is an overview of the available widgets and other components in _Adwaita_.
 | List                 | A widget which arranges child widgets vertically into rows.       | GtkListBox             |
 | Menu                 | A widget showing a button that toggles the appearance of a menu.  | GtkMenuButton          |
 | NavigationSplitView  | A widget presenting sidebar and content side by side.             | AdwNavigationSplitView |
+| OverlaySplitView     | A widget presenting sidebar and content side by side.             | AdwOverlaySplitView    |
 | ScrollView           | A container that makes its child scrollable.                      | GtkScrolledWindow      |
 | StatusPage           | A page with an icon, title, and optionally description and widget.| AdwStatusPage          |
 | StateWrapper         | A wrapper not affecting the UI which stores state information.    | -                      |
@@ -56,6 +57,11 @@ This is an overview of the available widgets and other components in _Adwaita_.
 | Syntax                       | Description                                                                             |
 | ---------------------------- | --------------------------------------------------------------------------------------- |
 | `sidebarStyle()`             | Change the style of the list to match a sidebar.                                        |
+
+### `OverlaySplitView` Modifiers
+| Syntax                       | Description                                                                             |
+| ---------------------------- | --------------------------------------------------------------------------------------- |
+| `trailingSidebar(_:)`        | Whether the sidebar is trailing to the content view.                                    |
 
 ### Window Types
 | Name                 | Description                                                       | Widget                 |

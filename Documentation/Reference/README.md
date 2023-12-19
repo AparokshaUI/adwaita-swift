@@ -31,6 +31,7 @@
 -   [MenuSection](structs/MenuSection.md)
 -   [ModifierStopper](structs/ModifierStopper.md)
 -   [NavigationSplitView](structs/NavigationSplitView.md)
+-   [OverlaySplitView](structs/OverlaySplitView.md)
 -   [ScrollView](structs/ScrollView.md)
 -   [Signal](structs/Signal.md)
 -   [State](structs/State.md)
