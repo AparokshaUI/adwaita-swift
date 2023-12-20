@@ -17,6 +17,10 @@ The split view's main content.
 
 Whether the sidebar is at the trailing position.
 
+### `visible`
+
+Whether the sidebar is visible.
+
 ### `sidebarID`
 
 The sidebar content's id.
@@ -26,10 +30,11 @@ The sidebar content's id.
 The main content's id.
 
 ## Methods
-### `init(sidebar:content:)`
+### `init(visible:sidebar:content:)`
 
 Initialize an overlay split view.
 - Parameters:
+  - visible: Whether the sidebar is visible.
   - sidebar: The sidebar content.
   - content: The main content.
 
@@ -55,3 +60,4 @@ Update the view storage of the overlay split view widget.
 ### `updatePosition(_:)`
 
 Update the sidebar's position in the split view.
+- Parameter splitView: The overlay split view.

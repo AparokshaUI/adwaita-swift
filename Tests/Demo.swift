@@ -57,11 +57,12 @@ struct Demo: App {
 
         @State private var selection: Page = .welcome
         @State private var toast: Signal = .init()
+        @State private var sidebarVisible = true
         var window: GTUIApplicationWindow
         var app: GTUIApp!
 
         var view: Body {
-            NavigationSplitView {
+            OverlaySplitView(visible: sidebarVisible) {
                 ScrollView {
                     List(Page.allCases, selection: $selection) { element in
                         Text(element.label)
@@ -72,21 +73,7 @@ struct Demo: App {
                 }
                 .topToolbar {
                     HeaderBar.end {
-                        Menu(icon: .default(icon: .openMenu), app: app, window: window) {
-                            MenuButton("New Window", window: false) {
-                                app.addWindow("main")
-                            }
-                            .keyboardShortcut("n".ctrl())
-                            MenuButton("Close Window") {
-                                window.close()
-                            }
-                            .keyboardShortcut("w".ctrl())
-                            MenuSection {
-                                MenuButton("About") { app.addWindow("about", parent: window) }
-                                MenuButton("Quit", window: false) { app.quit() }
-                                    .keyboardShortcut("q".ctrl())
-                            }
-                        }
+                        menu
                     }
                 }
                 .navigationTitle("Demo")
@@ -95,13 +82,49 @@ struct Demo: App {
                     selection.label,
                     icon: selection.icon,
                     description: selection.description
-                ) {
-                    selection.view(app: app, window: window, toast: toast)
-                }
+                ) { selection.view(app: app, window: window, toast: toast) }
                 .topToolbar {
-                    HeaderBar.empty()
+                    HeaderBar {
+                        Toggle(icon: .default(icon: .sidebarShow), isOn: $sidebarVisible)
+                    } end: {
+                        if sidebarVisible {
+                            Text("")
+                                .transition(.crossfade)
+                        } else {
+                            menu
+                                .transition(.crossfade)
+                        }
+                    }
+                    .headerBarTitle {
+                        if sidebarVisible {
+                            Text("")
+                                .transition(.crossfade)
+                        } else {
+                            Text("Swift Adwaita Demo")
+                                .style("heading")
+                                .transition(.crossfade)
+                        }
+                    }
                 }
                 .toast("This is a toast!", signal: toast)
+            }
+        }
+
+        var menu: View {
+            Menu(icon: .default(icon: .openMenu), app: app, window: window) {
+                MenuButton("New Window", window: false) {
+                    app.addWindow("main")
+                }
+                .keyboardShortcut("n".ctrl())
+                MenuButton("Close Window") {
+                    window.close()
+                }
+                .keyboardShortcut("w".ctrl())
+                MenuSection {
+                    MenuButton("About") { app.addWindow("about", parent: window) }
+                    MenuButton("Quit", window: false) { app.quit() }
+                        .keyboardShortcut("q".ctrl())
+                }
             }
         }
 

@@ -16,6 +16,8 @@ public struct OverlaySplitView: Widget {
     var content: () -> Body
     /// Whether the sidebar is at the trailing position.
     var trailing = false
+    /// Whether the sidebar is visible.
+    var visible: Bool
 
     /// The sidebar content's id.
     let sidebarID = "sidebar"
@@ -24,11 +26,17 @@ public struct OverlaySplitView: Widget {
 
     /// Initialize an overlay split view.
     /// - Parameters:
+    ///   - visible: Whether the sidebar is visible.
     ///   - sidebar: The sidebar content.
     ///   - content: The main content.
-    public init(@ViewBuilder sidebar: @escaping () -> Body, @ViewBuilder content: @escaping () -> Body) {
+    public init(
+        visible: Bool = true,
+        @ViewBuilder sidebar: @escaping () -> Body,
+        @ViewBuilder content: @escaping () -> Body
+    ) {
         self.sidebar = sidebar
         self.content = content
+        self.visible = visible
     }
 
     /// The position of the sidebar.
@@ -77,8 +85,14 @@ public struct OverlaySplitView: Widget {
     }
 
     /// Update the sidebar's position in the split view.
+    /// - Parameter splitView: The overlay split view.
     func updatePosition(_ splitView: Libadwaita.OverlaySplitView) {
         _ = splitView.position(trailing: trailing)
+        if visible {
+            splitView.showSidebar()
+        } else {
+            splitView.hideSidebar()
+        }
     }
 
 }

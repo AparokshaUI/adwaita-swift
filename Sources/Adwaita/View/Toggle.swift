@@ -55,6 +55,9 @@ public struct Toggle: Widget {
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let toggle: Libadwaita.ToggleButton = .init(label ?? "")
         updateState(toggle: toggle)
+        toggle.handler {
+            self.isOn.toggle()
+        }
         return .init(toggle)
     }
 
