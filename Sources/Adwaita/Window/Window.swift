@@ -81,6 +81,7 @@ public struct Window: WindowScene {
         let content = content(window)
         let storage = content.widget(modifiers: []).container(modifiers: [])
         window.setChild(storage.view)
+        window.setDefaultSize(width: defaultSize?.0, height: defaultSize?.1)
         setProperties(window: window)
         updateShortcuts(window: window)
         return storage
@@ -108,7 +109,6 @@ public struct Window: WindowScene {
     /// Set some general propreties of the window.
     /// - Parameter window: The window.
     func setProperties(window: GTUIApplicationWindow) {
-        window.setDefaultSize(width: defaultSize?.0, height: defaultSize?.1)
         if let title {
             window.setTitle(title)
         }
