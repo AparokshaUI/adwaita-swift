@@ -63,7 +63,7 @@ extension View {
     /// Get a storage.
     /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: The storage.
-    func storage(modifiers: [(View) -> View]) -> ViewStorage {
+    public func storage(modifiers: [(View) -> View]) -> ViewStorage {
         widget(modifiers: modifiers).container(modifiers: modifiers)
     }
 
