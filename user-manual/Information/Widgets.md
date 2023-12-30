@@ -5,7 +5,7 @@ This is an overview of the available widgets and other components in _Adwaita_.
 | Name                 | Description                                                       | Widget                 |
 | -------------------- | ----------------------------------------------------------------- | ---------------------- |
 | Button               | A widget that triggers a function when being clicked.             | GtkButton              |
-| EitherView           | A widget that displays one of its child views based on a boolean. | GtkStack               |
+| ViewStack            | A widget that displays one of its child views based on an id.     | GtkStack               |
 | HeaderBar            | A widget for creating custom title bars for windows.              | GtkHeaderBar           |
 | Text                 | A widget for displaying a small amount of text.                   | GtkLabel               |
 | VStack               | A widget which arranges child widgets into a single column.       | GtkBox                 |

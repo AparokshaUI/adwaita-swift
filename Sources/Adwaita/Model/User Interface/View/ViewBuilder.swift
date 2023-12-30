@@ -58,9 +58,9 @@ public enum ViewBuilder {
     /// - Returns: A nonoptional component.
     public static func buildOptional(_ component: Component?) -> Component {
         if let component {
-            return .element(EitherView(true, { buildFinalResult(component) }, else: nil))
+            return .element(ViewStack(id: true) { _ in buildFinalResult(component) })
         } else {
-            return .element(EitherView(false, nil) { [] })
+            return .element(ViewStack(id: false) { _ in [] })
         }
     }
 
@@ -68,14 +68,14 @@ public enum ViewBuilder {
     /// - Parameter component: A component.
     /// - Returns: The component.
     public static func buildEither(first component: Component) -> Component {
-        .element(EitherView(true, { buildFinalResult(component) }, else: nil))
+        .element(ViewStack(id: true) { _ in buildFinalResult(component) })
     }
 
     /// Enables support for `if`-`else` and `switch` statements.
     /// - Parameter component: A component.
     /// - Returns: The component.
     public static func buildEither(second component: Component) -> Component {
-        .element(EitherView(false, nil) { buildFinalResult(component) })
+        .element(ViewStack(id: false) { _ in buildFinalResult(component) })
     }
 
     /// Convert a component to an array of elements.

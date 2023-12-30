@@ -20,7 +20,6 @@
 -   [Button](structs/Button.md)
 -   [Clamp](structs/Clamp.md)
 -   [ContentModifier](structs/ContentModifier.md)
--   [EitherView](structs/EitherView.md)
 -   [FileDialog](structs/FileDialog.md)
 -   [HStack](structs/HStack.md)
 -   [HeaderBar](structs/HeaderBar.md)
@@ -43,6 +42,7 @@
 -   [Toggle](structs/Toggle.md)
 -   [ToolbarView](structs/ToolbarView.md)
 -   [VStack](structs/VStack.md)
+-   [ViewStack](structs/ViewStack.md)
 -   [Window](structs/Window.md)
 
 ## Classes
