@@ -21,6 +21,7 @@ enum Page: String, Identifiable, CaseIterable {
     case overlayWindow
     case toast
     case list
+    case carousel
 
     var id: Self {
         self
@@ -64,6 +65,8 @@ enum Page: String, Identifiable, CaseIterable {
             return "Show a notification inside of your app."
         case .list:
             return "Organize content in multiple rows."
+        case .carousel:
+            return "Scroll horizontally on a touchpad or touchscreen, or scroll down on your mouse wheel."
         }
     }
 
@@ -88,6 +91,8 @@ enum Page: String, Identifiable, CaseIterable {
             ToastDemo(toast: toast)
         case .list:
             ListDemo()
+        case .carousel:
+            CarouselDemo()
         }
     }
 
