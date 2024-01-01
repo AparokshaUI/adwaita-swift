@@ -5,20 +5,24 @@
 //  Created by david-swift on 06.08.23.
 //
 
+import Foundation
+
 /// A property wrapper for properties in a view that should be stored throughout view updates.
 @propertyWrapper
 public struct State<Value>: StateProtocol {
 
+    // swiftlint:disable force_cast
     /// Access the stored value. This updates the views when being changed.
     public var wrappedValue: Value {
         get {
-            storage.value
+            content.storage.value as! Value
         }
         nonmutating set {
-            storage.value = newValue
+            content.storage.value = newValue
             Self.updateViews()
         }
     }
+    // swiftlint:enable force_cast
 
     /// Get the value as a binding using the `$` prefix.
     public var projectedValue: Binding<Value> {
@@ -30,7 +34,8 @@ public struct State<Value>: StateProtocol {
     }
 
     /// The stored value.
-    private let storage: Storage<Value>
+    public let content: State<Any>.Content
+
     /// The value with an erased type.
     public var value: Any {
         get {
@@ -38,7 +43,7 @@ public struct State<Value>: StateProtocol {
         }
         nonmutating set {
             if let newValue = newValue as? Value {
-                storage.value = newValue
+                content.storage.value = newValue
             }
         }
     }
@@ -47,19 +52,33 @@ public struct State<Value>: StateProtocol {
     /// - Parameters:
     ///     - wrappedValue: The wrapped value.
     public init(wrappedValue: Value) {
-        storage = .init(value: wrappedValue)
+        content = .init(storage: .init(value: wrappedValue))
+    }
+
+    /// A class storing the state's content.
+    public class Content {
+
+        /// The storage.
+        public var storage: Storage
+
+        /// Initialize the content.
+        /// - Parameter storage: The storage.
+        public init(storage: Storage) {
+            self.storage = storage
+        }
+
     }
 
     /// A class storing the value.
-    class Storage<StoredValue> {
+    public class Storage {
 
         /// The stored value.
-        var value: StoredValue
+        public var value: Any
 
         /// Initialize the storage.
         /// - Parameters:
         ///     - value: The value.
-        init(value: StoredValue) {
+        public init(value: Any) {
             self.value = value
         }
 

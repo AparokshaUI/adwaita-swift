@@ -20,6 +20,7 @@ enum Page: String, Identifiable, CaseIterable {
     case dice
     case overlayWindow
     case toast
+    case list
 
     var id: Self {
         self
@@ -61,6 +62,8 @@ enum Page: String, Identifiable, CaseIterable {
             return "A window on top of another window."
         case .toast:
             return "Show a notification inside of your app."
+        case .list:
+            return "Organize content in multiple rows."
         }
     }
 
@@ -83,6 +86,8 @@ enum Page: String, Identifiable, CaseIterable {
             OverlayWindowDemo(app: app, window: window)
         case .toast:
             ToastDemo(toast: toast)
+        case .list:
+            ListDemo()
         }
     }
 

@@ -13,7 +13,7 @@ Access the stored value. This updates the views when being changed.
 
 Get the value as a binding using the `$` prefix.
 
-### `storage`
+### `content`
 
 The stored value.
 

@@ -8,7 +8,7 @@
 /// An interface for accessing `State` without specifying the generic type.
 public protocol StateProtocol {
 
-    /// The type-erased value.
-    var value: Any { get nonmutating set }
+    /// The class storing the value.
+    var content: State<Any>.Content { get }
 
 }

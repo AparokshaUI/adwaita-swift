@@ -48,6 +48,7 @@
 ## Classes
 
 -   [GTUIApp](classes/GTUIApp.md)
+-   [State.Content](classes/State.Content.md)
 -   [State.Storage](classes/State.Storage.md)
 -   [ViewStorage](classes/ViewStorage.md)
 -   [WindowStorage](classes/WindowStorage.md)

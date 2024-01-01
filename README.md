@@ -115,6 +115,7 @@ I recommend using the [template repository](https://github.com/AparokshaUI/Adwai
 
 ### Dependencies
 - [Libadwaita][18] licensed under the [GPL-3.0 license][19]
+- [Levenshtein Transformations](https://github.com/david-swift/LevenshteinTransformations) licensed under the [MIT license](https://github.com/david-swift/LevenshteinTransformations/blob/main/LICENSE.md)
 
 ### Other Thanks
 - The [contributors][20]

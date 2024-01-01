@@ -17,6 +17,10 @@ The content.
 
 The identifier of the selected element.
 
+### `elementsID`
+
+The identifier of the elements storage.
+
 ## Methods
 ### `init(_:selection:content:)`
 
@@ -39,10 +43,26 @@ Get a view storage.
 - Parameter modifiers: Modify views before being updated.
 - Returns: The view storage.
 
+### `updateList(box:content:modifiers:)`
+
+Update the list's content and selection.
+- Parameters:
+    - box: The list box.
+    - content: The content's view storage.
+    - modifiers: The view modifiers.
+
 ### `updateSelection(box:)`
 
 Update the list's selection.
 - Parameter box: The list box.
+
+### `getWidget(element:modifiers:)`
+
+Get the view storage of an element.
+- Parameters:
+    - element: The element.
+    - modifiers: The modifiers.
+- Returns: The view storage.
 
 ### `sidebarStyle()`
 

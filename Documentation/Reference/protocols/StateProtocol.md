@@ -5,6 +5,6 @@
 An interface for accessing `State` without specifying the generic type.
 
 ## Properties
-### `value`
+### `content`
 
-The type-erased value.
+The class storing the value.

@@ -36,8 +36,8 @@ public struct StateWrapper: Widget {
     ///     - modifiers: Modify views before being updated.
     public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
         for property in state {
-            if let value = storage.state[property.key]?.value {
-                property.value.value = value
+            if let storage = storage.state[property.key]?.content.storage {
+                property.value.content.storage = storage
             }
         }
         if let storage = storage.content[.mainContent]?.first {

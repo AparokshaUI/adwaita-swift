@@ -18,12 +18,19 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(url: "https://github.com/AparokshaUI/Libadwaita", from: "0.1.0")
+        .package(url: "https://github.com/AparokshaUI/Libadwaita", from: "0.1.0"),
+        .package(
+            url: "https://github.com/david-swift/LevenshteinTransformations",
+            from: "0.1.1"
+        )
     ],
     targets: [
         .target(
             name: "Adwaita",
-            dependencies: [.product(name: "Libadwaita", package: "Libadwaita")]
+            dependencies: [
+                .product(name: "Libadwaita", package: "Libadwaita"),
+                .product(name: "LevenshteinTransformations", package: "LevenshteinTransformations")
+            ]
         ),
         .executableTarget(
             name: "Swift Adwaita Demo",
