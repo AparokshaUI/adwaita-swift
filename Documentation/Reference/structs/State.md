@@ -13,6 +13,10 @@ Access the stored value. This updates the views when being changed.
 
 Get the value as a binding using the `$` prefix.
 
+### `rawValue`
+
+Get and set the value without updating the views.
+
 ### `content`
 
 The stored value.

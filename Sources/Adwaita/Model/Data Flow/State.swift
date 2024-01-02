@@ -11,18 +11,16 @@ import Foundation
 @propertyWrapper
 public struct State<Value>: StateProtocol {
 
-    // swiftlint:disable force_cast
     /// Access the stored value. This updates the views when being changed.
     public var wrappedValue: Value {
         get {
-            content.storage.value as! Value
+            rawValue
         }
         nonmutating set {
-            content.storage.value = newValue
+            rawValue = newValue
             Self.updateViews()
         }
     }
-    // swiftlint:enable force_cast
 
     /// Get the value as a binding using the `$` prefix.
     public var projectedValue: Binding<Value> {
@@ -32,6 +30,18 @@ public struct State<Value>: StateProtocol {
             self.wrappedValue = newValue
         }
     }
+
+    // swiftlint:disable force_cast
+    /// Get and set the value without updating the views.
+    public var rawValue: Value {
+        get {
+            content.storage.value as! Value
+        }
+        nonmutating set {
+            content.storage.value = newValue
+        }
+    }
+    // swiftlint:enable force_cast
 
     /// The stored value.
     public let content: State<Any>.Content
