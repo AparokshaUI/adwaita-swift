@@ -39,12 +39,16 @@ public struct State<Value>: StateProtocol {
         }
         nonmutating set {
             content.storage.value = newValue
+            writeValue?()
         }
     }
     // swiftlint:enable force_cast
 
     /// The stored value.
     public let content: State<Any>.Content
+
+    /// The function for updating the value in the settings file.
+    private var writeValue: (() -> Void)?
 
     /// The value with an erased type.
     public var value: Any {
@@ -84,6 +88,8 @@ public struct State<Value>: StateProtocol {
 
         /// The stored value.
         public var value: Any
+        /// The storage key.
+        public var key: String?
 
         /// Initialize the storage.
         /// - Parameters:
@@ -99,6 +105,65 @@ public struct State<Value>: StateProtocol {
         for handler in GTUIApp.updateHandlers {
             handler()
         }
+    }
+
+    /// Get the settings directory path.
+    /// - Returns: The path.
+    private func dirPath() -> String {
+        "\(NSHomeDirectory())/.config/\(GTUIApp.appID)/"
+    }
+
+    /// Get the settings file path.
+    /// - Returns: The path.
+    private func filePath() -> URL {
+        .init(fileURLWithPath: dirPath() + "\(content.storage.key ?? "temporary").json")
+    }
+
+}
+
+extension State where Value: Codable {
+
+    /// Initialize a property representing a state in the view.
+    /// - Parameters:
+    ///     - key: The unique storage key of the property.
+    ///     - wrappedValue: The wrapped value.
+    public init(wrappedValue: Value, _ key: String) {
+        content = .init(storage: .init(value: wrappedValue))
+        content.storage.key = key
+        checkFile()
+        readValue()
+        self.writeValue = writeCodableValue
+    }
+
+    /// Check whether the settings file exists, and, if not, create it.
+    private func checkFile() {
+        let fileManager = FileManager.default
+        if !fileManager.fileExists(atPath: dirPath()) {
+            try? fileManager.createDirectory(
+                at: .init(fileURLWithPath: dirPath()),
+                withIntermediateDirectories: true,
+                attributes: nil
+            )
+        }
+        if !fileManager.fileExists(atPath: filePath().path) {
+            fileManager.createFile(atPath: filePath().path, contents: .init(), attributes: nil)
+        }
+    }
+
+    /// Update the local value with the value from the file.
+    private func readValue() {
+        let data = try? Data(contentsOf: filePath())
+        if let data, let value = try? JSONDecoder().decode(Value.self, from: data) {
+            rawValue = value
+        }
+    }
+
+    /// Update the value on the file with the local value.
+    private func writeCodableValue() {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .prettyPrinted
+        let data = try? encoder.encode(rawValue)
+        try? data?.write(to: filePath())
     }
 
 }

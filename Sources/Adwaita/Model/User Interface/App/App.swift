@@ -58,6 +58,7 @@ extension App {
                 appInstance.app.sceneStorage.remove(at: index)
             }
         }
+        GTUIApp.appID = appInstance.id
         appInstance.app.run()
     }
 

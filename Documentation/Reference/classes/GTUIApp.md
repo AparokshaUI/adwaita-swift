@@ -9,6 +9,10 @@ The GTUI application.
 
 The handlers which are called when a state changes.
 
+### `appID`
+
+The app's id for the file name for storing the data.
+
 ### `body`
 
 The app's content.

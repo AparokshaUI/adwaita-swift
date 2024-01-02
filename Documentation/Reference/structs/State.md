@@ -21,6 +21,10 @@ Get and set the value without updating the views.
 
 The stored value.
 
+### `writeValue`
+
+The function for updating the value in the settings file.
+
 ### `value`
 
 The value with an erased type.
@@ -35,3 +39,13 @@ Initialize a property representing a state in the view.
 ### `updateViews()`
 
 Update all of the views.
+
+### `dirPath()`
+
+Get the settings directory path.
+- Returns: The path.
+
+### `filePath()`
+
+Get the settings file path.
+- Returns: The path.

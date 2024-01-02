@@ -133,3 +133,12 @@ struct ChangeTextView: View {
 
 Whenever you modify a state property (directly or indirectly through bindings),
 the user interface gets automatically updated to reflect that change.
+
+## Save State Values Between App Launches
+It's possible to automatically save a value that conforms to `Codable` whenever it changes to a file.
+The value in the file is read when the view containing the state value appears for the first time (e.g. when the user launches the app).
+
+Use the following syntax, where `"text"` is a unique identifier.
+```swift
+@State("text") private var text = "world"
+```

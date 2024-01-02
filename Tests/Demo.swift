@@ -55,9 +55,11 @@ struct Demo: App {
 
     struct DemoContent: View {
 
-        @State private var selection: Page = .welcome
+        @State("selection")
+        private var selection: Page = .welcome
         @State private var toast: Signal = .init()
-        @State private var sidebarVisible = true
+        @State("sidebar-visible")
+        private var sidebarVisible = true
         var window: GTUIApplicationWindow
         var app: GTUIApp!
 
@@ -75,8 +77,12 @@ struct Demo: App {
                     HeaderBar.end {
                         menu
                     }
+                    .headerBarTitle {
+                        Text("Demo")
+                            .style("heading")
+                            .transition(.crossfade)
+                    }
                 }
-                .navigationTitle("Demo")
             } content: {
                 StatusPage(
                     selection.label,

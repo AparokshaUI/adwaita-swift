@@ -9,6 +9,10 @@ A class storing the value.
 
 The stored value.
 
+### `key`
+
+The storage key.
+
 ## Methods
 ### `init(value:)`
 

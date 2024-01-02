@@ -71,6 +71,7 @@
 -   [MenuItem](extensions/MenuItem.md)
 -   [MenuItemGroup](extensions/MenuItemGroup.md)
 -   [NativeWidgetPeer](extensions/NativeWidgetPeer.md)
+-   [State](extensions/State.md)
 -   [String](extensions/String.md)
 -   [View](extensions/View.md)
 -   [Widget](extensions/Widget.md)

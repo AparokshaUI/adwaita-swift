@@ -10,7 +10,7 @@
 import Adwaita
 import Libadwaita
 
-enum Page: String, Identifiable, CaseIterable {
+enum Page: String, Identifiable, CaseIterable, Codable {
 
     case welcome
     case counter

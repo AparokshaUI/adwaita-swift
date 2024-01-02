@@ -24,6 +24,12 @@ Get a storage.
 
 ### `getModified(modifiers:)`
 
+### `inspectOnAppear(_:)`
+
+Run a function on the widget when it appears for the first time.
+- Parameter closure: The function.
+- Returns: A view.
+
 ### `onAppear(_:)`
 
 Run a function when the view appears for the first time.
