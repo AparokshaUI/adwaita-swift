@@ -11,7 +11,7 @@ import Libadwaita
 struct AppearObserver: Widget {
 
     /// The function.
-    var onAppear: () -> Void
+    var onAppear: (NativeWidgetPeer) -> Void
     /// The content.
     var content: View
 
@@ -19,8 +19,9 @@ struct AppearObserver: Widget {
     /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: The content's container.
     func container(modifiers: [(View) -> View]) -> ViewStorage {
-        onAppear()
-        return content.storage(modifiers: modifiers)
+        let storage = content.storage(modifiers: modifiers)
+        onAppear(storage.view)
+        return storage
     }
 
     /// Update the content.
@@ -35,11 +36,18 @@ struct AppearObserver: Widget {
 
 extension View {
 
+    /// Run a function on the widget when it appears for the first time.
+    /// - Parameter closure: The function.
+    /// - Returns: A view.
+    public func inspectOnAppear(_ closure: @escaping (NativeWidgetPeer) -> Void) -> View {
+        AppearObserver(onAppear: closure, content: self)
+    }
+
     /// Run a function when the view appears for the first time.
     /// - Parameter closure: The function.
     /// - Returns: A view.
     public func onAppear(_ closure: @escaping () -> Void) -> View {
-        AppearObserver(onAppear: closure, content: self)
+        inspectOnAppear { _ in closure() }
     }
 
 }

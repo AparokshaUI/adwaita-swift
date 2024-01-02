@@ -38,6 +38,7 @@ This is an overview of the available widgets and other components in _Adwaita_.
 | `navigationTitle(_:)`             | Add a title that is used if the view is a direct child of a NavigationView.             |
 | `style(_:)`                       | Add a style class to the view.                                                          |
 | `onAppear(_:)`                    | Run when the view is rendered for the first time.                                       |
+| `inspectOnAppear(_:)`             | Edit the underlying [Libadwaita][10] class when the view is rendered for the first time.|
 | `topToolbar(visible:_:)`          | Add a native toolbar to the view. Normally, it contains a HeaderBar.                    |
 | `bottomToolbar(visible:_:)`       | Add a native bottom toolbar to the view.                                                |
 | `modifyContent(_:modify:)`        | Replace all occurrences of a certain view type with another view.                       |
