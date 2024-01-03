@@ -20,6 +20,7 @@ This is an overview of the available widgets and other components in _Adwaita_.
 | Container            | Supports any widget conforming to `Libadwaita.InsertableContainer`. | Multiple widgets       |
 | Carousel             | A paginated scrolling widget.                                       | AdwCarousel            |
 | ViewSwitcher         | A control for switching between different views.                    | AdwViewSwitcher        |
+| ProgressBar          | A bar showing a progress.                                           | GtkProgressBar         |
 | StateWrapper         | A wrapper not affecting the UI which stores state information.      | -                      |
 
 ### View Modifiers
@@ -47,6 +48,7 @@ This is an overview of the available widgets and other components in _Adwaita_.
 | `toast(_:signal:)`                | Show a toast on top of the view whenever the signal gets activated.                     |
 | `toast(_:signal:button:handler:)` | Show a toast with a button on top of the view whenever the signal gets activated.       |
 | `overlay(_:)`                     | Overlay a view with another view.                                                       |
+| `insensitive(_:)`                 | Make a view unable to detect actions. This is especially useful for overlays.           |
 
 ### `Button` Modifiers
 | Syntax                       | Description                                                                             |

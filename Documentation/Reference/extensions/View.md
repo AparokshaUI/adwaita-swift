@@ -120,6 +120,12 @@ Run a function when the view gets an update.
 - Parameter onUpdate: The function.
 - Returns: A view.
 
+### `insensitive(_:)`
+
+Make the view insensitive (useful e.g. in overlays).
+- Parameter insensitive: Whether the view is insensitive.
+- Returns: A view.
+
 ### `stopModifiers()`
 
 Remove all of the content modifiers for the wrapped views.

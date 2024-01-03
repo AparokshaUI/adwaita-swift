@@ -35,6 +35,7 @@
 -   [NavigationSplitView](structs/NavigationSplitView.md)
 -   [Overlay](structs/Overlay.md)
 -   [OverlaySplitView](structs/OverlaySplitView.md)
+-   [ProgressBar](structs/ProgressBar.md)
 -   [ScrollView](structs/ScrollView.md)
 -   [Signal](structs/Signal.md)
 -   [State](structs/State.md)

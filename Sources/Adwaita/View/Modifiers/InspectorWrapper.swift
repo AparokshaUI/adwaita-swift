@@ -118,4 +118,11 @@ extension View {
         inspect { _ in onUpdate() }
     }
 
+    /// Make the view insensitive (useful e.g. in overlays).
+    /// - Parameter insensitive: Whether the view is insensitive.
+    /// - Returns: A view.
+    public func insensitive(_ insensitive: Bool = true) -> View {
+        inspect { _ = $0?.sensitive(!insensitive) }
+    }
+
 }
