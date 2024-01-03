@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Libadwaita
 
 /// A property wrapper for properties in a view that should be stored throughout view updates.
 @propertyWrapper
@@ -109,14 +110,14 @@ public struct State<Value>: StateProtocol {
 
     /// Get the settings directory path.
     /// - Returns: The path.
-    private func dirPath() -> String {
-        "\(NSHomeDirectory())/.config/\(GTUIApp.appID)/"
+    private func dirPath() -> URL {
+        NativePeer.getUserDataDirectory().appendingPathComponent(GTUIApp.appID, isDirectory: true)
     }
 
     /// Get the settings file path.
     /// - Returns: The path.
     private func filePath() -> URL {
-        .init(fileURLWithPath: dirPath() + "\(content.storage.key ?? "temporary").json")
+        dirPath().appendingPathComponent("\(content.storage.key ?? "temporary").json")
     }
 
 }
@@ -138,9 +139,9 @@ extension State where Value: Codable {
     /// Check whether the settings file exists, and, if not, create it.
     private func checkFile() {
         let fileManager = FileManager.default
-        if !fileManager.fileExists(atPath: dirPath()) {
+        if !fileManager.fileExists(atPath: dirPath().path) {
             try? fileManager.createDirectory(
-                at: .init(fileURLWithPath: dirPath()),
+                at: .init(fileURLWithPath: dirPath().path),
                 withIntermediateDirectories: true,
                 attributes: nil
             )
