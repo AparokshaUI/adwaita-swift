@@ -50,4 +50,11 @@ extension View {
         inspectOnAppear { _ in closure() }
     }
 
+    /// Run a function when the widget gets clicked.
+    /// - Parameter handler: The function.
+    /// - Returns: A view.
+    public func onClick(handler: @escaping () -> Void) -> View {
+        inspectOnAppear { _ = $0.onClick(closure: handler) }
+    }
+
 }

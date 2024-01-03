@@ -36,6 +36,12 @@ Run a function when the view appears for the first time.
 - Parameter closure: The function.
 - Returns: A view.
 
+### `onClick(handler:)`
+
+Run a function when the widget gets clicked.
+- Parameter handler: The function.
+- Returns: A view.
+
 ### `frame(maxSize:)`
 
 Set the view's maximal size.

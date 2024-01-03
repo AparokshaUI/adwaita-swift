@@ -50,6 +50,7 @@ This is an overview of the available widgets and other components in _Adwaita_.
 | `toast(_:signal:button:handler:)` | Show a toast with a button on top of the view whenever the signal gets activated.       |
 | `overlay(_:)`                     | Overlay a view with another view.                                                       |
 | `insensitive(_:)`                 | Make a view unable to detect actions. This is especially useful for overlays.           |
+| `onClick(handler:)`               | Run a function when the user clicks on the widget.                                      |
 
 ### `Button` Modifiers
 | Syntax                       | Description                                                                             |
