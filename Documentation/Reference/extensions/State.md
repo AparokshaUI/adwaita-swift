@@ -3,12 +3,15 @@
 # `State`
 
 ## Methods
-### `init(wrappedValue:_:)`
+### `init(wrappedValue:_:folder:)`
 
 Initialize a property representing a state in the view.
 - Parameters:
-    - key: The unique storage key of the property.
     - wrappedValue: The wrapped value.
+    - key: The unique storage key of the property.
+    - folder: The path to the folder containing the JSON file.
+
+The folder path will be appended to the XDG data home directory.
 
 ### `checkFile()`
 

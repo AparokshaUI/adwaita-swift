@@ -91,6 +91,8 @@ public struct State<Value>: StateProtocol {
         public var value: Any
         /// The storage key.
         public var key: String?
+        /// The folder path.
+        public var folder: String?
 
         /// Initialize the storage.
         /// - Parameters:
@@ -111,7 +113,9 @@ public struct State<Value>: StateProtocol {
     /// Get the settings directory path.
     /// - Returns: The path.
     private func dirPath() -> URL {
-        NativePeer.getUserDataDirectory().appendingPathComponent(GTUIApp.appID, isDirectory: true)
+        NativePeer
+            .getUserDataDirectory()
+            .appendingPathComponent(content.storage.folder ?? GTUIApp.appID, isDirectory: true)
     }
 
     /// Get the settings file path.
@@ -126,11 +130,15 @@ extension State where Value: Codable {
 
     /// Initialize a property representing a state in the view.
     /// - Parameters:
-    ///     - key: The unique storage key of the property.
     ///     - wrappedValue: The wrapped value.
-    public init(wrappedValue: Value, _ key: String) {
+    ///     - key: The unique storage key of the property.
+    ///     - folder: The path to the folder containing the JSON file.
+    ///
+    /// The folder path will be appended to the XDG data home directory.
+    public init(wrappedValue: Value, _ key: String, folder: String? = nil) {
         content = .init(storage: .init(value: wrappedValue))
         content.storage.key = key
+        content.storage.folder = folder
         checkFile()
         readValue()
         self.writeValue = writeCodableValue

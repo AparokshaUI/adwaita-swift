@@ -13,6 +13,10 @@ The stored value.
 
 The storage key.
 
+### `folder`
+
+The folder path.
+
 ## Methods
 ### `init(value:)`
 

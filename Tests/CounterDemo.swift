@@ -12,7 +12,7 @@ import Libadwaita
 
 struct CounterDemo: View {
 
-    @State("count")
+    @State("count", folder: "io.github.AparokshaUI.Demo/count")
     private var count = 0
 
     var view: Body {

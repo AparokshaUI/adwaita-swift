@@ -142,3 +142,8 @@ Use the following syntax, where `"text"` is a unique identifier.
 ```swift
 @State("text") private var text = "world"
 ```
+
+You can organize your content by specifying a custom folder path which will be appended to the XDG data home directory.
+```swift
+@State("text", folder: "io.github.david_swift.HelloWorld/my-view") private var text = "world"
+```
