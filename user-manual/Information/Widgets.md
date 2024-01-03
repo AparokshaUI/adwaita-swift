@@ -21,6 +21,7 @@ This is an overview of the available widgets and other components in _Adwaita_.
 | Carousel             | A paginated scrolling widget.                                       | AdwCarousel            |
 | ViewSwitcher         | A control for switching between different views.                    | AdwViewSwitcher        |
 | ProgressBar          | A bar showing a progress.                                           | GtkProgressBar         |
+| Banner               | A bar showing contextual information.                               | AdwBanner              |
 | StateWrapper         | A wrapper not affecting the UI which stores state information.      | -                      |
 
 ### View Modifiers
@@ -75,6 +76,11 @@ This is an overview of the available widgets and other components in _Adwaita_.
 | Syntax                       | Description                                                                             |
 | ---------------------------- | --------------------------------------------------------------------------------------- |
 | `wideDesign(_:)`             | Whether the wide view switcher design is used.                                          |
+
+## `Banner` Modifiers
+| Syntax                       | Description                                                                             |
+| ---------------------------- | --------------------------------------------------------------------------------------- |
+| `button(_:handler)`          | Show the banner's button and set its title and handler.                                 |
 
 ### Window Types
 | Name                 | Description                                                       | Widget                 |

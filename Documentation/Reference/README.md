@@ -17,6 +17,7 @@
 
 -   [AboutWindow](structs/AboutWindow.md)
 -   [AppearObserver](structs/AppearObserver.md)
+-   [Banner](structs/Banner.md)
 -   [Binding](structs/Binding.md)
 -   [Button](structs/Button.md)
 -   [Carousel](structs/Carousel.md)
