@@ -22,6 +22,7 @@ enum Page: String, Identifiable, CaseIterable, Codable {
     case toast
     case list
     case carousel
+    case viewSwitcher
 
     var id: Self {
         self
@@ -31,6 +32,8 @@ enum Page: String, Identifiable, CaseIterable, Codable {
         switch self {
         case .overlayWindow:
             return "Overlay Window"
+        case .viewSwitcher:
+            return "View Switcher"
         default:
             return rawValue.capitalized
         }
@@ -67,9 +70,12 @@ enum Page: String, Identifiable, CaseIterable, Codable {
             return "Organize content in multiple rows."
         case .carousel:
             return "Scroll horizontally on a touchpad or touchscreen, or scroll down on your mouse wheel."
+        case .viewSwitcher:
+            return "Switch the window's view."
         }
     }
 
+    // swiftlint:disable cyclomatic_complexity
     @ViewBuilder
     func view(app: GTUIApp!, window: GTUIApplicationWindow, toast: Signal) -> Body {
         switch self {
@@ -93,8 +99,11 @@ enum Page: String, Identifiable, CaseIterable, Codable {
             ListDemo()
         case .carousel:
             CarouselDemo()
+        case .viewSwitcher:
+            ViewSwitcherDemo(app: app)
         }
     }
+    // swiftlint:enable cyclomatic_complexity
 
 }
 

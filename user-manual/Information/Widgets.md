@@ -19,6 +19,7 @@ This is an overview of the available widgets and other components in _Adwaita_.
 | StatusPage           | A page with an icon, title, and optionally description and widget.  | AdwStatusPage          |
 | Container            | Supports any widget conforming to `Libadwaita.InsertableContainer`. | Multiple widgets       |
 | Carousel             | A paginated scrolling widget.                                       | AdwCarousel            |
+| ViewSwitcher         | A control for switching between different views.                    | AdwViewSwitcher        |
 | StateWrapper         | A wrapper not affecting the UI which stores state information.      | -                      |
 
 ### View Modifiers
@@ -66,6 +67,11 @@ This is an overview of the available widgets and other components in _Adwaita_.
 | Syntax                       | Description                                                                             |
 | ---------------------------- | --------------------------------------------------------------------------------------- |
 | `trailingSidebar(_:)`        | Whether the sidebar is trailing to the content view.                                    |
+
+### `ViewSwitcher` Modifiers
+| Syntax                       | Description                                                                             |
+| ---------------------------- | --------------------------------------------------------------------------------------- |
+| `wideDesign(_:)`             | Whether the wide view switcher design is used.                                          |
 
 ### Window Types
 | Name                 | Description                                                       | Widget                 |

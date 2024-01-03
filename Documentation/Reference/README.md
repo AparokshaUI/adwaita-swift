@@ -7,6 +7,7 @@
 -   [MenuItemGroup](protocols/MenuItemGroup.md)
 -   [StateProtocol](protocols/StateProtocol.md)
 -   [View](protocols/View.md)
+-   [ViewSwitcherOption](protocols/ViewSwitcherOption.md)
 -   [Widget](protocols/Widget.md)
 -   [WindowScene](protocols/WindowScene.md)
 -   [WindowSceneGroup](protocols/WindowSceneGroup.md)
@@ -45,6 +46,7 @@
 -   [ToolbarView](structs/ToolbarView.md)
 -   [VStack](structs/VStack.md)
 -   [ViewStack](structs/ViewStack.md)
+-   [ViewSwitcher](structs/ViewSwitcher.md)
 -   [Window](structs/Window.md)
 
 ## Classes

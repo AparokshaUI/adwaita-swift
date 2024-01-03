@@ -49,6 +49,13 @@ struct Demo: App {
             .closeShortcut()
             .defaultSize(width: 400, height: 250)
             .title("Toolbar Demo")
+            Window(id: "switcher-demo", open: 0) { _ in
+                ViewSwitcherDemo.WindowContent()
+            }
+            .closeShortcut()
+            .defaultSize(width: 600, height: 400)
+            .resizable(false)
+            .title("View Switcher Demo")
         }
 
     }
