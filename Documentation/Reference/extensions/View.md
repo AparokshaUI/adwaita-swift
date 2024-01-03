@@ -125,6 +125,13 @@ Run a function when the view gets an update.
 Remove all of the content modifiers for the wrapped views.
 - Returns: A view.
 
+### `overlay(_:)`
+
+Add an overlay view.
+- Parameters:
+    - overlay: The overlay view.
+- Returns: A view.
+
 ### `toast(_:signal:)`
 
 Present a toast when the signal gets activated.

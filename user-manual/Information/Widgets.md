@@ -46,6 +46,7 @@ This is an overview of the available widgets and other components in _Adwaita_.
 | `stopModifiers()`                 | Ignore all the `modifyContent(_:modify:)` modifiers from higher above in the view tree. |
 | `toast(_:signal:)`                | Show a toast on top of the view whenever the signal gets activated.                     |
 | `toast(_:signal:button:handler:)` | Show a toast with a button on top of the view whenever the signal gets activated.       |
+| `overlay(_:)`                     | Overlay a view with another view.                                                       |
 
 ### `Button` Modifiers
 | Syntax                       | Description                                                                             |
