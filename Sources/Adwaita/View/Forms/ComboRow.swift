@@ -74,7 +74,7 @@ where Element: CustomStringConvertible, Element: Identifiable, Element: Equatabl
         }
         update(row: row)
         _ = row.onChange {
-            if let element = content.first(where: { $0.description == row.selected() }) {
+            if let element = content.first(where: { $0.description == row.selected() }), element.id != selection {
                 selection = element.id
             }
         }
