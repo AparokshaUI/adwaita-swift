@@ -23,6 +23,7 @@ enum Page: String, Identifiable, CaseIterable, Codable {
     case list
     case carousel
     case viewSwitcher
+    case form
 
     var id: Self {
         self
@@ -72,6 +73,8 @@ enum Page: String, Identifiable, CaseIterable, Codable {
             return "Scroll horizontally on a touchpad or touchscreen, or scroll down on your mouse wheel."
         case .viewSwitcher:
             return "Switch the window's view."
+        case .form:
+            return "Group controls used for data entry."
         }
     }
 
@@ -101,6 +104,8 @@ enum Page: String, Identifiable, CaseIterable, Codable {
             CarouselDemo()
         case .viewSwitcher:
             ViewSwitcherDemo(app: app)
+        case .form:
+            FormDemo(app: app)
         }
     }
     // swiftlint:enable cyclomatic_complexity

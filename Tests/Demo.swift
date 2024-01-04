@@ -56,6 +56,12 @@ struct Demo: App {
             .defaultSize(width: 600, height: 400)
             .resizable(false)
             .title("View Switcher Demo")
+            Window(id: "form-demo", open: 0) { _ in
+                FormDemo.WindowContent()
+            }
+            .closeShortcut()
+            .defaultSize(width: 400, height: 250)
+            .title("Form Demo")
         }
 
     }

@@ -23,6 +23,13 @@ This is an overview of the available widgets and other components in _Adwaita_.
 | ProgressBar          | A bar showing a progress.                                           | GtkProgressBar         |
 | Banner               | A bar showing contextual information.                               | AdwBanner              |
 | StateWrapper         | A wrapper not affecting the UI which stores state information.      | -                      |
+| FormSection          | A titled section, usually containing one or multiple forms.         | AdwPreferencesGroup    |
+| Form                 | A static boxed list, usually containing one or multiple rows.       | GtkListBox             |
+| ActionRow            | The most basic row displaying text and optionally other views.      | AdwActionRow           |
+| ComboRow             | A row displaying an array, letting the user choose one element.     | AdwComboRow            |
+| EntryRow             | A row for text input.                                               | AdwEntryRow            |
+| SpinRow              | A row for selecting an integer in a range.                          | AdwSpinRow             |
+| SwitchRow            | A row controlling a simple boolean value.                           | AdwSwitchRow           |
 
 ### View Modifiers
 
@@ -51,6 +58,7 @@ This is an overview of the available widgets and other components in _Adwaita_.
 | `overlay(_:)`                     | Overlay a view with another view.                                                       |
 | `insensitive(_:)`                 | Make a view unable to detect actions. This is especially useful for overlays.           |
 | `onClick(handler:)`               | Run a function when the user clicks on the widget.                                      |
+| `verticalCenter()`                | Wrap a view in a `VStack` and center vertically.                                        |
 
 ### `Button` Modifiers
 | Syntax                       | Description                                                                             |
@@ -62,6 +70,11 @@ This is an overview of the available widgets and other components in _Adwaita_.
 | Syntax                       | Description                                                                             |
 | ---------------------------- | --------------------------------------------------------------------------------------- |
 | `headerBarTitle(view:)`      | Customize the title view in the header bar.                                             |
+
+### `Toggle` Modifiers
+| Syntax                       | Description                                                                             |
+| ---------------------------- | --------------------------------------------------------------------------------------- |
+| `checkButton()`              | Use a check button design instead of a toggle.                                          |
 
 ### `List` Modifiers
 | Syntax                       | Description                                                                             |
@@ -78,10 +91,53 @@ This is an overview of the available widgets and other components in _Adwaita_.
 | ---------------------------- | --------------------------------------------------------------------------------------- |
 | `wideDesign(_:)`             | Whether the wide view switcher design is used.                                          |
 
-## `Banner` Modifiers
+### `Banner` Modifiers
 | Syntax                       | Description                                                                             |
 | ---------------------------- | --------------------------------------------------------------------------------------- |
 | `button(_:handler)`          | Show the banner's button and set its title and handler.                                 |
+
+### `FormSection` Modifiers
+| Syntax                       | Description                                                                             |
+| ---------------------------- | --------------------------------------------------------------------------------------- |
+| `description(_:)`            | Set the section's description.                                                          |
+| `suffix(_:)`                 | Set the section's suffix view.                                                          |
+
+### `ActionRow` Modifiers
+| Syntax                       | Description                                                                             |
+| ---------------------------- | --------------------------------------------------------------------------------------- |
+| `subtitle(_:)`               | Set the row's subtitle.                                                                 |
+| `prefix(_:)`                 | Set the row's prefix view.                                                              |
+| `suffix(_:)`                 | Set the row's suffix view.                                                              |
+
+### `ComboRow` Modifiers
+| Syntax                       | Description                                                                             |
+| ---------------------------- | --------------------------------------------------------------------------------------- |
+| `subtitle(_:)`               | Set the row's subtitle.                                                                 |
+| `prefix(_:)`                 | Set the row's prefix view.                                                              |
+| `suffix(_:)`                 | Set the row's suffix view.                                                              |
+
+### `EntryRow` Modifiers
+| Syntax                       | Description                                                                             |
+| ---------------------------- | --------------------------------------------------------------------------------------- |
+| `onSubmit(_:)`               | Add a submit button to the entry row. Run the provided closure when it gets pressed.    |
+| `prefix(_:)`                 | Set the row's prefix view.                                                              |
+| `suffix(_:)`                 | Set the row's suffix view.                                                              |
+| `secure()`                   | Use the secure design for password inputs etc.                                          |
+
+### `SpinRow` Modifiers
+| Syntax                       | Description                                                                             |
+| ---------------------------- | --------------------------------------------------------------------------------------- |
+| `subtitle(_:)`               | Set the row's subtitle.                                                                 |
+| `prefix(_:)`                 | Set the row's prefix view.                                                              |
+| `suffix(_:)`                 | Set the row's suffix view.                                                              |
+| `step(_:)`                   | Set the increase/decrease rate of the buttons.                                          |
+
+### `SwitchRow` Modifiers
+| Syntax                       | Description                                                                             |
+| ---------------------------- | --------------------------------------------------------------------------------------- |
+| `subtitle(_:)`               | Set the row's subtitle.                                                                 |
+| `prefix(_:)`                 | Set the row's prefix view.                                                              |
+| `suffix(_:)`                 | Set the row's suffix view.                                                              |
 
 ### Window Types
 | Name                 | Description                                                       | Widget                 |

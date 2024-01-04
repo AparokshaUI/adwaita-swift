@@ -45,9 +45,10 @@ struct ListDemo: View {
         }
     }
 
-    struct Element: Identifiable {
+    struct Element: Identifiable, CustomStringConvertible, Equatable {
 
         var id: String
+        var description: String { id }
 
     }
 

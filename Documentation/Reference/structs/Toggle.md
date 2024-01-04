@@ -17,6 +17,10 @@ The button's icon.
 
 Whether the toggle is on.
 
+### `isCheckButton`
+
+Whether to use GtkCheckButton instead of GtkToggleButton
+
 ## Methods
 ### `init(_:icon:isOn:)`
 
@@ -50,3 +54,13 @@ Get a button's view storage.
 
 Update the toggle's state.
 - Parameter toggle: The toggle.
+
+### `updateState(toggle:)`
+
+Update the check button's state.
+- Parameter toggle: The toggle.
+
+### `checkButton()`
+
+Use the check button style.
+- Returns: The toggle.

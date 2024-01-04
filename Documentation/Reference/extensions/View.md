@@ -177,3 +177,8 @@ Add a bottom toolbar to the view.
   - toolbar: The toolbar's content.
   - visible: Whether the toolbar is visible.
 - Returns: A view.
+
+### `verticalCenter()`
+
+Wrap the view in a vertical stack and center vertically.
+- Returns: The view.
