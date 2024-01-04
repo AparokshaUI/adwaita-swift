@@ -126,3 +126,12 @@ extension View {
     }
 
 }
+
+/// The alignment for a widget.
+public typealias Alignment = Libadwaita.Alignment
+/// The edges of a widget.
+public typealias Edge = Libadwaita.Edge
+/// An icon.
+public typealias Icon = Libadwaita.Icon
+/// A transition for a stack.
+public typealias Transition = Libadwaita.Transition
