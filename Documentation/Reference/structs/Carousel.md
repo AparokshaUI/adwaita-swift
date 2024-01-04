@@ -13,6 +13,10 @@ The elements.
 
 The content.
 
+### `allowLongSwipes`
+
+Whether long swipes are allowed.
+
 ### `view`
 
 The view.
@@ -24,3 +28,9 @@ Initialize `Carousel`.
 - Parameters:
   - elements: The elements.
   - content: The view for an element.
+
+### `longSwipes(_:)`
+
+Set whether long swipes are allowed or not.
+- Parameter longSwipes: Whether long swipes are allowed.
+- Returns: The carousel.

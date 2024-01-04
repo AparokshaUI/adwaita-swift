@@ -38,6 +38,7 @@ struct CarouselDemo: View {
             .frame(minWidth: 300, minHeight: 200)
             .frame(maxSize: 500)
         }
+        .longSwipes()
     }
 
 }

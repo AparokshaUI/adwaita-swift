@@ -91,6 +91,11 @@ This is an overview of the available widgets and other components in _Adwaita_.
 | ---------------------------- | --------------------------------------------------------------------------------------- |
 | `trailingSidebar(_:)`        | Whether the sidebar is trailing to the content view.                                    |
 
+### `Carousel` Modifiers
+| Syntax                       | Description                                                                             |
+| ---------------------------- | --------------------------------------------------------------------------------------- |
+| `longSwipes(_:)`             | Whether long swiping is enabled.                                                        |
+
 ### `ViewSwitcher` Modifiers
 | Syntax                       | Description                                                                             |
 | ---------------------------- | --------------------------------------------------------------------------------------- |

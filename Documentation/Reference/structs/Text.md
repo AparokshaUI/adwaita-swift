@@ -9,6 +9,10 @@ A text widget.
 
 The content.
 
+### `lineWrapping`
+
+Whether line wrapping is allowed.
+
 ## Methods
 ### `init(_:)`
 
@@ -26,3 +30,9 @@ Update the view storage of the text widget.
 
 Get the container of the text widget.
 - Returns: The view storage.
+
+### `wrap(_:)`
+
+Line wrapping allows the text view to span multiple lines if the width is narrow.
+- Parameter wrap: Whether to allow line wrapping.
+- Returns: The text.
