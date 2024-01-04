@@ -38,6 +38,7 @@
 /// }
 /// ```
 @propertyWrapper
+@dynamicMemberLookup
 public struct Binding<Value> {
 
     /// The value.
@@ -63,6 +64,17 @@ public struct Binding<Value> {
     private let getValue: () -> Value
     /// The closure for settings the value.
     private let setValue: (Value) -> Void
+
+    /// Get a property of any content of a `Binding` as a `Binding`.
+    /// - Parameter dynamicMember: The path to the member.
+    /// - Returns: The binding.
+    public subscript<Subject>(dynamicMember keyPath: WritableKeyPath<Value, Subject>) -> Binding<Subject> {
+        .init {
+            wrappedValue[keyPath: keyPath]
+        } set: { newValue in
+            wrappedValue[keyPath: keyPath] = newValue
+        }
+    }
 
     /// Initialize a property that is bound from a parent view.
     /// - Parameters:

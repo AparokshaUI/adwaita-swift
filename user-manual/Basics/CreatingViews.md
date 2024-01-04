@@ -131,6 +131,13 @@ struct ChangeTextView: View {
 }
 ```
 
+If you have a more complex type and want to pass a property of the type as a binding,
+you can just access the property on the binding.
+
+```swift
+HelloView(text: $complexType.text)
+```
+
 Whenever you modify a state property (directly or indirectly through bindings),
 the user interface gets automatically updated to reflect that change.
 
