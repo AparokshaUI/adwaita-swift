@@ -71,6 +71,11 @@ This is an overview of the available widgets and other components in _Adwaita_.
 | ---------------------------- | --------------------------------------------------------------------------------------- |
 | `headerBarTitle(view:)`      | Customize the title view in the header bar.                                             |
 
+### `Text` Modifiers
+| Syntax                       | Description                                                                                         |
+| ---------------------------- | --------------------------------------------------------------------------------------------------- |
+| `wrap(_:)`                   | Enable or disable line wrapping (expanding the text view to multiple lines if the width is narrow). |
+
 ### `Toggle` Modifiers
 | Syntax                       | Description                                                                             |
 | ---------------------------- | --------------------------------------------------------------------------------------- |
