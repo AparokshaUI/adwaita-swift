@@ -14,4 +14,11 @@ extension View {
             .valign(.center)
     }
 
+    /// Wrap the view in a horizontal stack and center horizontally.
+    /// - Returns: The view.
+    public func horizontalCenter() -> View {
+        HStack { self }
+            .halign(.center)
+    }
+
 }

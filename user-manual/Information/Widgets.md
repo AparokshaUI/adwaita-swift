@@ -59,6 +59,7 @@ This is an overview of the available widgets and other components in _Adwaita_.
 | `insensitive(_:)`                 | Make a view unable to detect actions. This is especially useful for overlays.           |
 | `onClick(handler:)`               | Run a function when the user clicks on the widget.                                      |
 | `verticalCenter()`                | Wrap a view in a `VStack` and center vertically.                                        |
+| `horizontalCenter()`              | Wrap a view in an `HStack` and center horizontally.                                     |
 
 ### `Button` Modifiers
 | Syntax                       | Description                                                                             |
