@@ -65,7 +65,9 @@ public struct SwitchRow: Widget {
             _ = row.addSuffix(suffixContent.view)
         }
         _ = row.onChange {
-            isOn = row.getActive()
+            if row.getActive() != isOn {
+                isOn = row.getActive()
+            }
         }
         update(row: row)
         return .init(row, content: [prefixID: [prefixContent], suffixID: [suffixContent]])

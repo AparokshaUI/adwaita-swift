@@ -85,7 +85,10 @@ public struct SpinRow: Widget {
             _ = row.addSuffix(suffixContent.view)
         }
         _ = row.onChange {
-            value = .init(row.getValue().rounded())
+            let value = Int(row.getValue().rounded())
+            if self.value != value {
+                self.value = value
+            }
         }
         update(row: row)
         return .init(row, content: [prefixID: [prefixContent], suffixID: [suffixContent]])
