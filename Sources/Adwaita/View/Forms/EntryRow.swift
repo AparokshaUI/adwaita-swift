@@ -28,6 +28,9 @@ public struct EntryRow: Widget {
     /// The identifier for the suffix content.
     let suffixID = "suffix"
 
+    /// The identifier for the title.
+    let titleID = "title"
+
     /// Initialize an entry row.
     /// - Parameters:
     ///     - title: The row's title.
@@ -72,7 +75,9 @@ public struct EntryRow: Widget {
             _ = row.addSuffix(suffixContent.view)
         }
         _ = row.changeHandler {
-            text = row.contents()
+            if row.contents() != text {
+                text = row.contents()
+            }
         }
         update(row: row)
         return .init(row, content: [prefixID: [prefixContent], suffixID: [suffixContent]])
@@ -81,7 +86,10 @@ public struct EntryRow: Widget {
     /// Update the entry row.
     /// - Parameter row: The entry row.
     func update(row: Libadwaita.EntryRow) {
-        _ = row.title(title)
+        if row.fields[titleID] as? String != title {
+            _ = row.title(title)
+            row.fields[titleID] = title
+        }
         if row.contents() != text {
             row.setContents(text)
         }
