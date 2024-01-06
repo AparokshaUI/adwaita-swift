@@ -18,6 +18,10 @@ Adwaita is an open source project. Visit the [GitHub repository][2] for bug repo
 ## Template Repository
 A template repository for Adwaita app projects is available [here][3].
 
+## Demo Application
+A demo application showcasing Adwaita's features is available [here][4]
+
 [1]:	https://brew.sh
 [2]:	https://github.com/AparokshaUI/Adwaita
 [3]:    https://github.com/AparokshaUI/AdwaitaTemplate
+[4]:    ../Tests/
