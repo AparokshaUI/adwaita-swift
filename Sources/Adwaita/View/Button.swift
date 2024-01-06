@@ -56,6 +56,7 @@ public struct Button: Widget {
             if let icon {
                 content?.setIcon(icon)
             }
+            _ = button.handler(handler)
         }
     }
 
