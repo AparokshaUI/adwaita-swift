@@ -34,32 +34,32 @@ This is an overview of the available widgets and other components in _Adwaita_.
 ### View Modifiers
 
 | Syntax                            | Description                                                                             |
-| --------------------------------- | --------------------------------------------------------------------------------------- |
-| `inspect(_:)`                     | Edit the underlying [Libadwaita][10] widget.                                            |
-| `padding(_:_:)`                   | Add empty space around a view.                                                          |
-| `hexpand(_:)`                     | Enable or disable the horizontal expansion of a view.                                   |
-| `vexpand(_:)`                     | Enable or disable the vertical expansion of a view.                                     |
-| `halign(_:)`                      | Set the horizontal alignment of a view.                                                 |
-| `valign(_:)`                      | Set the vertical alignment of a view.                                                   |
-| `frame(minWidth:minHeight:)`      | Set the view’s minimal width or height.                                                 |
-| `frame(maxSize:)`                 | Set the view’s maximal size.                                                            |
-| `transition(_:)`                  | Assign a transition with the view that is used if it is a direct child of an EitherView.|
-| `onUpdate(_:)`                    | Run a function every time a view gets updated.                                          |
-| `navigationTitle(_:)`             | Add a title that is used if the view is a direct child of a NavigationView.             |
-| `style(_:)`                       | Add a style class to the view.                                                          |
-| `onAppear(_:)`                    | Run when the view is rendered for the first time.                                       |
-| `inspectOnAppear(_:)`             | Edit the underlying [Libadwaita][10] class when the view is rendered for the first time.|
-| `topToolbar(visible:_:)`          | Add a native toolbar to the view. Normally, it contains a HeaderBar.                    |
-| `bottomToolbar(visible:_:)`       | Add a native bottom toolbar to the view.                                                |
-| `modifyContent(_:modify:)`        | Replace all occurrences of a certain view type with another view.                       |
-| `stopModifiers()`                 | Ignore all the `modifyContent(_:modify:)` modifiers from higher above in the view tree. |
-| `toast(_:signal:)`                | Show a toast on top of the view whenever the signal gets activated.                     |
-| `toast(_:signal:button:handler:)` | Show a toast with a button on top of the view whenever the signal gets activated.       |
-| `overlay(_:)`                     | Overlay a view with another view.                                                       |
-| `insensitive(_:)`                 | Make a view unable to detect actions. This is especially useful for overlays.           |
-| `onClick(handler:)`               | Run a function when the user clicks on the widget.                                      |
-| `verticalCenter()`                | Wrap a view in a `VStack` and center vertically.                                        |
-| `horizontalCenter()`              | Wrap a view in an `HStack` and center horizontally.                                     |
+| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `inspect(_:)`                     | Edit the underlying [Libadwaita](https://github.com/AparokshaUI/Libadwaita) widget.                                            |
+| `padding(_:_:)`                   | Add empty space around a view.                                                                                                 |
+| `hexpand(_:)`                     | Enable or disable the horizontal expansion of a view.                                                                          |
+| `vexpand(_:)`                     | Enable or disable the vertical expansion of a view.                                                                            |
+| `halign(_:)`                      | Set the horizontal alignment of a view.                                                                                        |
+| `valign(_:)`                      | Set the vertical alignment of a view.                                                                                          |
+| `frame(minWidth:minHeight:)`      | Set the view’s minimal width or height.                                                                                        |
+| `frame(maxSize:)`                 | Set the view’s maximal size.                                                                                                   |
+| `transition(_:)`                  | Assign a transition with the view that is used if it is a direct child of an EitherView.                                       |
+| `onUpdate(_:)`                    | Run a function every time a view gets updated.                                                                                 |
+| `navigationTitle(_:)`             | Add a title that is used if the view is a direct child of a NavigationView.                                                    |
+| `style(_:)`                       | Add a style class to the view.                                                                                                 |
+| `onAppear(_:)`                    | Run when the view is rendered for the first time.                                                                              |
+| `inspectOnAppear(_:)`             | Edit the underlying [Libadwaita](https://github.com/AparokshaUI/Libadwaita) class when the view is rendered for the first time.|
+| `topToolbar(visible:_:)`          | Add a native toolbar to the view. Normally, it contains a HeaderBar.                                                           |
+| `bottomToolbar(visible:_:)`       | Add a native bottom toolbar to the view.                                                                                       |
+| `modifyContent(_:modify:)`        | Replace all occurrences of a certain view type with another view.                                                              |
+| `stopModifiers()`                 | Ignore all the `modifyContent(_:modify:)` modifiers from higher above in the view tree.                                        |
+| `toast(_:signal:)`                | Show a toast on top of the view whenever the signal gets activated.                                                            |
+| `toast(_:signal:button:handler:)` | Show a toast with a button on top of the view whenever the signal gets activated.                                              |
+| `overlay(_:)`                     | Overlay a view with another view.                                                                                              |
+| `insensitive(_:)`                 | Make a view unable to detect actions. This is especially useful for overlays.                                                  |
+| `onClick(handler:)`               | Run a function when the user clicks on the widget.                                                                             |
+| `verticalCenter()`                | Wrap a view in a `VStack` and center vertically.                                                                               |
+| `horizontalCenter()`              | Wrap a view in an `HStack` and center horizontally.                                                                            |
 
 ### `Button` Modifiers
 | Syntax                       | Description                                                                             |
