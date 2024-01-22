@@ -5,8 +5,6 @@
 //  Created by david-swift on 09.12.23.
 //
 
-import Libadwaita
-
 /// A window type.
 public protocol WindowType {
 

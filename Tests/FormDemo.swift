@@ -8,7 +8,6 @@
 // swiftlint:disable missing_docs no_magic_numbers
 
 import Adwaita
-import Libadwaita
 
 struct FormDemo: View {
 
@@ -37,32 +36,30 @@ struct FormDemo: View {
         var view: Body {
             ScrollView {
                 VStack {
-                    Form {
-                        ActionRow("Rows have a title")
-                            .subtitle(text)
-                        ActionRow("Rows can have suffix widgets")
-                            .suffix {
-                                Button("Action") { }
-                                    .verticalCenter()
-                            }
-                    }
-                    .padding()
+                    actionRows
                     FormSection("Entry Rows") {
                         Form {
                             EntryRow("Entry Row", text: $text)
                                 .suffix {
-                                    Button(icon: .default(icon: .editCopy)) { Clipboard.copy(text) }
+                                    Button(icon: .default(icon: .editCopy)) { State<Any>.copy(text) }
                                         .style("flat")
                                         .verticalCenter()
                                 }
-                            EntryRow("Password", text: $password)
-                                .secure()
+                            EntryRow(password, text: $password)
+                                .secure(text: $password)
                         }
                     }
                     .padding()
-                    rowDemo("Spin Rows", row: SpinRow("Spin Row", value: $value, min: 0, max: 100))
-                    rowDemo("Switch Rows", row: SwitchRow("Switch Row", isOn: $isOn))
-                    rowDemo("Combo Rows", row: ComboRow("Combo Row", selection: $selection, values: values))
+                    rowDemo("Spin Rows", row: SpinRow("Spin Row", value: $value, min: 0, max: 100).subtitle("\(value)"))
+                    rowDemo("Switch Rows", row: SwitchRow("Switch Row", isOn: $isOn).subtitle(isOn ? "On" : "Off"))
+                    rowDemo(
+                        "Combo Rows",
+                        row: ComboRow("Combo Row", selection: $selection, values: values).subtitle(selection)
+                    )
+                    rowDemo("Expander Rows", row: ExpanderRow().title("Expander Row").rows {
+                        ActionRow("Hello")
+                        ActionRow("World")
+                    })
                 }
                 .padding()
                 .frame(maxSize: 400)
@@ -70,6 +67,19 @@ struct FormDemo: View {
             .topToolbar {
                 HeaderBar.empty()
             }
+        }
+
+        var actionRows: Form {
+            .init {
+                ActionRow("Rows have a title")
+                    .subtitle(text)
+                ActionRow("Rows can have suffix widgets")
+                    .suffix {
+                        Button("Action") { }
+                            .verticalCenter()
+                    }
+            }
+            .padding()
         }
 
         func rowDemo(_ title: String, row: View) -> View {

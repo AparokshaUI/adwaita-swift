@@ -14,14 +14,6 @@ body:
 
   - type: textarea
     attributes:
-      label: Name the equivalents in Libadwaita.
-      placeholder: >-
-        A list of the equivalents in the Libadwaita library (see dependencies).
-    validations:
-      required: true
-
-  - type: textarea
-    attributes:
       label: Describe your idea for the implementation.
       placeholder: >-
         What could the implementation be like in Adwaita?

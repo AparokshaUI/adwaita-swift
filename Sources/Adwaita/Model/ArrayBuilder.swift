@@ -9,8 +9,6 @@
 //  https://gist.github.com/JadenGeller/c375fc15ad5900a0ddac4ed8ba8307a9
 //
 
-import Foundation
-
 /// The ``ArrayBuilder`` is a simple result builder that outputs an array of any type.
 ///
 /// You can define any array using Swift's DSL:

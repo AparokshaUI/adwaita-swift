@@ -5,7 +5,7 @@
 //  Created by david-swift on 22.10.23.
 //
 
-import Libadwaita
+import CAdw
 
 /// A section for menus.
 public struct MenuSection: MenuItem {
@@ -24,9 +24,9 @@ public struct MenuSection: MenuItem {
     ///   - menu: The menu.
     ///   - app: The application containing the menu.
     ///   - window: The application window containing the menu.
-    public func addMenuItem(menu: Libadwaita.Menu, app: GTUIApp, window: GTUIApplicationWindow?) {
-        let section = Libadwaita.Menu()
-        _ = menu.append("", section: section)
+    public func addMenuItem(menu: OpaquePointer?, app: GTUIApp, window: GTUIApplicationWindow?) {
+        let section = g_menu_new()
+        g_menu_append_section(menu, nil, section?.cast())
         for element in sectionContent {
             element.addMenuItems(menu: section, app: app, window: window)
         }

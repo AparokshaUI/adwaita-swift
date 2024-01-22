@@ -5,8 +5,6 @@
 //  Created by david-swift on 26.09.23.
 //
 
-import Libadwaita
-
 /// A storage for `@State` properties.
 public struct StateWrapper: Widget {
 
@@ -50,7 +48,7 @@ public struct StateWrapper: Widget {
     /// - Returns: The view storage.
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let content = content().widget(modifiers: modifiers).container(modifiers: modifiers)
-        return .init(content.view, content: [.mainContent: [content]], state: state)
+        return .init(content.pointer, content: [.mainContent: [content]], state: state)
     }
 
 }

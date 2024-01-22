@@ -5,13 +5,13 @@
 //  Created by david-swift on 29.11.23.
 //
 
-import Libadwaita
+import CAdw
 
 /// A widget which executes a custom code when being rendered for the first time.
 struct AppearObserver: Widget {
 
     /// The function.
-    var onAppear: (NativeWidgetPeer) -> Void
+    var onAppear: (ViewStorage) -> Void
     /// The content.
     var content: View
 
@@ -20,7 +20,7 @@ struct AppearObserver: Widget {
     /// - Returns: The content's container.
     func container(modifiers: [(View) -> View]) -> ViewStorage {
         let storage = content.storage(modifiers: modifiers)
-        onAppear(storage.view)
+        onAppear(storage)
         return storage
     }
 
@@ -39,7 +39,7 @@ extension View {
     /// Run a function on the widget when it appears for the first time.
     /// - Parameter closure: The function.
     /// - Returns: A view.
-    public func inspectOnAppear(_ closure: @escaping (NativeWidgetPeer) -> Void) -> View {
+    public func inspectOnAppear(_ closure: @escaping (ViewStorage) -> Void) -> View {
         AppearObserver(onAppear: closure, content: self)
     }
 
@@ -54,7 +54,12 @@ extension View {
     /// - Parameter handler: The function.
     /// - Returns: A view.
     public func onClick(handler: @escaping () -> Void) -> View {
-        inspectOnAppear { _ = $0.onClick(closure: handler) }
+        inspectOnAppear { storage in
+            let controller = ViewStorage(gtk_gesture_click_new())
+            gtk_widget_add_controller(storage.pointer?.cast(), controller.pointer)
+            storage.fields["controller"] = controller
+            controller.connectSignal(name: "stopped", argCount: 0, handler: handler)
+        }
     }
 
 }

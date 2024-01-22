@@ -160,3 +160,6 @@ type_contents_order:
         - view_life_cycle_method
         - ib_action
         - other_method
+
+excluded:
+    - Sources/Adwaita/View/Generated/

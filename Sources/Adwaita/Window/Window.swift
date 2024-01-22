@@ -8,7 +8,6 @@
 // swiftlint:disable discouraged_optional_collection
 
 import Foundation
-import Libadwaita
 
 /// A structure representing an application window type.
 ///
@@ -58,7 +57,6 @@ public struct Window: WindowScene {
         let windowStorage = WindowStorage(id: id, window: window, view: storage)
         window.observeHide {
             windowStorage.destroy = true
-            return false
         }
         windowStorage.parentID = parentID
         return windowStorage
@@ -80,7 +78,7 @@ public struct Window: WindowScene {
     func getViewStorage(window: GTUIApplicationWindow) -> ViewStorage {
         let content = content(window)
         let storage = content.widget(modifiers: []).container(modifiers: [])
-        window.setChild(storage.view)
+        window.setChild(storage.pointer)
         window.setDefaultSize(width: defaultSize?.0, height: defaultSize?.1)
         setProperties(window: window)
         updateShortcuts(window: window)
@@ -139,7 +137,6 @@ public struct Window: WindowScene {
         _ signal: Signal,
         initialFolder: URL? = nil,
         extensions: [String]? = nil,
-        folders: Bool = false,
         onOpen: @escaping (URL) -> Void,
         onClose: @escaping () -> Void
     ) -> Scene {
@@ -151,7 +148,6 @@ public struct Window: WindowScene {
                     importer: signal.id.uuidString,
                     initialFolder: initialFolder,
                     extensions: extensions,
-                    folders: folders,
                     onOpen: onOpen,
                     onClose: onClose
                 )

@@ -5,7 +5,7 @@
 //  Created by david-swift on 22.10.23.
 //
 
-import Libadwaita
+import CAdw
 
 /// A button widget for menus.
 public struct MenuButton: MenuItem {
@@ -18,6 +18,9 @@ public struct MenuButton: MenuItem {
     var shortcut = ""
     /// Whether to prefer adding the action to the application window.
     var preferApplicationWindow: Bool
+
+    /// The action label.
+    var filteredLabel: String { label.filter { $0.isLetter || $0.isNumber || $0 == "-" || $0 == "." } }
 
     /// Initialize a menu button.
     /// - Parameters:
@@ -35,11 +38,13 @@ public struct MenuButton: MenuItem {
     ///   - menu: The menu.
     ///   - app: The application containing the menu.
     ///   - window: The application window containing the menu.
-    public func addMenuItem(menu: Libadwaita.Menu, app: GTUIApp, window: GTUIApplicationWindow?) {
+    public func addMenuItem(menu: OpaquePointer?, app: GTUIApp, window: GTUIApplicationWindow?) {
         if let window, preferApplicationWindow {
-            _ = menu.append(label, window: window, shortcut: shortcut, handler: handler)
+            window.addKeyboardShortcut(shortcut, id: filteredLabel, handler: handler)
+            g_menu_append(menu, label, "win." + filteredLabel)
         } else {
-            _ = menu.append(label, app: app, shortcut: shortcut, handler: handler)
+            app.addKeyboardShortcut(shortcut, id: filteredLabel, handler: handler)
+            g_menu_append(menu, label, "app." + filteredLabel)
         }
     }
 

@@ -8,7 +8,6 @@
 // swiftlint:disable discouraged_optional_collection
 
 import Foundation
-import Libadwaita
 
 /// A structure representing a file dialog window.
 public struct FileDialog: WindowScene {
@@ -29,8 +28,6 @@ public struct FileDialog: WindowScene {
     var initialName: String?
     /// The accepted extensions for the file importer.
     var extensions: [String]?
-    /// Whether folders are accepted in the file importer.
-    var folders = false
     /// The closure to run when the import or export is successful.
     var result: ((URL) -> Void)?
     /// The closure to run when the import or export is not successful.
@@ -48,14 +45,12 @@ public struct FileDialog: WindowScene {
         importer: String,
         initialFolder: URL? = nil,
         extensions: [String]? = nil,
-        folders: Bool = false,
         onOpen: @escaping (URL) -> Void,
         onClose: @escaping () -> Void
     ) {
         self.id = importer
         self.initialFolder = initialFolder
         self.extensions = extensions
-        self.folders = folders
         self.result = onOpen
         self.cancel = onClose
     }
@@ -86,7 +81,7 @@ public struct FileDialog: WindowScene {
     /// - Parameter app: The application.
     /// - Returns: The storage.
     public func createWindow(app: GTUIApp) -> WindowStorage {
-        let window = Libadwaita.FileDialog(nil)
+        let window = GTUIFileDialog()
         let windowStorage = WindowStorage(id: id, window: window, view: nil)
         windowStorage.parentID = parentID
         update(window: window)
@@ -99,7 +94,7 @@ public struct FileDialog: WindowScene {
     ///     - app: The application.
     public func update(_ storage: WindowStorage, app: GTUIApp) {
         updateAppShortcuts(app: app)
-        if let window = storage.window as? Libadwaita.FileDialog {
+        if let window = storage.window as? GTUIFileDialog {
             update(window: window)
         }
         storage.destroy = true
@@ -107,13 +102,13 @@ public struct FileDialog: WindowScene {
 
     /// Update the window.
     /// - Parameter window: The window.
-    func update(window: Libadwaita.FileDialog) {
+    func update(window: GTUIFileDialog) {
         window.isImporter = importer
         window.folder = initialFolder
         if let initialName {
             window.setInitialName(initialName)
         }
-        window.setExtensions(extensions, folders: folders)
+        window.setExtensions(extensions)
         if let result {
             window.onResult = result
         }

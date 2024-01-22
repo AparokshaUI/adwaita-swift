@@ -55,10 +55,4 @@ struct ToolbarDemo: View {
 
 }
 
-extension Int: Identifiable {
-
-    public var id: Self { self }
-
-}
-
 // swiftlint:enable missing_docs no_magic_numbers

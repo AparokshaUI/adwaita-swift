@@ -5,8 +5,8 @@
 //  Created by david-swift on 06.08.23.
 //
 
+import CAdw
 import Foundation
-import Libadwaita
 
 /// A property wrapper for properties in a view that should be stored throughout view updates.
 @propertyWrapper
@@ -110,11 +110,23 @@ public struct State<Value>: StateProtocol {
         }
     }
 
+    /// The directory used for storing user data.
+    /// - Returns: The URL.
+    public static func userDataDir() -> URL {
+        .init(fileURLWithPath: .init(cString: g_get_user_data_dir()))
+    }
+
+    /// Copy a text to the clipboard.
+    /// - Parameter text: The text.
+    public static func copy(_ text: String) {
+        let clipboard = gdk_display_get_clipboard(gdk_display_get_default())
+        gdk_clipboard_set_text(clipboard, text)
+    }
+
     /// Get the settings directory path.
     /// - Returns: The path.
     private func dirPath() -> URL {
-        NativePeer
-            .getUserDataDirectory()
+        Self.userDataDir()
             .appendingPathComponent(content.storage.folder ?? GTUIApp.appID, isDirectory: true)
     }
 

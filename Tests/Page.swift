@@ -8,7 +8,6 @@
 // swiftlint:disable missing_docs implicitly_unwrapped_optional
 
 import Adwaita
-import Libadwaita
 
 enum Page: String, Identifiable, CaseIterable, Codable {
 
@@ -40,7 +39,7 @@ enum Page: String, Identifiable, CaseIterable, Codable {
         }
     }
 
-    var icon: Libadwaita.Icon? {
+    var icon: Icon? {
         switch self {
         case .welcome:
             return .default(icon: .emojiNature)

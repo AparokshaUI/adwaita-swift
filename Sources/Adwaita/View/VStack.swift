@@ -5,40 +5,27 @@
 //  Created by david-swift on 23.08.23.
 //
 
-import Libadwaita
+import CAdw
 
 /// A GtkBox equivalent.
-public struct VStack: Widget {
+public typealias VStack = Box
 
-    /// The content.
-    var content: () -> Body
+extension VStack {
 
     /// Initialize a `VStack`.
     /// - Parameter content: The view content.
     public init(@ViewBuilder content: @escaping () -> Body) {
-        self.content = content
+        self.init(horizontal: false, content: content)
     }
 
-    /// Update a view storage.
-    /// - Parameters:
-    ///     - storage: The view storage.
-    ///     - modifiers: Modify views before being updated.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
-        content().update(storage.content[.mainContent] ?? [], modifiers: modifiers)
-    }
-
-    /// Get a view storage.
-    /// - Parameter modifiers: Modify views before being updated.
-    /// - Returns: The view storage.
-    public func container(modifiers: [(View) -> View]) -> ViewStorage {
-        let box: Box = .init(horizontal: false)
-        var content: [ViewStorage] = []
-        for element in self.content() {
-            let widget = element.storage(modifiers: modifiers)
-            _ = box.append(widget.view)
-            content.append(widget)
+    init(horizontal: Bool, @ViewBuilder content: @escaping () -> Body) {
+        self.init(spacing: 0)
+        self = self.append(content)
+        if horizontal {
+            appearFunctions.append { storage in
+                gtk_orientable_set_orientation(storage.pointer, GTK_ORIENTATION_HORIZONTAL)
+            }
         }
-        return .init(box, content: [.mainContent: content])
     }
 
 }

@@ -5,15 +5,20 @@
 //  Created by david-swift on 05.08.23.
 //
 
-import Libadwaita
+import CAdw
 
 /// The GTUI application.
-public class GTUIApp: Application {
+public class GTUIApp {
 
     /// The handlers which are called when a state changes.
     static var updateHandlers: [() -> Void] = []
     /// The app's id for the file name for storing the data.
     static var appID = "temporary"
+
+    /// The pointer to the application.
+    public var pointer: UnsafeMutablePointer<GtkApplication>?
+    /// Fields for additional information.
+    public var fields: [String: Any] = [:]
 
     /// The app's content.
     var body: () -> App
@@ -28,11 +33,11 @@ public class GTUIApp: Application {
     ///     - body: The application's content.
     init(_ id: String, body: @escaping () -> App) {
         self.body = body
-        super.init(name: id)
+        self.pointer = adw_application_new(id, G_APPLICATION_DEFAULT_FLAGS)?.cast()
     }
 
     /// The entry point of the application.
-    override public func onActivate() {
+    public func onActivate() {
         let body = body()
         for windowScene in body.scene.windows() {
             for _ in 0..<windowScene.open {
@@ -40,6 +45,53 @@ public class GTUIApp: Application {
             }
             setParentWindows()
         }
+    }
+
+    /// Run the application.
+    public func run() {
+        let data = ViewStorage.SignalData { self.onActivate() }
+        fields["run"] = data
+        g_signal_connect_data(
+            pointer?.cast(),
+            "activate",
+            unsafeBitCast(data.handler, to: GCallback.self),
+            Unmanaged.passUnretained(data).toOpaque().cast(),
+            nil,
+            G_CONNECT_AFTER
+        )
+        g_application_run(pointer?.cast(), 0, nil)
+    }
+
+    /// Add a keyboard shortcut to the application.
+    /// - Parameters:
+    ///     - shortcut: The keyboard shortcut.
+    ///     - id: The action's id.
+    ///     - window: Optionally an application window.
+    ///     - handler: The action's handler.
+    public func addKeyboardShortcut(
+        _ shortcut: String,
+        id: String,
+        window: GTUIApplicationWindow? = nil,
+        handler: @escaping () -> Void
+    ) {
+        let action = g_simple_action_new(id, nil)
+        let data = ViewStorage.SignalData(closure: handler)
+        g_signal_connect_data(
+            action?.cast(),
+            "activate",
+            unsafeBitCast(data.threeParamsHandler, to: GCallback.self),
+            Unmanaged.passUnretained(data).toOpaque().cast(),
+            nil,
+            G_CONNECT_AFTER
+        )
+        if let window {
+            g_action_map_add_action(.init(window.pointer), action)
+            window.fields[id] = data
+        } else {
+            g_action_map_add_action(.init(pointer), action)
+            fields[id] = data
+        }
+        gtk_application_set_accels_for_action(pointer, (window == nil ? "app." : "win.") + id, [shortcut].cArray)
     }
 
     /// Focus the window with a certain id. Create the window if it doesn't already exist.
@@ -75,4 +127,10 @@ public class GTUIApp: Application {
         }
       }
     }
+
+    /// Terminate the application.
+    public func quit() {
+        g_application_quit(pointer?.cast())
+    }
+
 }

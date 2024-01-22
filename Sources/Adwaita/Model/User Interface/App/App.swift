@@ -5,8 +5,6 @@
 //  Created by david-swift on 05.08.23.
 //
 
-import Libadwaita
-
 /// A structure conforming to `App` is the entry point of your app.
 ///
 /// ```swift

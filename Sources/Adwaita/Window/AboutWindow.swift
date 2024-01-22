@@ -5,8 +5,8 @@
 //  Created by david-swift on 05.12.23.
 //
 
+import CAdw
 import Foundation
-import Libadwaita
 
 /// A structure representing an about window.
 public struct AboutWindow: WindowScene {
@@ -20,15 +20,17 @@ public struct AboutWindow: WindowScene {
     /// The keyboard shortcuts on the app level.
     public var appShortcuts: [String: (GTUIApp) -> Void] = [:]
     /// The app's name.
-    var appName: String
+    var appName: String?
     /// The developer's name.
-    var developer: String
+    var developer: String?
     /// The app version.
-    var version: String
+    var version: String?
     /// The app icon.
     var icon: Icon?
     /// The app's website.
     var website: URL?
+    /// The path to the app data file.
+    var path: URL?
 
     /// Create a window type with a certain identifier and content.
     /// - Parameters:
@@ -41,6 +43,15 @@ public struct AboutWindow: WindowScene {
         self.appName = appName
         self.developer = developer
         self.version = version
+    }
+
+    /// Create a window type with a certain identifier and content.
+    /// - Parameters:
+    ///   - id: The identifier.
+    ///   - path: The path to the app data file.
+    public init(id: String, path: URL) {
+        self.id = id
+        self.path = path
     }
 
     /// Set the app icon.
@@ -74,8 +85,13 @@ public struct AboutWindow: WindowScene {
     /// Get the window.
     /// - Parameter app: The application.
     /// - Returns: The window.
-    func createGTUIWindow(app: GTUIApp) -> Libadwaita.AboutWindow {
-        let window = Libadwaita.AboutWindow()
+    func createGTUIWindow(app: GTUIApp) -> GTUIAboutWindow {
+        let window: GTUIAboutWindow
+        if let path {
+            window = .init(filePath: path.path)
+        } else {
+            window = .init()
+        }
         updateAppShortcuts(app: app)
         updateData(window: window)
         window.show()
@@ -93,9 +109,11 @@ public struct AboutWindow: WindowScene {
 
     /// Update the data for a window.
     /// - Parameter window: The window.
-    func updateData(window: Libadwaita.AboutWindow) {
-        _ = window.generalData(title: appName, icon: icon ?? .custom(name: ""), developer: developer, version: version)
-        if let website { _ = window.website(url: website.absoluteString) }
+    func updateData(window: GTUIAboutWindow) {
+        if let appName, let icon, let developer, let version {
+            window.generalData(title: appName, icon: icon, developer: developer, version: version)
+        }
+        if let website { window.website(url: website.absoluteString) }
     }
 
 }

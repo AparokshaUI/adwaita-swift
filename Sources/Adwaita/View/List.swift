@@ -5,112 +5,57 @@
 //  Created by david-swift on 25.09.23.
 //
 
-import LevenshteinTransformations
-import Libadwaita
+import CAdw
 
 /// A list box widget.
-public struct List<Element>: Widget where Element: Identifiable {
+public typealias List = ListBox
 
-    /// The elements.
-    var elements: [Element]
-    /// The content.
-    var content: (Element) -> Body
-    /// The identifier of the selected element.
-    @Binding var selection: Element.ID
+extension List {
 
-    /// The identifier of the elements storage.
-    let elementsID = "elements"
+    /// The ID for the field storing the selection value.
+    static var selectionField: String { "selection" }
+    /// The ID for the field storing the elements.
+    static var elementsField: String { "element" }
 
     /// Initialize `List`.
     /// - Parameters:
     ///   - elements: The elements.
-    ///   - selection: The identifier of the selected element.
+    ///   - selection: The identifier of the selected element. Selection disabled if `nil`.
     ///   - content: The view for an element.
     public init(
         _ elements: [Element],
-        selection: Binding<Element.ID>,
+        selection: Binding<Element.ID>?,
         @ViewBuilder content: @escaping (Element) -> Body
     ) {
-        self.content = content
-        self.elements = elements
-        self._selection = selection
-    }
-
-    /// Update a view storage.
-    /// - Parameters:
-    ///     - storage: The view storage.
-    ///     - modifiers: Modify views before being updated.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
-        if let box = storage.view as? ListBox {
-            var content: [ViewStorage] = storage.content[.mainContent] ?? []
-            updateList(box: box, content: .init { content } set: { content = $0 }, modifiers: modifiers)
-            storage.content[.mainContent] = content
-            for (index, element) in elements.enumerated() {
-                self.content(element).widget(modifiers: modifiers).update(content[index], modifiers: modifiers)
+        self.init(elements, content: content)
+        let id: (ViewStorage, [Element]) -> Element.ID? = { storage, elements in
+            if let row = gtk_list_box_get_selected_row(storage.pointer) {
+                return elements[safe: .init(gtk_list_box_row_get_index(row))]?.id
+            }
+            return nil
+        }
+        if let selection {
+            appearFunctions.append { storage in
+                storage.fields[Self.selectionField] = selection
+                storage.connectSignal(name: "selected_rows_changed", id: Self.selectionField) {
+                    if let binding = storage.fields[Self.selectionField] as? Binding<Element.ID>,
+                    let elements = storage.fields[Self.elementsField] as? [Element],
+                    let id = id(storage, elements) {
+                        binding.wrappedValue = id
+                    }
+                }
+            }
+            updateFunctions.append { storage in
+                if selection.wrappedValue != id(storage, elements),
+                let index = elements.firstIndex(where: { $0.id == selection.wrappedValue })?.cInt {
+                    gtk_list_box_select_row(storage.pointer, gtk_list_box_get_row_at_index(storage.pointer, index))
+                }
+            }
+        } else {
+            appearFunctions.append { storage in
+                gtk_list_box_set_selection_mode(storage.pointer, GTK_SELECTION_NONE)
             }
         }
-    }
-
-    /// Get a view storage.
-    /// - Parameter modifiers: Modify views before being updated.
-    /// - Returns: The view storage.
-    public func container(modifiers: [(View) -> View]) -> ViewStorage {
-        let box: ListBox = .init()
-        var content: [ViewStorage] = []
-        updateList(box: box, content: .init { content } set: { content = $0 }, modifiers: modifiers)
-        _ = box.handler {
-            let selection = box.getSelectedRow()
-            if let id = (box.fields[elementsID] as? [Element] ?? elements)[safe: selection]?.id {
-                self.selection = id
-            }
-        }
-        return .init(box, content: [.mainContent: content])
-    }
-
-    /// Update the list's content and selection.
-    /// - Parameters:
-    ///     - box: The list box.
-    ///     - content: The content's view storage.
-    ///     - modifiers: The view modifiers.
-    func updateList(box: ListBox, content: Binding<[ViewStorage]>, modifiers: [(View) -> View]) {
-        let old = box.fields[elementsID] as? [Element] ?? []
-        old.identifiableTransform(
-            to: elements,
-            functions: .init { index, element in
-                let widget = getWidget(element: element, modifiers: modifiers)
-                _ = box.remove(at: index)
-                _ = box.insert(widget.view, at: index)
-                content.wrappedValue.remove(at: index)
-                content.wrappedValue.insert(widget, at: index)
-            } delete: { index in
-                _ = box.remove(at: index)
-                content.wrappedValue.remove(at: index)
-                updateSelection(box: box)
-            } insert: { index, element in
-                let widget = getWidget(element: element, modifiers: modifiers)
-                _ = box.insert(widget.view, at: index)
-                content.wrappedValue.insert(widget, at: index)
-            }
-        )
-        box.fields[elementsID] = elements
-        updateSelection(box: box)
-    }
-
-    /// Update the list's selection.
-    /// - Parameter box: The list box.
-    func updateSelection(box: ListBox) {
-        if let index = elements.firstIndex(where: { $0.id == selection }) {
-            box.selectRow(at: index)
-        }
-    }
-
-    /// Get the view storage of an element.
-    /// - Parameters:
-    ///     - element: The element.
-    ///     - modifiers: The modifiers.
-    /// - Returns: The view storage.
-    func getWidget(element: Element, modifiers: [(View) -> View]) -> ViewStorage {
-        self.content(element).widget(modifiers: modifiers).container(modifiers: modifiers)
     }
 
     /// Add the "navigation-sidebar" style class.

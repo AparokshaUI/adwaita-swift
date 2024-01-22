@@ -5,8 +5,6 @@
 //  Created by david-swift on 05.08.23.
 //
 
-import Libadwaita
-
 /// A structure conforming to `View` is referred to as a view.
 /// It can be part of a body.
 ///
@@ -37,13 +35,7 @@ extension View {
         if let peer = modified as? Widget {
             return peer
         } else {
-            var state: [String: StateProtocol] = [:]
-            for property in Mirror(reflecting: self).children {
-                if let label = property.label, let value = property.value as? StateProtocol {
-                    state[label] = value
-                }
-            }
-            return StateWrapper(content: { view }, state: state)
+            return StateWrapper(content: { view }, state: getState())
         }
     }
 
@@ -56,8 +48,18 @@ extension View {
         if let widget = modified as? Widget {
             widget.update(storage, modifiers: modifiers)
         } else {
-            StateWrapper { self }.update(storage, modifiers: modifiers)
+            StateWrapper(content: { view }, state: getState()).update(storage, modifiers: modifiers)
         }
+    }
+
+    func getState() -> [String: StateProtocol] {
+        var state: [String: StateProtocol] = [:]
+        for property in Mirror(reflecting: self).children {
+            if let label = property.label, let value = property.value as? StateProtocol {
+                state[label] = value
+            }
+        }
+        return state
     }
 
     /// Get a storage.

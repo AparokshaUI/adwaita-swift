@@ -44,7 +44,7 @@ struct Demo: App {
             .closeShortcut()
             .defaultSize(width: 400, height: 250)
             Window(id: "toolbar-demo", open: 0) { _ in
-                ToolbarDemo.WindowContent()
+                ToolbarDemo.WindowContent().stopModifiers()
             }
             .closeShortcut()
             .defaultSize(width: 400, height: 250)
@@ -77,7 +77,7 @@ struct Demo: App {
         var app: GTUIApp!
 
         var view: Body {
-            OverlaySplitView(visible: sidebarVisible) {
+            OverlaySplitView(visible: $sidebarVisible) {
                 ScrollView {
                     List(Page.allCases, selection: $selection) { element in
                         Text(element.label)
@@ -91,9 +91,7 @@ struct Demo: App {
                         menu
                     }
                     .headerBarTitle {
-                        Text("Demo")
-                            .style("heading")
-                            .transition(.crossfade)
+                        WindowTitle(subtitle: "", title: "Demo")
                     }
                 }
             } content: {
@@ -119,8 +117,7 @@ struct Demo: App {
                             Text("")
                                 .transition(.crossfade)
                         } else {
-                            Text("Swift Adwaita Demo")
-                                .style("heading")
+                            WindowTitle(subtitle: "Demo", title: selection.label)
                                 .transition(.crossfade)
                         }
                     }
@@ -145,6 +142,7 @@ struct Demo: App {
                         .keyboardShortcut("q".ctrl())
                 }
             }
+            .primary()
         }
 
     }

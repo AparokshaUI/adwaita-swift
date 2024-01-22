@@ -5,7 +5,7 @@
 //  Created by david-swift on 24.09.23.
 //
 
-import Libadwaita
+import CAdw
 
 /// A navigation split view widget.
 public struct NavigationSplitView: Widget {
@@ -33,20 +33,22 @@ public struct NavigationSplitView: Widget {
     /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: The view storage.
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
-        let splitView: Libadwaita.NavigationSplitView = .init()
+        let splitView = adw_navigation_split_view_new()
         var content: [String: [ViewStorage]] = [:]
 
         let sidebar = sidebar().widget(modifiers: modifiers).container(modifiers: modifiers)
-        let label = sidebar.view.fields[.navigationLabel] as? String ?? ""
-        _ = splitView.sidebar(sidebar.view, title: label)
+        let label = sidebar.fields[.navigationLabel] as? String ?? ""
+        let sidebarPage = adw_navigation_page_new(sidebar.pointer?.cast(), label)
+        adw_navigation_split_view_set_sidebar(.init(splitView), sidebarPage?.cast())
         content[sidebarID] = [sidebar]
 
         let mainContent = self.content().widget(modifiers: modifiers).container(modifiers: modifiers)
-        let mainLabel = mainContent.view.fields[.navigationLabel] as? String ?? ""
-        _ = splitView.content(mainContent.view, title: mainLabel)
+        let mainLabel = mainContent.fields[.navigationLabel] as? String ?? ""
+        let mainPage = adw_navigation_page_new(mainContent.pointer?.cast(), mainLabel)
+        adw_navigation_split_view_set_content(.init(splitView), mainPage?.cast())
         content[contentID] = [mainContent]
 
-        return .init(splitView, content: content)
+        return .init(.init(splitView), content: content)
     }
 
     /// Update the view storage of the navigation split view widget.

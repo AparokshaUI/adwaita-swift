@@ -5,7 +5,7 @@
 //  Created by david-swift on 03.01.24.
 //
 
-import Libadwaita
+import CAdw
 
 /// A picker used for indicating multiple views.
 ///
@@ -27,18 +27,27 @@ public struct ViewSwitcher<Element>: Widget where Element: ViewSwitcherOption {
     /// - Parameter modifiers: Modify views before being updated.
     /// - Returns: The view storage.
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
-        let switcher = Libadwaita.ViewSwitcher()
+        let switcher = ViewStorage(.init(adw_view_switcher_new()))
+        let stack = ViewStorage(.init(adw_view_stack_new()))
+        adw_view_switcher_set_stack(switcher.pointer, stack.pointer)
         for option in Element.allCases {
-            _ = switcher.addOption(title: option.title, icon: option.icon)
+            adw_view_stack_add_titled_with_icon(
+                stack.pointer,
+                gtk_label_new(""),
+                option.title,
+                option.title,
+                option.icon.string
+            )
         }
-        _ = switcher.onSelect {
-            let selection = switcher.getSelection()
-            if let element = Element(title: selection) {
-                self.selection = element
+        stack.notify(name: "visible-child") {
+            if let title = adw_view_stack_get_visible_child_name(stack.pointer),
+            let option = Element(title: .init(cString: title)) {
+                selection = option
             }
         }
         updateSwitcher(switcher: switcher)
-        return .init(switcher)
+        switcher.fields["stack"] = stack
+        return switcher
     }
 
     /// Update a view switcher's view storage.
@@ -46,16 +55,18 @@ public struct ViewSwitcher<Element>: Widget where Element: ViewSwitcherOption {
     ///     - storage: The view storage.
     ///     - modifiers: Modify views before being updated.
     public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
-        if let switcher = storage.view as? Libadwaita.ViewSwitcher {
-            updateSwitcher(switcher: switcher)
-        }
+        updateSwitcher(switcher: storage)
     }
 
     /// Update a view switcher's style and selection.
     /// - Parameter switcher: The view switcher.
-    func updateSwitcher(switcher: Libadwaita.ViewSwitcher) {
-        _ = switcher.wideDesign(wide)
-        switcher.select(title: selection.title)
+    func updateSwitcher(switcher: ViewStorage) {
+        adw_view_switcher_set_policy(
+            switcher.pointer,
+            wide ? ADW_VIEW_SWITCHER_POLICY_WIDE : ADW_VIEW_SWITCHER_POLICY_NARROW
+        )
+        let stack = adw_view_switcher_get_stack(switcher.pointer)
+        adw_view_stack_set_visible_child_name(stack, selection.title)
     }
 
     /// Set whether to use the wide design.
