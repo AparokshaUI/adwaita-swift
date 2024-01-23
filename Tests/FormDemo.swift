@@ -69,8 +69,8 @@ struct FormDemo: View {
             }
         }
 
-        var actionRows: Form {
-            .init {
+        var actionRows: View {
+            Form {
                 ActionRow("Rows have a title")
                     .subtitle(text)
                 ActionRow("Rows can have suffix widgets")

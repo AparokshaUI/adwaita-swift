@@ -67,7 +67,7 @@ Properties of the type `GtkWidget` can be used in the following way:
 }
 ```
 
-`GMenuModel` is treated in a similarly:
+`GMenuModel` is treated similarly:
 ```swift
 var view: Body {
     SplitButton()
@@ -87,3 +87,4 @@ var view: Body {
 Some properties can be changed by a user action (e.g. toggles).
 They expect a binding instead of a "normal" value.
 Compilation error messages will be helpful in spotting those properties.
+
