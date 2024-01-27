@@ -34,9 +34,10 @@ Get a stack's view storage.
 - Parameter modifiers: Modify views before being updated.
 - Returns: The stack's view storage.
 
-### `update(_:modifiers:)`
+### `update(_:modifiers:updateProperties:)`
 
 Update a stack's view storage.
 - Parameters:
     - storage: The view storage.
     - modifiers: Modify views before being updated.
+    - updateProperties: Whether to update properties.

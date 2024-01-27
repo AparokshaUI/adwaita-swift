@@ -2,7 +2,7 @@
 //  StatusPage.swift
 //  Adwaita
 //
-//  Created by auto-generation on 22.01.24.
+//  Created by auto-generation on 27.01.24.
 //
 
 import CAdw
@@ -55,7 +55,7 @@ public struct StatusPage: Widget {
     /// - Returns: The view storage.
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let storage = ViewStorage(adw_status_page_new()?.opaque())
-        update(storage, modifiers: modifiers)
+        update(storage, modifiers: modifiers, updateProperties: true)
         if let childStorage = child?().widget(modifiers: modifiers).storage(modifiers: modifiers) {
             storage.content["child"] = [childStorage]
             adw_status_page_set_child(storage.pointer, childStorage.pointer?.cast())
@@ -72,18 +72,19 @@ public struct StatusPage: Widget {
     /// - Parameters:
     ///     - storage: The view storage.
     ///     - modifiers: The view modifiers.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
+    ///     - updateProperties: Whether to update the view's properties.
+    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         storage.modify { widget in
             if let widget = storage.content["child"]?.first {
-                child?().widget(modifiers: modifiers).update(widget, modifiers: modifiers)
+                child?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
             }
-            if let description {
+            if let description, updateProperties {
                 adw_status_page_set_description(widget, description)
             }
-            if let iconName {
+            if let iconName, updateProperties {
                 adw_status_page_set_icon_name(widget, iconName)
             }
-            if let title {
+            if let title, updateProperties {
                 adw_status_page_set_title(widget, title)
             }
 

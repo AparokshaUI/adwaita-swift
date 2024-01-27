@@ -17,6 +17,10 @@ The storage key.
 
 The folder path.
 
+### `update`
+
+Whether to update the affected views.
+
 ## Methods
 ### `init(value:)`
 

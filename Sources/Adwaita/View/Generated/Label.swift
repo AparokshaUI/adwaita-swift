@@ -2,7 +2,7 @@
 //  Label.swift
 //  Adwaita
 //
-//  Created by auto-generation on 22.01.24.
+//  Created by auto-generation on 27.01.24.
 //
 
 import CAdw
@@ -277,7 +277,7 @@ public struct Label: Widget {
     /// - Returns: The view storage.
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let storage = ViewStorage(gtk_label_new(label)?.opaque())
-        update(storage, modifiers: modifiers)
+        update(storage, modifiers: modifiers, updateProperties: true)
         if let mnemonicWidgetStorage = mnemonicWidget?().widget(modifiers: modifiers).storage(modifiers: modifiers) {
             storage.content["mnemonicWidget"] = [mnemonicWidgetStorage]
             gtk_label_set_mnemonic_widget(storage.pointer, mnemonicWidgetStorage.pointer?.cast())
@@ -294,45 +294,48 @@ public struct Label: Widget {
     /// - Parameters:
     ///     - storage: The view storage.
     ///     - modifiers: The view modifiers.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
+    ///     - updateProperties: Whether to update the view's properties.
+    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         if let copyClipboard {
             storage.connectSignal(name: "copy-clipboard") {
                 copyClipboard()
             }
         }
         storage.modify { widget in
-            gtk_label_set_label(widget, label)
-            if let lines {
+            if updateProperties {
+                gtk_label_set_label(widget, label)
+            }
+            if let lines, updateProperties {
                 gtk_label_set_lines(widget, lines.cInt)
             }
-            if let maxWidthChars {
+            if let maxWidthChars, updateProperties {
                 gtk_label_set_max_width_chars(widget, maxWidthChars.cInt)
             }
             if let widget = storage.content["mnemonicWidget"]?.first {
-                mnemonicWidget?().widget(modifiers: modifiers).update(widget, modifiers: modifiers)
+                mnemonicWidget?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
             }
-            if let selectable {
+            if let selectable, updateProperties {
                 gtk_label_set_selectable(widget, selectable.cBool)
             }
-            if let singleLineMode {
+            if let singleLineMode, updateProperties {
                 gtk_label_set_single_line_mode(widget, singleLineMode.cBool)
             }
-            if let useMarkup {
+            if let useMarkup, updateProperties {
                 gtk_label_set_use_markup(widget, useMarkup.cBool)
             }
-            if let useUnderline {
+            if let useUnderline, updateProperties {
                 gtk_label_set_use_underline(widget, useUnderline.cBool)
             }
-            if let widthChars {
+            if let widthChars, updateProperties {
                 gtk_label_set_width_chars(widget, widthChars.cInt)
             }
-            if let wrap {
+            if let wrap, updateProperties {
                 gtk_label_set_wrap(widget, wrap.cBool)
             }
-            if let xalign {
+            if let xalign, updateProperties {
                 gtk_label_set_xalign(widget, xalign)
             }
-            if let yalign {
+            if let yalign, updateProperties {
                 gtk_label_set_yalign(widget, yalign)
             }
 

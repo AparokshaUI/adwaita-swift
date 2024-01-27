@@ -86,12 +86,15 @@ public struct Window: WindowScene {
     }
 
     /// Update a window storage's content.
-    /// - Parameter storage: The storage to update.
-    public func update(_ storage: WindowStorage, app: GTUIApp) {
+    /// - Parameters:
+    ///     - storage: The storage to update.
+    ///     - app: The GTUI app.
+    ///     - force: Whether to force update all the views.
+    public func update(_ storage: WindowStorage, app: GTUIApp, force: Bool) {
         if let window = storage.window as? GTUIApplicationWindow {
             let content = content(window)
             if let view = storage.view {
-                content.widget(modifiers: []).updateStorage(view, modifiers: [])
+                content.widget(modifiers: []).updateStorage(view, modifiers: [], updateProperties: force)
             }
             setProperties(window: window)
             updateShortcuts(window: window)

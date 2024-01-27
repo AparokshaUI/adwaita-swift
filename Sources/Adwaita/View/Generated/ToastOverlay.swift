@@ -2,7 +2,7 @@
 //  ToastOverlay.swift
 //  Adwaita
 //
-//  Created by auto-generation on 22.01.24.
+//  Created by auto-generation on 27.01.24.
 //
 
 import CAdw
@@ -67,7 +67,7 @@ public struct ToastOverlay: Widget {
     /// - Returns: The view storage.
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let storage = ViewStorage(adw_toast_overlay_new()?.opaque())
-        update(storage, modifiers: modifiers)
+        update(storage, modifiers: modifiers, updateProperties: true)
         if let childStorage = child?().widget(modifiers: modifiers).storage(modifiers: modifiers) {
             storage.content["child"] = [childStorage]
             adw_toast_overlay_set_child(storage.pointer, childStorage.pointer?.cast())
@@ -84,10 +84,11 @@ public struct ToastOverlay: Widget {
     /// - Parameters:
     ///     - storage: The view storage.
     ///     - modifiers: The view modifiers.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
+    ///     - updateProperties: Whether to update the view's properties.
+    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         storage.modify { widget in
             if let widget = storage.content["child"]?.first {
-                child?().widget(modifiers: modifiers).update(widget, modifiers: modifiers)
+                child?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
             }
 
 

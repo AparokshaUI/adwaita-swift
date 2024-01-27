@@ -11,7 +11,7 @@ import CAdw
 public class GTUIApp {
 
     /// The handlers which are called when a state changes.
-    static var updateHandlers: [() -> Void] = []
+    static var updateHandlers: [(Bool) -> Void] = []
     /// The app's id for the file name for storing the data.
     static var appID = "temporary"
 

@@ -21,6 +21,10 @@ The keyboard shortcut.
 
 Whether to prefer adding the action to the application window.
 
+### `filteredLabel`
+
+The action label.
+
 ## Methods
 ### `init(_:window:handler:)`
 

@@ -26,12 +26,13 @@ Initialize a `StateWrapper`.
   - content: The view content.
   - state: The state information.
 
-### `update(_:modifiers:)`
+### `update(_:modifiers:updateProperties:)`
 
 Update a view storage.
 - Parameters:
     - storage: The view storage.
     - modifiers: Modify views before being updated.
+    - updateProperties: Whether to update properties.
 
 ### `container(modifiers:)`
 

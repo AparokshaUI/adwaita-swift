@@ -7,6 +7,10 @@
 
 The array's view body is the array itself.
 
+### `cArray`
+
+Get the C version of the array.
+
 ## Methods
 ### `widget(modifiers:)`
 
@@ -14,12 +18,13 @@ Get a widget from a collection of views.
 - Parameter modifiers: Modify views before being updated.
 - Returns: A widget.
 
-### `update(_:modifiers:)`
+### `update(_:modifiers:updateProperties:)`
 
 Update a collection of views with a collection of view storages.
 - Parameters:
     - storage: The collection of view storages.
     - modifiers: Modify views before being updated.
+    - updateProperties: Whether to update properties.
 
 ### `windows()`
 

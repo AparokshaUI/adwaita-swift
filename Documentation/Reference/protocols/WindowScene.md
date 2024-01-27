@@ -28,9 +28,10 @@ Get the storage for the window.
 - Parameter app: The application.
 - Returns: The storage.
 
-### `update(_:app:)`
+### `update(_:app:force:)`
 
 Update a window storage's content.
 - Parameters:
     - storage: The storage to update.
     - app: The application.
+    - force: Whether to force update all the views.

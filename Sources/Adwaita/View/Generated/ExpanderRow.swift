@@ -2,7 +2,7 @@
 //  ExpanderRow.swift
 //  Adwaita
 //
-//  Created by auto-generation on 22.01.24.
+//  Created by auto-generation on 27.01.24.
 //
 
 import CAdw
@@ -99,7 +99,7 @@ public struct ExpanderRow: Widget {
     /// - Returns: The view storage.
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let storage = ViewStorage(adw_expander_row_new()?.opaque())
-        update(storage, modifiers: modifiers)
+        update(storage, modifiers: modifiers, updateProperties: true)
 
         var rowsStorage: [ViewStorage] = []
         for view in rows() {
@@ -136,60 +136,73 @@ public struct ExpanderRow: Widget {
     /// - Parameters:
     ///     - storage: The view storage.
     ///     - modifiers: The view modifiers.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
+    ///     - updateProperties: Whether to update the view's properties.
+    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         storage.modify { widget in
-            if let enableExpansion {
+            if let enableExpansion, updateProperties {
                 adw_expander_row_set_enable_expansion(widget?.cast(), enableExpansion.wrappedValue.cBool)
             }
-            if let expanded {
+            if let expanded, updateProperties {
                 adw_expander_row_set_expanded(widget?.cast(), expanded.wrappedValue.cBool)
             }
-            if let iconName {
+            if let iconName, updateProperties {
                 adw_expander_row_set_icon_name(widget?.cast(), iconName)
             }
-            if let showEnableSwitch {
+            if let showEnableSwitch, updateProperties {
                 adw_expander_row_set_show_enable_switch(widget?.cast(), showEnableSwitch.cBool)
             }
-            if let subtitle {
+            if let subtitle, updateProperties {
                 adw_expander_row_set_subtitle(widget?.cast(), subtitle)
             }
-            if let subtitleLines {
+            if let subtitleLines, updateProperties {
                 adw_expander_row_set_subtitle_lines(widget?.cast(), subtitleLines.cInt)
             }
-            if let titleLines {
+            if let titleLines, updateProperties {
                 adw_expander_row_set_title_lines(widget?.cast(), titleLines.cInt)
             }
-            if let title {
+            if let title, updateProperties {
                 adw_preferences_row_set_title(widget?.cast(), title)
             }
-            if let titleSelectable {
+            if let titleSelectable, updateProperties {
                 adw_preferences_row_set_title_selectable(widget?.cast(), titleSelectable.cBool)
             }
-            if let useMarkup {
+            if let useMarkup, updateProperties {
                 adw_preferences_row_set_use_markup(widget?.cast(), useMarkup.cBool)
             }
-            if let useUnderline {
+            if let useUnderline, updateProperties {
                 adw_preferences_row_set_use_underline(widget?.cast(), useUnderline.cBool)
             }
 
             if let rowsStorage = storage.content["rows"] {
                 for (index, view) in rows().enumerated() {
                     if let storage = rowsStorage[safe: index] {
-                        view.updateStorage(storage, modifiers: modifiers)
+                        view.updateStorage(
+                            storage,
+                            modifiers: modifiers,
+                            updateProperties: updateProperties
+                        )
                     }
                 }
             }
             if let suffixStorage = storage.content["suffix"] {
                 for (index, view) in suffix().enumerated() {
                     if let storage = suffixStorage[safe: index] {
-                        view.updateStorage(storage, modifiers: modifiers)
+                        view.updateStorage(
+                            storage,
+                            modifiers: modifiers,
+                            updateProperties: updateProperties
+                        )
                     }
                 }
             }
             if let prefixStorage = storage.content["prefix"] {
                 for (index, view) in prefix().enumerated() {
                     if let storage = prefixStorage[safe: index] {
-                        view.updateStorage(storage, modifiers: modifiers)
+                        view.updateStorage(
+                            storage,
+                            modifiers: modifiers,
+                            updateProperties: updateProperties
+                        )
                     }
                 }
             }

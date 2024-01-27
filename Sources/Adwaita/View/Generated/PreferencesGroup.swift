@@ -2,7 +2,7 @@
 //  PreferencesGroup.swift
 //  Adwaita
 //
-//  Created by auto-generation on 22.01.24.
+//  Created by auto-generation on 27.01.24.
 //
 
 import CAdw
@@ -70,7 +70,7 @@ public struct PreferencesGroup: Widget {
     /// - Returns: The view storage.
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let storage = ViewStorage(adw_preferences_group_new()?.opaque())
-        update(storage, modifiers: modifiers)
+        update(storage, modifiers: modifiers, updateProperties: true)
         if let headerSuffixStorage = headerSuffix?().widget(modifiers: modifiers).storage(modifiers: modifiers) {
             storage.content["headerSuffix"] = [headerSuffixStorage]
             adw_preferences_group_set_header_suffix(storage.pointer?.cast(), headerSuffixStorage.pointer?.cast())
@@ -93,22 +93,27 @@ public struct PreferencesGroup: Widget {
     /// - Parameters:
     ///     - storage: The view storage.
     ///     - modifiers: The view modifiers.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
+    ///     - updateProperties: Whether to update the view's properties.
+    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         storage.modify { widget in
-            if let description {
+            if let description, updateProperties {
                 adw_preferences_group_set_description(widget?.cast(), description)
             }
             if let widget = storage.content["headerSuffix"]?.first {
-                headerSuffix?().widget(modifiers: modifiers).update(widget, modifiers: modifiers)
+                headerSuffix?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
             }
-            if let title {
+            if let title, updateProperties {
                 adw_preferences_group_set_title(widget?.cast(), title)
             }
 
             if let childStorage = storage.content["child"] {
                 for (index, view) in child().enumerated() {
                     if let storage = childStorage[safe: index] {
-                        view.updateStorage(storage, modifiers: modifiers)
+                        view.updateStorage(
+                            storage,
+                            modifiers: modifiers,
+                            updateProperties: updateProperties
+                        )
                     }
                 }
             }

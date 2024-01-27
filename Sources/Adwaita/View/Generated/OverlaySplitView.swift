@@ -2,7 +2,7 @@
 //  OverlaySplitView.swift
 //  Adwaita
 //
-//  Created by auto-generation on 22.01.24.
+//  Created by auto-generation on 27.01.24.
 //
 
 import CAdw
@@ -184,7 +184,7 @@ public struct OverlaySplitView: Widget {
     /// - Returns: The view storage.
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let storage = ViewStorage(adw_overlay_split_view_new()?.opaque())
-        update(storage, modifiers: modifiers)
+        update(storage, modifiers: modifiers, updateProperties: true)
         if let contentStorage = content?().widget(modifiers: modifiers).storage(modifiers: modifiers) {
             storage.content["content"] = [contentStorage]
             adw_overlay_split_view_set_content(storage.pointer, contentStorage.pointer?.cast())
@@ -208,36 +208,37 @@ public struct OverlaySplitView: Widget {
     /// - Parameters:
     ///     - storage: The view storage.
     ///     - modifiers: The view modifiers.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
+    ///     - updateProperties: Whether to update the view's properties.
+    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         storage.modify { widget in
-            if let collapsed {
+            if let collapsed, updateProperties {
                 adw_overlay_split_view_set_collapsed(widget, collapsed.cBool)
             }
             if let widget = storage.content["content"]?.first {
-                content?().widget(modifiers: modifiers).update(widget, modifiers: modifiers)
+                content?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
             }
-            if let enableHideGesture {
+            if let enableHideGesture, updateProperties {
                 adw_overlay_split_view_set_enable_hide_gesture(widget, enableHideGesture.cBool)
             }
-            if let enableShowGesture {
+            if let enableShowGesture, updateProperties {
                 adw_overlay_split_view_set_enable_show_gesture(widget, enableShowGesture.cBool)
             }
-            if let maxSidebarWidth {
+            if let maxSidebarWidth, updateProperties {
                 adw_overlay_split_view_set_max_sidebar_width(widget, maxSidebarWidth)
             }
-            if let minSidebarWidth {
+            if let minSidebarWidth, updateProperties {
                 adw_overlay_split_view_set_min_sidebar_width(widget, minSidebarWidth)
             }
-            if let pinSidebar {
+            if let pinSidebar, updateProperties {
                 adw_overlay_split_view_set_pin_sidebar(widget, pinSidebar.cBool)
             }
-            if let showSidebar {
+            if let showSidebar, updateProperties {
                 adw_overlay_split_view_set_show_sidebar(widget, showSidebar.wrappedValue.cBool)
             }
             if let widget = storage.content["sidebar"]?.first {
-                sidebar?().widget(modifiers: modifiers).update(widget, modifiers: modifiers)
+                sidebar?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
             }
-            if let sidebarWidthFraction {
+            if let sidebarWidthFraction, updateProperties {
                 adw_overlay_split_view_set_sidebar_width_fraction(widget, sidebarWidthFraction)
             }
 

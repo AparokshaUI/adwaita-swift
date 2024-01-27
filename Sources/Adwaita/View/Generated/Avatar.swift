@@ -2,7 +2,7 @@
 //  Avatar.swift
 //  Adwaita
 //
-//  Created by auto-generation on 22.01.24.
+//  Created by auto-generation on 27.01.24.
 //
 
 import CAdw
@@ -66,7 +66,7 @@ public struct Avatar: Widget {
     /// - Returns: The view storage.
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let storage = ViewStorage(adw_avatar_new(size.cInt, text, showInitials.cBool)?.opaque())
-        update(storage, modifiers: modifiers)
+        update(storage, modifiers: modifiers, updateProperties: true)
 
 
         for function in appearFunctions {
@@ -79,14 +79,19 @@ public struct Avatar: Widget {
     /// - Parameters:
     ///     - storage: The view storage.
     ///     - modifiers: The view modifiers.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
+    ///     - updateProperties: Whether to update the view's properties.
+    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         storage.modify { widget in
-            if let iconName {
+            if let iconName, updateProperties {
                 adw_avatar_set_icon_name(widget, iconName)
             }
-            adw_avatar_set_show_initials(widget, showInitials.cBool)
-            adw_avatar_set_size(widget, size.cInt)
-            if let text {
+            if updateProperties {
+                adw_avatar_set_show_initials(widget, showInitials.cBool)
+            }
+            if updateProperties {
+                adw_avatar_set_size(widget, size.cInt)
+            }
+            if let text, updateProperties {
                 adw_avatar_set_text(widget, text)
             }
 

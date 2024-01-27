@@ -33,10 +33,13 @@ extension Array: View where Element == View {
     /// - Parameters:
     ///     - storage: The collection of view storages.
     ///     - modifiers: Modify views before being updated.
-    public func update(_ storage: [ViewStorage], modifiers: [(View) -> View]) {
+    ///     - updateProperties: Whether to update properties.
+    public func update(_ storage: [ViewStorage], modifiers: [(View) -> View], updateProperties: Bool) {
         for (index, element) in enumerated() {
             if let storage = storage[safe: index] {
-                element.widget(modifiers: modifiers).updateStorage(storage, modifiers: modifiers)
+                element
+                    .widget(modifiers: modifiers)
+                    .updateStorage(storage, modifiers: modifiers, updateProperties: updateProperties)
             }
         }
     }

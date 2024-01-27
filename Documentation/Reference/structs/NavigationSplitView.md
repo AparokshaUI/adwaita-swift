@@ -35,9 +35,10 @@ Get the container of the navigation split view widget.
 - Parameter modifiers: Modify views before being updated.
 - Returns: The view storage.
 
-### `update(_:modifiers:)`
+### `update(_:modifiers:updateProperties:)`
 
 Update the view storage of the navigation split view widget.
 - Parameters:
     - storage: The view storage.
     - modifiers: Modify views before being updated.
+    - updateProperties: Whether to update properties.

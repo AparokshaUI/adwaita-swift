@@ -32,14 +32,22 @@ public struct StateWrapper: Widget {
     /// - Parameters:
     ///     - storage: The view storage.
     ///     - modifiers: Modify views before being updated.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
+    ///     - updateProperties: Whether to update properties.
+    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+        var updateProperties = updateProperties
         for property in state {
             if let storage = storage.state[property.key]?.content.storage {
                 property.value.content.storage = storage
             }
+            if property.value.content.storage.update {
+                updateProperties = true
+                property.value.content.storage.update = false
+            }
         }
         if let storage = storage.content[.mainContent]?.first {
-            content().widget(modifiers: modifiers).update(storage, modifiers: modifiers)
+            content()
+                .widget(modifiers: modifiers)
+                .update(storage, modifiers: modifiers, updateProperties: updateProperties)
         }
     }
 

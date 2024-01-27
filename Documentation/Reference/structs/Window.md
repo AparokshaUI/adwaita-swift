@@ -78,10 +78,13 @@ Get the storage of the content view.
 - Parameter window: The window.
 - Returns: The storage of the content of the window.
 
-### `update(_:app:)`
+### `update(_:app:force:)`
 
 Update a window storage's content.
-- Parameter storage: The storage to update.
+- Parameters:
+    - storage: The storage to update.
+    - app: The GTUI app.
+    - force: Whether to force update all the views.
 
 ### `setProperties(window:)`
 
@@ -94,7 +97,7 @@ Add windows that overlay the last instance of this window if presented.
 - Parameter windows: The windows.
 - Returns: The new windows and this window.
 
-### `fileImporter(_:initialFolder:extensions:folders:onOpen:onClose:)`
+### `fileImporter(_:initialFolder:extensions:onOpen:onClose:)`
 
 Add an importer file dialog to the window.
 - Parameters:

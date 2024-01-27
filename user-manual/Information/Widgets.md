@@ -5,32 +5,17 @@ There are many more widgets available using auto-generation. Learn [how to use t
 
 | Name                 | Description                                                         | Widget                 |
 | -------------------- | ------------------------------------------------------------------- | ---------------------- |
-| Button               | A widget that triggers a function when being clicked.               | GtkButton              |
 | ViewStack            | A widget that displays one of its child views based on an id.       | GtkStack               |
-| HeaderBar            | A widget for creating custom title bars for windows.                | GtkHeaderBar           |
-| Text                 | A widget for displaying a small amount of text.                     | GtkLabel               |
 | VStack               | A widget which arranges child widgets into a single column.         | GtkBox                 |
 | HStack               | A widget which arranges child widgets into a single row.            | GtkBox                 |
 | Toggle               | A button with two possible states, on and off.                      | GtkToggleButton        |
 | List                 | A widget which arranges child widgets vertically into rows.         | GtkListBox             |
-| Menu                 | A widget showing a button that toggles the appearance of a menu.    | GtkMenuButton          |
 | NavigationSplitView  | A widget presenting sidebar and content side by side.               | AdwNavigationSplitView |
-| OverlaySplitView     | A widget presenting sidebar and content side by side.               | AdwOverlaySplitView    |
 | ScrollView           | A container that makes its child scrollable.                        | GtkScrolledWindow      |
-| StatusPage           | A page with an icon, title, and optionally description and widget.  | AdwStatusPage          |
-| Container            | Supports any widget conforming to `Libadwaita.InsertableContainer`. | Multiple widgets       |
-| Carousel             | A paginated scrolling widget.                                       | AdwCarousel            |
 | ViewSwitcher         | A control for switching between different views.                    | AdwViewSwitcher        |
-| ProgressBar          | A bar showing a progress.                                           | GtkProgressBar         |
-| Banner               | A bar showing contextual information.                               | AdwBanner              |
 | StateWrapper         | A wrapper not affecting the UI which stores state information.      | -                      |
 | FormSection          | A titled section, usually containing one or multiple forms.         | AdwPreferencesGroup    |
 | Form                 | A static boxed list, usually containing one or multiple rows.       | GtkListBox             |
-| ActionRow            | The most basic row displaying text and optionally other views.      | AdwActionRow           |
-| ComboRow             | A row displaying an array, letting the user choose one element.     | AdwComboRow            |
-| EntryRow             | A row for text input.                                               | AdwEntryRow            |
-| SpinRow              | A row for selecting an integer in a range.                          | AdwSpinRow             |
-| SwitchRow            | A row controlling a simple boolean value.                           | AdwSwitchRow           |
 
 ### View Modifiers
 

@@ -108,6 +108,7 @@ struct Property: Decodable {
         """
     }
 
+    // swiftlint:disable function_body_length
     /// Generate the property's modification when being updated.
     /// - Parameters:
     ///     - config: The widget configuration.
@@ -123,7 +124,7 @@ struct Property: Decodable {
         guard !(type?.isWidget ?? false) else {
             return """
                         if let widget = storage.content["\(name)"]?.first {
-                            \(name)?().widget(modifiers: modifiers).update(widget, modifiers: modifiers)
+                            \(name)?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
                         }
 
             """
@@ -151,26 +152,28 @@ struct Property: Decodable {
         }
         if config.bindings.contains { $0.property == self.name } {
             return """
-                        if let \(name)\(setConditions) {
+                        if let \(name)\(setConditions), updateProperties {
                             \(setter)(\(widget), \(name).wrappedValue\(propertyString))
                         }
 
             """
         } else if config.requiredProperties.contains(self.name) {
             return """
-                        \(onlySetConditions)\(onlySetConditionsIndentation)\(setter)(\(widget), \(name)\(propertyString))\(onlySetConditionsEnd)
+                        if updateProperties {
+                            \(onlySetConditions)\(onlySetConditionsIndentation)\(setter)(\(widget), \(name)\(propertyString))\(onlySetConditionsEnd)
+                        }
 
             """
         } else {
             return """
-                        if let \(name)\(setConditions) {
+                        if let \(name)\(setConditions), updateProperties {
                             \(setter)(\(widget), \(name)\(propertyString))
                         }
 
             """
         }
     }
-    // swiftlint:enable line_length
+    // swiftlint:enable line_length function_body_length
 
     /// Generate the widget assignments.
     /// - Parameters:

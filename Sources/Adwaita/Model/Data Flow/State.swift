@@ -19,7 +19,8 @@ public struct State<Value>: StateProtocol {
         }
         nonmutating set {
             rawValue = newValue
-            Self.updateViews()
+            content.storage.update = true
+            Self.updateViews(force: forceUpdates)
         }
     }
 
@@ -48,6 +49,9 @@ public struct State<Value>: StateProtocol {
     /// The stored value.
     public let content: State<Any>.Content
 
+    /// Whether to force update the views when the value changes.
+    public var forceUpdates: Bool
+
     /// The function for updating the value in the settings file.
     private var writeValue: (() -> Void)?
 
@@ -66,8 +70,10 @@ public struct State<Value>: StateProtocol {
     /// Initialize a property representing a state in the view.
     /// - Parameters:
     ///     - wrappedValue: The wrapped value.
-    public init(wrappedValue: Value) {
+    ///     - forceUpdates: Whether to force update all available views when the property gets modified.
+    public init(wrappedValue: Value, forceUpdates: Bool = false) {
         content = .init(storage: .init(value: wrappedValue))
+        self.forceUpdates = forceUpdates
     }
 
     /// A class storing the state's content.
@@ -93,6 +99,8 @@ public struct State<Value>: StateProtocol {
         public var key: String?
         /// The folder path.
         public var folder: String?
+        /// Whether to update the affected views.
+        public var update = false
 
         /// Initialize the storage.
         /// - Parameters:
@@ -104,9 +112,10 @@ public struct State<Value>: StateProtocol {
     }
 
     /// Update all of the views.
-    public static func updateViews() {
+    /// - Parameter force: Whether to force all views to update.
+    public static func updateViews(force: Bool = false) {
         for handler in GTUIApp.updateHandlers {
-            handler()
+            handler(force)
         }
     }
 
@@ -145,10 +154,12 @@ extension State where Value: Codable {
     ///     - wrappedValue: The wrapped value.
     ///     - key: The unique storage key of the property.
     ///     - folder: The path to the folder containing the JSON file.
+    ///     - forceUpdates: Whether to force update all available views when the property gets modified.
     ///
     /// The folder path will be appended to the XDG data home directory.
-    public init(wrappedValue: Value, _ key: String, folder: String? = nil) {
+    public init(wrappedValue: Value, _ key: String, folder: String? = nil, forceUpdates: Bool = false) {
         content = .init(storage: .init(value: wrappedValue))
+        self.forceUpdates = forceUpdates
         content.storage.key = key
         content.storage.folder = folder
         checkFile()

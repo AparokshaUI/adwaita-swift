@@ -2,7 +2,7 @@
 //  ButtonContent.swift
 //  Adwaita
 //
-//  Created by auto-generation on 22.01.24.
+//  Created by auto-generation on 27.01.24.
 //
 
 import CAdw
@@ -82,7 +82,7 @@ public struct ButtonContent: Widget {
     /// - Returns: The view storage.
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let storage = ViewStorage(adw_button_content_new()?.opaque())
-        update(storage, modifiers: modifiers)
+        update(storage, modifiers: modifiers, updateProperties: true)
 
 
         for function in appearFunctions {
@@ -95,18 +95,19 @@ public struct ButtonContent: Widget {
     /// - Parameters:
     ///     - storage: The view storage.
     ///     - modifiers: The view modifiers.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
+    ///     - updateProperties: Whether to update the view's properties.
+    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         storage.modify { widget in
-            if let canShrink {
+            if let canShrink, updateProperties {
                 adw_button_content_set_can_shrink(widget, canShrink.cBool)
             }
-            if let iconName {
+            if let iconName, updateProperties {
                 adw_button_content_set_icon_name(widget, iconName)
             }
-            if let label {
+            if let label, updateProperties {
                 adw_button_content_set_label(widget, label)
             }
-            if let useUnderline {
+            if let useUnderline, updateProperties {
                 adw_button_content_set_use_underline(widget, useUnderline.cBool)
             }
 

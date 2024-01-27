@@ -21,6 +21,10 @@ Get and set the value without updating the views.
 
 The stored value.
 
+### `forceUpdates`
+
+Whether to force update the views when the value changes.
+
 ### `writeValue`
 
 The function for updating the value in the settings file.
@@ -30,15 +34,27 @@ The function for updating the value in the settings file.
 The value with an erased type.
 
 ## Methods
-### `init(wrappedValue:)`
+### `init(wrappedValue:forceUpdates:)`
 
 Initialize a property representing a state in the view.
 - Parameters:
     - wrappedValue: The wrapped value.
+    - forceUpdates: Whether to force update all available views when the property gets modified.
 
-### `updateViews()`
+### `updateViews(force:)`
 
 Update all of the views.
+- Parameter force: Whether to force all views to update.
+
+### `userDataDir()`
+
+The directory used for storing user data.
+- Returns: The URL.
+
+### `copy(_:)`
+
+Copy a text to the clipboard.
+- Parameter text: The text.
 
 ### `dirPath()`
 

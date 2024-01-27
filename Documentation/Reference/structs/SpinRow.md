@@ -2,101 +2,299 @@
 
 # `SpinRow`
 
-A spin row lets the user select an integer in a certain range.
+An [class@ActionRow] with an embedded spin button.
+
+<picture><source srcset="spin-row-dark.png" media="(prefers-color-scheme: dark)"><img src="spin-row.png" alt="spin-row"></picture>
+
+Example of an `AdwSpinRow` UI definition:
+
+```xml
+<object class="AdwSpinRow"><property name="title" translatable="yes">Spin Row</property><property name="adjustment"><object class="GtkAdjustment"><property name="lower">0</property><property name="upper">100</property><property name="value">50</property><property name="page-increment">10</property><property name="step-increment">1</property></object></property></object>
+```
+
+See [class@Gtk.SpinButton] for details.
+
+## CSS nodes
+
+`AdwSpinRow` has the same structure as [class@ActionRow], as well as the
+`.spin` style class on the main node.
 
 ## Properties
-### `title`
+### `updateFunctions`
 
-The title.
+Additional update functions for type extensions.
+
+### `appearFunctions`
+
+Additional appear functions for type extensions.
+
+### `climbRate`
+
+The acceleration rate when you hold down a button or key.
+
+### `digits`
+
+The number of decimal places to display.
+
+### `numeric`
+
+Whether non-numeric characters should be ignored.
+
+### `snapToTicks`
+
+Whether invalid values are snapped to the nearest step increment.
 
 ### `value`
 
-The selected value.
+The current value.
 
-### `min`
+### `wrap`
 
-The minimum value.
+Whether the spin row should wrap upon reaching its limits.
 
-### `max`
+### `activatableWidget`
 
-The maximum value.
+The widget to activate when the row is activated.
 
-### `step`
+The row can be activated either by clicking on it, calling
+[method@ActionRow.activate], or via mnemonics in the title.
+See the [property@PreferencesRow:use-underline] property to enable
+mnemonics.
 
-The increase/decrease step.
+The target widget will be activated by emitting the
+[signal@Gtk.Widget::mnemonic-activate] signal on it.
+
+### `iconName`
+
+The icon name for this row.
 
 ### `subtitle`
 
-The subtitle.
+The subtitle for this row.
 
-### `prefix`
+The subtitle is interpreted as Pango markup unless
+[property@PreferencesRow:use-markup] is set to `FALSE`.
 
-The prefix.
+### `subtitleLines`
+
+The number of lines at the end of which the subtitle label will be
+ellipsized.
+
+If the value is 0, the number of lines won't be limited.
+
+### `subtitleSelectable`
+
+Whether the user can copy the subtitle from the label.
+
+See also [property@Gtk.Label:selectable].
+
+### `titleLines`
+
+The number of lines at the end of which the title label will be ellipsized.
+
+If the value is 0, the number of lines won't be limited.
+
+### `title`
+
+The title of the preference represented by this row.
+
+The title is interpreted as Pango markup unless
+[property@PreferencesRow:use-markup] is set to `FALSE`.
+
+### `titleSelectable`
+
+Whether the user can copy the title from the label.
+
+See also [property@Gtk.Label:selectable].
+
+### `useMarkup`
+
+Whether to use Pango markup for the title label.
+
+Subclasses may also use it for other labels, such as subtitle.
+
+See also [func@Pango.parse_markup].
+
+### `useUnderline`
+
+Whether an embedded underline in the title indicates a mnemonic.
+
+### `input`
+
+Emitted to convert the user's input into a double value.
+
+The signal handler is expected to use [method@Gtk.Editable.get_text] to
+retrieve the text of the spinbutton and set new_value to the new value.
+
+The default conversion uses [func@GLib.strtod].
+
+See [signal@Gtk.SpinButton::input].
+
+### `output`
+
+Emitted to tweak the formatting of the value for display.
+
+See [signal@Gtk.SpinButton::output].
+
+### `wrapped`
+
+Emitted right after the spinbutton wraps.
+
+See [signal@Gtk.SpinButton::wrapped].
+
+### `activated`
+
+This signal is emitted after the row has been activated.
 
 ### `suffix`
 
-The suffix.
+The body for the widget "suffix".
 
-### `prefixID`
+### `prefix`
 
-The identifier for the prefix content.
+The body for the widget "prefix".
 
-### `suffixID`
+### `app`
 
-The identifier for the suffix content.
+The application.
 
-### `configID`
+### `window`
 
-The identifier of the configuration field.
+The window.
 
 ## Methods
-### `init(_:value:min:max:)`
+### `init(climbRate:digits:)`
 
-Initialize a spin row.
-- Parameters:
-    - title: The row's title.
-    - value: The selected value.
-    - min: The minimum value.
-    - max: The maximum value.
-
-### `update(_:modifiers:)`
-
-Update a view storage.
-- Parameters:
-    - storage: The view storage.
-    - modifiers: Modify views before being updated.
+Initialize `SpinRow`.
 
 ### `container(modifiers:)`
 
-Get a view storage.
-- Parameter modifiers: Modify views before being updated.
+Get the widget's view storage.
+- Parameter modifiers: The view modifiers.
 - Returns: The view storage.
 
-### `update(row:)`
+### `update(_:modifiers:updateProperties:)`
 
-Update the spin row.
-- Parameter row: The spin row.
+Update the widget's view storage.
+- Parameters:
+    - storage: The view storage.
+    - modifiers: The view modifiers.
+    - updateProperties: Whether to update the view's properties.
+
+### `climbRate(_:)`
+
+The acceleration rate when you hold down a button or key.
+
+### `digits(_:)`
+
+The number of decimal places to display.
+
+### `numeric(_:)`
+
+Whether non-numeric characters should be ignored.
+
+### `snapToTicks(_:)`
+
+Whether invalid values are snapped to the nearest step increment.
+
+### `value(_:)`
+
+The current value.
+
+### `wrap(_:)`
+
+Whether the spin row should wrap upon reaching its limits.
+
+### `activatableWidget(_:)`
+
+The widget to activate when the row is activated.
+
+The row can be activated either by clicking on it, calling
+[method@ActionRow.activate], or via mnemonics in the title.
+See the [property@PreferencesRow:use-underline] property to enable
+mnemonics.
+
+The target widget will be activated by emitting the
+[signal@Gtk.Widget::mnemonic-activate] signal on it.
+
+### `iconName(_:)`
+
+The icon name for this row.
 
 ### `subtitle(_:)`
 
-Set the spin row's subtitle.
-- Parameter subtitle: The subtitle.
-- Returns: The spin row.
+The subtitle for this row.
 
-### `prefix(_:)`
+The subtitle is interpreted as Pango markup unless
+[property@PreferencesRow:use-markup] is set to `FALSE`.
 
-Set the spin row's prefix view.
-- Parameter prefix: The prefix.
-- Returns: The spin row.
+### `subtitleLines(_:)`
 
-### `suffix(_:)`
+The number of lines at the end of which the subtitle label will be
+ellipsized.
 
-Set the spin row's suffix view.
-- Parameter suffix: The suffix.
-- Returns: The spin row.
+If the value is 0, the number of lines won't be limited.
 
-### `step(_:)`
+### `subtitleSelectable(_:)`
 
-Set the difference a single click on the increase/decrease buttons makes.
-- Parameter step: The increase/decrease step.
-- Returns: The spin row.
+Whether the user can copy the subtitle from the label.
+
+See also [property@Gtk.Label:selectable].
+
+### `titleLines(_:)`
+
+The number of lines at the end of which the title label will be ellipsized.
+
+If the value is 0, the number of lines won't be limited.
+
+### `title(_:)`
+
+The title of the preference represented by this row.
+
+The title is interpreted as Pango markup unless
+[property@PreferencesRow:use-markup] is set to `FALSE`.
+
+### `titleSelectable(_:)`
+
+Whether the user can copy the title from the label.
+
+See also [property@Gtk.Label:selectable].
+
+### `useMarkup(_:)`
+
+Whether to use Pango markup for the title label.
+
+Subclasses may also use it for other labels, such as subtitle.
+
+See also [func@Pango.parse_markup].
+
+### `useUnderline(_:)`
+
+Whether an embedded underline in the title indicates a mnemonic.
+
+### `input(_:)`
+
+Emitted to convert the user's input into a double value.
+
+The signal handler is expected to use [method@Gtk.Editable.get_text] to
+retrieve the text of the spinbutton and set new_value to the new value.
+
+The default conversion uses [func@GLib.strtod].
+
+See [signal@Gtk.SpinButton::input].
+
+### `output(_:)`
+
+Emitted to tweak the formatting of the value for display.
+
+See [signal@Gtk.SpinButton::output].
+
+### `wrapped(_:)`
+
+Emitted right after the spinbutton wraps.
+
+See [signal@Gtk.SpinButton::wrapped].
+
+### `activated(_:)`
+
+This signal is emitted after the row has been activated.

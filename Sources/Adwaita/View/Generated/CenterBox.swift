@@ -2,7 +2,7 @@
 //  CenterBox.swift
 //  Adwaita
 //
-//  Created by auto-generation on 22.01.24.
+//  Created by auto-generation on 27.01.24.
 //
 
 import CAdw
@@ -86,7 +86,7 @@ public struct CenterBox: Widget {
     /// - Returns: The view storage.
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let storage = ViewStorage(gtk_center_box_new()?.opaque())
-        update(storage, modifiers: modifiers)
+        update(storage, modifiers: modifiers, updateProperties: true)
         if let centerWidgetStorage = centerWidget?().widget(modifiers: modifiers).storage(modifiers: modifiers) {
             storage.content["centerWidget"] = [centerWidgetStorage]
             gtk_center_box_set_center_widget(storage.pointer, centerWidgetStorage.pointer?.cast())
@@ -111,19 +111,20 @@ public struct CenterBox: Widget {
     /// - Parameters:
     ///     - storage: The view storage.
     ///     - modifiers: The view modifiers.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
+    ///     - updateProperties: Whether to update the view's properties.
+    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         storage.modify { widget in
             if let widget = storage.content["centerWidget"]?.first {
-                centerWidget?().widget(modifiers: modifiers).update(widget, modifiers: modifiers)
+                centerWidget?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
             }
             if let widget = storage.content["endWidget"]?.first {
-                endWidget?().widget(modifiers: modifiers).update(widget, modifiers: modifiers)
+                endWidget?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
             }
-            if let shrinkCenterLast {
+            if let shrinkCenterLast, updateProperties {
                 gtk_center_box_set_shrink_center_last(widget, shrinkCenterLast.cBool)
             }
             if let widget = storage.content["startWidget"]?.first {
-                startWidget?().widget(modifiers: modifiers).update(widget, modifiers: modifiers)
+                startWidget?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
             }
 
 

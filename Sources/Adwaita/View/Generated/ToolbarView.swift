@@ -2,7 +2,7 @@
 //  ToolbarView.swift
 //  Adwaita
 //
-//  Created by auto-generation on 22.01.24.
+//  Created by auto-generation on 27.01.24.
 //
 
 import CAdw
@@ -152,7 +152,7 @@ public struct ToolbarView: Widget {
     /// - Returns: The view storage.
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let storage = ViewStorage(adw_toolbar_view_new()?.opaque())
-        update(storage, modifiers: modifiers)
+        update(storage, modifiers: modifiers, updateProperties: true)
         if let contentStorage = content?().widget(modifiers: modifiers).storage(modifiers: modifiers) {
             storage.content["content"] = [contentStorage]
             adw_toolbar_view_set_content(storage.pointer, contentStorage.pointer?.cast())
@@ -181,35 +181,44 @@ public struct ToolbarView: Widget {
     /// - Parameters:
     ///     - storage: The view storage.
     ///     - modifiers: The view modifiers.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
+    ///     - updateProperties: Whether to update the view's properties.
+    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         storage.modify { widget in
             if let widget = storage.content["content"]?.first {
-                content?().widget(modifiers: modifiers).update(widget, modifiers: modifiers)
+                content?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
             }
-            if let extendContentToBottomEdge {
+            if let extendContentToBottomEdge, updateProperties {
                 adw_toolbar_view_set_extend_content_to_bottom_edge(widget, extendContentToBottomEdge.cBool)
             }
-            if let extendContentToTopEdge {
+            if let extendContentToTopEdge, updateProperties {
                 adw_toolbar_view_set_extend_content_to_top_edge(widget, extendContentToTopEdge.cBool)
             }
-            if let revealBottomBars {
+            if let revealBottomBars, updateProperties {
                 adw_toolbar_view_set_reveal_bottom_bars(widget, revealBottomBars.cBool)
             }
-            if let revealTopBars {
+            if let revealTopBars, updateProperties {
                 adw_toolbar_view_set_reveal_top_bars(widget, revealTopBars.cBool)
             }
 
             if let bottomStorage = storage.content["bottom"] {
                 for (index, view) in bottom().enumerated() {
                     if let storage = bottomStorage[safe: index] {
-                        view.updateStorage(storage, modifiers: modifiers)
+                        view.updateStorage(
+                            storage,
+                            modifiers: modifiers,
+                            updateProperties: updateProperties
+                        )
                     }
                 }
             }
             if let topStorage = storage.content["top"] {
                 for (index, view) in top().enumerated() {
                     if let storage = topStorage[safe: index] {
-                        view.updateStorage(storage, modifiers: modifiers)
+                        view.updateStorage(
+                            storage,
+                            modifiers: modifiers,
+                            updateProperties: updateProperties
+                        )
                     }
                 }
             }

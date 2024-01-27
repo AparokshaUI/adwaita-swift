@@ -2,7 +2,7 @@
 //  PasswordEntryRow.swift
 //  Adwaita
 //
-//  Created by auto-generation on 22.01.24.
+//  Created by auto-generation on 27.01.24.
 //
 
 import CAdw
@@ -88,7 +88,7 @@ public struct PasswordEntryRow: Widget {
     /// - Returns: The view storage.
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let storage = ViewStorage(adw_password_entry_row_new()?.opaque())
-        update(storage, modifiers: modifiers)
+        update(storage, modifiers: modifiers, updateProperties: true)
 
         var suffixStorage: [ViewStorage] = []
         for view in suffix() {
@@ -113,7 +113,8 @@ public struct PasswordEntryRow: Widget {
     /// - Parameters:
     ///     - storage: The view storage.
     ///     - modifiers: The view modifiers.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
+    ///     - updateProperties: Whether to update the view's properties.
+    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         if let apply {
             storage.connectSignal(name: "apply") {
                 apply()
@@ -125,25 +126,25 @@ public struct PasswordEntryRow: Widget {
             }
         }
         storage.modify { widget in
-            if let activatesDefault {
+            if let activatesDefault, updateProperties {
                 adw_entry_row_set_activates_default(widget?.cast(), activatesDefault.cBool)
             }
-            if let enableEmojiCompletion {
+            if let enableEmojiCompletion, updateProperties {
                 adw_entry_row_set_enable_emoji_completion(widget?.cast(), enableEmojiCompletion.cBool)
             }
-            if let showApplyButton {
+            if let showApplyButton, updateProperties {
                 adw_entry_row_set_show_apply_button(widget?.cast(), showApplyButton.cBool)
             }
-            if let title {
+            if let title, updateProperties {
                 adw_preferences_row_set_title(widget?.cast(), title)
             }
-            if let titleSelectable {
+            if let titleSelectable, updateProperties {
                 adw_preferences_row_set_title_selectable(widget?.cast(), titleSelectable.cBool)
             }
-            if let useMarkup {
+            if let useMarkup, updateProperties {
                 adw_preferences_row_set_use_markup(widget?.cast(), useMarkup.cBool)
             }
-            if let useUnderline {
+            if let useUnderline, updateProperties {
                 adw_preferences_row_set_use_underline(widget?.cast(), useUnderline.cBool)
             }
 

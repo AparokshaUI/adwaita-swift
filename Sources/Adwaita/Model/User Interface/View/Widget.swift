@@ -15,7 +15,8 @@ public protocol Widget: View {
     /// - Parameters:
     ///     - storage: The storage to update.
     ///     - modifiers: Modify views before being updated
-    func update(_ storage: ViewStorage, modifiers: [(View) -> View])
+    ///     - updateProperties: Whether to update the view's properties.
+    func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool)
 
 }
 

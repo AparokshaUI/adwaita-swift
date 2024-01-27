@@ -195,7 +195,7 @@ struct Class: Decodable {
             /// - Returns: The view storage.
             public func container(modifiers: [(View) -> View]) -> ViewStorage {
                 let storage = ViewStorage(\(generateInitializer(name: widgetName, config: config, classes: classes, configs: configs))?.opaque())
-                update(storage, modifiers: modifiers)
+                update(storage, modifiers: modifiers, updateProperties: true)
         \(generateWidgetAssignments(config: config, genConfig: genConfig, classes: classes, configs: configs))
         \(generateBindingAssignments(config: config, genConfig: genConfig, classes: classes, configs: configs))
                 for function in appearFunctions {
@@ -208,7 +208,8 @@ struct Class: Decodable {
             /// - Parameters:
             ///     - storage: The view storage.
             ///     - modifiers: The view modifiers.
-            public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {\(generateSignalModifications(config: config, genConfig: genConfig, classes: classes))
+            ///     - updateProperties: Whether to update the view's properties.
+            public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {\(generateSignalModifications(config: config, genConfig: genConfig, classes: classes))
                 storage.modify { widget in
         \(generateModifications(config: config, genConfig: genConfig, classes: classes, configs: configs))
         \(generateDynamicWidgetUpdate(config: config, genConfig: genConfig))

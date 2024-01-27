@@ -2,7 +2,7 @@
 //  SwitchRow.swift
 //  Adwaita
 //
-//  Created by auto-generation on 22.01.24.
+//  Created by auto-generation on 27.01.24.
 //
 
 import CAdw
@@ -104,7 +104,7 @@ public struct SwitchRow: Widget {
     /// - Returns: The view storage.
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let storage = ViewStorage(adw_switch_row_new()?.opaque())
-        update(storage, modifiers: modifiers)
+        update(storage, modifiers: modifiers, updateProperties: true)
         if let activatableWidgetStorage = activatableWidget?().widget(modifiers: modifiers).storage(modifiers: modifiers) {
             storage.content["activatableWidget"] = [activatableWidgetStorage]
             adw_action_row_set_activatable_widget(storage.pointer?.cast(), activatableWidgetStorage.pointer?.cast())
@@ -136,44 +136,45 @@ public struct SwitchRow: Widget {
     /// - Parameters:
     ///     - storage: The view storage.
     ///     - modifiers: The view modifiers.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
+    ///     - updateProperties: Whether to update the view's properties.
+    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         if let activated {
             storage.connectSignal(name: "activated") {
                 activated()
             }
         }
         storage.modify { widget in
-            if let active {
+            if let active, updateProperties {
                 adw_switch_row_set_active(widget, active.wrappedValue.cBool)
             }
             if let widget = storage.content["activatableWidget"]?.first {
-                activatableWidget?().widget(modifiers: modifiers).update(widget, modifiers: modifiers)
+                activatableWidget?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
             }
-            if let iconName {
+            if let iconName, updateProperties {
                 adw_action_row_set_icon_name(widget?.cast(), iconName)
             }
-            if let subtitle {
+            if let subtitle, updateProperties {
                 adw_action_row_set_subtitle(widget?.cast(), subtitle)
             }
-            if let subtitleLines {
+            if let subtitleLines, updateProperties {
                 adw_action_row_set_subtitle_lines(widget?.cast(), subtitleLines.cInt)
             }
-            if let subtitleSelectable {
+            if let subtitleSelectable, updateProperties {
                 adw_action_row_set_subtitle_selectable(widget?.cast(), subtitleSelectable.cBool)
             }
-            if let titleLines {
+            if let titleLines, updateProperties {
                 adw_action_row_set_title_lines(widget?.cast(), titleLines.cInt)
             }
-            if let title {
+            if let title, updateProperties {
                 adw_preferences_row_set_title(widget?.cast(), title)
             }
-            if let titleSelectable {
+            if let titleSelectable, updateProperties {
                 adw_preferences_row_set_title_selectable(widget?.cast(), titleSelectable.cBool)
             }
-            if let useMarkup {
+            if let useMarkup, updateProperties {
                 adw_preferences_row_set_use_markup(widget?.cast(), useMarkup.cBool)
             }
-            if let useUnderline {
+            if let useUnderline, updateProperties {
                 adw_preferences_row_set_use_underline(widget?.cast(), useUnderline.cBool)
             }
 

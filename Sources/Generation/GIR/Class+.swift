@@ -195,7 +195,11 @@ extension Class {
                         if let \(widget.name)Storage = storage.content["\(widget.name)"] {
                             for (index, view) in \(widget.name)().enumerated() {
                                 if let storage = \(widget.name)Storage[safe: index] {
-                                    view.updateStorage(storage, modifiers: modifiers)
+                                    view.updateStorage(
+                                        storage,
+                                        modifiers: modifiers,
+                                        updateProperties: updateProperties
+                                    )
                                 }
                             }
                         }
@@ -238,7 +242,7 @@ extension Class {
                         storage.fields["element"] = elements
                         storage.content[.mainContent] = contentStorage
                         for (index, element) in elements.enumerated() {
-                            content(element).widget(modifiers: modifiers).update(contentStorage[index], modifiers: modifiers)
+                            content(element).widget(modifiers: modifiers).update(contentStorage[index], modifiers: modifiers, updateProperties: updateProperties)
                         }
             """
             // swiftlint:enable line_length

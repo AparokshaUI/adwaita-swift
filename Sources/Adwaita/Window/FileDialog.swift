@@ -92,7 +92,7 @@ public struct FileDialog: WindowScene {
     /// - Parameters:
     ///     - storage: The storage to update.
     ///     - app: The application.
-    public func update(_ storage: WindowStorage, app: GTUIApp) {
+    public func update(_ storage: WindowStorage, app: GTUIApp, force: Bool) {
         updateAppShortcuts(app: app)
         if let window = storage.window as? GTUIFileDialog {
             update(window: window)

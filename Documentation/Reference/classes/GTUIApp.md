@@ -13,6 +13,14 @@ The handlers which are called when a state changes.
 
 The app's id for the file name for storing the data.
 
+### `pointer`
+
+The pointer to the application.
+
+### `fields`
+
+Fields for additional information.
+
 ### `body`
 
 The app's content.
@@ -37,6 +45,19 @@ Initialize the GTUI application.
 
 The entry point of the application.
 
+### `run()`
+
+Run the application.
+
+### `addKeyboardShortcut(_:id:window:handler:)`
+
+Add a keyboard shortcut to the application.
+- Parameters:
+    - shortcut: The keyboard shortcut.
+    - id: The action's id.
+    - window: Optionally an application window.
+    - handler: The action's handler.
+
 ### `showWindow(_:)`
 
 Focus the window with a certain id. Create the window if it doesn't already exist.
@@ -53,3 +74,7 @@ Add a new window with the content of the window with a certain id.
 ### `setParentWindows()`
 
 Set the parents of every window having a parent window.
+
+### `quit()`
+
+Terminate the application.

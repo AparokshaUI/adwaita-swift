@@ -14,7 +14,6 @@ struct Demo: App {
 
     let id = "io.github.AparokshaUI.Demo"
     var app: GTUIApp!
-    @State private var toolbar = false
 
     var scene: Scene {
         Window(id: "main") { window in

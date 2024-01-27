@@ -2,7 +2,7 @@
 //  HeaderBar.swift
 //  Adwaita
 //
-//  Created by auto-generation on 22.01.24.
+//  Created by auto-generation on 27.01.24.
 //
 
 import CAdw
@@ -156,7 +156,7 @@ public struct HeaderBar: Widget {
     /// - Returns: The view storage.
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let storage = ViewStorage(adw_header_bar_new()?.opaque())
-        update(storage, modifiers: modifiers)
+        update(storage, modifiers: modifiers, updateProperties: true)
         if let titleWidgetStorage = titleWidget?().widget(modifiers: modifiers).storage(modifiers: modifiers) {
             storage.content["titleWidget"] = [titleWidgetStorage]
             adw_header_bar_set_title_widget(storage.pointer, titleWidgetStorage.pointer?.cast())
@@ -185,38 +185,47 @@ public struct HeaderBar: Widget {
     /// - Parameters:
     ///     - storage: The view storage.
     ///     - modifiers: The view modifiers.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
+    ///     - updateProperties: Whether to update the view's properties.
+    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         storage.modify { widget in
-            if let decorationLayout {
+            if let decorationLayout, updateProperties {
                 adw_header_bar_set_decoration_layout(widget, decorationLayout)
             }
-            if let showBackButton {
+            if let showBackButton, updateProperties {
                 adw_header_bar_set_show_back_button(widget, showBackButton.cBool)
             }
-            if let showEndTitleButtons {
+            if let showEndTitleButtons, updateProperties {
                 adw_header_bar_set_show_end_title_buttons(widget, showEndTitleButtons.cBool)
             }
-            if let showStartTitleButtons {
+            if let showStartTitleButtons, updateProperties {
                 adw_header_bar_set_show_start_title_buttons(widget, showStartTitleButtons.cBool)
             }
-            if let showTitle {
+            if let showTitle, updateProperties {
                 adw_header_bar_set_show_title(widget, showTitle.cBool)
             }
             if let widget = storage.content["titleWidget"]?.first {
-                titleWidget?().widget(modifiers: modifiers).update(widget, modifiers: modifiers)
+                titleWidget?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
             }
 
             if let startStorage = storage.content["start"] {
                 for (index, view) in start().enumerated() {
                     if let storage = startStorage[safe: index] {
-                        view.updateStorage(storage, modifiers: modifiers)
+                        view.updateStorage(
+                            storage,
+                            modifiers: modifiers,
+                            updateProperties: updateProperties
+                        )
                     }
                 }
             }
             if let endStorage = storage.content["end"] {
                 for (index, view) in end().enumerated() {
                     if let storage = endStorage[safe: index] {
-                        view.updateStorage(storage, modifiers: modifiers)
+                        view.updateStorage(
+                            storage,
+                            modifiers: modifiers,
+                            updateProperties: updateProperties
+                        )
                     }
                 }
             }

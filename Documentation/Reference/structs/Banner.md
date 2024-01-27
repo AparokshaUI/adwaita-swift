@@ -2,54 +2,120 @@
 
 # `Banner`
 
-A banner widget.
+A bar with contextual information.
+
+<picture><source srcset="banner-dark.png" media="(prefers-color-scheme: dark)"><img src="banner.png" alt="banner"></picture>
+
+Banners are hidden by default, use [property@Banner:revealed] to show them.
+
+Banners have a title, set with [property@Banner:title]. Titles can be marked
+up with Pango markup, use [property@Banner:use-markup] to enable it.
+
+The title will be shown centered or left-aligned depending on available
+space.
+
+Banners can optionally have a button with text on it, set through
+[property@Banner:button-label]. The button can be used with a `GAction`,
+or with the [signal@Banner::button-clicked] signal.
+
+## CSS nodes
+
+`AdwBanner` has a main CSS node with the name `banner`.
 
 ## Properties
-### `title`
+### `updateFunctions`
 
-The content.
+Additional update functions for type extensions.
 
-### `visible`
+### `appearFunctions`
 
-Whether the banner is visible.
+Additional appear functions for type extensions.
 
 ### `buttonLabel`
 
-The button's label.
+The label to show on the button.
 
-### `handler`
+If set to `""` or `NULL`, the button won't be shown.
 
-The button's handler.
+The button can be used with a `GAction`, or with the
+[signal@Banner::button-clicked] signal.
+
+### `revealed`
+
+Whether the banner is currently revealed.
+
+### `title`
+
+The title for this banner.
+
+See also: [property@Banner:use-markup].
+
+### `useMarkup`
+
+Whether to use Pango markup for the banner title.
+
+See also [func@Pango.parse_markup].
+
+### `buttonClicked`
+
+This signal is emitted after the action button has been clicked.
+
+It can be used as an alternative to setting an action.
+
+### `app`
+
+The application.
+
+### `window`
+
+The window.
 
 ## Methods
-### `init(_:visible:)`
+### `init(title:)`
 
-Initialize a text widget.
-- Parameters:
-    - title: The content.
-    - visible: Whether the banner is visible.
-
-### `update(_:modifiers:)`
-
-Update the view storage of the text widget.
-- Parameters:
-    - storage: The view storage.
-    - modifiers: Modify views before being updated.
+Initialize `Banner`.
 
 ### `container(modifiers:)`
 
-Get the container of the text widget.
+Get the widget's view storage.
+- Parameter modifiers: The view modifiers.
 - Returns: The view storage.
 
-### `update(banner:)`
+### `update(_:modifiers:updateProperties:)`
 
-Update the banner.
-- Parameter banner: The banner.
-
-### `button(_:handler:)`
-
-Configure the banner's button.
+Update the widget's view storage.
 - Parameters:
-    - label: The button's title.
-    - handler: The button's handler.
-- Returns: The banner.
+    - storage: The view storage.
+    - modifiers: The view modifiers.
+    - updateProperties: Whether to update the view's properties.
+
+### `buttonLabel(_:)`
+
+The label to show on the button.
+
+If set to `""` or `NULL`, the button won't be shown.
+
+The button can be used with a `GAction`, or with the
+[signal@Banner::button-clicked] signal.
+
+### `revealed(_:)`
+
+Whether the banner is currently revealed.
+
+### `title(_:)`
+
+The title for this banner.
+
+See also: [property@Banner:use-markup].
+
+### `useMarkup(_:)`
+
+Whether to use Pango markup for the banner title.
+
+See also [func@Pango.parse_markup].
+
+### `buttonClicked(_:)`
+
+This signal is emitted after the action button has been clicked.
+
+It can be used as an alternative to setting an action.

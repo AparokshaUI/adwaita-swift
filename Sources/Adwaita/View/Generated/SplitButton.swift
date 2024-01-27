@@ -2,7 +2,7 @@
 //  SplitButton.swift
 //  Adwaita
 //
-//  Created by auto-generation on 22.01.24.
+//  Created by auto-generation on 27.01.24.
 //
 
 import CAdw
@@ -109,7 +109,7 @@ public struct SplitButton: Widget {
     /// - Returns: The view storage.
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let storage = ViewStorage(adw_split_button_new()?.opaque())
-        update(storage, modifiers: modifiers)
+        update(storage, modifiers: modifiers, updateProperties: true)
         if let childStorage = child?().widget(modifiers: modifiers).storage(modifiers: modifiers) {
             storage.content["child"] = [childStorage]
             adw_split_button_set_child(storage.pointer, childStorage.pointer?.cast())
@@ -133,7 +133,8 @@ public struct SplitButton: Widget {
     /// - Parameters:
     ///     - storage: The view storage.
     ///     - modifiers: The view modifiers.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
+    ///     - updateProperties: Whether to update the view's properties.
+    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         if let activate {
             storage.connectSignal(name: "activate") {
                 activate()
@@ -145,22 +146,22 @@ public struct SplitButton: Widget {
             }
         }
         storage.modify { widget in
-            if let canShrink {
+            if let canShrink, updateProperties {
                 adw_split_button_set_can_shrink(widget, canShrink.cBool)
             }
             if let widget = storage.content["child"]?.first {
-                child?().widget(modifiers: modifiers).update(widget, modifiers: modifiers)
+                child?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
             }
-            if let dropdownTooltip {
+            if let dropdownTooltip, updateProperties {
                 adw_split_button_set_dropdown_tooltip(widget, dropdownTooltip)
             }
-            if let iconName {
+            if let iconName, updateProperties {
                 adw_split_button_set_icon_name(widget, iconName)
             }
-            if let label, storage.content["child"] == nil {
+            if let label, storage.content["child"] == nil, updateProperties {
                 adw_split_button_set_label(widget, label)
             }
-            if let useUnderline {
+            if let useUnderline, updateProperties {
                 adw_split_button_set_use_underline(widget, useUnderline.cBool)
             }
 

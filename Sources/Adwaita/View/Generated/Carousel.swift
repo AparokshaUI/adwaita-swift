@@ -2,7 +2,7 @@
 //  Carousel.swift
 //  Adwaita
 //
-//  Created by auto-generation on 22.01.24.
+//  Created by auto-generation on 27.01.24.
 //
 
 import CAdw
@@ -79,7 +79,7 @@ public struct Carousel<Element>: Widget where Element: Identifiable {
     /// - Returns: The view storage.
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let storage = ViewStorage(adw_carousel_new()?.opaque())
-        update(storage, modifiers: modifiers)
+        update(storage, modifiers: modifiers, updateProperties: true)
 
 
         for function in appearFunctions {
@@ -92,29 +92,30 @@ public struct Carousel<Element>: Widget where Element: Identifiable {
     /// - Parameters:
     ///     - storage: The view storage.
     ///     - modifiers: The view modifiers.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
+    ///     - updateProperties: Whether to update the view's properties.
+    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         if let pageChanged {
             storage.connectSignal(name: "page-changed") {
                 pageChanged()
             }
         }
         storage.modify { widget in
-            if let allowLongSwipes {
+            if let allowLongSwipes, updateProperties {
                 adw_carousel_set_allow_long_swipes(widget, allowLongSwipes.cBool)
             }
-            if let allowMouseDrag {
+            if let allowMouseDrag, updateProperties {
                 adw_carousel_set_allow_mouse_drag(widget, allowMouseDrag.cBool)
             }
-            if let allowScrollWheel {
+            if let allowScrollWheel, updateProperties {
                 adw_carousel_set_allow_scroll_wheel(widget, allowScrollWheel.cBool)
             }
-            if let interactive {
+            if let interactive, updateProperties {
                 adw_carousel_set_interactive(widget, interactive.cBool)
             }
-            if let revealDuration {
+            if let revealDuration, updateProperties {
                 adw_carousel_set_reveal_duration(widget, revealDuration.cInt)
             }
-            if let spacing {
+            if let spacing, updateProperties {
                 adw_carousel_set_spacing(widget, spacing.cInt)
             }
 
@@ -140,7 +141,7 @@ public struct Carousel<Element>: Widget where Element: Identifiable {
             storage.fields["element"] = elements
             storage.content[.mainContent] = contentStorage
             for (index, element) in elements.enumerated() {
-                content(element).widget(modifiers: modifiers).update(contentStorage[index], modifiers: modifiers)
+                content(element).widget(modifiers: modifiers).update(contentStorage[index], modifiers: modifiers, updateProperties: updateProperties)
             }
         }
         for function in updateFunctions {

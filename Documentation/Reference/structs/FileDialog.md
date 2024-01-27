@@ -37,10 +37,6 @@ The initial file name for the file exporter.
 
 The accepted extensions for the file importer.
 
-### `folders`
-
-Whether folders are accepted in the file importer.
-
 ### `result`
 
 The closure to run when the import or export is successful.
@@ -50,7 +46,7 @@ The closure to run when the import or export is successful.
 The closure to run when the import or export is not successful.
 
 ## Methods
-### `init(importer:initialFolder:extensions:folders:onOpen:onClose:)`
+### `init(importer:initialFolder:extensions:onOpen:onClose:)`
 
 Create an importer file dialog window.
 - Parameters:
@@ -77,7 +73,7 @@ Get the storage for the window.
 - Parameter app: The application.
 - Returns: The storage.
 
-### `update(_:app:)`
+### `update(_:app:force:)`
 
 Update a window.
 - Parameters:

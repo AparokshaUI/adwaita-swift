@@ -24,7 +24,8 @@ public protocol WindowScene: WindowSceneGroup {
     /// - Parameters:
     ///     - storage: The storage to update.
     ///     - app: The application.
-    func update(_ storage: WindowStorage, app: GTUIApp)
+    ///     - force: Whether to force update all the views.
+    func update(_ storage: WindowStorage, app: GTUIApp, force: Bool)
 
 }
 

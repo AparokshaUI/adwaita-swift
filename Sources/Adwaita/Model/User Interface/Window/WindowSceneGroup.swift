@@ -33,10 +33,11 @@ extension WindowSceneGroup {
     /// - Parameters:
     ///     - storage: The window's storage.
     ///     - app: The application.
-    func update(_ storage: [WindowStorage], app: GTUIApp) {
+    ///     - force: Whether to force update all the views.
+    func update(_ storage: [WindowStorage], app: GTUIApp, force: Bool) {
         for (index, window) in windows().enumerated() {
             if let storage = storage[safe: index] {
-                window.update(storage, app: app)
+                window.update(storage, app: app, force: force)
             }
         }
     }

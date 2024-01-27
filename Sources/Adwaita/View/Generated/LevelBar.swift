@@ -2,7 +2,7 @@
 //  LevelBar.swift
 //  Adwaita
 //
-//  Created by auto-generation on 22.01.24.
+//  Created by auto-generation on 27.01.24.
 //
 
 import CAdw
@@ -146,7 +146,7 @@ public struct LevelBar: Widget {
     /// - Returns: The view storage.
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let storage = ViewStorage(gtk_level_bar_new()?.opaque())
-        update(storage, modifiers: modifiers)
+        update(storage, modifiers: modifiers, updateProperties: true)
 
 
         for function in appearFunctions {
@@ -159,23 +159,24 @@ public struct LevelBar: Widget {
     /// - Parameters:
     ///     - storage: The view storage.
     ///     - modifiers: The view modifiers.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
+    ///     - updateProperties: Whether to update the view's properties.
+    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         if let offsetChanged {
             storage.connectSignal(name: "offset-changed") {
                 offsetChanged()
             }
         }
         storage.modify { widget in
-            if let inverted {
+            if let inverted, updateProperties {
                 gtk_level_bar_set_inverted(widget, inverted.cBool)
             }
-            if let maxValue {
+            if let maxValue, updateProperties {
                 gtk_level_bar_set_max_value(widget, maxValue)
             }
-            if let minValue {
+            if let minValue, updateProperties {
                 gtk_level_bar_set_min_value(widget, minValue)
             }
-            if let value {
+            if let value, updateProperties {
                 gtk_level_bar_set_value(widget, value)
             }
 

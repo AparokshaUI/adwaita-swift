@@ -2,7 +2,7 @@
 //  ProgressBar.swift
 //  Adwaita
 //
-//  Created by auto-generation on 22.01.24.
+//  Created by auto-generation on 27.01.24.
 //
 
 import CAdw
@@ -94,7 +94,7 @@ public struct ProgressBar: Widget {
     /// - Returns: The view storage.
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let storage = ViewStorage(gtk_progress_bar_new()?.opaque())
-        update(storage, modifiers: modifiers)
+        update(storage, modifiers: modifiers, updateProperties: true)
 
 
         for function in appearFunctions {
@@ -107,21 +107,22 @@ public struct ProgressBar: Widget {
     /// - Parameters:
     ///     - storage: The view storage.
     ///     - modifiers: The view modifiers.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
+    ///     - updateProperties: Whether to update the view's properties.
+    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         storage.modify { widget in
-            if let fraction {
+            if let fraction, updateProperties {
                 gtk_progress_bar_set_fraction(widget, fraction)
             }
-            if let inverted {
+            if let inverted, updateProperties {
                 gtk_progress_bar_set_inverted(widget, inverted.cBool)
             }
-            if let pulseStep {
+            if let pulseStep, updateProperties {
                 gtk_progress_bar_set_pulse_step(widget, pulseStep)
             }
-            if let showText {
+            if let showText, updateProperties {
                 gtk_progress_bar_set_show_text(widget, showText.cBool)
             }
-            if let text {
+            if let text, updateProperties {
                 gtk_progress_bar_set_text(widget, text)
             }
 

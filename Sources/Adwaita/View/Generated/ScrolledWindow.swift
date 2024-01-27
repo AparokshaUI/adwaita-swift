@@ -2,7 +2,7 @@
 //  ScrolledWindow.swift
 //  Adwaita
 //
-//  Created by auto-generation on 22.01.24.
+//  Created by auto-generation on 27.01.24.
 //
 
 import CAdw
@@ -170,7 +170,7 @@ public struct ScrolledWindow: Widget {
     /// - Returns: The view storage.
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let storage = ViewStorage(gtk_scrolled_window_new()?.opaque())
-        update(storage, modifiers: modifiers)
+        update(storage, modifiers: modifiers, updateProperties: true)
         if let childStorage = child?().widget(modifiers: modifiers).storage(modifiers: modifiers) {
             storage.content["child"] = [childStorage]
             gtk_scrolled_window_set_child(storage.pointer, childStorage.pointer?.cast())
@@ -187,7 +187,8 @@ public struct ScrolledWindow: Widget {
     /// - Parameters:
     ///     - storage: The view storage.
     ///     - modifiers: The view modifiers.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
+    ///     - updateProperties: Whether to update the view's properties.
+    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         if let edgeOvershot {
             storage.connectSignal(name: "edge-overshot") {
                 edgeOvershot()
@@ -210,33 +211,33 @@ public struct ScrolledWindow: Widget {
         }
         storage.modify { widget in
             if let widget = storage.content["child"]?.first {
-                child?().widget(modifiers: modifiers).update(widget, modifiers: modifiers)
+                child?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
             }
-            if let hasFrame {
+            if let hasFrame, updateProperties {
                 gtk_scrolled_window_set_has_frame(widget, hasFrame.cBool)
             }
-            if let kineticScrolling {
+            if let kineticScrolling, updateProperties {
                 gtk_scrolled_window_set_kinetic_scrolling(widget, kineticScrolling.cBool)
             }
-            if let maxContentHeight {
+            if let maxContentHeight, updateProperties {
                 gtk_scrolled_window_set_max_content_height(widget, maxContentHeight.cInt)
             }
-            if let maxContentWidth {
+            if let maxContentWidth, updateProperties {
                 gtk_scrolled_window_set_max_content_width(widget, maxContentWidth.cInt)
             }
-            if let minContentHeight {
+            if let minContentHeight, updateProperties {
                 gtk_scrolled_window_set_min_content_height(widget, minContentHeight.cInt)
             }
-            if let minContentWidth {
+            if let minContentWidth, updateProperties {
                 gtk_scrolled_window_set_min_content_width(widget, minContentWidth.cInt)
             }
-            if let overlayScrolling {
+            if let overlayScrolling, updateProperties {
                 gtk_scrolled_window_set_overlay_scrolling(widget, overlayScrolling.cBool)
             }
-            if let propagateNaturalHeight {
+            if let propagateNaturalHeight, updateProperties {
                 gtk_scrolled_window_set_propagate_natural_height(widget, propagateNaturalHeight.cBool)
             }
-            if let propagateNaturalWidth {
+            if let propagateNaturalWidth, updateProperties {
                 gtk_scrolled_window_set_propagate_natural_width(widget, propagateNaturalWidth.cBool)
             }
 

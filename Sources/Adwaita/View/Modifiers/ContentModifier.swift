@@ -25,8 +25,9 @@ struct ContentModifier<Content>: Widget where Content: View {
     /// - Parameters:
     ///     - storage: The content's storage.
     ///     - modifiers: Modify views before being updated.
-    func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
-        content.updateStorage(storage, modifiers: modifiers + [modifyView])
+    ///     - updateProperties: Whether to update properties.
+    func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+        content.updateStorage(storage, modifiers: modifiers + [modifyView], updateProperties: updateProperties)
     }
 
     /// Apply the modifier to a view.

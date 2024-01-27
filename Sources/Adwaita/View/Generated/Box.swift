@@ -2,7 +2,7 @@
 //  Box.swift
 //  Adwaita
 //
-//  Created by auto-generation on 22.01.24.
+//  Created by auto-generation on 27.01.24.
 //
 
 import CAdw
@@ -74,7 +74,7 @@ public struct Box: Widget {
     /// - Returns: The view storage.
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let storage = ViewStorage(gtk_box_new(GTK_ORIENTATION_VERTICAL, spacing.cInt)?.opaque())
-        update(storage, modifiers: modifiers)
+        update(storage, modifiers: modifiers, updateProperties: true)
 
         var appendStorage: [ViewStorage] = []
         for view in append() {
@@ -99,27 +99,38 @@ public struct Box: Widget {
     /// - Parameters:
     ///     - storage: The view storage.
     ///     - modifiers: The view modifiers.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
+    ///     - updateProperties: Whether to update the view's properties.
+    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         storage.modify { widget in
-            if let baselineChild {
+            if let baselineChild, updateProperties {
                 gtk_box_set_baseline_child(widget?.cast(), baselineChild.cInt)
             }
-            if let homogeneous {
+            if let homogeneous, updateProperties {
                 gtk_box_set_homogeneous(widget?.cast(), homogeneous.cBool)
             }
-            gtk_box_set_spacing(widget?.cast(), spacing.cInt)
+            if updateProperties {
+                gtk_box_set_spacing(widget?.cast(), spacing.cInt)
+            }
 
             if let appendStorage = storage.content["append"] {
                 for (index, view) in append().enumerated() {
                     if let storage = appendStorage[safe: index] {
-                        view.updateStorage(storage, modifiers: modifiers)
+                        view.updateStorage(
+                            storage,
+                            modifiers: modifiers,
+                            updateProperties: updateProperties
+                        )
                     }
                 }
             }
             if let prependStorage = storage.content["prepend"] {
                 for (index, view) in prepend().enumerated() {
                     if let storage = prependStorage[safe: index] {
-                        view.updateStorage(storage, modifiers: modifiers)
+                        view.updateStorage(
+                            storage,
+                            modifiers: modifiers,
+                            updateProperties: updateProperties
+                        )
                     }
                 }
             }

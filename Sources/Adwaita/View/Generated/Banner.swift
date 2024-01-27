@@ -2,7 +2,7 @@
 //  Banner.swift
 //  Adwaita
 //
-//  Created by auto-generation on 22.01.24.
+//  Created by auto-generation on 27.01.24.
 //
 
 import CAdw
@@ -70,7 +70,7 @@ public struct Banner: Widget {
     /// - Returns: The view storage.
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let storage = ViewStorage(adw_banner_new(title)?.opaque())
-        update(storage, modifiers: modifiers)
+        update(storage, modifiers: modifiers, updateProperties: true)
 
 
         for function in appearFunctions {
@@ -83,21 +83,24 @@ public struct Banner: Widget {
     /// - Parameters:
     ///     - storage: The view storage.
     ///     - modifiers: The view modifiers.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
+    ///     - updateProperties: Whether to update the view's properties.
+    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         if let buttonClicked {
             storage.connectSignal(name: "button-clicked") {
                 buttonClicked()
             }
         }
         storage.modify { widget in
-            if let buttonLabel {
+            if let buttonLabel, updateProperties {
                 adw_banner_set_button_label(widget, buttonLabel)
             }
-            if let revealed {
+            if let revealed, updateProperties {
                 adw_banner_set_revealed(widget, revealed.cBool)
             }
-            adw_banner_set_title(widget, title)
-            if let useMarkup {
+            if updateProperties {
+                adw_banner_set_title(widget, title)
+            }
+            if let useMarkup, updateProperties {
                 adw_banner_set_use_markup(widget, useMarkup.cBool)
             }
 

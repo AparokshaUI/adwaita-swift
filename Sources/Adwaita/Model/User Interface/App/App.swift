@@ -43,13 +43,13 @@ extension App {
     public static func main() {
         var appInstance = self.init()
         appInstance.app = GTUIApp(appInstance.id) { appInstance }
-        GTUIApp.updateHandlers.append {
+        GTUIApp.updateHandlers.append { force in
             var removeIndices: [Int] = []
             for (index, window) in appInstance.app.sceneStorage.enumerated() {
                 if window.destroy {
                     removeIndices.insert(index, at: 0)
                 } else if let scene = appInstance.scene.windows().first(where: { $0.id == window.id }) {
-                    scene.update(window, app: appInstance.app)
+                    scene.update(window, app: appInstance.app, force: force)
                 }
             }
             for index in removeIndices {

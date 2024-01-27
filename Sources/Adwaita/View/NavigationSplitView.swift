@@ -55,12 +55,17 @@ public struct NavigationSplitView: Widget {
     /// - Parameters:
     ///     - storage: The view storage.
     ///     - modifiers: Modify views before being updated.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
+    ///     - updateProperties: Whether to update properties.
+    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         if let storage = storage.content[contentID]?[safe: 0] {
-            content().widget(modifiers: modifiers).update(storage, modifiers: modifiers)
+            content()
+                .widget(modifiers: modifiers)
+                .update(storage, modifiers: modifiers, updateProperties: updateProperties)
         }
         if let storage = storage.content[sidebarID]?[safe: 0] {
-            sidebar().widget(modifiers: modifiers).update(storage, modifiers: modifiers)
+            sidebar()
+                .widget(modifiers: modifiers)
+                .update(storage, modifiers: modifiers, updateProperties: updateProperties)
         }
     }
 

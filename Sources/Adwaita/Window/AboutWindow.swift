@@ -102,7 +102,8 @@ public struct AboutWindow: WindowScene {
     /// - Parameters:
     ///     - storage: The storage to update.
     ///     - app: The application.
-    public func update(_ storage: WindowStorage, app: GTUIApp) {
+    ///     - force: Whether to force update all the views.
+    public func update(_ storage: WindowStorage, app: GTUIApp, force: Bool) {
         updateAppShortcuts(app: app)
         storage.destroy = true
     }

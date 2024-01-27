@@ -43,12 +43,14 @@ extension View {
     /// - Parameters:
     ///     - storage: The storage.
     ///     - modifiers: Modify views before being updated.
-    public func updateStorage(_ storage: ViewStorage, modifiers: [(View) -> View]) {
+    ///     - updateProperties: Whether to update properties.
+    public func updateStorage(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         let modified = getModified(modifiers: modifiers)
         if let widget = modified as? Widget {
-            widget.update(storage, modifiers: modifiers)
+            widget.update(storage, modifiers: modifiers, updateProperties: updateProperties)
         } else {
-            StateWrapper(content: { view }, state: getState()).update(storage, modifiers: modifiers)
+            StateWrapper(content: { view }, state: getState())
+                .update(storage, modifiers: modifiers, updateProperties: updateProperties)
         }
     }
 

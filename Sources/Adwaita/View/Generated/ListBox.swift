@@ -2,7 +2,7 @@
 //  ListBox.swift
 //  Adwaita
 //
-//  Created by auto-generation on 22.01.24.
+//  Created by auto-generation on 27.01.24.
 //
 
 import CAdw
@@ -127,7 +127,7 @@ public struct ListBox<Element>: Widget where Element: Identifiable {
     /// - Returns: The view storage.
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let storage = ViewStorage(gtk_list_box_new()?.opaque())
-        update(storage, modifiers: modifiers)
+        update(storage, modifiers: modifiers, updateProperties: true)
 
 
         for function in appearFunctions {
@@ -140,7 +140,8 @@ public struct ListBox<Element>: Widget where Element: Identifiable {
     /// - Parameters:
     ///     - storage: The view storage.
     ///     - modifiers: The view modifiers.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
+    ///     - updateProperties: Whether to update the view's properties.
+    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         if let activateCursorRow {
             storage.connectSignal(name: "activate-cursor-row") {
                 activateCursorRow()
@@ -182,10 +183,10 @@ public struct ListBox<Element>: Widget where Element: Identifiable {
             }
         }
         storage.modify { widget in
-            if let activateOnSingleClick {
+            if let activateOnSingleClick, updateProperties {
                 gtk_list_box_set_activate_on_single_click(widget, activateOnSingleClick.cBool)
             }
-            if let showSeparators {
+            if let showSeparators, updateProperties {
                 gtk_list_box_set_show_separators(widget, showSeparators.cBool)
             }
 
@@ -211,7 +212,7 @@ public struct ListBox<Element>: Widget where Element: Identifiable {
             storage.fields["element"] = elements
             storage.content[.mainContent] = contentStorage
             for (index, element) in elements.enumerated() {
-                content(element).widget(modifiers: modifiers).update(contentStorage[index], modifiers: modifiers)
+                content(element).widget(modifiers: modifiers).update(contentStorage[index], modifiers: modifiers, updateProperties: updateProperties)
             }
         }
         for function in updateFunctions {

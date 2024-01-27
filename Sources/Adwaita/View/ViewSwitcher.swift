@@ -54,7 +54,8 @@ public struct ViewSwitcher<Element>: Widget where Element: ViewSwitcherOption {
     /// - Parameters:
     ///     - storage: The view storage.
     ///     - modifiers: Modify views before being updated.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
+    ///     - updateProperties: Whether to update properties.
+    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         updateSwitcher(switcher: storage)
     }
 

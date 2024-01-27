@@ -2,7 +2,7 @@
 //  Button.swift
 //  Adwaita
 //
-//  Created by auto-generation on 22.01.24.
+//  Created by auto-generation on 27.01.24.
 //
 
 import CAdw
@@ -88,7 +88,7 @@ public struct Button: Widget {
     /// - Returns: The view storage.
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let storage = ViewStorage(gtk_button_new()?.opaque())
-        update(storage, modifiers: modifiers)
+        update(storage, modifiers: modifiers, updateProperties: true)
         if let childStorage = child?().widget(modifiers: modifiers).storage(modifiers: modifiers) {
             storage.content["child"] = [childStorage]
             gtk_button_set_child(storage.pointer?.cast(), childStorage.pointer?.cast())
@@ -105,7 +105,8 @@ public struct Button: Widget {
     /// - Parameters:
     ///     - storage: The view storage.
     ///     - modifiers: The view modifiers.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
+    ///     - updateProperties: Whether to update the view's properties.
+    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         if let activate {
             storage.connectSignal(name: "activate") {
                 activate()
@@ -117,22 +118,22 @@ public struct Button: Widget {
             }
         }
         storage.modify { widget in
-            if let canShrink {
+            if let canShrink, updateProperties {
                 gtk_button_set_can_shrink(widget?.cast(), canShrink.cBool)
             }
             if let widget = storage.content["child"]?.first {
-                child?().widget(modifiers: modifiers).update(widget, modifiers: modifiers)
+                child?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
             }
-            if let hasFrame {
+            if let hasFrame, updateProperties {
                 gtk_button_set_has_frame(widget?.cast(), hasFrame.cBool)
             }
-            if let iconName {
+            if let iconName, updateProperties {
                 gtk_button_set_icon_name(widget?.cast(), iconName)
             }
-            if let label, storage.content["child"] == nil {
+            if let label, storage.content["child"] == nil, updateProperties {
                 gtk_button_set_label(widget?.cast(), label)
             }
-            if let useUnderline {
+            if let useUnderline, updateProperties {
                 gtk_button_set_use_underline(widget?.cast(), useUnderline.cBool)
             }
 

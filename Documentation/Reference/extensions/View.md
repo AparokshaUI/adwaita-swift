@@ -9,12 +9,15 @@ Wrap the view into a widget.
 - Parameter modifiers: Modify views before being updated.
 - Returns: The widget.
 
-### `updateStorage(_:modifiers:)`
+### `updateStorage(_:modifiers:updateProperties:)`
 
 Update a storage to a view.
 - Parameters:
     - storage: The storage.
     - modifiers: Modify views before being updated.
+    - updateProperties: Whether to update properties.
+
+### `getState()`
 
 ### `storage(modifiers:)`
 
@@ -44,8 +47,20 @@ Run a function when the widget gets clicked.
 
 ### `frame(maxSize:)`
 
-Set the view's maximal size.
-- Parameter maxSize: The maximal size.
+Set the view's maximum width.
+- Parameter maxSize: The maximum width.
+- Returns: A view.
+
+### `frame(maxWidth:)`
+
+Set the view's maximum width.
+- Parameter maxWidth: The maximum width.
+- Returns: A view.
+
+### `frame(maxHeight:)`
+
+Set the view's maximum height.
+- Parameter maxHeight: The maximum height.
 - Returns: A view.
 
 ### `modifyContent(_:modify:)`
@@ -137,13 +152,6 @@ Make the view insensitive (useful e.g. in overlays).
 Remove all of the content modifiers for the wrapped views.
 - Returns: A view.
 
-### `overlay(_:)`
-
-Add an overlay view.
-- Parameters:
-    - overlay: The overlay view.
-- Returns: A view.
-
 ### `toast(_:signal:)`
 
 Present a toast when the signal gets activated.
@@ -162,6 +170,16 @@ Present a toast with a button when the signal gets activated.
     - handler: The handler for the button.
 - Returns: A view.
 
+### `verticalCenter()`
+
+Wrap the view in a vertical stack and center vertically.
+- Returns: The view.
+
+### `horizontalCenter()`
+
+Wrap the view in a horizontal stack and center horizontally.
+- Returns: The view.
+
 ### `topToolbar(visible:_:)`
 
 Add a top toolbar to the view.
@@ -178,7 +196,9 @@ Add a bottom toolbar to the view.
   - visible: Whether the toolbar is visible.
 - Returns: A view.
 
-### `verticalCenter()`
+### `overlay(_:)`
 
-Wrap the view in a vertical stack and center vertically.
-- Returns: The view.
+Add an overlay view.
+- Parameters:
+    - overlay: The overlay view.
+- Returns: A view.

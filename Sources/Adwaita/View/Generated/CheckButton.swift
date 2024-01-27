@@ -2,7 +2,7 @@
 //  CheckButton.swift
 //  Adwaita
 //
-//  Created by auto-generation on 22.01.24.
+//  Created by auto-generation on 27.01.24.
 //
 
 import CAdw
@@ -117,7 +117,7 @@ public struct CheckButton: Widget {
     /// - Returns: The view storage.
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let storage = ViewStorage(gtk_check_button_new()?.opaque())
-        update(storage, modifiers: modifiers)
+        update(storage, modifiers: modifiers, updateProperties: true)
         if let childStorage = child?().widget(modifiers: modifiers).storage(modifiers: modifiers) {
             storage.content["child"] = [childStorage]
             gtk_check_button_set_child(storage.pointer?.cast(), childStorage.pointer?.cast())
@@ -137,7 +137,8 @@ public struct CheckButton: Widget {
     /// - Parameters:
     ///     - storage: The view storage.
     ///     - modifiers: The view modifiers.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
+    ///     - updateProperties: Whether to update the view's properties.
+    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         if let activate {
             storage.connectSignal(name: "activate") {
                 activate()
@@ -149,19 +150,19 @@ public struct CheckButton: Widget {
             }
         }
         storage.modify { widget in
-            if let active {
+            if let active, updateProperties {
                 gtk_check_button_set_active(widget?.cast(), active.wrappedValue.cBool)
             }
             if let widget = storage.content["child"]?.first {
-                child?().widget(modifiers: modifiers).update(widget, modifiers: modifiers)
+                child?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
             }
-            if let inconsistent {
+            if let inconsistent, updateProperties {
                 gtk_check_button_set_inconsistent(widget?.cast(), inconsistent.cBool)
             }
-            if let label, storage.content["child"] == nil {
+            if let label, storage.content["child"] == nil, updateProperties {
                 gtk_check_button_set_label(widget?.cast(), label)
             }
-            if let useUnderline {
+            if let useUnderline, updateProperties {
                 gtk_check_button_set_use_underline(widget?.cast(), useUnderline.cBool)
             }
 
