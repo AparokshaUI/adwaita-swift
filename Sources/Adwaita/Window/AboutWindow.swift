@@ -29,6 +29,8 @@ public struct AboutWindow: WindowScene {
     var icon: Icon?
     /// The app's website.
     var website: URL?
+    /// The link for opening issues.
+    var issues: URL?
     /// The path to the app data file.
     var path: URL?
 
@@ -69,6 +71,15 @@ public struct AboutWindow: WindowScene {
     public func website(_ url: URL?) -> Self {
         var newSelf = self
         newSelf.website = url
+        return newSelf
+    }
+
+    /// Set the app's website.
+    /// - Parameter url: The URL to the issue tracker.
+    /// - Returns: The window.
+    public func issues(_ url: URL?) -> Self {
+        var newSelf = self
+        newSelf.issues = url
         return newSelf
     }
 
@@ -115,6 +126,7 @@ public struct AboutWindow: WindowScene {
             window.generalData(title: appName, icon: icon, developer: developer, version: version)
         }
         if let website { window.website(url: website.absoluteString) }
+        if let issues { window.issues(url: issues.absoluteString) }
     }
 
 }

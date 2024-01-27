@@ -22,8 +22,9 @@ struct Demo: App {
         .defaultSize(width: 650, height: 450)
         .overlay {
             AboutWindow(id: "about", appName: "Demo", developer: "david-swift", version: "Test")
-                .icon(.default(icon: .emojiNature))
-                .website(.init(string: "david-swift.gitbook.io/adwaita"))
+                .icon(.default(icon: .applicationXExecutable))
+                .website(.init(string: "https://david-swift.gitbook.io/adwaita"))
+                .issues(.init(string: "https://github.com/AparokshaUI/adwaita-swift/issues"))
             Window(id: "overlay", open: 0) { window in
                 OverlayWindowDemo.WindowContent(window: window)
             }

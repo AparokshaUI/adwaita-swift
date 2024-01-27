@@ -166,7 +166,8 @@ There are many more widgets available using auto-generation. Learn [how to use t
 | Syntax          | Description                                                                             |
 | --------------- | --------------------------------------------------------------------------------------- |
 | `icon(_:)`      | Set the app icon.                                                                       |
-| `website(_:)`   | Set the app's website                                                                   |
+| `website(_:)`   | Set the app's website.                                                                  |
+| `issues(_:)`    | Set the app's bug tracker.                                                              |
 
 ### Menu Widgets
 | Name                 | Description                                                       | Widget                 |
