@@ -11,6 +11,9 @@ import PackageDescription
 /// The Adwaita package.
 let package = Package(
     name: "Adwaita",
+    platforms: [
+        .macOS(.v10_15)
+    ],
     products: [
         .library(
             name: "Adwaita",
