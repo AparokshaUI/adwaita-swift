@@ -40,7 +40,7 @@ public class ViewStorage {
     public class SignalData {
 
         /// The closure.
-        public var closure: ([UnsafeMutableRawPointer]) -> Void
+        public var closure: ([Any]) -> Void
 
         /// The closure as a C handler.
         var handler: @convention(c) (UnsafeMutableRawPointer, UnsafeMutableRawPointer) -> Void {
@@ -53,7 +53,7 @@ public class ViewStorage {
         /// The closure as a C handler with three parameters.
         var threeParamsHandler: @convention(c) (
                 UnsafeMutableRawPointer,
-                UnsafeMutableRawPointer,
+                UnsafeRawPointer?,
                 UnsafeMutableRawPointer
         ) -> Void {
             { _, arg1, data in
@@ -65,8 +65,8 @@ public class ViewStorage {
         /// The closure as a C handler with four parameters.
         var fourParamsHandler: @convention(c) (
                 UnsafeMutableRawPointer,
-                UnsafeMutableRawPointer,
-                UnsafeMutableRawPointer,
+                UnsafeRawPointer?,
+                UnsafeRawPointer?,
                 UnsafeMutableRawPointer
         ) -> Void {
             { _, arg1, arg2, data in
@@ -78,15 +78,14 @@ public class ViewStorage {
         /// The closure as a C handler with five parameters.
         var fiveParamsHandler: @convention(c) (
                 UnsafeMutableRawPointer,
-                UnsafeMutableRawPointer,
-                UnsafeMutableRawPointer,
-                UnsafeMutableRawPointer,
+                UnsafeRawPointer?,
+                Double,
+                Double,
                 UnsafeMutableRawPointer
         ) -> Void {
             { _, arg1, arg2, arg3, data in
                 let data = unsafeBitCast(data, to: SignalData.self)
                 data.closure([arg1, arg2, arg3])
-                print("Hi")
             }
         }
 
@@ -98,7 +97,7 @@ public class ViewStorage {
 
         /// Initialize the signal data.
         /// - Parameter closure: The signal's closure.
-        public init(closure: @escaping ([UnsafeMutableRawPointer]) -> Void) {
+        public init(closure: @escaping ([Any]) -> Void) {
             self.closure = closure
         }
 
@@ -151,7 +150,7 @@ public class ViewStorage {
         id: String = "",
         connectFlags: GConnectFlags = G_CONNECT_AFTER,
         argCount: Int = 0,
-        handler: @escaping ([UnsafeMutableRawPointer]) -> Void
+        handler: @escaping ([Any]) -> Void
     ) {
         if let data = handlers[name + id] {
             data.closure = handler

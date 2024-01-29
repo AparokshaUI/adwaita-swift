@@ -59,7 +59,8 @@ extension View {
             let controller = ViewStorage(gtk_gesture_click_new())
             gtk_widget_add_controller(storage.pointer?.cast(), controller.pointer)
             storage.fields["controller"] = controller
-            controller.connectSignal(name: "stopped", argCount: 0, handler: handler)
+            let argCount = 3
+            controller.connectSignal(name: "released", argCount: argCount, handler: handler)
         }
     }
 
