@@ -2,7 +2,7 @@
 //  Banner.swift
 //  Adwaita
 //
-//  Created by auto-generation on 27.01.24.
+//  Created by auto-generation on 29.01.24.
 //
 
 import CAdw
@@ -86,7 +86,7 @@ public struct Banner: Widget {
     ///     - updateProperties: Whether to update the view's properties.
     public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         if let buttonClicked {
-            storage.connectSignal(name: "button-clicked") {
+            storage.connectSignal(name: "button-clicked", argCount: 0) {
                 buttonClicked()
             }
         }

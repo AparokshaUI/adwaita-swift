@@ -2,7 +2,7 @@
 //  Menu.swift
 //  Adwaita
 //
-//  Created by auto-generation on 27.01.24.
+//  Created by auto-generation on 29.01.24.
 //
 
 import CAdw
@@ -151,7 +151,7 @@ public struct Menu: Widget {
     ///     - updateProperties: Whether to update the view's properties.
     public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         if let activate {
-            storage.connectSignal(name: "activate") {
+            storage.connectSignal(name: "activate", argCount: 0) {
                 activate()
             }
         }

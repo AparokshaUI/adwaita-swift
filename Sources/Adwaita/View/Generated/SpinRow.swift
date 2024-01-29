@@ -2,7 +2,7 @@
 //  SpinRow.swift
 //  Adwaita
 //
-//  Created by auto-generation on 27.01.24.
+//  Created by auto-generation on 29.01.24.
 //
 
 import CAdw
@@ -164,22 +164,22 @@ public struct SpinRow: Widget {
     ///     - updateProperties: Whether to update the view's properties.
     public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         if let input {
-            storage.connectSignal(name: "input") {
+            storage.connectSignal(name: "input", argCount: 1) {
                 input()
             }
         }
         if let output {
-            storage.connectSignal(name: "output") {
+            storage.connectSignal(name: "output", argCount: 0) {
                 output()
             }
         }
         if let wrapped {
-            storage.connectSignal(name: "wrapped") {
+            storage.connectSignal(name: "wrapped", argCount: 0) {
                 wrapped()
             }
         }
         if let activated {
-            storage.connectSignal(name: "activated") {
+            storage.connectSignal(name: "activated", argCount: 0) {
                 activated()
             }
         }

@@ -2,7 +2,7 @@
 //  ScrolledWindow.swift
 //  Adwaita
 //
-//  Created by auto-generation on 27.01.24.
+//  Created by auto-generation on 29.01.24.
 //
 
 import CAdw
@@ -190,22 +190,22 @@ public struct ScrolledWindow: Widget {
     ///     - updateProperties: Whether to update the view's properties.
     public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         if let edgeOvershot {
-            storage.connectSignal(name: "edge-overshot") {
+            storage.connectSignal(name: "edge-overshot", argCount: 1) {
                 edgeOvershot()
             }
         }
         if let edgeReached {
-            storage.connectSignal(name: "edge-reached") {
+            storage.connectSignal(name: "edge-reached", argCount: 1) {
                 edgeReached()
             }
         }
         if let moveFocusOut {
-            storage.connectSignal(name: "move-focus-out") {
+            storage.connectSignal(name: "move-focus-out", argCount: 1) {
                 moveFocusOut()
             }
         }
         if let scrollChild {
-            storage.connectSignal(name: "scroll-child") {
+            storage.connectSignal(name: "scroll-child", argCount: 2) {
                 scrollChild()
             }
         }

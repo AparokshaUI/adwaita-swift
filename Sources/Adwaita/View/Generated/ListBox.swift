@@ -2,7 +2,7 @@
 //  ListBox.swift
 //  Adwaita
 //
-//  Created by auto-generation on 27.01.24.
+//  Created by auto-generation on 29.01.24.
 //
 
 import CAdw
@@ -143,42 +143,42 @@ public struct ListBox<Element>: Widget where Element: Identifiable {
     ///     - updateProperties: Whether to update the view's properties.
     public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         if let activateCursorRow {
-            storage.connectSignal(name: "activate-cursor-row") {
+            storage.connectSignal(name: "activate-cursor-row", argCount: 0) {
                 activateCursorRow()
             }
         }
         if let moveCursor {
-            storage.connectSignal(name: "move-cursor") {
+            storage.connectSignal(name: "move-cursor", argCount: 4) {
                 moveCursor()
             }
         }
         if let rowActivated {
-            storage.connectSignal(name: "row-activated") {
+            storage.connectSignal(name: "row-activated", argCount: 1) {
                 rowActivated()
             }
         }
         if let rowSelected {
-            storage.connectSignal(name: "row-selected") {
+            storage.connectSignal(name: "row-selected", argCount: 1) {
                 rowSelected()
             }
         }
         if let selectAll {
-            storage.connectSignal(name: "select-all") {
+            storage.connectSignal(name: "select-all", argCount: 0) {
                 selectAll()
             }
         }
         if let selectedRowsChanged {
-            storage.connectSignal(name: "selected-rows-changed") {
+            storage.connectSignal(name: "selected-rows-changed", argCount: 0) {
                 selectedRowsChanged()
             }
         }
         if let toggleCursorRow {
-            storage.connectSignal(name: "toggle-cursor-row") {
+            storage.connectSignal(name: "toggle-cursor-row", argCount: 0) {
                 toggleCursorRow()
             }
         }
         if let unselectAll {
-            storage.connectSignal(name: "unselect-all") {
+            storage.connectSignal(name: "unselect-all", argCount: 0) {
                 unselectAll()
             }
         }

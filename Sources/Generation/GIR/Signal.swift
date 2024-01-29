@@ -12,6 +12,8 @@ struct Signal: Decodable {
     var name: String
     /// The signal's documentation.
     var doc: String?
+    /// The signal's parameters.
+    var parameters: Parameters?
 
     /// Generate the signal's property.
     /// - Parameters:
@@ -56,7 +58,7 @@ struct Signal: Decodable {
         return """
 
                 if let \(name) {
-                    storage.connectSignal(name: "\(self.name)") {
+                    storage.connectSignal(name: "\(self.name)", argCount: \(parameters?.parameters.count ?? 0)) {
                         \(name)()
                     }
                 }

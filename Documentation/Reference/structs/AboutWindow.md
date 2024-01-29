@@ -41,6 +41,10 @@ The app icon.
 
 The app's website.
 
+### `issues`
+
+The link for opening issues.
+
 ### `path`
 
 The path to the app data file.
@@ -72,6 +76,12 @@ Set the app icon.
 
 Set the app's website.
 - Parameter url: The app's website.
+- Returns: The window.
+
+### `issues(_:)`
+
+Set the app's website.
+- Parameter url: The URL to the issue tracker.
 - Returns: The window.
 
 ### `createWindow(app:)`

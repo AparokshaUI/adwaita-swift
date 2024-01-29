@@ -2,7 +2,7 @@
 //  Carousel.swift
 //  Adwaita
 //
-//  Created by auto-generation on 27.01.24.
+//  Created by auto-generation on 29.01.24.
 //
 
 import CAdw
@@ -95,7 +95,7 @@ public struct Carousel<Element>: Widget where Element: Identifiable {
     ///     - updateProperties: Whether to update the view's properties.
     public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         if let pageChanged {
-            storage.connectSignal(name: "page-changed") {
+            storage.connectSignal(name: "page-changed", argCount: 1) {
                 pageChanged()
             }
         }

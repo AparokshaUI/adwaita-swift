@@ -2,7 +2,7 @@
 //  Overlay.swift
 //  Adwaita
 //
-//  Created by auto-generation on 27.01.24.
+//  Created by auto-generation on 29.01.24.
 //
 
 import CAdw
@@ -106,7 +106,7 @@ public struct Overlay: Widget {
     ///     - updateProperties: Whether to update the view's properties.
     public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         if let getChildPosition {
-            storage.connectSignal(name: "get-child-position") {
+            storage.connectSignal(name: "get-child-position", argCount: 2) {
                 getChildPosition()
             }
         }

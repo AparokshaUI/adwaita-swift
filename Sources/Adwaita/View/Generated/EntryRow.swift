@@ -2,7 +2,7 @@
 //  EntryRow.swift
 //  Adwaita
 //
-//  Created by auto-generation on 27.01.24.
+//  Created by auto-generation on 29.01.24.
 //
 
 import CAdw
@@ -131,12 +131,12 @@ public struct EntryRow: Widget {
     ///     - updateProperties: Whether to update the view's properties.
     public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         if let apply {
-            storage.connectSignal(name: "apply") {
+            storage.connectSignal(name: "apply", argCount: 0) {
                 apply()
             }
         }
         if let entryActivated {
-            storage.connectSignal(name: "entry-activated") {
+            storage.connectSignal(name: "entry-activated", argCount: 0) {
                 entryActivated()
             }
         }
