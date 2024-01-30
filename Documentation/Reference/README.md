@@ -34,6 +34,7 @@
 -   [EntryRow](structs/EntryRow.md)
 -   [ExpanderRow](structs/ExpanderRow.md)
 -   [FileDialog](structs/FileDialog.md)
+-   [ForEach](structs/ForEach.md)
 -   [Form](structs/Form.md)
 -   [HStack](structs/HStack.md)
 -   [HeaderBar](structs/HeaderBar.md)
