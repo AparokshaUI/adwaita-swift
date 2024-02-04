@@ -176,3 +176,15 @@ See [property@EntryRow:show-apply-button].
 ### `entryActivated(_:)`
 
 Emitted when the embedded entry is activated.
+
+### `suffix(_:)`
+
+Set the body for "suffix".
+- Parameter body: The body.
+- Returns: The widget.
+
+### `prefix(_:)`
+
+Set the body for "prefix".
+- Parameter body: The body.
+- Returns: The widget.

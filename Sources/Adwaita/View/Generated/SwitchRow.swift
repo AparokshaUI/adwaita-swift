@@ -2,7 +2,7 @@
 //  SwitchRow.swift
 //  Adwaita
 //
-//  Created by auto-generation on 29.01.24.
+//  Created by auto-generation on 04.02.24.
 //
 
 import CAdw
@@ -307,4 +307,20 @@ public struct SwitchRow: Widget {
         return newSelf
     }
 
+    /// Set the body for "suffix".
+    /// - Parameter body: The body.
+    /// - Returns: The widget.
+    public func suffix(@ViewBuilder _ body: @escaping () -> Body) -> Self {
+        var newSelf = self
+        newSelf.suffix = body
+        return newSelf
+    }
+    /// Set the body for "prefix".
+    /// - Parameter body: The body.
+    /// - Returns: The widget.
+    public func prefix(@ViewBuilder _ body: @escaping () -> Body) -> Self {
+        var newSelf = self
+        newSelf.prefix = body
+        return newSelf
+    }
 }

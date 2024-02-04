@@ -290,6 +290,22 @@ extension Class {
         for signal in signals(classes: classes) where !config.excludeSignals.contains(signal.name) {
             content += signal.generateModifier(config: config, genConfig: genConfig)
         }
+        content += generateWidgetModifiers(config: config, configs: configs, classes: classes)
+        return content
+    }
+
+    /// Generate the modifiers for static widgets.
+    /// - Parameters:
+    ///     - config: The widget configuration.
+    ///     - configs: The available widget configurations.
+    ///     - classes: The available classes.
+    /// - Returns: The code.
+    func generateWidgetModifiers(
+        config: WidgetConfiguration,
+        configs: [WidgetConfiguration],
+        classes: [Class]
+    ) -> String {
+        var content = ""
         for widget in config.staticWidgets {
             content += """
 
@@ -302,6 +318,10 @@ extension Class {
                     return newSelf
                 }
             """
+        }
+        if let parent = parentClass(classes: classes), let config = configs.first(where: { $0.class == parent.name }) {
+            print("Parent: \(parent.name), Self: \(self.name)")
+            content += parent.generateWidgetModifiers(config: config, configs: configs, classes: classes)
         }
         return content
     }

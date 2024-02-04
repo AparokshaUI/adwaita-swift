@@ -298,3 +298,15 @@ See [signal@Gtk.SpinButton::wrapped].
 ### `activated(_:)`
 
 This signal is emitted after the row has been activated.
+
+### `suffix(_:)`
+
+Set the body for "suffix".
+- Parameter body: The body.
+- Returns: The widget.
+
+### `prefix(_:)`
+
+Set the body for "prefix".
+- Parameter body: The body.
+- Returns: The widget.
