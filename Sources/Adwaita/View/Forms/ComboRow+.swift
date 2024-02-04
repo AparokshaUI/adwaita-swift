@@ -40,10 +40,8 @@ extension ComboRow {
         updateFunctions.append { storage in
             if let list = storage.fields[Self.stringList] as? OpaquePointer {
                 let old = storage.fields[Self.values] as? [Element] ?? []
-                var new = values.filter { element in !old.contains { $0.id == element.id } }
-                new = old + new
                 old.identifiableTransform(
-                    to: new,
+                    to: values,
                     functions: .init { index, element in
                         gtk_string_list_remove(list, .init(index))
                         gtk_string_list_append(list, element.description)
@@ -53,7 +51,7 @@ extension ComboRow {
                         gtk_string_list_append(list, element.description)
                     }
                 )
-                storage.fields[Self.values] = new
+                storage.fields[Self.values] = values
             }
         }
     }
