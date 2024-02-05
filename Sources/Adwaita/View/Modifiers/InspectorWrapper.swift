@@ -131,4 +131,11 @@ extension View {
         inspect { gtk_widget_set_sensitive($0.pointer?.cast(), insensitive ? 0 : 1) }
     }
 
+    /// Set the view's visibility.
+    /// - Parameter visible: Whether the view is visible.
+    /// - Returns: A view.
+    public func visible(_ visible: Bool = true) -> View {
+        inspect { gtk_widget_set_visible($0.pointer?.cast(), visible.cBool) }
+    }
+
 }

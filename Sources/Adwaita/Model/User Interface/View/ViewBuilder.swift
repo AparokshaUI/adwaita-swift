@@ -57,11 +57,16 @@ public enum ViewBuilder {
     /// - Parameter component: An optional component.
     /// - Returns: A nonoptional component.
     public static func buildOptional(_ component: Component?) -> Component {
-        if let component {
-            return .element(ViewStack(id: true) { _ in buildFinalResult(component) })
-        } else {
-            return .element(ViewStack(id: false) { _ in [] })
-        }
+        .element(
+            VStack {
+                if let component {
+                    buildFinalResult(component)
+                } else {
+                    []
+                }
+            }
+            .visible(component != nil)
+        )
     }
 
     /// Enables support for `if`-`else` and `switch` statements.

@@ -147,6 +147,12 @@ Make the view insensitive (useful e.g. in overlays).
 - Parameter insensitive: Whether the view is insensitive.
 - Returns: A view.
 
+### `visible(_:)`
+
+Set the view's visibility.
+- Parameter visible: Whether the view is visible.
+- Returns: A view.
+
 ### `stopModifiers()`
 
 Remove all of the content modifiers for the wrapped views.
