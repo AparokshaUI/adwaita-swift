@@ -23,6 +23,7 @@ enum Page: String, Identifiable, CaseIterable, Codable {
     case carousel
     case viewSwitcher
     case form
+    case popover
 
     var id: Self {
         self
@@ -74,6 +75,8 @@ enum Page: String, Identifiable, CaseIterable, Codable {
             return "Switch the window's view."
         case .form:
             return "Group controls used for data entry."
+        case .popover:
+            return "Present content in a bubble-like context popup."
         }
     }
 
@@ -105,6 +108,8 @@ enum Page: String, Identifiable, CaseIterable, Codable {
             ViewSwitcherDemo(app: app)
         case .form:
             FormDemo(app: app)
+        case .popover:
+            PopoverDemo()
         }
     }
     // swiftlint:enable cyclomatic_complexity

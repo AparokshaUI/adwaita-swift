@@ -158,6 +158,14 @@ Set the view's visibility.
 Remove all of the content modifiers for the wrapped views.
 - Returns: A view.
 
+### `popover(visible:content:)`
+
+Add a popover on top of the view.
+- Parameters:
+    - visible: Whether the popover is displayed.
+    - content: The popover's content.
+- Returns: The view.
+
 ### `toast(_:signal:)`
 
 Present a toast when the signal gets activated.

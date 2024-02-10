@@ -219,7 +219,8 @@ struct GenerationConfiguration {
                 "window-placement"
             ]
         ),
-        .init(class: "Overlay", staticWidgets: [.init(name: "overlay", add: "gtk_overlay_add_overlay")])
+        .init(class: "Overlay", staticWidgets: [.init(name: "overlay", add: "gtk_overlay_add_overlay")]),
+        .init(class: "Popover", excludeProperties: ["pointing-to", "position"], cast: true)
     ]
 
     /// The unshortening map.
