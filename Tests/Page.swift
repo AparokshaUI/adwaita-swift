@@ -24,6 +24,7 @@ enum Page: String, Identifiable, CaseIterable, Codable {
     case viewSwitcher
     case form
     case popover
+    case flowBox
 
     var id: Self {
         self
@@ -35,6 +36,8 @@ enum Page: String, Identifiable, CaseIterable, Codable {
             return "Overlay Window"
         case .viewSwitcher:
             return "View Switcher"
+        case .flowBox:
+            return "Flow Box"
         default:
             return rawValue.capitalized
         }
@@ -77,6 +80,8 @@ enum Page: String, Identifiable, CaseIterable, Codable {
             return "Group controls used for data entry."
         case .popover:
             return "Present content in a bubble-like context popup."
+        case .flowBox:
+            return "Display views in a reflowing grid."
         }
     }
 
@@ -110,6 +115,8 @@ enum Page: String, Identifiable, CaseIterable, Codable {
             FormDemo(app: app)
         case .popover:
             PopoverDemo()
+        case .flowBox:
+            FlowBoxDemo()
         }
     }
     // swiftlint:enable cyclomatic_complexity

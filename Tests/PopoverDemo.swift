@@ -20,9 +20,9 @@ struct PopoverDemo: View {
             }
             .style("suggested-action")
             .frame(maxSize: 100)
-        }
-        .popover(visible: $visible) {
-            CounterDemo()
+            .popover(visible: $visible) {
+                CounterDemo()
+            }
         }
     }
 

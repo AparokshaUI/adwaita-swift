@@ -220,7 +220,16 @@ struct GenerationConfiguration {
             ]
         ),
         .init(class: "Overlay", staticWidgets: [.init(name: "overlay", add: "gtk_overlay_add_overlay")]),
-        .init(class: "Popover", excludeProperties: ["pointing-to", "position"], cast: true)
+        .init(class: "Popover", excludeProperties: ["pointing-to", "position"], cast: true),
+        .init(
+            class: "FlowBox",
+            dynamicWidget: .init(
+                insert: "gtk_flow_box_insert",
+                remove: "gtk_flow_box_remove",
+                getElement: "gtk_flow_box_get_child_at_index(widget, index.cInt)?.cast()"
+            ),
+            excludeProperties: ["selection-mode"]
+        )
     ]
 
     /// The unshortening map.

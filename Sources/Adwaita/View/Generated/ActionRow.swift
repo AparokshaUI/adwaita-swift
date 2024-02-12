@@ -2,7 +2,7 @@
 //  ActionRow.swift
 //  Adwaita
 //
-//  Created by auto-generation on 10.02.24.
+//  Created by auto-generation on 12.02.24.
 //
 
 import CAdw
