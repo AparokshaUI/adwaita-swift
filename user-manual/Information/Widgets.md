@@ -22,6 +22,7 @@ There are many more widgets available using auto-generation. Learn [how to use t
 
 | Syntax                            | Description                                                                             |
 | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `freeze(_:)`                      | Prevent a view from being updated.                                                                                             |
 | `inspect(_:)`                     | Edit the underlying Gtk or Libadwaita widget.                                                                                  |
 | `padding(_:_:)`                   | Add empty space around a view.                                                                                                 |
 | `hexpand(_:)`                     | Enable or disable the horizontal expansion of a view.                                                                          |
