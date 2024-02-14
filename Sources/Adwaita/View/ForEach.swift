@@ -50,7 +50,11 @@ public struct ForEach<Element>: Widget where Element: Identifiable {
             functions: .init { index, element in
                 let child = content(element).widget(modifiers: modifiers).container(modifiers: modifiers)
                 gtk_box_remove(widget, contentStorage[safe: index]?.pointer?.cast())
-                gtk_box_insert_child_after(widget, child.pointer?.cast(), contentStorage[safe: index]?.pointer?.cast())
+                gtk_box_insert_child_after(
+                    widget,
+                    child.pointer?.cast(),
+                    contentStorage[safe: index - 1]?.pointer?.cast()
+                )
                 contentStorage.remove(at: index)
                 contentStorage.insert(child, at: index)
             } delete: { index in
@@ -58,7 +62,11 @@ public struct ForEach<Element>: Widget where Element: Identifiable {
                 contentStorage.remove(at: index)
             } insert: { index, element in
                 let child = content(element).widget(modifiers: modifiers).container(modifiers: modifiers)
-                gtk_box_insert_child_after(widget, child.pointer?.cast(), contentStorage[safe: index]?.pointer?.cast())
+                gtk_box_insert_child_after(
+                    widget,
+                    child.pointer?.cast(),
+                    contentStorage[safe: index - 1]?.pointer?.cast()
+                )
                 contentStorage.insert(child, at: index)
             }
         )
