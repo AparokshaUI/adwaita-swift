@@ -138,4 +138,21 @@ extension View {
         inspect { gtk_widget_set_visible($0.pointer?.cast(), visible.cBool) }
     }
 
+    /// Bind to the view's focus.
+    /// - Parameter focus: Whether the view is focused.
+    /// - Returns: A view.
+    public func focused(_ focused: Binding<Bool>) -> View {
+        inspect { storage in
+            storage.notify(name: "has-focus", id: "focused") {
+                let newValue = gtk_widget_has_focus(storage.pointer?.cast()) != 0
+                if focused.wrappedValue != newValue {
+                    focused.wrappedValue = newValue
+                }
+            }
+            if focused.wrappedValue != (gtk_widget_has_focus(storage.pointer?.cast()) != 0) {
+                gtk_widget_grab_focus(storage.pointer?.cast())
+            }
+        }
+    }
+
 }

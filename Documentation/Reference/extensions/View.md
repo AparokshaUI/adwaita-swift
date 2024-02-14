@@ -159,6 +159,12 @@ Set the view's visibility.
 - Parameter visible: Whether the view is visible.
 - Returns: A view.
 
+### `focused(_:)`
+
+Bind to the view's focus.
+- Parameter focus: Whether the view is focused.
+- Returns: A view.
+
 ### `stopModifiers()`
 
 Remove all of the content modifiers for the wrapped views.
