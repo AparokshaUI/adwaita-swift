@@ -155,4 +155,15 @@ extension View {
         }
     }
 
+    /// Bind a signal that focuses the view.
+    /// - Parameter focus: Whether the view is focused.
+    /// - Returns: A view.
+    public func focus(_ signal: Signal) -> View {
+        inspect { storage in
+            if signal.update {
+                gtk_widget_grab_focus(storage.pointer?.cast())
+            }
+        }
+    }
+
 }

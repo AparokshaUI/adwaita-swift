@@ -48,6 +48,7 @@ There are many more widgets available using auto-generation. Learn [how to use t
 | `insensitive(_:)`                 | Make a view unable to detect actions. This is especially useful for overlays.                                                  |
 | `onClick(handler:)`               | Run a function when the user clicks on the widget.                                                                             |
 | `focused(_:)`                     | Set and observe whether a view is focused.                                                                                     |
+| `focus(_:)`                       | Bind a signal that focuses the view.                                                                                           |
 | `verticalCenter()`                | Wrap a view in a `VStack` and center vertically.                                                                               |
 | `horizontalCenter()`              | Wrap a view in an `HStack` and center horizontally.                                                                            |
 

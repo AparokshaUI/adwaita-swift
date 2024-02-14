@@ -165,6 +165,12 @@ Bind to the view's focus.
 - Parameter focus: Whether the view is focused.
 - Returns: A view.
 
+### `focus(_:)`
+
+Bind a signal that focuses the view.
+- Parameter focus: Whether the view is focused.
+- Returns: A view.
+
 ### `stopModifiers()`
 
 Remove all of the content modifiers for the wrapped views.
