@@ -71,6 +71,12 @@ Replace every occurrence of a certain view type in the content.
     - modify: Modify the view.
 - Returns: A view.
 
+### `freeze(_:)`
+
+Prevent a view from being updated.
+- Parameter freeze: Whether to freeze the view.
+- Returns: A view.
+
 ### `inspect(_:)`
 
 Modify a GTUI widget before being displayed and when being updated.

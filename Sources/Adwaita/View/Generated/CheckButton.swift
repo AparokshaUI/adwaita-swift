@@ -131,7 +131,10 @@ public struct CheckButton: Widget {
 
 
         storage.notify(name: "active") {
-            active?.wrappedValue = gtk_check_button_get_active(storage.pointer?.cast()) != 0
+            let newValue = gtk_check_button_get_active(storage.pointer?.cast()) != 0
+if let active, newValue != active.wrappedValue {
+    active.wrappedValue = newValue
+}
         }
         for function in appearFunctions {
             function(storage)
@@ -159,8 +162,8 @@ public struct CheckButton: Widget {
             if let actionName, updateProperties {
                 gtk_actionable_set_action_name(widget, actionName)
             }
-            if let active, updateProperties {
-                gtk_check_button_set_active(widget?.cast(), active.wrappedValue.cBool)
+            if let active, updateProperties, (gtk_check_button_get_active(storage.pointer?.cast()) != 0) != active.wrappedValue {
+                gtk_check_button_set_active(storage.pointer?.cast(), active.wrappedValue.cBool)
             }
             if let widget = storage.content["child"]?.first {
                 child?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)

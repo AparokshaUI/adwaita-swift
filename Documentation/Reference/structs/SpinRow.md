@@ -28,30 +28,6 @@ Additional update functions for type extensions.
 
 Additional appear functions for type extensions.
 
-### `climbRate`
-
-The acceleration rate when you hold down a button or key.
-
-### `digits`
-
-The number of decimal places to display.
-
-### `numeric`
-
-Whether non-numeric characters should be ignored.
-
-### `snapToTicks`
-
-Whether invalid values are snapped to the nearest step increment.
-
-### `value`
-
-The current value.
-
-### `wrap`
-
-Whether the spin row should wrap upon reaching its limits.
-
 ### `activatableWidget`
 
 The widget to activate when the row is activated.
@@ -64,9 +40,25 @@ mnemonics.
 The target widget will be activated by emitting the
 [signal@Gtk.Widget::mnemonic-activate] signal on it.
 
+### `climbRate`
+
+The acceleration rate when you hold down a button or key.
+
+### `digits`
+
+The number of decimal places to display.
+
 ### `iconName`
 
 The icon name for this row.
+
+### `numeric`
+
+Whether non-numeric characters should be ignored.
+
+### `snapToTicks`
+
+Whether invalid values are snapped to the nearest step increment.
 
 ### `subtitle`
 
@@ -88,18 +80,18 @@ Whether the user can copy the subtitle from the label.
 
 See also [property@Gtk.Label:selectable].
 
-### `titleLines`
-
-The number of lines at the end of which the title label will be ellipsized.
-
-If the value is 0, the number of lines won't be limited.
-
 ### `title`
 
 The title of the preference represented by this row.
 
 The title is interpreted as Pango markup unless
 [property@PreferencesRow:use-markup] is set to `FALSE`.
+
+### `titleLines`
+
+The number of lines at the end of which the title label will be ellipsized.
+
+If the value is 0, the number of lines won't be limited.
 
 ### `titleSelectable`
 
@@ -118,6 +110,18 @@ See also [func@Pango.parse_markup].
 ### `useUnderline`
 
 Whether an embedded underline in the title indicates a mnemonic.
+
+### `value`
+
+The current value.
+
+### `wrap`
+
+Whether the spin row should wrap upon reaching its limits.
+
+### `activated`
+
+This signal is emitted after the row has been activated.
 
 ### `input`
 
@@ -141,10 +145,6 @@ See [signal@Gtk.SpinButton::output].
 Emitted right after the spinbutton wraps.
 
 See [signal@Gtk.SpinButton::wrapped].
-
-### `activated`
-
-This signal is emitted after the row has been activated.
 
 ### `suffix`
 
@@ -181,30 +181,6 @@ Update the widget's view storage.
     - modifiers: The view modifiers.
     - updateProperties: Whether to update the view's properties.
 
-### `climbRate(_:)`
-
-The acceleration rate when you hold down a button or key.
-
-### `digits(_:)`
-
-The number of decimal places to display.
-
-### `numeric(_:)`
-
-Whether non-numeric characters should be ignored.
-
-### `snapToTicks(_:)`
-
-Whether invalid values are snapped to the nearest step increment.
-
-### `value(_:)`
-
-The current value.
-
-### `wrap(_:)`
-
-Whether the spin row should wrap upon reaching its limits.
-
 ### `activatableWidget(_:)`
 
 The widget to activate when the row is activated.
@@ -217,9 +193,25 @@ mnemonics.
 The target widget will be activated by emitting the
 [signal@Gtk.Widget::mnemonic-activate] signal on it.
 
+### `climbRate(_:)`
+
+The acceleration rate when you hold down a button or key.
+
+### `digits(_:)`
+
+The number of decimal places to display.
+
 ### `iconName(_:)`
 
 The icon name for this row.
+
+### `numeric(_:)`
+
+Whether non-numeric characters should be ignored.
+
+### `snapToTicks(_:)`
+
+Whether invalid values are snapped to the nearest step increment.
 
 ### `subtitle(_:)`
 
@@ -241,18 +233,18 @@ Whether the user can copy the subtitle from the label.
 
 See also [property@Gtk.Label:selectable].
 
-### `titleLines(_:)`
-
-The number of lines at the end of which the title label will be ellipsized.
-
-If the value is 0, the number of lines won't be limited.
-
 ### `title(_:)`
 
 The title of the preference represented by this row.
 
 The title is interpreted as Pango markup unless
 [property@PreferencesRow:use-markup] is set to `FALSE`.
+
+### `titleLines(_:)`
+
+The number of lines at the end of which the title label will be ellipsized.
+
+If the value is 0, the number of lines won't be limited.
 
 ### `titleSelectable(_:)`
 
@@ -271,6 +263,18 @@ See also [func@Pango.parse_markup].
 ### `useUnderline(_:)`
 
 Whether an embedded underline in the title indicates a mnemonic.
+
+### `value(_:)`
+
+The current value.
+
+### `wrap(_:)`
+
+Whether the spin row should wrap upon reaching its limits.
+
+### `activated(_:)`
+
+This signal is emitted after the row has been activated.
 
 ### `input(_:)`
 
@@ -294,10 +298,6 @@ See [signal@Gtk.SpinButton::output].
 Emitted right after the spinbutton wraps.
 
 See [signal@Gtk.SpinButton::wrapped].
-
-### `activated(_:)`
-
-This signal is emitted after the row has been activated.
 
 ### `suffix(_:)`
 

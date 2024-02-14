@@ -149,7 +149,10 @@ public struct SpinRow: Widget {
         storage.content["prefix"] = prefixStorage
 
         storage.notify(name: "value") {
-            value?.wrappedValue = adw_spin_row_get_value(storage.pointer)
+            let newValue = adw_spin_row_get_value(storage.pointer)
+if let value, newValue != value.wrappedValue {
+    value.wrappedValue = newValue
+}
         }
         for function in appearFunctions {
             function(storage)
@@ -226,8 +229,8 @@ public struct SpinRow: Widget {
             if let useUnderline, updateProperties {
                 adw_preferences_row_set_use_underline(widget?.cast(), useUnderline.cBool)
             }
-            if let value, updateProperties {
-                adw_spin_row_set_value(widget, value.wrappedValue)
+            if let value, updateProperties, (adw_spin_row_get_value(storage.pointer)) != value.wrappedValue {
+                adw_spin_row_set_value(storage.pointer, value.wrappedValue)
             }
             if let wrap, updateProperties {
                 adw_spin_row_set_wrap(widget, wrap.cBool)

@@ -69,6 +69,12 @@ Additional appear functions for type extensions.
 
 Whether to accept unpaired release events.
 
+### `accessibleRole`
+
+The accessible role of the given `GtkAccessible` implementation.
+
+The accessible role cannot be changed once set.
+
 ### `activateOnSingleClick`
 
 Determines whether children can be activated with a single
@@ -164,6 +170,12 @@ Update the widget's view storage.
 ### `acceptUnpairedRelease(_:)`
 
 Whether to accept unpaired release events.
+
+### `accessibleRole(_:)`
+
+The accessible role of the given `GtkAccessible` implementation.
+
+The accessible role cannot be changed once set.
 
 ### `activateOnSingleClick(_:)`
 

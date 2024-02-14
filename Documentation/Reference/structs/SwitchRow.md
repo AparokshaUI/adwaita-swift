@@ -32,10 +32,6 @@ Additional update functions for type extensions.
 
 Additional appear functions for type extensions.
 
-### `active`
-
-Whether the switch row is in the "on" or "off" position.
-
 ### `activatableWidget`
 
 The widget to activate when the row is activated.
@@ -47,6 +43,10 @@ mnemonics.
 
 The target widget will be activated by emitting the
 [signal@Gtk.Widget::mnemonic-activate] signal on it.
+
+### `active`
+
+Whether the switch row is in the "on" or "off" position.
 
 ### `iconName`
 
@@ -72,18 +72,18 @@ Whether the user can copy the subtitle from the label.
 
 See also [property@Gtk.Label:selectable].
 
-### `titleLines`
-
-The number of lines at the end of which the title label will be ellipsized.
-
-If the value is 0, the number of lines won't be limited.
-
 ### `title`
 
 The title of the preference represented by this row.
 
 The title is interpreted as Pango markup unless
 [property@PreferencesRow:use-markup] is set to `FALSE`.
+
+### `titleLines`
+
+The number of lines at the end of which the title label will be ellipsized.
+
+If the value is 0, the number of lines won't be limited.
 
 ### `titleSelectable`
 
@@ -142,10 +142,6 @@ Update the widget's view storage.
     - modifiers: The view modifiers.
     - updateProperties: Whether to update the view's properties.
 
-### `active(_:)`
-
-Whether the switch row is in the "on" or "off" position.
-
 ### `activatableWidget(_:)`
 
 The widget to activate when the row is activated.
@@ -157,6 +153,10 @@ mnemonics.
 
 The target widget will be activated by emitting the
 [signal@Gtk.Widget::mnemonic-activate] signal on it.
+
+### `active(_:)`
+
+Whether the switch row is in the "on" or "off" position.
 
 ### `iconName(_:)`
 
@@ -182,18 +182,18 @@ Whether the user can copy the subtitle from the label.
 
 See also [property@Gtk.Label:selectable].
 
-### `titleLines(_:)`
-
-The number of lines at the end of which the title label will be ellipsized.
-
-If the value is 0, the number of lines won't be limited.
-
 ### `title(_:)`
 
 The title of the preference represented by this row.
 
 The title is interpreted as Pango markup unless
 [property@PreferencesRow:use-markup] is set to `FALSE`.
+
+### `titleLines(_:)`
+
+The number of lines at the end of which the title label will be ellipsized.
+
+If the value is 0, the number of lines won't be limited.
 
 ### `titleSelectable(_:)`
 

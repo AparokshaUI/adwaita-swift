@@ -87,6 +87,16 @@ Additional update functions for type extensions.
 
 Additional appear functions for type extensions.
 
+### `accessibleRole`
+
+The accessible role of the given `GtkAccessible` implementation.
+
+The accessible role cannot be changed once set.
+
+### `actionName`
+
+action-name
+
 ### `active`
 
 If the toggle button should be pressed in.
@@ -122,10 +132,6 @@ Text of the label inside the button, if the button contains a label widget.
 If set, an underline in the text indicates that the following character is
 to be used as mnemonic.
 
-### `toggled`
-
-Emitted whenever the `GtkToggleButton`'s state is changed.
-
 ### `activate`
 
 Emitted to animate press then release.
@@ -139,6 +145,10 @@ The default bindings for this signal are all forms of the
 ### `clicked`
 
 Emitted when the button has been activated (pressed and released).
+
+### `toggled`
+
+Emitted whenever the `GtkToggleButton`'s state is changed.
 
 ### `app`
 
@@ -166,6 +176,16 @@ Update the widget's view storage.
     - storage: The view storage.
     - modifiers: The view modifiers.
     - updateProperties: Whether to update the view's properties.
+
+### `accessibleRole(_:)`
+
+The accessible role of the given `GtkAccessible` implementation.
+
+The accessible role cannot be changed once set.
+
+### `actionName(_:)`
+
+action-name
 
 ### `active(_:)`
 
@@ -202,10 +222,6 @@ Text of the label inside the button, if the button contains a label widget.
 If set, an underline in the text indicates that the following character is
 to be used as mnemonic.
 
-### `toggled(_:)`
-
-Emitted whenever the `GtkToggleButton`'s state is changed.
-
 ### `activate(_:)`
 
 Emitted to animate press then release.
@@ -219,3 +235,7 @@ The default bindings for this signal are all forms of the
 ### `clicked(_:)`
 
 Emitted when the button has been activated (pressed and released).
+
+### `toggled(_:)`
+
+Emitted whenever the `GtkToggleButton`'s state is changed.

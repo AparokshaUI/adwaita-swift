@@ -45,34 +45,6 @@ Additional update functions for type extensions.
 
 Additional appear functions for type extensions.
 
-### `enableSearch`
-
-Whether to show a search entry in the popup.
-
-If set to `TRUE`, a search entry will be shown in the popup that
-allows to search for items in the list.
-
-Search requires [property@ComboRow:expression] to be set.
-
-### `selected`
-
-The position of the selected item.
-
-If no item is selected, the property has the value
-[const@Gtk.INVALID_LIST_POSITION]
-
-### `useSubtitle`
-
-Whether to use the current value as the subtitle.
-
-If you use a custom list item factory, you will need to give the row a
-name conversion expression with [property@ComboRow:expression].
-
-If set to `TRUE`, you should not access [property@ActionRow:subtitle].
-
-The subtitle is interpreted as Pango markup if
-[property@PreferencesRow:use-markup] is set to `TRUE`.
-
 ### `activatableWidget`
 
 The widget to activate when the row is activated.
@@ -85,9 +57,25 @@ mnemonics.
 The target widget will be activated by emitting the
 [signal@Gtk.Widget::mnemonic-activate] signal on it.
 
+### `enableSearch`
+
+Whether to show a search entry in the popup.
+
+If set to `TRUE`, a search entry will be shown in the popup that
+allows to search for items in the list.
+
+Search requires [property@ComboRow:expression] to be set.
+
 ### `iconName`
 
 The icon name for this row.
+
+### `selected`
+
+The position of the selected item.
+
+If no item is selected, the property has the value
+[const@Gtk.INVALID_LIST_POSITION]
 
 ### `subtitle`
 
@@ -109,18 +97,18 @@ Whether the user can copy the subtitle from the label.
 
 See also [property@Gtk.Label:selectable].
 
-### `titleLines`
-
-The number of lines at the end of which the title label will be ellipsized.
-
-If the value is 0, the number of lines won't be limited.
-
 ### `title`
 
 The title of the preference represented by this row.
 
 The title is interpreted as Pango markup unless
 [property@PreferencesRow:use-markup] is set to `FALSE`.
+
+### `titleLines`
+
+The number of lines at the end of which the title label will be ellipsized.
+
+If the value is 0, the number of lines won't be limited.
 
 ### `titleSelectable`
 
@@ -135,6 +123,18 @@ Whether to use Pango markup for the title label.
 Subclasses may also use it for other labels, such as subtitle.
 
 See also [func@Pango.parse_markup].
+
+### `useSubtitle`
+
+Whether to use the current value as the subtitle.
+
+If you use a custom list item factory, you will need to give the row a
+name conversion expression with [property@ComboRow:expression].
+
+If set to `TRUE`, you should not access [property@ActionRow:subtitle].
+
+The subtitle is interpreted as Pango markup if
+[property@PreferencesRow:use-markup] is set to `TRUE`.
 
 ### `useUnderline`
 
@@ -179,34 +179,6 @@ Update the widget's view storage.
     - modifiers: The view modifiers.
     - updateProperties: Whether to update the view's properties.
 
-### `enableSearch(_:)`
-
-Whether to show a search entry in the popup.
-
-If set to `TRUE`, a search entry will be shown in the popup that
-allows to search for items in the list.
-
-Search requires [property@ComboRow:expression] to be set.
-
-### `selected(_:)`
-
-The position of the selected item.
-
-If no item is selected, the property has the value
-[const@Gtk.INVALID_LIST_POSITION]
-
-### `useSubtitle(_:)`
-
-Whether to use the current value as the subtitle.
-
-If you use a custom list item factory, you will need to give the row a
-name conversion expression with [property@ComboRow:expression].
-
-If set to `TRUE`, you should not access [property@ActionRow:subtitle].
-
-The subtitle is interpreted as Pango markup if
-[property@PreferencesRow:use-markup] is set to `TRUE`.
-
 ### `activatableWidget(_:)`
 
 The widget to activate when the row is activated.
@@ -219,9 +191,25 @@ mnemonics.
 The target widget will be activated by emitting the
 [signal@Gtk.Widget::mnemonic-activate] signal on it.
 
+### `enableSearch(_:)`
+
+Whether to show a search entry in the popup.
+
+If set to `TRUE`, a search entry will be shown in the popup that
+allows to search for items in the list.
+
+Search requires [property@ComboRow:expression] to be set.
+
 ### `iconName(_:)`
 
 The icon name for this row.
+
+### `selected(_:)`
+
+The position of the selected item.
+
+If no item is selected, the property has the value
+[const@Gtk.INVALID_LIST_POSITION]
 
 ### `subtitle(_:)`
 
@@ -243,18 +231,18 @@ Whether the user can copy the subtitle from the label.
 
 See also [property@Gtk.Label:selectable].
 
-### `titleLines(_:)`
-
-The number of lines at the end of which the title label will be ellipsized.
-
-If the value is 0, the number of lines won't be limited.
-
 ### `title(_:)`
 
 The title of the preference represented by this row.
 
 The title is interpreted as Pango markup unless
 [property@PreferencesRow:use-markup] is set to `FALSE`.
+
+### `titleLines(_:)`
+
+The number of lines at the end of which the title label will be ellipsized.
+
+If the value is 0, the number of lines won't be limited.
 
 ### `titleSelectable(_:)`
 
@@ -269,6 +257,18 @@ Whether to use Pango markup for the title label.
 Subclasses may also use it for other labels, such as subtitle.
 
 See also [func@Pango.parse_markup].
+
+### `useSubtitle(_:)`
+
+Whether to use the current value as the subtitle.
+
+If you use a custom list item factory, you will need to give the row a
+name conversion expression with [property@ComboRow:expression].
+
+If set to `TRUE`, you should not access [property@ActionRow:subtitle].
+
+The subtitle is interpreted as Pango markup if
+[property@PreferencesRow:use-markup] is set to `TRUE`.
 
 ### `useUnderline(_:)`
 

@@ -140,7 +140,10 @@ public struct Menu: Widget {
 
 
         storage.notify(name: "active") {
-            active?.wrappedValue = gtk_menu_button_get_active(storage.pointer) != 0
+            let newValue = gtk_menu_button_get_active(storage.pointer) != 0
+if let active, newValue != active.wrappedValue {
+    active.wrappedValue = newValue
+}
         }
         for function in appearFunctions {
             function(storage)
@@ -160,8 +163,8 @@ public struct Menu: Widget {
             }
         }
         storage.modify { widget in
-            if let active, updateProperties {
-                gtk_menu_button_set_active(widget, active.wrappedValue.cBool)
+            if let active, updateProperties, (gtk_menu_button_get_active(storage.pointer) != 0) != active.wrappedValue {
+                gtk_menu_button_set_active(storage.pointer, active.wrappedValue.cBool)
             }
             if let alwaysShowArrow, updateProperties {
                 gtk_menu_button_set_always_show_arrow(widget, alwaysShowArrow.cBool)

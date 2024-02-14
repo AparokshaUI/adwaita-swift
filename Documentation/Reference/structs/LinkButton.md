@@ -38,15 +38,15 @@ Additional update functions for type extensions.
 
 Additional appear functions for type extensions.
 
-### `uri`
+### `accessibleRole`
 
-The URI bound to this button.
+The accessible role of the given `GtkAccessible` implementation.
 
-### `visited`
+The accessible role cannot be changed once set.
 
-The 'visited' state of this button.
+### `actionName`
 
-A visited link is drawn in a different color.
+action-name
 
 ### `canShrink`
 
@@ -74,10 +74,20 @@ The name of the icon used to automatically populate the button.
 
 Text of the label inside the button, if the button contains a label widget.
 
+### `uri`
+
+The URI bound to this button.
+
 ### `useUnderline`
 
 If set, an underline in the text indicates that the following character is
 to be used as mnemonic.
+
+### `visited`
+
+The 'visited' state of this button.
+
+A visited link is drawn in a different color.
 
 ### `activate`
 
@@ -120,15 +130,15 @@ Update the widget's view storage.
     - modifiers: The view modifiers.
     - updateProperties: Whether to update the view's properties.
 
-### `uri(_:)`
+### `accessibleRole(_:)`
 
-The URI bound to this button.
+The accessible role of the given `GtkAccessible` implementation.
 
-### `visited(_:)`
+The accessible role cannot be changed once set.
 
-The 'visited' state of this button.
+### `actionName(_:)`
 
-A visited link is drawn in a different color.
+action-name
 
 ### `canShrink(_:)`
 
@@ -156,10 +166,20 @@ The name of the icon used to automatically populate the button.
 
 Text of the label inside the button, if the button contains a label widget.
 
+### `uri(_:)`
+
+The URI bound to this button.
+
 ### `useUnderline(_:)`
 
 If set, an underline in the text indicates that the following character is
 to be used as mnemonic.
+
+### `visited(_:)`
+
+The 'visited' state of this button.
+
+A visited link is drawn in a different color.
 
 ### `activate(_:)`
 

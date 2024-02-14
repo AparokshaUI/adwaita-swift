@@ -151,8 +151,14 @@ struct Property: Decodable {
             onlySetConditionsEnd = "\n            }"
         }
         if config.bindings.contains(where: { $0.property == self.name }) {
+            var check = ""
+            let widget = (self.cast ?? config.cast) ? "storage.pointer?.cast()" : "storage.pointer"
+            if var getter {
+                getter = "\((self.prefix ?? prefix) + "_" + getter)(\(widget))"
+                check = ", (" + (genConfig.getterTypeConversions[self.type?.name ?? ""]?(getter) ?? getter) + ") != \(name).wrappedValue"
+            }
             return """
-                        if let \(name)\(setConditions), updateProperties {
+                        if let \(name)\(setConditions), updateProperties\(check) {
                             \(setter)(\(widget), \(name).wrappedValue\(propertyString))
                         }
 
@@ -250,7 +256,12 @@ struct Property: Decodable {
         getter = "\((self.prefix ?? prefix) + "_" + getter)(\(widget))"
         let name = convertPropertyName(configuration: genConfig)
         let finalGetter = genConfig.getterTypeConversions[type?.name ?? ""]?(getter) ?? getter
-        let setter = "\(name)?.wrappedValue = \(finalGetter)"
+        let setter = """
+        let newValue = \(finalGetter)
+        if let \(name), newValue != \(name).wrappedValue {
+            \(name).wrappedValue = newValue
+        }
+        """
         if let signal {
             return """
 

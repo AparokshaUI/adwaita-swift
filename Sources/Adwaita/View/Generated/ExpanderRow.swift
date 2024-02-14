@@ -121,10 +121,16 @@ public struct ExpanderRow: Widget {
         storage.content["prefix"] = prefixStorage
 
         storage.notify(name: "enable-expansion") {
-            enableExpansion?.wrappedValue = adw_expander_row_get_enable_expansion(storage.pointer?.cast()) != 0
+            let newValue = adw_expander_row_get_enable_expansion(storage.pointer?.cast()) != 0
+if let enableExpansion, newValue != enableExpansion.wrappedValue {
+    enableExpansion.wrappedValue = newValue
+}
         }
         storage.notify(name: "expanded") {
-            expanded?.wrappedValue = adw_expander_row_get_expanded(storage.pointer?.cast()) != 0
+            let newValue = adw_expander_row_get_expanded(storage.pointer?.cast()) != 0
+if let expanded, newValue != expanded.wrappedValue {
+    expanded.wrappedValue = newValue
+}
         }
         for function in appearFunctions {
             function(storage)
@@ -139,11 +145,11 @@ public struct ExpanderRow: Widget {
     ///     - updateProperties: Whether to update the view's properties.
     public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         storage.modify { widget in
-            if let enableExpansion, updateProperties {
-                adw_expander_row_set_enable_expansion(widget?.cast(), enableExpansion.wrappedValue.cBool)
+            if let enableExpansion, updateProperties, (adw_expander_row_get_enable_expansion(storage.pointer?.cast()) != 0) != enableExpansion.wrappedValue {
+                adw_expander_row_set_enable_expansion(storage.pointer?.cast(), enableExpansion.wrappedValue.cBool)
             }
-            if let expanded, updateProperties {
-                adw_expander_row_set_expanded(widget?.cast(), expanded.wrappedValue.cBool)
+            if let expanded, updateProperties, (adw_expander_row_get_expanded(storage.pointer?.cast()) != 0) != expanded.wrappedValue {
+                adw_expander_row_set_expanded(storage.pointer?.cast(), expanded.wrappedValue.cBool)
             }
             if let iconName, updateProperties {
                 adw_expander_row_set_icon_name(widget?.cast(), iconName)

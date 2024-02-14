@@ -172,7 +172,10 @@ public struct SearchEntry: Widget {
 
 
         storage.notify(name: "text") {
-            text?.wrappedValue = .init(cString: gtk_editable_get_text(storage.pointer))
+            let newValue = String(cString: gtk_editable_get_text(storage.pointer))
+if let text, newValue != text.wrappedValue {
+    text.wrappedValue = newValue
+}
         }
         for function in appearFunctions {
             function(storage)
@@ -247,8 +250,8 @@ public struct SearchEntry: Widget {
             if let searchDelay, updateProperties {
                 gtk_search_entry_set_search_delay(widget, searchDelay.cInt)
             }
-            if let text, updateProperties {
-                gtk_editable_set_text(widget, text.wrappedValue)
+            if let text, updateProperties, (String(cString: gtk_editable_get_text(storage.pointer))) != text.wrappedValue {
+                gtk_editable_set_text(storage.pointer, text.wrappedValue)
             }
             if let widthChars, updateProperties {
                 gtk_editable_set_width_chars(widget, widthChars.cInt)

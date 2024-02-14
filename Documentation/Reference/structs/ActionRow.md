@@ -79,18 +79,18 @@ Whether the user can copy the subtitle from the label.
 
 See also [property@Gtk.Label:selectable].
 
-### `titleLines`
-
-The number of lines at the end of which the title label will be ellipsized.
-
-If the value is 0, the number of lines won't be limited.
-
 ### `title`
 
 The title of the preference represented by this row.
 
 The title is interpreted as Pango markup unless
 [property@PreferencesRow:use-markup] is set to `FALSE`.
+
+### `titleLines`
+
+The number of lines at the end of which the title label will be ellipsized.
+
+If the value is 0, the number of lines won't be limited.
 
 ### `titleSelectable`
 
@@ -185,18 +185,18 @@ Whether the user can copy the subtitle from the label.
 
 See also [property@Gtk.Label:selectable].
 
-### `titleLines(_:)`
-
-The number of lines at the end of which the title label will be ellipsized.
-
-If the value is 0, the number of lines won't be limited.
-
 ### `title(_:)`
 
 The title of the preference represented by this row.
 
 The title is interpreted as Pango markup unless
 [property@PreferencesRow:use-markup] is set to `FALSE`.
+
+### `titleLines(_:)`
+
+The number of lines at the end of which the title label will be ellipsized.
+
+If the value is 0, the number of lines won't be limited.
 
 ### `titleSelectable(_:)`
 

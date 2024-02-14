@@ -151,7 +151,10 @@ public struct ToggleButton: Widget {
 
 
         storage.notify(name: "active") {
-            active?.wrappedValue = gtk_toggle_button_get_active(storage.pointer?.cast()) != 0
+            let newValue = gtk_toggle_button_get_active(storage.pointer?.cast()) != 0
+if let active, newValue != active.wrappedValue {
+    active.wrappedValue = newValue
+}
         }
         for function in appearFunctions {
             function(storage)
@@ -184,8 +187,8 @@ public struct ToggleButton: Widget {
             if let actionName, updateProperties {
                 gtk_actionable_set_action_name(widget, actionName)
             }
-            if let active, updateProperties {
-                gtk_toggle_button_set_active(widget?.cast(), active.wrappedValue.cBool)
+            if let active, updateProperties, (gtk_toggle_button_get_active(storage.pointer?.cast()) != 0) != active.wrappedValue {
+                gtk_toggle_button_set_active(storage.pointer?.cast(), active.wrappedValue.cBool)
             }
             if let canShrink, updateProperties {
                 gtk_button_set_can_shrink(widget?.cast(), canShrink.cBool)

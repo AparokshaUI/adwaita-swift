@@ -69,6 +69,16 @@ Additional update functions for type extensions.
 
 Additional appear functions for type extensions.
 
+### `accessibleRole`
+
+The accessible role of the given `GtkAccessible` implementation.
+
+The accessible role cannot be changed once set.
+
+### `actionName`
+
+action-name
+
 ### `active`
 
 If the check button is active.
@@ -140,6 +150,16 @@ Update the widget's view storage.
     - storage: The view storage.
     - modifiers: The view modifiers.
     - updateProperties: Whether to update the view's properties.
+
+### `accessibleRole(_:)`
+
+The accessible role of the given `GtkAccessible` implementation.
+
+The accessible role cannot be changed once set.
+
+### `actionName(_:)`
+
+action-name
 
 ### `active(_:)`
 

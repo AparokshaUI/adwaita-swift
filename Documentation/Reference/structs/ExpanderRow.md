@@ -67,18 +67,18 @@ ellipsized.
 
 If the value is 0, the number of lines won't be limited.
 
-### `titleLines`
-
-The number of lines at the end of which the title label will be ellipsized.
-
-If the value is 0, the number of lines won't be limited.
-
 ### `title`
 
 The title of the preference represented by this row.
 
 The title is interpreted as Pango markup unless
 [property@PreferencesRow:use-markup] is set to `FALSE`.
+
+### `titleLines`
+
+The number of lines at the end of which the title label will be ellipsized.
+
+If the value is 0, the number of lines won't be limited.
 
 ### `titleSelectable`
 
@@ -167,18 +167,18 @@ ellipsized.
 
 If the value is 0, the number of lines won't be limited.
 
-### `titleLines(_:)`
-
-The number of lines at the end of which the title label will be ellipsized.
-
-If the value is 0, the number of lines won't be limited.
-
 ### `title(_:)`
 
 The title of the preference represented by this row.
 
 The title is interpreted as Pango markup unless
 [property@PreferencesRow:use-markup] is set to `FALSE`.
+
+### `titleLines(_:)`
+
+The number of lines at the end of which the title label will be ellipsized.
+
+If the value is 0, the number of lines won't be limited.
 
 ### `titleSelectable(_:)`
 

@@ -285,8 +285,8 @@ struct GenerationConfiguration {
     /// Modifications for converting a C into a Swift type.
     var getterTypeConversions: [String: (String) -> String] = [
         "gboolean": { "\($0) != 0" },
-        "guint": { ".init(\($0))" },
-        "utf8": { ".init(cString: \($0))" }
+        "guint": { "UInt(\($0))" },
+        "utf8": { "String(cString: \($0))" }
     ]
 
 }

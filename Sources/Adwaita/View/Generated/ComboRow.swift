@@ -157,7 +157,10 @@ public struct ComboRow: Widget {
         storage.content["prefix"] = prefixStorage
 
         storage.notify(name: "selected") {
-            selected?.wrappedValue = .init(adw_combo_row_get_selected(storage.pointer?.cast()))
+            let newValue = UInt(adw_combo_row_get_selected(storage.pointer?.cast()))
+if let selected, newValue != selected.wrappedValue {
+    selected.wrappedValue = newValue
+}
         }
         for function in appearFunctions {
             function(storage)
@@ -186,8 +189,8 @@ public struct ComboRow: Widget {
             if let iconName, updateProperties {
                 adw_action_row_set_icon_name(widget?.cast(), iconName)
             }
-            if let selected, updateProperties {
-                adw_combo_row_set_selected(widget?.cast(), selected.wrappedValue.cInt)
+            if let selected, updateProperties, (UInt(adw_combo_row_get_selected(storage.pointer?.cast()))) != selected.wrappedValue {
+                adw_combo_row_set_selected(storage.pointer?.cast(), selected.wrappedValue.cInt)
             }
             if let subtitle, updateProperties {
                 adw_action_row_set_subtitle(widget?.cast(), subtitle)
