@@ -170,7 +170,6 @@ public struct ToolbarView: Widget {
             adw_toolbar_view_add_top_bar(storage.pointer, topStorage.last?.pointer?.cast())
         }
         storage.content["top"] = topStorage
-
         for function in appearFunctions {
             function(storage)
         }
@@ -184,6 +183,7 @@ public struct ToolbarView: Widget {
     ///     - updateProperties: Whether to update the view's properties.
     public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         storage.modify { widget in
+
             if let widget = storage.content["content"]?.first {
                 content?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
             }

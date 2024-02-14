@@ -123,7 +123,6 @@ public struct Popover: Widget {
             gtk_popover_set_default_widget(storage.pointer?.cast(), defaultWidgetStorage.pointer?.cast())
         }
 
-
         for function in appearFunctions {
             function(storage)
         }
@@ -147,6 +146,7 @@ public struct Popover: Widget {
             }
         }
         storage.modify { widget in
+
             if let autohide, updateProperties {
                 gtk_popover_set_autohide(widget?.cast(), autohide.cBool)
             }

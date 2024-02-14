@@ -82,7 +82,6 @@ public struct PreferencesGroup: Widget {
             adw_preferences_group_add(storage.pointer?.cast(), childStorage.last?.pointer?.cast())
         }
         storage.content["child"] = childStorage
-
         for function in appearFunctions {
             function(storage)
         }
@@ -96,6 +95,7 @@ public struct PreferencesGroup: Widget {
     ///     - updateProperties: Whether to update the view's properties.
     public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         storage.modify { widget in
+
             if let description, updateProperties {
                 adw_preferences_group_set_description(widget?.cast(), description)
             }

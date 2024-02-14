@@ -174,7 +174,6 @@ public struct HeaderBar: Widget {
             adw_header_bar_pack_end(storage.pointer, endStorage.last?.pointer?.cast())
         }
         storage.content["end"] = endStorage
-
         for function in appearFunctions {
             function(storage)
         }
@@ -188,6 +187,7 @@ public struct HeaderBar: Widget {
     ///     - updateProperties: Whether to update the view's properties.
     public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         storage.modify { widget in
+
             if let decorationLayout, updateProperties {
                 adw_header_bar_set_decoration_layout(widget, decorationLayout)
             }

@@ -68,7 +68,6 @@ public struct Avatar: Widget {
         let storage = ViewStorage(adw_avatar_new(size.cInt, text, showInitials.cBool)?.opaque())
         update(storage, modifiers: modifiers, updateProperties: true)
 
-
         for function in appearFunctions {
             function(storage)
         }
@@ -82,6 +81,7 @@ public struct Avatar: Widget {
     ///     - updateProperties: Whether to update the view's properties.
     public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         storage.modify { widget in
+
             if let iconName, updateProperties {
                 adw_avatar_set_icon_name(widget, iconName)
             }

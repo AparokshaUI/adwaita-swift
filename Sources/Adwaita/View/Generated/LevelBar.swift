@@ -152,7 +152,6 @@ public struct LevelBar: Widget {
         let storage = ViewStorage(gtk_level_bar_new()?.opaque())
         update(storage, modifiers: modifiers, updateProperties: true)
 
-
         for function in appearFunctions {
             function(storage)
         }
@@ -171,6 +170,7 @@ public struct LevelBar: Widget {
             }
         }
         storage.modify { widget in
+
             if let inverted, updateProperties {
                 gtk_level_bar_set_inverted(widget, inverted.cBool)
             }

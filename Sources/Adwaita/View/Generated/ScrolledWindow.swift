@@ -180,7 +180,6 @@ public struct ScrolledWindow: Widget {
             gtk_scrolled_window_set_child(storage.pointer, childStorage.pointer?.cast())
         }
 
-
         for function in appearFunctions {
             function(storage)
         }
@@ -214,6 +213,7 @@ public struct ScrolledWindow: Widget {
             }
         }
         storage.modify { widget in
+
             if let widget = storage.content["child"]?.first {
                 child?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
             }

@@ -81,7 +81,6 @@ public struct Carousel<Element>: Widget where Element: Identifiable {
         let storage = ViewStorage(adw_carousel_new()?.opaque())
         update(storage, modifiers: modifiers, updateProperties: true)
 
-
         for function in appearFunctions {
             function(storage)
         }
@@ -100,6 +99,7 @@ public struct Carousel<Element>: Widget where Element: Identifiable {
             }
         }
         storage.modify { widget in
+
             if let allowLongSwipes, updateProperties {
                 adw_carousel_set_allow_long_swipes(widget, allowLongSwipes.cBool)
             }

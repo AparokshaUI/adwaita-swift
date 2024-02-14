@@ -103,7 +103,6 @@ public struct LinkButton: Widget {
             gtk_button_set_child(storage.pointer?.cast(), childStorage.pointer?.cast())
         }
 
-
         for function in appearFunctions {
             function(storage)
         }
@@ -127,6 +126,7 @@ public struct LinkButton: Widget {
             }
         }
         storage.modify { widget in
+
             if let actionName, updateProperties {
                 gtk_actionable_set_action_name(widget, actionName)
             }

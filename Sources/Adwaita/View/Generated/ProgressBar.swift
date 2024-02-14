@@ -100,7 +100,6 @@ public struct ProgressBar: Widget {
         let storage = ViewStorage(gtk_progress_bar_new()?.opaque())
         update(storage, modifiers: modifiers, updateProperties: true)
 
-
         for function in appearFunctions {
             function(storage)
         }
@@ -114,6 +113,7 @@ public struct ProgressBar: Widget {
     ///     - updateProperties: Whether to update the view's properties.
     public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         storage.modify { widget in
+
             if let fraction, updateProperties {
                 gtk_progress_bar_set_fraction(widget, fraction)
             }

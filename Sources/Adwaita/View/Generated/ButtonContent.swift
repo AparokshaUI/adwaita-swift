@@ -84,7 +84,6 @@ public struct ButtonContent: Widget {
         let storage = ViewStorage(adw_button_content_new()?.opaque())
         update(storage, modifiers: modifiers, updateProperties: true)
 
-
         for function in appearFunctions {
             function(storage)
         }
@@ -98,6 +97,7 @@ public struct ButtonContent: Widget {
     ///     - updateProperties: Whether to update the view's properties.
     public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         storage.modify { widget in
+
             if let canShrink, updateProperties {
                 adw_button_content_set_can_shrink(widget, canShrink.cBool)
             }

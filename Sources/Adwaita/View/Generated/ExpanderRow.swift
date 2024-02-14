@@ -119,19 +119,6 @@ public struct ExpanderRow: Widget {
             adw_expander_row_add_prefix(storage.pointer?.cast(), prefixStorage.last?.pointer?.cast())
         }
         storage.content["prefix"] = prefixStorage
-
-        storage.notify(name: "enable-expansion") {
-            let newValue = adw_expander_row_get_enable_expansion(storage.pointer?.cast()) != 0
-if let enableExpansion, newValue != enableExpansion.wrappedValue {
-    enableExpansion.wrappedValue = newValue
-}
-        }
-        storage.notify(name: "expanded") {
-            let newValue = adw_expander_row_get_expanded(storage.pointer?.cast()) != 0
-if let expanded, newValue != expanded.wrappedValue {
-    expanded.wrappedValue = newValue
-}
-        }
         for function in appearFunctions {
             function(storage)
         }
@@ -145,6 +132,19 @@ if let expanded, newValue != expanded.wrappedValue {
     ///     - updateProperties: Whether to update the view's properties.
     public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         storage.modify { widget in
+
+        storage.notify(name: "enable-expansion") {
+            let newValue = adw_expander_row_get_enable_expansion(storage.pointer?.cast()) != 0
+if let enableExpansion, newValue != enableExpansion.wrappedValue {
+    enableExpansion.wrappedValue = newValue
+}
+        }
+        storage.notify(name: "expanded") {
+            let newValue = adw_expander_row_get_expanded(storage.pointer?.cast()) != 0
+if let expanded, newValue != expanded.wrappedValue {
+    expanded.wrappedValue = newValue
+}
+        }
             if let enableExpansion, updateProperties, (adw_expander_row_get_enable_expansion(storage.pointer?.cast()) != 0) != enableExpansion.wrappedValue {
                 adw_expander_row_set_enable_expansion(storage.pointer?.cast(), enableExpansion.wrappedValue.cBool)
             }

@@ -57,7 +57,6 @@ public struct PreferencesRow: Widget {
         let storage = ViewStorage(adw_preferences_row_new()?.opaque())
         update(storage, modifiers: modifiers, updateProperties: true)
 
-
         for function in appearFunctions {
             function(storage)
         }
@@ -71,6 +70,7 @@ public struct PreferencesRow: Widget {
     ///     - updateProperties: Whether to update the view's properties.
     public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         storage.modify { widget in
+
             if let title, updateProperties {
                 adw_preferences_row_set_title(widget?.cast(), title)
             }

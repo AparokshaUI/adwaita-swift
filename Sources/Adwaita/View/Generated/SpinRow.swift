@@ -147,13 +147,6 @@ public struct SpinRow: Widget {
             adw_action_row_add_prefix(storage.pointer?.cast(), prefixStorage.last?.pointer?.cast())
         }
         storage.content["prefix"] = prefixStorage
-
-        storage.notify(name: "value") {
-            let newValue = adw_spin_row_get_value(storage.pointer)
-if let value, newValue != value.wrappedValue {
-    value.wrappedValue = newValue
-}
-        }
         for function in appearFunctions {
             function(storage)
         }
@@ -187,6 +180,13 @@ if let value, newValue != value.wrappedValue {
             }
         }
         storage.modify { widget in
+
+        storage.notify(name: "value") {
+            let newValue = adw_spin_row_get_value(storage.pointer)
+if let value, newValue != value.wrappedValue {
+    value.wrappedValue = newValue
+}
+        }
             if let widget = storage.content["activatableWidget"]?.first {
                 activatableWidget?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
             }

@@ -52,7 +52,6 @@ public struct Spinner: Widget {
         let storage = ViewStorage(gtk_spinner_new()?.opaque())
         update(storage, modifiers: modifiers, updateProperties: true)
 
-
         for function in appearFunctions {
             function(storage)
         }
@@ -66,6 +65,7 @@ public struct Spinner: Widget {
     ///     - updateProperties: Whether to update the view's properties.
     public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         storage.modify { widget in
+
             if let spinning, updateProperties {
                 gtk_spinner_set_spinning(widget, spinning.cBool)
             }

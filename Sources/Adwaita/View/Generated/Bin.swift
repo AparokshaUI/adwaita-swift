@@ -46,7 +46,6 @@ public struct Bin: Widget {
             adw_bin_set_child(storage.pointer?.cast(), childStorage.pointer?.cast())
         }
 
-
         for function in appearFunctions {
             function(storage)
         }
@@ -60,6 +59,7 @@ public struct Bin: Widget {
     ///     - updateProperties: Whether to update the view's properties.
     public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         storage.modify { widget in
+
             if let widget = storage.content["child"]?.first {
                 child?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
             }

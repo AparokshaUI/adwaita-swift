@@ -194,13 +194,6 @@ public struct OverlaySplitView: Widget {
             adw_overlay_split_view_set_sidebar(storage.pointer, sidebarStorage.pointer?.cast())
         }
 
-
-        storage.notify(name: "show-sidebar") {
-            let newValue = adw_overlay_split_view_get_show_sidebar(storage.pointer) != 0
-if let showSidebar, newValue != showSidebar.wrappedValue {
-    showSidebar.wrappedValue = newValue
-}
-        }
         for function in appearFunctions {
             function(storage)
         }
@@ -214,6 +207,13 @@ if let showSidebar, newValue != showSidebar.wrappedValue {
     ///     - updateProperties: Whether to update the view's properties.
     public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         storage.modify { widget in
+
+        storage.notify(name: "show-sidebar") {
+            let newValue = adw_overlay_split_view_get_show_sidebar(storage.pointer) != 0
+if let showSidebar, newValue != showSidebar.wrappedValue {
+    showSidebar.wrappedValue = newValue
+}
+        }
             if let collapsed, updateProperties {
                 adw_overlay_split_view_set_collapsed(widget, collapsed.cBool)
             }

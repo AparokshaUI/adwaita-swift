@@ -92,7 +92,6 @@ public struct Box: Widget {
             gtk_box_prepend(storage.pointer?.cast(), prependStorage.last?.pointer?.cast())
         }
         storage.content["prepend"] = prependStorage
-
         for function in appearFunctions {
             function(storage)
         }
@@ -106,6 +105,7 @@ public struct Box: Widget {
     ///     - updateProperties: Whether to update the view's properties.
     public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         storage.modify { widget in
+
             if let baselineChild, updateProperties {
                 gtk_box_set_baseline_child(widget?.cast(), baselineChild.cInt)
             }

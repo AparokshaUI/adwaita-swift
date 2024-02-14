@@ -52,7 +52,6 @@ public struct WindowTitle: Widget {
         let storage = ViewStorage(adw_window_title_new(title, subtitle)?.opaque())
         update(storage, modifiers: modifiers, updateProperties: true)
 
-
         for function in appearFunctions {
             function(storage)
         }
@@ -66,6 +65,7 @@ public struct WindowTitle: Widget {
     ///     - updateProperties: Whether to update the view's properties.
     public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         storage.modify { widget in
+
             if updateProperties {
                 adw_window_title_set_subtitle(widget, subtitle)
             }

@@ -131,7 +131,6 @@ public struct ActionRow: Widget {
             adw_action_row_add_prefix(storage.pointer?.cast(), prefixStorage.last?.pointer?.cast())
         }
         storage.content["prefix"] = prefixStorage
-
         for function in appearFunctions {
             function(storage)
         }
@@ -150,6 +149,7 @@ public struct ActionRow: Widget {
             }
         }
         storage.modify { widget in
+
             if let widget = storage.content["activatableWidget"]?.first {
                 activatableWidget?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
             }

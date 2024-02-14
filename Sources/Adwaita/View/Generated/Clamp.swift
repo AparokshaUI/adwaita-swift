@@ -74,7 +74,6 @@ public struct Clamp: Widget {
             adw_clamp_set_child(storage.pointer, childStorage.pointer?.cast())
         }
 
-
         for function in appearFunctions {
             function(storage)
         }
@@ -88,6 +87,7 @@ public struct Clamp: Widget {
     ///     - updateProperties: Whether to update the view's properties.
     public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         storage.modify { widget in
+
             if let widget = storage.content["child"]?.first {
                 child?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
             }

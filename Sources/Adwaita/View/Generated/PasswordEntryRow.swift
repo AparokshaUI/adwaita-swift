@@ -102,7 +102,6 @@ public struct PasswordEntryRow: Widget {
             adw_entry_row_add_prefix(storage.pointer?.cast(), prefixStorage.last?.pointer?.cast())
         }
         storage.content["prefix"] = prefixStorage
-
         for function in appearFunctions {
             function(storage)
         }
@@ -126,6 +125,7 @@ public struct PasswordEntryRow: Widget {
             }
         }
         storage.modify { widget in
+
             if let activatesDefault, updateProperties {
                 adw_entry_row_set_activates_default(widget?.cast(), activatesDefault.cBool)
             }

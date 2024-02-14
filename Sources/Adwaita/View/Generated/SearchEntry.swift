@@ -170,13 +170,6 @@ public struct SearchEntry: Widget {
         let storage = ViewStorage(gtk_search_entry_new()?.opaque())
         update(storage, modifiers: modifiers, updateProperties: true)
 
-
-        storage.notify(name: "text") {
-            let newValue = String(cString: gtk_editable_get_text(storage.pointer))
-if let text, newValue != text.wrappedValue {
-    text.wrappedValue = newValue
-}
-        }
         for function in appearFunctions {
             function(storage)
         }
@@ -235,6 +228,13 @@ if let text, newValue != text.wrappedValue {
             }
         }
         storage.modify { widget in
+
+        storage.notify(name: "text") {
+            let newValue = String(cString: gtk_editable_get_text(storage.pointer))
+if let text, newValue != text.wrappedValue {
+    text.wrappedValue = newValue
+}
+        }
             if let editable, updateProperties {
                 gtk_editable_set_editable(widget, editable.cBool)
             }

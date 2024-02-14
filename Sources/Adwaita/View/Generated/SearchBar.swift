@@ -95,7 +95,6 @@ public struct SearchBar: Widget {
             gtk_search_bar_set_key_capture_widget(storage.pointer, keyCaptureWidgetStorage.pointer?.cast())
         }
 
-
         for function in appearFunctions {
             function(storage)
         }
@@ -109,6 +108,7 @@ public struct SearchBar: Widget {
     ///     - updateProperties: Whether to update the view's properties.
     public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         storage.modify { widget in
+
             if let widget = storage.content["child"]?.first {
                 child?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
             }

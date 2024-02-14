@@ -96,7 +96,6 @@ public struct Overlay: Widget {
             gtk_overlay_add_overlay(storage.pointer, overlayStorage.last?.pointer?.cast())
         }
         storage.content["overlay"] = overlayStorage
-
         for function in appearFunctions {
             function(storage)
         }
@@ -115,6 +114,7 @@ public struct Overlay: Widget {
             }
         }
         storage.modify { widget in
+
             if let widget = storage.content["child"]?.first {
                 child?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
             }

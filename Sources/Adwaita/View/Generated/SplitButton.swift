@@ -122,7 +122,6 @@ public struct SplitButton: Widget {
             }
         }
 
-
         for function in appearFunctions {
             function(storage)
         }
@@ -146,6 +145,7 @@ public struct SplitButton: Widget {
             }
         }
         storage.modify { widget in
+
             if let canShrink, updateProperties {
                 adw_split_button_set_can_shrink(widget, canShrink.cBool)
             }

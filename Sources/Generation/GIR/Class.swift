@@ -99,7 +99,6 @@ struct Class: ClassLike, Decodable {
                 let storage = ViewStorage(\(generateInitializer(name: widgetName, config: config, namespace: namespace, configs: configs))?.opaque())
                 update(storage, modifiers: modifiers, updateProperties: true)
         \(generateWidgetAssignments(config: config, genConfig: genConfig, namespace: namespace, configs: configs))
-        \(generateBindingAssignments(config: config, genConfig: genConfig, namespace: namespace, configs: configs))
                 for function in appearFunctions {
                     function(storage)
                 }
@@ -113,6 +112,7 @@ struct Class: ClassLike, Decodable {
             ///     - updateProperties: Whether to update the view's properties.
             public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {\(generateSignalModifications(config: config, genConfig: genConfig, namespace: namespace))
                 storage.modify { widget in
+        \(generateBindingAssignments(config: config, genConfig: genConfig, namespace: namespace, configs: configs))
         \(generateModifications(config: config, genConfig: genConfig, namespace: namespace, configs: configs))
         \(generateDynamicWidgetUpdate(config: config, genConfig: genConfig))
                 }

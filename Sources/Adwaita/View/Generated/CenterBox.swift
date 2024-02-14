@@ -104,7 +104,6 @@ public struct CenterBox: Widget {
             gtk_center_box_set_start_widget(storage.pointer, startWidgetStorage.pointer?.cast())
         }
 
-
         for function in appearFunctions {
             function(storage)
         }
@@ -118,6 +117,7 @@ public struct CenterBox: Widget {
     ///     - updateProperties: Whether to update the view's properties.
     public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         storage.modify { widget in
+
             if let widget = storage.content["centerWidget"]?.first {
                 centerWidget?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
             }

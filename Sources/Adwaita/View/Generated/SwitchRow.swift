@@ -122,13 +122,6 @@ public struct SwitchRow: Widget {
             adw_action_row_add_prefix(storage.pointer?.cast(), prefixStorage.last?.pointer?.cast())
         }
         storage.content["prefix"] = prefixStorage
-
-        storage.notify(name: "active") {
-            let newValue = adw_switch_row_get_active(storage.pointer) != 0
-if let active, newValue != active.wrappedValue {
-    active.wrappedValue = newValue
-}
-        }
         for function in appearFunctions {
             function(storage)
         }
@@ -147,6 +140,13 @@ if let active, newValue != active.wrappedValue {
             }
         }
         storage.modify { widget in
+
+        storage.notify(name: "active") {
+            let newValue = adw_switch_row_get_active(storage.pointer) != 0
+if let active, newValue != active.wrappedValue {
+    active.wrappedValue = newValue
+}
+        }
             if let widget = storage.content["activatableWidget"]?.first {
                 activatableWidget?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
             }

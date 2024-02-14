@@ -287,7 +287,6 @@ public struct Label: Widget {
             gtk_label_set_mnemonic_widget(storage.pointer, mnemonicWidgetStorage.pointer?.cast())
         }
 
-
         for function in appearFunctions {
             function(storage)
         }
@@ -306,6 +305,7 @@ public struct Label: Widget {
             }
         }
         storage.modify { widget in
+
             if updateProperties {
                 gtk_label_set_label(widget, label)
             }

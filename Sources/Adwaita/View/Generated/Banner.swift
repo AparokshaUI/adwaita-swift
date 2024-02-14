@@ -72,7 +72,6 @@ public struct Banner: Widget {
         let storage = ViewStorage(adw_banner_new(title)?.opaque())
         update(storage, modifiers: modifiers, updateProperties: true)
 
-
         for function in appearFunctions {
             function(storage)
         }
@@ -91,6 +90,7 @@ public struct Banner: Widget {
             }
         }
         storage.modify { widget in
+
             if let buttonLabel, updateProperties {
                 adw_banner_set_button_label(widget, buttonLabel)
             }

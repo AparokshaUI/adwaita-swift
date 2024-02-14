@@ -156,7 +156,6 @@ public struct FlowBox<Element>: Widget where Element: Identifiable {
         let storage = ViewStorage(gtk_flow_box_new()?.opaque())
         update(storage, modifiers: modifiers, updateProperties: true)
 
-
         for function in appearFunctions {
             function(storage)
         }
@@ -205,6 +204,7 @@ public struct FlowBox<Element>: Widget where Element: Identifiable {
             }
         }
         storage.modify { widget in
+
             if let activateOnSingleClick, updateProperties {
                 gtk_flow_box_set_activate_on_single_click(widget, activateOnSingleClick.cBool)
             }
