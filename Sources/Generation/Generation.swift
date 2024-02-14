@@ -23,24 +23,26 @@ struct Generation {
     /// The main function.
     func run() throws {
         removeOldFiles()
-        let gtkDefinitions = getDefinitions(path: configuration.gtkGirFilePath)
-        let adwDefinitions = getDefinitions(path: configuration.adwGirFilePath)
-        for `class` in gtkDefinitions?.namespace.classes ?? [] {
+        guard let gtkDefinitions = getDefinitions(path: configuration.gtkGirFilePath),
+        let adwDefinitions = getDefinitions(path: configuration.adwGirFilePath) else {
+            return
+        }
+        for `class` in gtkDefinitions.namespace.classes {
             if let config = configuration.gtkWidgets.first(where: { $0.class == `class`.name }) {
                 createFile(
                     class: `class`,
                     config: config,
-                    classes: gtkDefinitions?.namespace.classes ?? [],
+                    namespace: gtkDefinitions.namespace,
                     configs: configuration.gtkWidgets
                 )
             }
         }
-        for `class` in adwDefinitions?.namespace.classes ?? [] {
+        for `class` in adwDefinitions.namespace.classes {
             if let config = configuration.adwWidgets.first(where: { $0.class == `class`.name }) {
                 createFile(
                     class: `class`,
                     config: config,
-                    classes: adwDefinitions?.namespace.classes ?? [],
+                    namespace: adwDefinitions.namespace,
                     configs: configuration.adwWidgets
                 )
             }
@@ -89,13 +91,13 @@ struct Generation {
     /// - Parameters:
     ///     - class: The class.
     ///     - config: The widget configuration.
-    ///     - classes: All the available classes.
+    ///     - namespace: The namespace.
     ///     - configs: All the available configs.
-    func createFile(`class`: Class, config: WidgetConfiguration, classes: [Class], configs: [WidgetConfiguration]) {
+    func createFile(`class`: Class, config: WidgetConfiguration, namespace: Namespace, configs: [WidgetConfiguration]) {
         print("Generating \(config.name ?? `class`.name).swift")
         let path = "\(configuration.folder)\(config.name ?? config.class).swift"
         let data = `class`
-            .generate(config: config, genConfig: configuration, classes: classes, configs: configs)
+            .generate(config: config, genConfig: configuration, namespace: namespace, configs: configs)
             .data(using: .utf8)
         try? data?.write(to: .init(fileURLWithPath: path))
     }

@@ -2,7 +2,7 @@
 //  ListBox.swift
 //  Adwaita
 //
-//  Created by auto-generation on 12.02.24.
+//  Created by auto-generation on 14.02.24.
 //
 
 import CAdw
@@ -70,6 +70,10 @@ public struct ListBox<Element>: Widget where Element: Identifiable {
 
     /// Whether to accept unpaired release events.
     var acceptUnpairedRelease: Bool?
+    /// The accessible role of the given `GtkAccessible` implementation.
+    /// 
+    /// The accessible role cannot be changed once set.
+    var accessibleRole: String?
     /// Determines whether children can be activated with a single
     /// click, or require a double-click.
     var activateOnSingleClick: Bool?
@@ -224,6 +228,16 @@ public struct ListBox<Element>: Widget where Element: Identifiable {
     public func acceptUnpairedRelease(_ acceptUnpairedRelease: Bool? = true) -> Self {
         var newSelf = self
         newSelf.acceptUnpairedRelease = acceptUnpairedRelease
+        
+        return newSelf
+    }
+
+    /// The accessible role of the given `GtkAccessible` implementation.
+    /// 
+    /// The accessible role cannot be changed once set.
+    public func accessibleRole(_ accessibleRole: String?) -> Self {
+        var newSelf = self
+        newSelf.accessibleRole = accessibleRole
         
         return newSelf
     }

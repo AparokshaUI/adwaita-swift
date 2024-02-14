@@ -2,7 +2,7 @@
 //  ActionRow.swift
 //  Adwaita
 //
-//  Created by auto-generation on 12.02.24.
+//  Created by auto-generation on 14.02.24.
 //
 
 import CAdw
@@ -72,15 +72,15 @@ public struct ActionRow: Widget {
     /// 
     /// See also [property@Gtk.Label:selectable].
     var subtitleSelectable: Bool?
-    /// The number of lines at the end of which the title label will be ellipsized.
-    /// 
-    /// If the value is 0, the number of lines won't be limited.
-    var titleLines: Int?
     /// The title of the preference represented by this row.
     /// 
     /// The title is interpreted as Pango markup unless
     /// [property@PreferencesRow:use-markup] is set to `FALSE`.
     var title: String?
+    /// The number of lines at the end of which the title label will be ellipsized.
+    /// 
+    /// If the value is 0, the number of lines won't be limited.
+    var titleLines: Int?
     /// Whether the user can copy the title from the label.
     /// 
     /// See also [property@Gtk.Label:selectable].
@@ -165,11 +165,11 @@ public struct ActionRow: Widget {
             if let subtitleSelectable, updateProperties {
                 adw_action_row_set_subtitle_selectable(widget?.cast(), subtitleSelectable.cBool)
             }
-            if let titleLines, updateProperties {
-                adw_action_row_set_title_lines(widget?.cast(), titleLines.cInt)
-            }
             if let title, updateProperties {
                 adw_preferences_row_set_title(widget?.cast(), title)
+            }
+            if let titleLines, updateProperties {
+                adw_action_row_set_title_lines(widget?.cast(), titleLines.cInt)
             }
             if let titleSelectable, updateProperties {
                 adw_preferences_row_set_title_selectable(widget?.cast(), titleSelectable.cBool)
@@ -266,16 +266,6 @@ public struct ActionRow: Widget {
         return newSelf
     }
 
-    /// The number of lines at the end of which the title label will be ellipsized.
-    /// 
-    /// If the value is 0, the number of lines won't be limited.
-    public func titleLines(_ titleLines: Int?) -> Self {
-        var newSelf = self
-        newSelf.titleLines = titleLines
-        
-        return newSelf
-    }
-
     /// The title of the preference represented by this row.
     /// 
     /// The title is interpreted as Pango markup unless
@@ -283,6 +273,16 @@ public struct ActionRow: Widget {
     public func title(_ title: String?) -> Self {
         var newSelf = self
         newSelf.title = title
+        
+        return newSelf
+    }
+
+    /// The number of lines at the end of which the title label will be ellipsized.
+    /// 
+    /// If the value is 0, the number of lines won't be limited.
+    public func titleLines(_ titleLines: Int?) -> Self {
+        var newSelf = self
+        newSelf.titleLines = titleLines
         
         return newSelf
     }

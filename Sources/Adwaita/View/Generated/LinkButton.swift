@@ -2,7 +2,7 @@
 //  LinkButton.swift
 //  Adwaita
 //
-//  Created by auto-generation on 12.02.24.
+//  Created by auto-generation on 14.02.24.
 //
 
 import CAdw
@@ -41,12 +41,12 @@ public struct LinkButton: Widget {
     /// Additional appear functions for type extensions.
     var appearFunctions: [(ViewStorage) -> Void] = []
 
-    /// The URI bound to this button.
-    var uri: String
-    /// The 'visited' state of this button.
+    /// The accessible role of the given `GtkAccessible` implementation.
     /// 
-    /// A visited link is drawn in a different color.
-    var visited: Bool?
+    /// The accessible role cannot be changed once set.
+    var accessibleRole: String?
+/// action-name
+    var actionName: String?
     /// Whether the size of the button can be made smaller than the natural
     /// size of its contents.
     /// 
@@ -63,9 +63,15 @@ public struct LinkButton: Widget {
     var iconName: String?
     /// Text of the label inside the button, if the button contains a label widget.
     var label: String?
+    /// The URI bound to this button.
+    var uri: String
     /// If set, an underline in the text indicates that the following character is
     /// to be used as mnemonic.
     var useUnderline: Bool?
+    /// The 'visited' state of this button.
+    /// 
+    /// A visited link is drawn in a different color.
+    var visited: Bool?
     /// Emitted to animate press then release.
     /// 
     /// This is an action signal. Applications should never connect
@@ -121,11 +127,8 @@ public struct LinkButton: Widget {
             }
         }
         storage.modify { widget in
-            if updateProperties {
-                gtk_link_button_set_uri(widget, uri)
-            }
-            if let visited, updateProperties {
-                gtk_link_button_set_visited(widget, visited.cBool)
+            if let actionName, updateProperties {
+                gtk_actionable_set_action_name(widget, actionName)
             }
             if let canShrink, updateProperties {
                 gtk_button_set_can_shrink(widget?.cast(), canShrink.cBool)
@@ -142,8 +145,14 @@ public struct LinkButton: Widget {
             if let label, storage.content["child"] == nil, updateProperties {
                 gtk_button_set_label(widget?.cast(), label)
             }
+            if updateProperties {
+                gtk_link_button_set_uri(widget, uri)
+            }
             if let useUnderline, updateProperties {
                 gtk_button_set_use_underline(widget?.cast(), useUnderline.cBool)
+            }
+            if let visited, updateProperties {
+                gtk_link_button_set_visited(widget, visited.cBool)
             }
 
 
@@ -153,20 +162,20 @@ public struct LinkButton: Widget {
         }
     }
 
-    /// The URI bound to this button.
-    public func uri(_ uri: String) -> Self {
+    /// The accessible role of the given `GtkAccessible` implementation.
+    /// 
+    /// The accessible role cannot be changed once set.
+    public func accessibleRole(_ accessibleRole: String?) -> Self {
         var newSelf = self
-        newSelf.uri = uri
+        newSelf.accessibleRole = accessibleRole
         
         return newSelf
     }
 
-    /// The 'visited' state of this button.
-    /// 
-    /// A visited link is drawn in a different color.
-    public func visited(_ visited: Bool? = true) -> Self {
+/// action-name
+    public func actionName(_ actionName: String?) -> Self {
         var newSelf = self
-        newSelf.visited = visited
+        newSelf.actionName = actionName
         
         return newSelf
     }
@@ -217,11 +226,29 @@ public struct LinkButton: Widget {
         return newSelf
     }
 
+    /// The URI bound to this button.
+    public func uri(_ uri: String) -> Self {
+        var newSelf = self
+        newSelf.uri = uri
+        
+        return newSelf
+    }
+
     /// If set, an underline in the text indicates that the following character is
     /// to be used as mnemonic.
     public func useUnderline(_ useUnderline: Bool? = true) -> Self {
         var newSelf = self
         newSelf.useUnderline = useUnderline
+        
+        return newSelf
+    }
+
+    /// The 'visited' state of this button.
+    /// 
+    /// A visited link is drawn in a different color.
+    public func visited(_ visited: Bool? = true) -> Self {
+        var newSelf = self
+        newSelf.visited = visited
         
         return newSelf
     }

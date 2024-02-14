@@ -2,7 +2,7 @@
 //  SwitchRow.swift
 //  Adwaita
 //
-//  Created by auto-generation on 12.02.24.
+//  Created by auto-generation on 14.02.24.
 //
 
 import CAdw
@@ -35,8 +35,6 @@ public struct SwitchRow: Widget {
     /// Additional appear functions for type extensions.
     var appearFunctions: [(ViewStorage) -> Void] = []
 
-    /// Whether the switch row is in the "on" or "off" position.
-    var active: Binding<Bool>?
     /// The widget to activate when the row is activated.
     /// 
     /// The row can be activated either by clicking on it, calling
@@ -47,6 +45,8 @@ public struct SwitchRow: Widget {
     /// The target widget will be activated by emitting the
     /// [signal@Gtk.Widget::mnemonic-activate] signal on it.
     var activatableWidget:  (() -> Body)?
+    /// Whether the switch row is in the "on" or "off" position.
+    var active: Binding<Bool>?
     /// The icon name for this row.
     var iconName: String?
     /// The subtitle for this row.
@@ -63,15 +63,15 @@ public struct SwitchRow: Widget {
     /// 
     /// See also [property@Gtk.Label:selectable].
     var subtitleSelectable: Bool?
-    /// The number of lines at the end of which the title label will be ellipsized.
-    /// 
-    /// If the value is 0, the number of lines won't be limited.
-    var titleLines: Int?
     /// The title of the preference represented by this row.
     /// 
     /// The title is interpreted as Pango markup unless
     /// [property@PreferencesRow:use-markup] is set to `FALSE`.
     var title: String?
+    /// The number of lines at the end of which the title label will be ellipsized.
+    /// 
+    /// If the value is 0, the number of lines won't be limited.
+    var titleLines: Int?
     /// Whether the user can copy the title from the label.
     /// 
     /// See also [property@Gtk.Label:selectable].
@@ -144,11 +144,11 @@ public struct SwitchRow: Widget {
             }
         }
         storage.modify { widget in
-            if let active, updateProperties {
-                adw_switch_row_set_active(widget, active.wrappedValue.cBool)
-            }
             if let widget = storage.content["activatableWidget"]?.first {
                 activatableWidget?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
+            }
+            if let active, updateProperties {
+                adw_switch_row_set_active(widget, active.wrappedValue.cBool)
             }
             if let iconName, updateProperties {
                 adw_action_row_set_icon_name(widget?.cast(), iconName)
@@ -162,11 +162,11 @@ public struct SwitchRow: Widget {
             if let subtitleSelectable, updateProperties {
                 adw_action_row_set_subtitle_selectable(widget?.cast(), subtitleSelectable.cBool)
             }
-            if let titleLines, updateProperties {
-                adw_action_row_set_title_lines(widget?.cast(), titleLines.cInt)
-            }
             if let title, updateProperties {
                 adw_preferences_row_set_title(widget?.cast(), title)
+            }
+            if let titleLines, updateProperties {
+                adw_action_row_set_title_lines(widget?.cast(), titleLines.cInt)
             }
             if let titleSelectable, updateProperties {
                 adw_preferences_row_set_title_selectable(widget?.cast(), titleSelectable.cBool)
@@ -185,14 +185,6 @@ public struct SwitchRow: Widget {
         }
     }
 
-    /// Whether the switch row is in the "on" or "off" position.
-    public func active(_ active: Binding<Bool>?) -> Self {
-        var newSelf = self
-        newSelf.active = active
-        
-        return newSelf
-    }
-
     /// The widget to activate when the row is activated.
     /// 
     /// The row can be activated either by clicking on it, calling
@@ -205,6 +197,14 @@ public struct SwitchRow: Widget {
     public func activatableWidget(@ViewBuilder _ activatableWidget: @escaping (() -> Body)) -> Self {
         var newSelf = self
         newSelf.activatableWidget = activatableWidget
+        
+        return newSelf
+    }
+
+    /// Whether the switch row is in the "on" or "off" position.
+    public func active(_ active: Binding<Bool>?) -> Self {
+        var newSelf = self
+        newSelf.active = active
         
         return newSelf
     }
@@ -249,16 +249,6 @@ public struct SwitchRow: Widget {
         return newSelf
     }
 
-    /// The number of lines at the end of which the title label will be ellipsized.
-    /// 
-    /// If the value is 0, the number of lines won't be limited.
-    public func titleLines(_ titleLines: Int?) -> Self {
-        var newSelf = self
-        newSelf.titleLines = titleLines
-        
-        return newSelf
-    }
-
     /// The title of the preference represented by this row.
     /// 
     /// The title is interpreted as Pango markup unless
@@ -266,6 +256,16 @@ public struct SwitchRow: Widget {
     public func title(_ title: String?) -> Self {
         var newSelf = self
         newSelf.title = title
+        
+        return newSelf
+    }
+
+    /// The number of lines at the end of which the title label will be ellipsized.
+    /// 
+    /// If the value is 0, the number of lines won't be limited.
+    public func titleLines(_ titleLines: Int?) -> Self {
+        var newSelf = self
+        newSelf.titleLines = titleLines
         
         return newSelf
     }

@@ -2,7 +2,7 @@
 //  Box.swift
 //  Adwaita
 //
-//  Created by auto-generation on 12.02.24.
+//  Created by auto-generation on 14.02.24.
 //
 
 import CAdw
@@ -49,6 +49,10 @@ public struct Box: Widget {
     /// Additional appear functions for type extensions.
     var appearFunctions: [(ViewStorage) -> Void] = []
 
+    /// The accessible role of the given `GtkAccessible` implementation.
+    /// 
+    /// The accessible role cannot be changed once set.
+    var accessibleRole: String?
     /// The child that determines the baseline, in vertical orientation.
     var baselineChild: Int?
     /// Whether the children should all be the same size.
@@ -139,6 +143,16 @@ public struct Box: Widget {
         for function in updateFunctions {
             function(storage)
         }
+    }
+
+    /// The accessible role of the given `GtkAccessible` implementation.
+    /// 
+    /// The accessible role cannot be changed once set.
+    public func accessibleRole(_ accessibleRole: String?) -> Self {
+        var newSelf = self
+        newSelf.accessibleRole = accessibleRole
+        
+        return newSelf
     }
 
     /// The child that determines the baseline, in vertical orientation.

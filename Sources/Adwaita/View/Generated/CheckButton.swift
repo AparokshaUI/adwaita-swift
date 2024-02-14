@@ -2,7 +2,7 @@
 //  CheckButton.swift
 //  Adwaita
 //
-//  Created by auto-generation on 12.02.24.
+//  Created by auto-generation on 14.02.24.
 //
 
 import CAdw
@@ -72,6 +72,12 @@ public struct CheckButton: Widget {
     /// Additional appear functions for type extensions.
     var appearFunctions: [(ViewStorage) -> Void] = []
 
+    /// The accessible role of the given `GtkAccessible` implementation.
+    /// 
+    /// The accessible role cannot be changed once set.
+    var accessibleRole: String?
+/// action-name
+    var actionName: String?
     /// If the check button is active.
     /// 
     /// Setting `active` to %TRUE will add the `:checked:` state to both
@@ -150,6 +156,9 @@ public struct CheckButton: Widget {
             }
         }
         storage.modify { widget in
+            if let actionName, updateProperties {
+                gtk_actionable_set_action_name(widget, actionName)
+            }
             if let active, updateProperties {
                 gtk_check_button_set_active(widget?.cast(), active.wrappedValue.cBool)
             }
@@ -171,6 +180,24 @@ public struct CheckButton: Widget {
         for function in updateFunctions {
             function(storage)
         }
+    }
+
+    /// The accessible role of the given `GtkAccessible` implementation.
+    /// 
+    /// The accessible role cannot be changed once set.
+    public func accessibleRole(_ accessibleRole: String?) -> Self {
+        var newSelf = self
+        newSelf.accessibleRole = accessibleRole
+        
+        return newSelf
+    }
+
+/// action-name
+    public func actionName(_ actionName: String?) -> Self {
+        var newSelf = self
+        newSelf.actionName = actionName
+        
+        return newSelf
     }
 
     /// If the check button is active.

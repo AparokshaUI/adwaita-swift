@@ -150,7 +150,7 @@ struct Property: Decodable {
             onlySetConditionsIndentation = "    "
             onlySetConditionsEnd = "\n            }"
         }
-        if config.bindings.contains { $0.property == self.name } {
+        if config.bindings.contains(where: { $0.property == self.name }) {
             return """
                         if let \(name)\(setConditions), updateProperties {
                             \(setter)(\(widget), \(name).wrappedValue\(propertyString))

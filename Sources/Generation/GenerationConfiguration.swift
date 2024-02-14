@@ -7,6 +7,8 @@
 
 import Foundation
 
+// swiftlint:disable type_body_length
+
 /// The configuration for the generation.
 struct GenerationConfiguration {
 
@@ -14,6 +16,11 @@ struct GenerationConfiguration {
     static let includeDir = "$(pkg-config --variable=includedir gtk4)"
     /// The directory containing the GIR files.
     static let girFilePath = "\(includeDir)/../share/gir-1.0/"
+
+    /// Exclude properties of buttons.
+    static var excludeButtons: [String] {
+        ["action-target", "related-action"]
+    }
 
     /// The Gtk GIR file.
     var gtkGirFilePath = girFilePath + "Gtk-4.0.gir"
@@ -161,11 +168,11 @@ struct GenerationConfiguration {
                 .init(name: "prepend", add: "gtk_box_prepend")
             ],
             requiredProperties: ["spacing"],
-            excludeProperties: ["baseline-position"],
+            excludeProperties: ["baseline-position", "orientation"],
             cast: true
         ),
         .init(class: "Spinner"),
-        .init(class: "LevelBar", excludeProperties: ["mode"]),
+        .init(class: "LevelBar", excludeProperties: ["mode", "orientation"]),
         .init(
             class: "ListBox",
             dynamicWidget: .init(
@@ -175,12 +182,17 @@ struct GenerationConfiguration {
             ),
             excludeProperties: ["selection-mode"]
         ),
-        .init(class: "ProgressBar", excludeProperties: ["ellipsize"]),
-        .init(class: "Button", cast: true, setConditions: ["label": "storage.content[\"child\"] == nil"]),
+        .init(class: "ProgressBar", excludeProperties: ["ellipsize", "orientation"]),
+        .init(
+            class: "Button",
+            excludeProperties: excludeButtons,
+            cast: true,
+            setConditions: ["label": "storage.content[\"child\"] == nil"]
+        ),
         .init(
             class: "ToggleButton",
             bindings: [.init(property: "active")],
-            excludeProperties: ["group"],
+            excludeProperties: ["group"] + excludeButtons,
             cast: true,
             setConditions: ["label": "storage.content[\"child\"] == nil"]
         ),
@@ -188,13 +200,14 @@ struct GenerationConfiguration {
             class: "LinkButton",
             initializer: "gtk_link_button_new(uri)",
             requiredProperties: ["uri"],
+            excludeProperties: excludeButtons,
             excludeSignals: ["activate-link"],
             setConditions: ["label": "storage.content[\"child\"] == nil"]
         ),
         .init(
             class: "CheckButton",
             bindings: [.init(property: "active")],
-            excludeProperties: ["group"],
+            excludeProperties: ["group"] + excludeButtons,
             cast: true,
             setConditions: ["label": "storage.content[\"child\"] == nil"]
         ),
@@ -202,12 +215,12 @@ struct GenerationConfiguration {
             class: "MenuButton",
             name: "Menu",
             bindings: [.init(property: "active")],
-            excludeProperties: ["direction", "popover"],
+            excludeProperties: ["direction", "popover"] + excludeButtons,
             setConditions: ["label": "storage.content[\"child\"] == nil"]
         ),
         .init(
             class: "CenterBox",
-            excludeProperties: ["baseline-position"]
+            excludeProperties: ["baseline-position", "orientation"]
         ),
         .init(
             class: "ScrolledWindow",
@@ -228,8 +241,10 @@ struct GenerationConfiguration {
                 remove: "gtk_flow_box_remove",
                 getElement: "gtk_flow_box_get_child_at_index(widget, index.cInt)?.cast()"
             ),
-            excludeProperties: ["selection-mode"]
-        )
+            excludeProperties: ["selection-mode", "orientation"]
+        ),
+        .init(class: "SearchEntry", bindings: [.init(property: "text")]),
+        .init(class: "SearchBar")
     ]
 
     /// The unshortening map.
@@ -270,7 +285,10 @@ struct GenerationConfiguration {
     /// Modifications for converting a C into a Swift type.
     var getterTypeConversions: [String: (String) -> String] = [
         "gboolean": { "\($0) != 0" },
-        "guint": { ".init(\($0))" }
+        "guint": { ".init(\($0))" },
+        "utf8": { ".init(cString: \($0))" }
     ]
 
 }
+
+// swiftlint:enable type_body_length

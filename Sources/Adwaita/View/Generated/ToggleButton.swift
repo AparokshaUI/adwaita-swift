@@ -2,7 +2,7 @@
 //  ToggleButton.swift
 //  Adwaita
 //
-//  Created by auto-generation on 12.02.24.
+//  Created by auto-generation on 14.02.24.
 //
 
 import CAdw
@@ -90,6 +90,12 @@ public struct ToggleButton: Widget {
     /// Additional appear functions for type extensions.
     var appearFunctions: [(ViewStorage) -> Void] = []
 
+    /// The accessible role of the given `GtkAccessible` implementation.
+    /// 
+    /// The accessible role cannot be changed once set.
+    var accessibleRole: String?
+/// action-name
+    var actionName: String?
     /// If the toggle button should be pressed in.
     var active: Binding<Bool>?
     /// Whether the size of the button can be made smaller than the natural
@@ -111,8 +117,6 @@ public struct ToggleButton: Widget {
     /// If set, an underline in the text indicates that the following character is
     /// to be used as mnemonic.
     var useUnderline: Bool?
-    /// Emitted whenever the `GtkToggleButton`'s state is changed.
-    var toggled: (() -> Void)?
     /// Emitted to animate press then release.
     /// 
     /// This is an action signal. Applications should never connect
@@ -123,6 +127,8 @@ public struct ToggleButton: Widget {
     var activate: (() -> Void)?
     /// Emitted when the button has been activated (pressed and released).
     var clicked: (() -> Void)?
+    /// Emitted whenever the `GtkToggleButton`'s state is changed.
+    var toggled: (() -> Void)?
     /// The application.
     var app: GTUIApp?
     /// The window.
@@ -159,11 +165,6 @@ public struct ToggleButton: Widget {
     ///     - modifiers: The view modifiers.
     ///     - updateProperties: Whether to update the view's properties.
     public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
-        if let toggled {
-            storage.connectSignal(name: "toggled", argCount: 0) {
-                toggled()
-            }
-        }
         if let activate {
             storage.connectSignal(name: "activate", argCount: 0) {
                 activate()
@@ -174,7 +175,15 @@ public struct ToggleButton: Widget {
                 clicked()
             }
         }
+        if let toggled {
+            storage.connectSignal(name: "toggled", argCount: 0) {
+                toggled()
+            }
+        }
         storage.modify { widget in
+            if let actionName, updateProperties {
+                gtk_actionable_set_action_name(widget, actionName)
+            }
             if let active, updateProperties {
                 gtk_toggle_button_set_active(widget?.cast(), active.wrappedValue.cBool)
             }
@@ -202,6 +211,24 @@ public struct ToggleButton: Widget {
         for function in updateFunctions {
             function(storage)
         }
+    }
+
+    /// The accessible role of the given `GtkAccessible` implementation.
+    /// 
+    /// The accessible role cannot be changed once set.
+    public func accessibleRole(_ accessibleRole: String?) -> Self {
+        var newSelf = self
+        newSelf.accessibleRole = accessibleRole
+        
+        return newSelf
+    }
+
+/// action-name
+    public func actionName(_ actionName: String?) -> Self {
+        var newSelf = self
+        newSelf.actionName = actionName
+        
+        return newSelf
     }
 
     /// If the toggle button should be pressed in.
@@ -267,13 +294,6 @@ public struct ToggleButton: Widget {
         return newSelf
     }
 
-    /// Emitted whenever the `GtkToggleButton`'s state is changed.
-    public func toggled(_ toggled: @escaping () -> Void) -> Self {
-        var newSelf = self
-        newSelf.toggled = toggled
-        return newSelf
-    }
-
     /// Emitted to animate press then release.
     /// 
     /// This is an action signal. Applications should never connect
@@ -291,6 +311,13 @@ public struct ToggleButton: Widget {
     public func clicked(_ clicked: @escaping () -> Void) -> Self {
         var newSelf = self
         newSelf.clicked = clicked
+        return newSelf
+    }
+
+    /// Emitted whenever the `GtkToggleButton`'s state is changed.
+    public func toggled(_ toggled: @escaping () -> Void) -> Self {
+        var newSelf = self
+        newSelf.toggled = toggled
         return newSelf
     }
 

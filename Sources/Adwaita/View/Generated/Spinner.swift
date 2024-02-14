@@ -2,7 +2,7 @@
 //  Spinner.swift
 //  Adwaita
 //
-//  Created by auto-generation on 12.02.24.
+//  Created by auto-generation on 14.02.24.
 //
 
 import CAdw
@@ -30,6 +30,10 @@ public struct Spinner: Widget {
     /// Additional appear functions for type extensions.
     var appearFunctions: [(ViewStorage) -> Void] = []
 
+    /// The accessible role of the given `GtkAccessible` implementation.
+    /// 
+    /// The accessible role cannot be changed once set.
+    var accessibleRole: String?
     /// Whether the spinner is spinning
     var spinning: Bool?
     /// The application.
@@ -71,6 +75,16 @@ public struct Spinner: Widget {
         for function in updateFunctions {
             function(storage)
         }
+    }
+
+    /// The accessible role of the given `GtkAccessible` implementation.
+    /// 
+    /// The accessible role cannot be changed once set.
+    public func accessibleRole(_ accessibleRole: String?) -> Self {
+        var newSelf = self
+        newSelf.accessibleRole = accessibleRole
+        
+        return newSelf
     }
 
     /// Whether the spinner is spinning

@@ -2,7 +2,7 @@
 //  ComboRow.swift
 //  Adwaita
 //
-//  Created by auto-generation on 12.02.24.
+//  Created by auto-generation on 14.02.24.
 //
 
 import CAdw
@@ -48,28 +48,6 @@ public struct ComboRow: Widget {
     /// Additional appear functions for type extensions.
     var appearFunctions: [(ViewStorage) -> Void] = []
 
-    /// Whether to show a search entry in the popup.
-    /// 
-    /// If set to `TRUE`, a search entry will be shown in the popup that
-    /// allows to search for items in the list.
-    /// 
-    /// Search requires [property@ComboRow:expression] to be set.
-    var enableSearch: Bool?
-    /// The position of the selected item.
-    /// 
-    /// If no item is selected, the property has the value
-    /// [const@Gtk.INVALID_LIST_POSITION]
-    var selected: Binding<UInt>?
-    /// Whether to use the current value as the subtitle.
-    /// 
-    /// If you use a custom list item factory, you will need to give the row a
-    /// name conversion expression with [property@ComboRow:expression].
-    /// 
-    /// If set to `TRUE`, you should not access [property@ActionRow:subtitle].
-    /// 
-    /// The subtitle is interpreted as Pango markup if
-    /// [property@PreferencesRow:use-markup] is set to `TRUE`.
-    var useSubtitle: Bool?
     /// The widget to activate when the row is activated.
     /// 
     /// The row can be activated either by clicking on it, calling
@@ -80,8 +58,20 @@ public struct ComboRow: Widget {
     /// The target widget will be activated by emitting the
     /// [signal@Gtk.Widget::mnemonic-activate] signal on it.
     var activatableWidget:  (() -> Body)?
+    /// Whether to show a search entry in the popup.
+    /// 
+    /// If set to `TRUE`, a search entry will be shown in the popup that
+    /// allows to search for items in the list.
+    /// 
+    /// Search requires [property@ComboRow:expression] to be set.
+    var enableSearch: Bool?
     /// The icon name for this row.
     var iconName: String?
+    /// The position of the selected item.
+    /// 
+    /// If no item is selected, the property has the value
+    /// [const@Gtk.INVALID_LIST_POSITION]
+    var selected: Binding<UInt>?
     /// The subtitle for this row.
     /// 
     /// The subtitle is interpreted as Pango markup unless
@@ -96,15 +86,15 @@ public struct ComboRow: Widget {
     /// 
     /// See also [property@Gtk.Label:selectable].
     var subtitleSelectable: Bool?
-    /// The number of lines at the end of which the title label will be ellipsized.
-    /// 
-    /// If the value is 0, the number of lines won't be limited.
-    var titleLines: Int?
     /// The title of the preference represented by this row.
     /// 
     /// The title is interpreted as Pango markup unless
     /// [property@PreferencesRow:use-markup] is set to `FALSE`.
     var title: String?
+    /// The number of lines at the end of which the title label will be ellipsized.
+    /// 
+    /// If the value is 0, the number of lines won't be limited.
+    var titleLines: Int?
     /// Whether the user can copy the title from the label.
     /// 
     /// See also [property@Gtk.Label:selectable].
@@ -115,6 +105,16 @@ public struct ComboRow: Widget {
     /// 
     /// See also [func@Pango.parse_markup].
     var useMarkup: Bool?
+    /// Whether to use the current value as the subtitle.
+    /// 
+    /// If you use a custom list item factory, you will need to give the row a
+    /// name conversion expression with [property@ComboRow:expression].
+    /// 
+    /// If set to `TRUE`, you should not access [property@ActionRow:subtitle].
+    /// 
+    /// The subtitle is interpreted as Pango markup if
+    /// [property@PreferencesRow:use-markup] is set to `TRUE`.
+    var useSubtitle: Bool?
     /// Whether an embedded underline in the title indicates a mnemonic.
     var useUnderline: Bool?
     /// This signal is emitted after the row has been activated.
@@ -177,20 +177,17 @@ public struct ComboRow: Widget {
             }
         }
         storage.modify { widget in
-            if let enableSearch, updateProperties {
-                adw_combo_row_set_enable_search(widget?.cast(), enableSearch.cBool)
-            }
-            if let selected, updateProperties {
-                adw_combo_row_set_selected(widget?.cast(), selected.wrappedValue.cInt)
-            }
-            if let useSubtitle, updateProperties {
-                adw_combo_row_set_use_subtitle(widget?.cast(), useSubtitle.cBool)
-            }
             if let widget = storage.content["activatableWidget"]?.first {
                 activatableWidget?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
             }
+            if let enableSearch, updateProperties {
+                adw_combo_row_set_enable_search(widget?.cast(), enableSearch.cBool)
+            }
             if let iconName, updateProperties {
                 adw_action_row_set_icon_name(widget?.cast(), iconName)
+            }
+            if let selected, updateProperties {
+                adw_combo_row_set_selected(widget?.cast(), selected.wrappedValue.cInt)
             }
             if let subtitle, updateProperties {
                 adw_action_row_set_subtitle(widget?.cast(), subtitle)
@@ -201,17 +198,20 @@ public struct ComboRow: Widget {
             if let subtitleSelectable, updateProperties {
                 adw_action_row_set_subtitle_selectable(widget?.cast(), subtitleSelectable.cBool)
             }
-            if let titleLines, updateProperties {
-                adw_action_row_set_title_lines(widget?.cast(), titleLines.cInt)
-            }
             if let title, updateProperties {
                 adw_preferences_row_set_title(widget?.cast(), title)
+            }
+            if let titleLines, updateProperties {
+                adw_action_row_set_title_lines(widget?.cast(), titleLines.cInt)
             }
             if let titleSelectable, updateProperties {
                 adw_preferences_row_set_title_selectable(widget?.cast(), titleSelectable.cBool)
             }
             if let useMarkup, updateProperties {
                 adw_preferences_row_set_use_markup(widget?.cast(), useMarkup.cBool)
+            }
+            if let useSubtitle, updateProperties {
+                adw_combo_row_set_use_subtitle(widget?.cast(), useSubtitle.cBool)
             }
             if let useUnderline, updateProperties {
                 adw_preferences_row_set_use_underline(widget?.cast(), useUnderline.cBool)
@@ -222,46 +222,6 @@ public struct ComboRow: Widget {
         for function in updateFunctions {
             function(storage)
         }
-    }
-
-    /// Whether to show a search entry in the popup.
-    /// 
-    /// If set to `TRUE`, a search entry will be shown in the popup that
-    /// allows to search for items in the list.
-    /// 
-    /// Search requires [property@ComboRow:expression] to be set.
-    public func enableSearch(_ enableSearch: Bool? = true) -> Self {
-        var newSelf = self
-        newSelf.enableSearch = enableSearch
-        
-        return newSelf
-    }
-
-    /// The position of the selected item.
-    /// 
-    /// If no item is selected, the property has the value
-    /// [const@Gtk.INVALID_LIST_POSITION]
-    public func selected(_ selected: Binding<UInt>?) -> Self {
-        var newSelf = self
-        newSelf.selected = selected
-        
-        return newSelf
-    }
-
-    /// Whether to use the current value as the subtitle.
-    /// 
-    /// If you use a custom list item factory, you will need to give the row a
-    /// name conversion expression with [property@ComboRow:expression].
-    /// 
-    /// If set to `TRUE`, you should not access [property@ActionRow:subtitle].
-    /// 
-    /// The subtitle is interpreted as Pango markup if
-    /// [property@PreferencesRow:use-markup] is set to `TRUE`.
-    public func useSubtitle(_ useSubtitle: Bool? = true) -> Self {
-        var newSelf = self
-        newSelf.useSubtitle = useSubtitle
-        
-        return newSelf
     }
 
     /// The widget to activate when the row is activated.
@@ -280,10 +240,34 @@ public struct ComboRow: Widget {
         return newSelf
     }
 
+    /// Whether to show a search entry in the popup.
+    /// 
+    /// If set to `TRUE`, a search entry will be shown in the popup that
+    /// allows to search for items in the list.
+    /// 
+    /// Search requires [property@ComboRow:expression] to be set.
+    public func enableSearch(_ enableSearch: Bool? = true) -> Self {
+        var newSelf = self
+        newSelf.enableSearch = enableSearch
+        
+        return newSelf
+    }
+
     /// The icon name for this row.
     public func iconName(_ iconName: String?) -> Self {
         var newSelf = self
         newSelf.iconName = iconName
+        
+        return newSelf
+    }
+
+    /// The position of the selected item.
+    /// 
+    /// If no item is selected, the property has the value
+    /// [const@Gtk.INVALID_LIST_POSITION]
+    public func selected(_ selected: Binding<UInt>?) -> Self {
+        var newSelf = self
+        newSelf.selected = selected
         
         return newSelf
     }
@@ -320,16 +304,6 @@ public struct ComboRow: Widget {
         return newSelf
     }
 
-    /// The number of lines at the end of which the title label will be ellipsized.
-    /// 
-    /// If the value is 0, the number of lines won't be limited.
-    public func titleLines(_ titleLines: Int?) -> Self {
-        var newSelf = self
-        newSelf.titleLines = titleLines
-        
-        return newSelf
-    }
-
     /// The title of the preference represented by this row.
     /// 
     /// The title is interpreted as Pango markup unless
@@ -337,6 +311,16 @@ public struct ComboRow: Widget {
     public func title(_ title: String?) -> Self {
         var newSelf = self
         newSelf.title = title
+        
+        return newSelf
+    }
+
+    /// The number of lines at the end of which the title label will be ellipsized.
+    /// 
+    /// If the value is 0, the number of lines won't be limited.
+    public func titleLines(_ titleLines: Int?) -> Self {
+        var newSelf = self
+        newSelf.titleLines = titleLines
         
         return newSelf
     }
@@ -359,6 +343,22 @@ public struct ComboRow: Widget {
     public func useMarkup(_ useMarkup: Bool? = true) -> Self {
         var newSelf = self
         newSelf.useMarkup = useMarkup
+        
+        return newSelf
+    }
+
+    /// Whether to use the current value as the subtitle.
+    /// 
+    /// If you use a custom list item factory, you will need to give the row a
+    /// name conversion expression with [property@ComboRow:expression].
+    /// 
+    /// If set to `TRUE`, you should not access [property@ActionRow:subtitle].
+    /// 
+    /// The subtitle is interpreted as Pango markup if
+    /// [property@PreferencesRow:use-markup] is set to `TRUE`.
+    public func useSubtitle(_ useSubtitle: Bool? = true) -> Self {
+        var newSelf = self
+        newSelf.useSubtitle = useSubtitle
         
         return newSelf
     }

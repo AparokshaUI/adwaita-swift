@@ -2,7 +2,7 @@
 //  ExpanderRow.swift
 //  Adwaita
 //
-//  Created by auto-generation on 12.02.24.
+//  Created by auto-generation on 14.02.24.
 //
 
 import CAdw
@@ -58,15 +58,15 @@ public struct ExpanderRow: Widget {
     /// 
     /// If the value is 0, the number of lines won't be limited.
     var subtitleLines: Int?
-    /// The number of lines at the end of which the title label will be ellipsized.
-    /// 
-    /// If the value is 0, the number of lines won't be limited.
-    var titleLines: Int?
     /// The title of the preference represented by this row.
     /// 
     /// The title is interpreted as Pango markup unless
     /// [property@PreferencesRow:use-markup] is set to `FALSE`.
     var title: String?
+    /// The number of lines at the end of which the title label will be ellipsized.
+    /// 
+    /// If the value is 0, the number of lines won't be limited.
+    var titleLines: Int?
     /// Whether the user can copy the title from the label.
     /// 
     /// See also [property@Gtk.Label:selectable].
@@ -157,11 +157,11 @@ public struct ExpanderRow: Widget {
             if let subtitleLines, updateProperties {
                 adw_expander_row_set_subtitle_lines(widget?.cast(), subtitleLines.cInt)
             }
-            if let titleLines, updateProperties {
-                adw_expander_row_set_title_lines(widget?.cast(), titleLines.cInt)
-            }
             if let title, updateProperties {
                 adw_preferences_row_set_title(widget?.cast(), title)
+            }
+            if let titleLines, updateProperties {
+                adw_expander_row_set_title_lines(widget?.cast(), titleLines.cInt)
             }
             if let titleSelectable, updateProperties {
                 adw_preferences_row_set_title_selectable(widget?.cast(), titleSelectable.cBool)
@@ -267,16 +267,6 @@ public struct ExpanderRow: Widget {
         return newSelf
     }
 
-    /// The number of lines at the end of which the title label will be ellipsized.
-    /// 
-    /// If the value is 0, the number of lines won't be limited.
-    public func titleLines(_ titleLines: Int?) -> Self {
-        var newSelf = self
-        newSelf.titleLines = titleLines
-        
-        return newSelf
-    }
-
     /// The title of the preference represented by this row.
     /// 
     /// The title is interpreted as Pango markup unless
@@ -284,6 +274,16 @@ public struct ExpanderRow: Widget {
     public func title(_ title: String?) -> Self {
         var newSelf = self
         newSelf.title = title
+        
+        return newSelf
+    }
+
+    /// The number of lines at the end of which the title label will be ellipsized.
+    /// 
+    /// If the value is 0, the number of lines won't be limited.
+    public func titleLines(_ titleLines: Int?) -> Self {
+        var newSelf = self
+        newSelf.titleLines = titleLines
         
         return newSelf
     }

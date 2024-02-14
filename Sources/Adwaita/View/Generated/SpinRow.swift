@@ -2,7 +2,7 @@
 //  SpinRow.swift
 //  Adwaita
 //
-//  Created by auto-generation on 12.02.24.
+//  Created by auto-generation on 14.02.24.
 //
 
 import CAdw
@@ -31,18 +31,6 @@ public struct SpinRow: Widget {
     /// Additional appear functions for type extensions.
     var appearFunctions: [(ViewStorage) -> Void] = []
 
-    /// The acceleration rate when you hold down a button or key.
-    var climbRate: Double
-    /// The number of decimal places to display.
-    var digits: UInt
-    /// Whether non-numeric characters should be ignored.
-    var numeric: Bool?
-    /// Whether invalid values are snapped to the nearest step increment.
-    var snapToTicks: Bool?
-    /// The current value.
-    var value: Binding<Double>?
-    /// Whether the spin row should wrap upon reaching its limits.
-    var wrap: Bool?
     /// The widget to activate when the row is activated.
     /// 
     /// The row can be activated either by clicking on it, calling
@@ -53,8 +41,16 @@ public struct SpinRow: Widget {
     /// The target widget will be activated by emitting the
     /// [signal@Gtk.Widget::mnemonic-activate] signal on it.
     var activatableWidget:  (() -> Body)?
+    /// The acceleration rate when you hold down a button or key.
+    var climbRate: Double
+    /// The number of decimal places to display.
+    var digits: UInt
     /// The icon name for this row.
     var iconName: String?
+    /// Whether non-numeric characters should be ignored.
+    var numeric: Bool?
+    /// Whether invalid values are snapped to the nearest step increment.
+    var snapToTicks: Bool?
     /// The subtitle for this row.
     /// 
     /// The subtitle is interpreted as Pango markup unless
@@ -69,15 +65,15 @@ public struct SpinRow: Widget {
     /// 
     /// See also [property@Gtk.Label:selectable].
     var subtitleSelectable: Bool?
-    /// The number of lines at the end of which the title label will be ellipsized.
-    /// 
-    /// If the value is 0, the number of lines won't be limited.
-    var titleLines: Int?
     /// The title of the preference represented by this row.
     /// 
     /// The title is interpreted as Pango markup unless
     /// [property@PreferencesRow:use-markup] is set to `FALSE`.
     var title: String?
+    /// The number of lines at the end of which the title label will be ellipsized.
+    /// 
+    /// If the value is 0, the number of lines won't be limited.
+    var titleLines: Int?
     /// Whether the user can copy the title from the label.
     /// 
     /// See also [property@Gtk.Label:selectable].
@@ -90,6 +86,12 @@ public struct SpinRow: Widget {
     var useMarkup: Bool?
     /// Whether an embedded underline in the title indicates a mnemonic.
     var useUnderline: Bool?
+    /// The current value.
+    var value: Binding<Double>?
+    /// Whether the spin row should wrap upon reaching its limits.
+    var wrap: Bool?
+    /// This signal is emitted after the row has been activated.
+    var activated: (() -> Void)?
     /// Emitted to convert the user's input into a double value.
     /// 
     /// The signal handler is expected to use [method@Gtk.Editable.get_text] to
@@ -107,8 +109,6 @@ public struct SpinRow: Widget {
     /// 
     /// See [signal@Gtk.SpinButton::wrapped].
     var wrapped: (() -> Void)?
-    /// This signal is emitted after the row has been activated.
-    var activated: (() -> Void)?
     /// The body for the widget "suffix".
     var suffix: () -> Body = { [] }
     /// The body for the widget "prefix".
@@ -163,6 +163,11 @@ public struct SpinRow: Widget {
     ///     - modifiers: The view modifiers.
     ///     - updateProperties: Whether to update the view's properties.
     public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+        if let activated {
+            storage.connectSignal(name: "activated", argCount: 0) {
+                activated()
+            }
+        }
         if let input {
             storage.connectSignal(name: "input", argCount: 1) {
                 input()
@@ -178,35 +183,24 @@ public struct SpinRow: Widget {
                 wrapped()
             }
         }
-        if let activated {
-            storage.connectSignal(name: "activated", argCount: 0) {
-                activated()
-            }
-        }
         storage.modify { widget in
+            if let widget = storage.content["activatableWidget"]?.first {
+                activatableWidget?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
+            }
             if updateProperties {
                 adw_spin_row_set_climb_rate(widget, climbRate)
             }
             if updateProperties {
                 adw_spin_row_set_digits(widget, digits.cInt)
             }
+            if let iconName, updateProperties {
+                adw_action_row_set_icon_name(widget?.cast(), iconName)
+            }
             if let numeric, updateProperties {
                 adw_spin_row_set_numeric(widget, numeric.cBool)
             }
             if let snapToTicks, updateProperties {
                 adw_spin_row_set_snap_to_ticks(widget, snapToTicks.cBool)
-            }
-            if let value, updateProperties {
-                adw_spin_row_set_value(widget, value.wrappedValue)
-            }
-            if let wrap, updateProperties {
-                adw_spin_row_set_wrap(widget, wrap.cBool)
-            }
-            if let widget = storage.content["activatableWidget"]?.first {
-                activatableWidget?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
-            }
-            if let iconName, updateProperties {
-                adw_action_row_set_icon_name(widget?.cast(), iconName)
             }
             if let subtitle, updateProperties {
                 adw_action_row_set_subtitle(widget?.cast(), subtitle)
@@ -217,11 +211,11 @@ public struct SpinRow: Widget {
             if let subtitleSelectable, updateProperties {
                 adw_action_row_set_subtitle_selectable(widget?.cast(), subtitleSelectable.cBool)
             }
-            if let titleLines, updateProperties {
-                adw_action_row_set_title_lines(widget?.cast(), titleLines.cInt)
-            }
             if let title, updateProperties {
                 adw_preferences_row_set_title(widget?.cast(), title)
+            }
+            if let titleLines, updateProperties {
+                adw_action_row_set_title_lines(widget?.cast(), titleLines.cInt)
             }
             if let titleSelectable, updateProperties {
                 adw_preferences_row_set_title_selectable(widget?.cast(), titleSelectable.cBool)
@@ -232,60 +226,18 @@ public struct SpinRow: Widget {
             if let useUnderline, updateProperties {
                 adw_preferences_row_set_use_underline(widget?.cast(), useUnderline.cBool)
             }
+            if let value, updateProperties {
+                adw_spin_row_set_value(widget, value.wrappedValue)
+            }
+            if let wrap, updateProperties {
+                adw_spin_row_set_wrap(widget, wrap.cBool)
+            }
 
 
         }
         for function in updateFunctions {
             function(storage)
         }
-    }
-
-    /// The acceleration rate when you hold down a button or key.
-    public func climbRate(_ climbRate: Double) -> Self {
-        var newSelf = self
-        newSelf.climbRate = climbRate
-        
-        return newSelf
-    }
-
-    /// The number of decimal places to display.
-    public func digits(_ digits: UInt) -> Self {
-        var newSelf = self
-        newSelf.digits = digits
-        
-        return newSelf
-    }
-
-    /// Whether non-numeric characters should be ignored.
-    public func numeric(_ numeric: Bool? = true) -> Self {
-        var newSelf = self
-        newSelf.numeric = numeric
-        
-        return newSelf
-    }
-
-    /// Whether invalid values are snapped to the nearest step increment.
-    public func snapToTicks(_ snapToTicks: Bool? = true) -> Self {
-        var newSelf = self
-        newSelf.snapToTicks = snapToTicks
-        
-        return newSelf
-    }
-
-    /// The current value.
-    public func value(_ value: Binding<Double>?) -> Self {
-        var newSelf = self
-        newSelf.value = value
-        
-        return newSelf
-    }
-
-    /// Whether the spin row should wrap upon reaching its limits.
-    public func wrap(_ wrap: Bool? = true) -> Self {
-        var newSelf = self
-        newSelf.wrap = wrap
-        
-        return newSelf
     }
 
     /// The widget to activate when the row is activated.
@@ -304,10 +256,42 @@ public struct SpinRow: Widget {
         return newSelf
     }
 
+    /// The acceleration rate when you hold down a button or key.
+    public func climbRate(_ climbRate: Double) -> Self {
+        var newSelf = self
+        newSelf.climbRate = climbRate
+        
+        return newSelf
+    }
+
+    /// The number of decimal places to display.
+    public func digits(_ digits: UInt) -> Self {
+        var newSelf = self
+        newSelf.digits = digits
+        
+        return newSelf
+    }
+
     /// The icon name for this row.
     public func iconName(_ iconName: String?) -> Self {
         var newSelf = self
         newSelf.iconName = iconName
+        
+        return newSelf
+    }
+
+    /// Whether non-numeric characters should be ignored.
+    public func numeric(_ numeric: Bool? = true) -> Self {
+        var newSelf = self
+        newSelf.numeric = numeric
+        
+        return newSelf
+    }
+
+    /// Whether invalid values are snapped to the nearest step increment.
+    public func snapToTicks(_ snapToTicks: Bool? = true) -> Self {
+        var newSelf = self
+        newSelf.snapToTicks = snapToTicks
         
         return newSelf
     }
@@ -344,16 +328,6 @@ public struct SpinRow: Widget {
         return newSelf
     }
 
-    /// The number of lines at the end of which the title label will be ellipsized.
-    /// 
-    /// If the value is 0, the number of lines won't be limited.
-    public func titleLines(_ titleLines: Int?) -> Self {
-        var newSelf = self
-        newSelf.titleLines = titleLines
-        
-        return newSelf
-    }
-
     /// The title of the preference represented by this row.
     /// 
     /// The title is interpreted as Pango markup unless
@@ -361,6 +335,16 @@ public struct SpinRow: Widget {
     public func title(_ title: String?) -> Self {
         var newSelf = self
         newSelf.title = title
+        
+        return newSelf
+    }
+
+    /// The number of lines at the end of which the title label will be ellipsized.
+    /// 
+    /// If the value is 0, the number of lines won't be limited.
+    public func titleLines(_ titleLines: Int?) -> Self {
+        var newSelf = self
+        newSelf.titleLines = titleLines
         
         return newSelf
     }
@@ -395,6 +379,29 @@ public struct SpinRow: Widget {
         return newSelf
     }
 
+    /// The current value.
+    public func value(_ value: Binding<Double>?) -> Self {
+        var newSelf = self
+        newSelf.value = value
+        
+        return newSelf
+    }
+
+    /// Whether the spin row should wrap upon reaching its limits.
+    public func wrap(_ wrap: Bool? = true) -> Self {
+        var newSelf = self
+        newSelf.wrap = wrap
+        
+        return newSelf
+    }
+
+    /// This signal is emitted after the row has been activated.
+    public func activated(_ activated: @escaping () -> Void) -> Self {
+        var newSelf = self
+        newSelf.activated = activated
+        return newSelf
+    }
+
     /// Emitted to convert the user's input into a double value.
     /// 
     /// The signal handler is expected to use [method@Gtk.Editable.get_text] to
@@ -424,13 +431,6 @@ public struct SpinRow: Widget {
     public func wrapped(_ wrapped: @escaping () -> Void) -> Self {
         var newSelf = self
         newSelf.wrapped = wrapped
-        return newSelf
-    }
-
-    /// This signal is emitted after the row has been activated.
-    public func activated(_ activated: @escaping () -> Void) -> Self {
-        var newSelf = self
-        newSelf.activated = activated
         return newSelf
     }
 

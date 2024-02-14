@@ -11,16 +11,16 @@ extension Class {
     /// - Parameters:
     ///     - config: The widget configuration.
     ///     - genConfig: The generation configuration.
-    ///     - classes: The available classes.
+    ///     - namespace: The namespace.
     ///     - configs: The available widget configurations.
     /// - Returns: The code.
     func generateAdwaitaInitializer(
         config: WidgetConfiguration,
         genConfig: GenerationConfiguration,
-        classes: [Class],
+        namespace: Namespace,
         configs: [WidgetConfiguration]
     ) -> String {
-        let requiredProperties = properties(classes: classes, configurations: configs)
+        let requiredProperties = properties(namespace: namespace, configurations: configs)
             .filter { config.requiredProperties.contains($0.name) }
         var initializer = "public init("
         if config.dynamicWidget != nil {
@@ -57,13 +57,13 @@ extension Class {
     /// - Parameters:
     ///     - name: The class name.
     ///     - config: The widget configuration.
-    ///     - classes: The available classes.
+    ///     - namespace: The namespace.
     ///     - configs: The available widget configurations.
     /// - Returns: The code.
     func generateInitializer(
         name: String,
         config: WidgetConfiguration,
-        classes: [Class],
+        namespace: Namespace,
         configs: [WidgetConfiguration]
     ) -> String {
         if let initializer = config.initializer {
@@ -81,25 +81,25 @@ extension Class {
     /// - Parameters:
     ///     - config: The widget configuration.
     ///     - genConfig: The generation configuration.
-    ///     - classes: The available classes.
+    ///     - namespace: The namespace.
     ///     - configs: The available widget configurations.
     /// - Returns: The code.
     func generateWidgetAssignments(
         config: WidgetConfiguration,
         genConfig: GenerationConfiguration,
-        classes: [Class],
+        namespace: Namespace,
         configs: [WidgetConfiguration]
     ) -> String {
         var content = ""
-        for property in properties(classes: classes, configurations: configs)
+        for property in properties(namespace: namespace, configurations: configs)
         where !config.excludeProperties.contains(property.name) && (property.type?.isWidget ?? false) {
             content += property.generateWidgetAssignment(prefix: prefix(), config: config, genConfig: genConfig)
         }
-        for property in properties(classes: classes, configurations: configs)
+        for property in properties(namespace: namespace, configurations: configs)
         where !config.excludeProperties.contains(property.name) && (property.type?.isMenu ?? false) {
             content += property.generateMenuAssignment(prefix: prefix(), config: config, genConfig: genConfig)
         }
-        content += staticWidgets(classes: classes, configs: configs)
+        content += staticWidgets(namespace: namespace, configs: configs)
         return content
     }
 
@@ -107,17 +107,17 @@ extension Class {
     /// - Parameters:
     ///     - config: The widget configuration.
     ///     - genConfig: The generation configuration.
-    ///     - classes: The available classes.
+    ///     - namespace: The namespace.
     ///     - configs: The available widget configurations.
     /// - Returns: The code.
     func generateBindingAssignments(
         config: WidgetConfiguration,
         genConfig: GenerationConfiguration,
-        classes: [Class],
+        namespace: Namespace,
         configs: [WidgetConfiguration]
     ) -> String {
         var content = ""
-        for property in properties(classes: classes, configurations: configs) {
+        for property in properties(namespace: namespace, configurations: configs) {
             if let binding = config.bindings.first(where: { $0.property == property.name }) {
                 content += property.generateBindingAssignment(
                     prefix: prefix(),
@@ -134,21 +134,21 @@ extension Class {
     /// - Parameters:
     ///     - config: The widget configuration.
     ///     - genConfig: The generation configuration.
-    ///     - classes: The available classes.
+    ///     - namespace: The namespace.
     ///     - configs: The available widget configurations.
     /// - Returns: The code.
     func generateProperties(
         config: WidgetConfiguration,
         genConfig: GenerationConfiguration,
-        classes: [Class],
+        namespace: Namespace,
         configs: [WidgetConfiguration]
     ) -> String {
         var content = ""
-        for property in properties(classes: classes, configurations: configs)
+        for property in properties(namespace: namespace, configurations: configs)
         where !config.excludeProperties.contains(property.name) || config.requiredProperties.contains(property.name) {
             content += property.generate(config: config, genConfig: genConfig)
         }
-        for signal in signals(classes: classes) where !config.excludeSignals.contains(signal.name) {
+        for signal in signals(namespace: namespace) where !config.excludeSignals.contains(signal.name) {
             content += signal.generateProperty(config: config, genConfig: genConfig)
         }
         if config.dynamicWidget != nil {
@@ -160,7 +160,7 @@ extension Class {
                 var content: (Element) -> Body
             """
         }
-        content += staticWidgetProperties(classes: classes, configs: configs)
+        content += staticWidgetProperties(namespace: namespace, configs: configs)
         content += """
 
             /// The application.
@@ -175,17 +175,17 @@ extension Class {
     /// - Parameters:
     ///     - config: The widget configuration.
     ///     - genConfig: The generation configuration.
-    ///     - classes: The available classes.
+    ///     - namespace: The namespace.
     ///     - configs: The available widget configurations.
     /// - Returns: The code.
     func generateModifications(
         config: WidgetConfiguration,
         genConfig: GenerationConfiguration,
-        classes: [Class],
+        namespace: Namespace,
         configs: [WidgetConfiguration]
     ) -> String {
         var content = ""
-        for property in properties(classes: classes, configurations: configs)
+        for property in properties(namespace: namespace, configurations: configs)
         where !config.excludeProperties.contains(property.name) {
             content += property.generateModification(config: config, genConfig: genConfig, prefix: prefix())
         }
@@ -255,15 +255,15 @@ extension Class {
     /// - Parameters:
     ///     - config: The widget configuration.
     ///     - genConfig: The generation configuration.
-    ///     - classes: The available classes.
+    ///     - namespace: The namespace.
     /// - Returns: The code.
     func generateSignalModifications(
         config: WidgetConfiguration,
         genConfig: GenerationConfiguration,
-        classes: [Class]
+        namespace: Namespace
     ) -> String {
         var content = ""
-        for signal in signals(classes: classes) where !config.excludeSignals.contains(signal.name) {
+        for signal in signals(namespace: namespace) where !config.excludeSignals.contains(signal.name) {
             content += signal.generateModification(config: config, genConfig: genConfig)
         }
         return content
@@ -273,56 +273,24 @@ extension Class {
     /// - Parameters:
     ///     - config: The widget configuration.
     ///     - genConfig: The generation configuration.
-    ///     - classes: The available classes.
+    ///     - namespace: The namespace.
     ///     - configs: The available widget configurations.
     /// - Returns: The code.
     func generateModifiers(
         config: WidgetConfiguration,
         genConfig: GenerationConfiguration,
-        classes: [Class],
+        namespace: Namespace,
         configs: [WidgetConfiguration]
     ) -> String {
         var content = ""
-        for property in properties(classes: classes, configurations: configs)
+        for property in properties(namespace: namespace, configurations: configs)
         where !config.excludeProperties.contains(property.name) {
             content += property.generateModifier(config: config, genConfig: genConfig)
         }
-        for signal in signals(classes: classes) where !config.excludeSignals.contains(signal.name) {
+        for signal in signals(namespace: namespace) where !config.excludeSignals.contains(signal.name) {
             content += signal.generateModifier(config: config, genConfig: genConfig)
         }
-        content += generateWidgetModifiers(config: config, configs: configs, classes: classes)
-        return content
-    }
-
-    /// Generate the modifiers for static widgets.
-    /// - Parameters:
-    ///     - config: The widget configuration.
-    ///     - configs: The available widget configurations.
-    ///     - classes: The available classes.
-    /// - Returns: The code.
-    func generateWidgetModifiers(
-        config: WidgetConfiguration,
-        configs: [WidgetConfiguration],
-        classes: [Class]
-    ) -> String {
-        var content = ""
-        for widget in config.staticWidgets {
-            content += """
-
-                /// Set the body for "\(widget.name)".
-                /// - Parameter body: The body.
-                /// - Returns: The widget.
-                public func \(widget.name)(@ViewBuilder _ body: @escaping () -> Body) -> Self {
-                    var newSelf = self
-                    newSelf.\(widget.name) = body
-                    return newSelf
-                }
-            """
-        }
-        if let parent = parentClass(classes: classes), let config = configs.first(where: { $0.class == parent.name }) {
-            print("Parent: \(parent.name), Self: \(self.name)")
-            content += parent.generateWidgetModifiers(config: config, configs: configs, classes: classes)
-        }
+        content += generateWidgetModifiers(config: config, configs: configs, namespace: namespace)
         return content
     }
 }
