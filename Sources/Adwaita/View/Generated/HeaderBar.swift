@@ -2,7 +2,7 @@
 //  HeaderBar.swift
 //  Adwaita
 //
-//  Created by auto-generation on 14.02.24.
+//  Created by auto-generation on 17.02.24.
 //
 
 import CAdw
@@ -85,9 +85,9 @@ import LevenshteinTransformations
 public struct HeaderBar: Widget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage) -> Void] = []
+    var updateFunctions: [(ViewStorage, [(View) -> View], Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage) -> Void] = []
+    var appearFunctions: [(ViewStorage, [(View) -> View]) -> Void] = []
 
     /// The decoration layout for buttons.
     /// 
@@ -175,7 +175,7 @@ public struct HeaderBar: Widget {
         }
         storage.content["end"] = endStorage
         for function in appearFunctions {
-            function(storage)
+            function(storage, modifiers)
         }
         return storage
     }
@@ -232,7 +232,7 @@ public struct HeaderBar: Widget {
 
         }
         for function in updateFunctions {
-            function(storage)
+            function(storage, modifiers, updateProperties)
         }
     }
 

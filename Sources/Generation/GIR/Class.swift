@@ -84,9 +84,9 @@ struct Class: ClassLike, Decodable {
         public struct \(definition) {
 
             /// Additional update functions for type extensions.
-            var updateFunctions: [(ViewStorage) -> Void] = []
+            var updateFunctions: [(ViewStorage, [(View) -> View], Bool) -> Void] = []
             /// Additional appear functions for type extensions.
-            var appearFunctions: [(ViewStorage) -> Void] = []
+            var appearFunctions: [(ViewStorage, [(View) -> View]) -> Void] = []
         \(generateProperties(config: config, genConfig: genConfig, namespace: namespace, configs: configs))
 
             /// Initialize `\(widgetName)`.
@@ -100,7 +100,7 @@ struct Class: ClassLike, Decodable {
                 update(storage, modifiers: modifiers, updateProperties: true)
         \(generateWidgetAssignments(config: config, genConfig: genConfig, namespace: namespace, configs: configs))
                 for function in appearFunctions {
-                    function(storage)
+                    function(storage, modifiers)
                 }
                 return storage
             }
@@ -117,7 +117,7 @@ struct Class: ClassLike, Decodable {
         \(generateDynamicWidgetUpdate(config: config, genConfig: genConfig))
                 }
                 for function in updateFunctions {
-                    function(storage)
+                    function(storage, modifiers, updateProperties)
                 }
             }
         \(generateModifiers(config: config, genConfig: genConfig, namespace: namespace, configs: configs))

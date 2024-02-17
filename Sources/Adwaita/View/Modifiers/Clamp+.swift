@@ -14,7 +14,7 @@ extension Clamp {
     init(vertical: Bool) {
         self.init()
         if vertical {
-            appearFunctions.append { storage in
+            appearFunctions.append { storage, _ in
                 gtk_orientable_set_orientation(storage.pointer, GTK_ORIENTATION_VERTICAL)
             }
         }

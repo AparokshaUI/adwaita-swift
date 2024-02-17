@@ -140,6 +140,10 @@ struct GenerationConfiguration {
             class: "SplitButton",
             excludeProperties: ["direction", "popover"],
             setConditions: ["label": "storage.content[\"child\"] == nil"]
+        ),
+        .init(
+            class: "NavigationView",
+            excludeProperties: ["navigation-stack", "visible-page"]
         )
     ]
 

@@ -90,6 +90,10 @@ The accessible role cannot be changed once set.
 
 The child widget.
 
+When setting this property, if the child widget does not implement
+[iface@Gtk.Scrollable], the scrolled window will add the child to
+a [class@Gtk.Viewport] and then set the viewport as the child.
+
 ### `hasFrame`
 
 Whether to draw a frame around the contents.
@@ -223,6 +227,10 @@ The accessible role cannot be changed once set.
 ### `child(_:)`
 
 The child widget.
+
+When setting this property, if the child widget does not implement
+[iface@Gtk.Scrollable], the scrolled window will add the child to
+a [class@Gtk.Viewport] and then set the viewport as the child.
 
 ### `hasFrame(_:)`
 

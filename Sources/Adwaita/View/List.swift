@@ -35,7 +35,7 @@ extension List {
             return nil
         }
         if let selection {
-            appearFunctions.append { storage in
+            appearFunctions.append { storage, _ in
                 storage.fields[Self.selectionField] = selection
                 storage.connectSignal(name: "selected_rows_changed", id: Self.selectionField) {
                     if let binding = storage.fields[Self.selectionField] as? Binding<Element.ID>,
@@ -45,14 +45,14 @@ extension List {
                     }
                 }
             }
-            updateFunctions.append { storage in
+            updateFunctions.append { storage, _, _ in
                 if selection.wrappedValue != id(storage, elements),
                 let index = elements.firstIndex(where: { $0.id == selection.wrappedValue })?.cInt {
                     gtk_list_box_select_row(storage.pointer, gtk_list_box_get_row_at_index(storage.pointer, index))
                 }
             }
         } else {
-            appearFunctions.append { storage in
+            appearFunctions.append { storage, _ in
                 gtk_list_box_set_selection_mode(storage.pointer, GTK_SELECTION_NONE)
             }
         }

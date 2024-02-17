@@ -2,7 +2,7 @@
 //  Label.swift
 //  Adwaita
 //
-//  Created by auto-generation on 14.02.24.
+//  Created by auto-generation on 17.02.24.
 //
 
 import CAdw
@@ -40,7 +40,7 @@ import LevenshteinTransformations
 /// 
 /// The GtkLabel implementation of the GtkBuildable interface supports a
 /// custom `<attributes>` element, which supports any number of `<attribute>`
-/// elements. The <attribute> element has attributes named “name“, “value“,
+/// elements. The `<attribute>` element has attributes named “name“, “value“,
 /// “start“ and “end“ and allows you to specify [struct@Pango.Attribute]
 /// values for this label.
 /// 
@@ -70,8 +70,9 @@ import LevenshteinTransformations
 /// Mnemonics automatically activate any activatable widget the label is
 /// inside, such as a [class@Gtk.Button]; if the label is not inside the
 /// mnemonic’s target widget, you have to tell the label about the target
-/// using [class@Gtk.Label.set_mnemonic_widget]. Here’s a simple example where
-/// the label is inside a button:
+/// using [method@Gtk.Label.set_mnemonic_widget].
+/// 
+/// Here’s a simple example where the label is inside a button:
 /// 
 /// ```c
 /// // Pressing Alt+H will activate this button
@@ -185,9 +186,9 @@ import LevenshteinTransformations
 public struct Label: Widget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage) -> Void] = []
+    var updateFunctions: [(ViewStorage, [(View) -> View], Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage) -> Void] = []
+    var appearFunctions: [(ViewStorage, [(View) -> View]) -> Void] = []
 
     /// The accessible role of the given `GtkAccessible` implementation.
     /// 
@@ -288,7 +289,7 @@ public struct Label: Widget {
         }
 
         for function in appearFunctions {
-            function(storage)
+            function(storage, modifiers)
         }
         return storage
     }
@@ -346,7 +347,7 @@ public struct Label: Widget {
 
         }
         for function in updateFunctions {
-            function(storage)
+            function(storage, modifiers, updateProperties)
         }
     }
 

@@ -2,7 +2,7 @@
 //  ExpanderRow.swift
 //  Adwaita
 //
-//  Created by auto-generation on 14.02.24.
+//  Created by auto-generation on 17.02.24.
 //
 
 import CAdw
@@ -36,9 +36,9 @@ import LevenshteinTransformations
 public struct ExpanderRow: Widget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage) -> Void] = []
+    var updateFunctions: [(ViewStorage, [(View) -> View], Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage) -> Void] = []
+    var appearFunctions: [(ViewStorage, [(View) -> View]) -> Void] = []
 
     /// Whether expansion is enabled.
     var enableExpansion: Binding<Bool>?
@@ -120,7 +120,7 @@ public struct ExpanderRow: Widget {
         }
         storage.content["prefix"] = prefixStorage
         for function in appearFunctions {
-            function(storage)
+            function(storage, modifiers)
         }
         return storage
     }
@@ -215,7 +215,7 @@ if let expanded, newValue != expanded.wrappedValue {
 
         }
         for function in updateFunctions {
-            function(storage)
+            function(storage, modifiers, updateProperties)
         }
     }
 

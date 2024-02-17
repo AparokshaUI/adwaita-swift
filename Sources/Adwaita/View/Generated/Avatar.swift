@@ -2,7 +2,7 @@
 //  Avatar.swift
 //  Adwaita
 //
-//  Created by auto-generation on 14.02.24.
+//  Created by auto-generation on 17.02.24.
 //
 
 import CAdw
@@ -31,9 +31,9 @@ import LevenshteinTransformations
 public struct Avatar: Widget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage) -> Void] = []
+    var updateFunctions: [(ViewStorage, [(View) -> View], Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage) -> Void] = []
+    var appearFunctions: [(ViewStorage, [(View) -> View]) -> Void] = []
 
     /// The name of an icon to use as a fallback.
     /// 
@@ -69,7 +69,7 @@ public struct Avatar: Widget {
         update(storage, modifiers: modifiers, updateProperties: true)
 
         for function in appearFunctions {
-            function(storage)
+            function(storage, modifiers)
         }
         return storage
     }
@@ -98,7 +98,7 @@ public struct Avatar: Widget {
 
         }
         for function in updateFunctions {
-            function(storage)
+            function(storage, modifiers, updateProperties)
         }
     }
 

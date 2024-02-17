@@ -18,7 +18,7 @@ extension PasswordEntryRow {
     public init(_ title: String, text: Binding<String>) {
         self.init()
         self = self.title(title)
-        appearFunctions.append { storage in
+        appearFunctions.append { storage, _ in
             storage.fields[Self.textField] = text
             storage.notify(name: "text") {
                 if let binding = storage.fields[Self.textField] as? Binding<String> {
@@ -26,7 +26,7 @@ extension PasswordEntryRow {
                 }
             }
         }
-        updateFunctions.append { storage in
+        updateFunctions.append { storage, _, _ in
             if text.wrappedValue != .init(cString: gtk_editable_get_text(storage.pointer)) {
                 gtk_editable_set_text(storage.pointer, text.wrappedValue)
             }

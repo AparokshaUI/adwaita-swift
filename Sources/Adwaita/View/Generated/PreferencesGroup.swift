@@ -2,7 +2,7 @@
 //  PreferencesGroup.swift
 //  Adwaita
 //
-//  Created by auto-generation on 14.02.24.
+//  Created by auto-generation on 17.02.24.
 //
 
 import CAdw
@@ -39,9 +39,9 @@ import LevenshteinTransformations
 public struct PreferencesGroup: Widget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage) -> Void] = []
+    var updateFunctions: [(ViewStorage, [(View) -> View], Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage) -> Void] = []
+    var appearFunctions: [(ViewStorage, [(View) -> View]) -> Void] = []
 
     /// The description for this group of preferences.
     var description: String?
@@ -83,7 +83,7 @@ public struct PreferencesGroup: Widget {
         }
         storage.content["child"] = childStorage
         for function in appearFunctions {
-            function(storage)
+            function(storage, modifiers)
         }
         return storage
     }
@@ -120,7 +120,7 @@ public struct PreferencesGroup: Widget {
 
         }
         for function in updateFunctions {
-            function(storage)
+            function(storage, modifiers, updateProperties)
         }
     }
 

@@ -114,9 +114,7 @@ public struct State<Value>: StateProtocol {
     /// Update all of the views.
     /// - Parameter force: Whether to force all views to update.
     public static func updateViews(force: Bool = false) {
-        for handler in GTUIApp.updateHandlers {
-            handler(force)
-        }
+        UpdateManager.updateViews(force: force)
     }
 
     /// The directory used for storing user data.

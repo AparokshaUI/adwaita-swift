@@ -22,7 +22,7 @@ extension VStack {
         self.init(spacing: 0)
         self = self.append(content)
         if horizontal {
-            appearFunctions.append { storage in
+            appearFunctions.append { storage, _ in
                 gtk_orientable_set_orientation(storage.pointer, GTK_ORIENTATION_HORIZONTAL)
             }
         }

@@ -32,12 +32,12 @@ extension ComboRow {
                 selection.wrappedValue = id
             }
         })
-        appearFunctions.append { storage in
+        appearFunctions.append { storage, _ in
             let list = gtk_string_list_new(nil)
             storage.fields[Self.stringList] = list
             adw_combo_row_set_model(storage.pointer?.cast(), list)
         }
-        updateFunctions.append { storage in
+        updateFunctions.append { storage, _, _ in
             if let list = storage.fields[Self.stringList] as? OpaquePointer {
                 let old = storage.fields[Self.values] as? [Element] ?? []
                 old.identifiableTransform(

@@ -25,6 +25,7 @@ enum Page: String, Identifiable, CaseIterable, Codable {
     case form
     case popover
     case flowBox
+    case navigationView
 
     var id: Self {
         self
@@ -38,6 +39,8 @@ enum Page: String, Identifiable, CaseIterable, Codable {
             return "View Switcher"
         case .flowBox:
             return "Flow Box"
+        case .navigationView:
+            return "Navigation View"
         default:
             return rawValue.capitalized
         }
@@ -82,6 +85,8 @@ enum Page: String, Identifiable, CaseIterable, Codable {
             return "Present content in a bubble-like context popup."
         case .flowBox:
             return "Display views in a reflowing grid."
+        case .navigationView:
+            return "A page-based navigation container."
         }
     }
 
@@ -117,6 +122,8 @@ enum Page: String, Identifiable, CaseIterable, Codable {
             PopoverDemo()
         case .flowBox:
             FlowBoxDemo()
+        case .navigationView:
+            NavigationViewDemo(app: app)
         }
     }
     // swiftlint:enable cyclomatic_complexity

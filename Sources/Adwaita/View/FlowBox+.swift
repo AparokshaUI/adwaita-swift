@@ -33,7 +33,7 @@ extension FlowBox {
             return nil
         }
         if let selection {
-            appearFunctions.append { storage in
+            appearFunctions.append { storage, _ in
                 storage.fields[Self.selectionField] = selection
                 storage.connectSignal(name: "selected_children_changed", id: Self.selectionField) {
                     if let binding = storage.fields[Self.selectionField] as? Binding<Element.ID>,
@@ -43,14 +43,14 @@ extension FlowBox {
                     }
                 }
             }
-            updateFunctions.append { storage in
+            updateFunctions.append { storage, _, _ in
                 if selection.wrappedValue != id(storage, elements),
                 let index = elements.firstIndex(where: { $0.id == selection.wrappedValue })?.cInt {
                     gtk_flow_box_select_child(storage.pointer, gtk_flow_box_get_child_at_index(storage.pointer, index))
                 }
             }
         } else {
-            appearFunctions.append { storage in
+            appearFunctions.append { storage, _ in
                 gtk_flow_box_set_selection_mode(storage.pointer, GTK_SELECTION_NONE)
             }
         }

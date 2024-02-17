@@ -13,7 +13,7 @@ extension Popover {
     /// - Parameter vertical: Whether it is a vertical clamp.
     init(visible: Binding<Bool>) {
         self.init()
-        appearFunctions.append { storage in
+        appearFunctions.append { storage, _ in
             storage.fields["visible"] = visible
             storage.connectSignal(name: "closed", id: "visible") {
                 if let binding = storage.fields["visible"] as? Binding<Bool> {
@@ -23,7 +23,7 @@ extension Popover {
                 }
             }
         }
-        updateFunctions.append { storage in
+        updateFunctions.append { storage, _, _ in
             if let binding = storage.fields["visible"] as? Binding<Bool> {
                 if binding.wrappedValue {
                     gtk_popover_popup(storage.pointer?.cast())

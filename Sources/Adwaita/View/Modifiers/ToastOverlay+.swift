@@ -16,10 +16,10 @@ extension ToastOverlay {
     ///     - title: The toast's title.
     ///     - signal: The signal for adding a toast.
     public init(_ title: String, signal: Signal) {
-        appearFunctions.append { storage in
+        appearFunctions.append { storage, _ in
             storage.fields["signal"] = signal
         }
-        updateFunctions.append { storage in
+        updateFunctions.append { storage, _, _ in
             if let signal = storage.fields["signal"] as? Signal, signal.update {
                 let toast = ViewStorage(adw_toast_new(title))
                 storage.fields[UUID().uuidString] = toast
@@ -40,7 +40,7 @@ extension ToastOverlay {
     /// - Returns: The toast overlay.
     public func action(button: String, handler: @escaping () -> Void) -> Self {
         var newSelf = self
-        let action: (ViewStorage) -> Void = { storage in
+        let action: (ViewStorage, [(View) -> View], Bool) -> Void = { storage, _, _ in
             storage.fields["button"] = button
             storage.fields["handler"] = handler
         }

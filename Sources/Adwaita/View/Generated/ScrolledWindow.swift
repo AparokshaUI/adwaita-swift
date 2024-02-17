@@ -2,7 +2,7 @@
 //  ScrolledWindow.swift
 //  Adwaita
 //
-//  Created by auto-generation on 14.02.24.
+//  Created by auto-generation on 17.02.24.
 //
 
 import CAdw
@@ -79,15 +79,19 @@ import LevenshteinTransformations
 public struct ScrolledWindow: Widget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage) -> Void] = []
+    var updateFunctions: [(ViewStorage, [(View) -> View], Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage) -> Void] = []
+    var appearFunctions: [(ViewStorage, [(View) -> View]) -> Void] = []
 
     /// The accessible role of the given `GtkAccessible` implementation.
     /// 
     /// The accessible role cannot be changed once set.
     var accessibleRole: String?
     /// The child widget.
+    /// 
+    /// When setting this property, if the child widget does not implement
+    /// [iface@Gtk.Scrollable], the scrolled window will add the child to
+    /// a [class@Gtk.Viewport] and then set the viewport as the child.
     var child:  (() -> Body)?
     /// Whether to draw a frame around the contents.
     var hasFrame: Bool?
@@ -181,7 +185,7 @@ public struct ScrolledWindow: Widget {
         }
 
         for function in appearFunctions {
-            function(storage)
+            function(storage, modifiers)
         }
         return storage
     }
@@ -248,7 +252,7 @@ public struct ScrolledWindow: Widget {
 
         }
         for function in updateFunctions {
-            function(storage)
+            function(storage, modifiers, updateProperties)
         }
     }
 
@@ -263,6 +267,10 @@ public struct ScrolledWindow: Widget {
     }
 
     /// The child widget.
+    /// 
+    /// When setting this property, if the child widget does not implement
+    /// [iface@Gtk.Scrollable], the scrolled window will add the child to
+    /// a [class@Gtk.Viewport] and then set the viewport as the child.
     public func child(@ViewBuilder _ child: @escaping (() -> Body)) -> Self {
         var newSelf = self
         newSelf.child = child

@@ -2,7 +2,7 @@
 //  SwitchRow.swift
 //  Adwaita
 //
-//  Created by auto-generation on 14.02.24.
+//  Created by auto-generation on 17.02.24.
 //
 
 import CAdw
@@ -31,9 +31,9 @@ import LevenshteinTransformations
 public struct SwitchRow: Widget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage) -> Void] = []
+    var updateFunctions: [(ViewStorage, [(View) -> View], Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage) -> Void] = []
+    var appearFunctions: [(ViewStorage, [(View) -> View]) -> Void] = []
 
     /// The widget to activate when the row is activated.
     /// 
@@ -123,7 +123,7 @@ public struct SwitchRow: Widget {
         }
         storage.content["prefix"] = prefixStorage
         for function in appearFunctions {
-            function(storage)
+            function(storage, modifiers)
         }
         return storage
     }
@@ -184,7 +184,7 @@ if let active, newValue != active.wrappedValue {
 
         }
         for function in updateFunctions {
-            function(storage)
+            function(storage, modifiers, updateProperties)
         }
     }
 
