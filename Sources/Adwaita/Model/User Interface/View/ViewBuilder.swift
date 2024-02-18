@@ -58,14 +58,15 @@ public enum ViewBuilder {
     /// - Returns: A nonoptional component.
     public static func buildOptional(_ component: Component?) -> Component {
         .element(
-            VStack {
-                if let component {
-                    buildFinalResult(component)
-                } else {
-                    []
+            Bin()
+                .child {
+                    if let component {
+                        buildFinalResult(component)
+                    } else {
+                        []
+                    }
                 }
-            }
-            .visible(component != nil)
+                .visible(component != nil)
         )
     }
 
