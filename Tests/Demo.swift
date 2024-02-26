@@ -19,7 +19,6 @@ struct Demo: App {
         Window(id: "main") { window in
             DemoContent(window: window, app: app)
         }
-        .defaultSize(width: 650, height: 450)
         .overlay {
             AboutWindow(id: "about", appName: "Demo", developer: "david-swift", version: "Test")
                 .icon(.default(icon: .applicationXExecutable))
@@ -71,13 +70,17 @@ struct Demo: App {
 
     }
 
-    struct DemoContent: View {
+    struct DemoContent: WindowView {
 
         @State("selection")
         private var selection: Page = .welcome
         @State private var toast: Signal = .init()
         @State("sidebar-visible")
         private var sidebarVisible = true
+        @State("width")
+        private var width = 650
+        @State("height")
+        private var height = 450
         var window: GTUIApplicationWindow
         var app: GTUIApp!
 
@@ -150,6 +153,11 @@ struct Demo: App {
             }
             .primary()
             .tooltip("Main Menu")
+        }
+
+        func window(_ window: Window) -> Window {
+            window
+                .size(width: $width, height: $height)
         }
 
     }

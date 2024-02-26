@@ -31,10 +31,6 @@ The keyboard shortcuts.
 
 The keyboard shortcuts on the app level.
 
-### `defaultSize`
-
-The default window size.
-
 ### `title`
 
 The window's title.
@@ -50,6 +46,18 @@ Whether the window is deletable.
 ### `signals`
 
 The signals for the importers and exporters.
+
+### `width`
+
+The binding for the window's width.
+
+### `height`
+
+The binding for the window's height.
+
+### `setDefaultSize`
+
+Whether to update the default size.
 
 ## Methods
 ### `init(id:open:content:)`
@@ -86,10 +94,25 @@ Update a window storage's content.
     - app: The GTUI app.
     - force: Whether to force update all the views.
 
-### `setProperties(window:)`
+### `getTemplate(content:)`
+
+Get the actual window template.
+- Parameter content: The content view.s
+- Returns: The window.
+
+### `setProperties(window:template:)`
 
 Set some general propreties of the window.
-- Parameter window: The window.
+- Parameters:
+    - window: The window.
+    - template: The window template.
+
+### `updateSize(window:template:)`
+
+Update the window's size.
+- Parameters:
+    - window: The window.
+    - template: The window template.
 
 ### `overlay(windows:)`
 
@@ -126,10 +149,10 @@ Add a keyboard shortcut.
     - action: The closure to execute when the keyboard shortcut is pressed.
 - Returns: The window.
 
-### `updateShortcuts(window:)`
+### `updateShortcuts(window:template:)`
 
 Update the keyboard shortcuts.
-- Parameter window: The application window.
+- Parameters: window: The application window.
 
 ### `closeShortcut()`
 
@@ -160,4 +183,12 @@ Set whether the window is resizable.
 
 Set whether the window is deletable.
 - Parameter resizable: The deletability.
+- Returns: The window.
+
+### `size(width:height:)`
+
+Add a tooltip to the widget.
+- Parameters:
+    - width: The window's actual width.
+    - height: The window's actual height.
 - Returns: The window.

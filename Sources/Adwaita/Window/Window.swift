@@ -7,6 +7,7 @@
 
 // swiftlint:disable discouraged_optional_collection
 
+import CAdw
 import Foundation
 
 /// A structure representing an application window type.
@@ -26,8 +27,6 @@ public struct Window: WindowScene {
     var shortcuts: [String: (GTUIApplicationWindow) -> Void] = [:]
     /// The keyboard shortcuts on the app level.
     public var appShortcuts: [String: (GTUIApp) -> Void] = [:]
-    /// The default window size.
-    var defaultSize: (Int, Int)?
     /// The window's title.
     var title: String?
     /// Whether the window is resizable.
@@ -36,6 +35,12 @@ public struct Window: WindowScene {
     var deletable = true
     /// The signals for the importers and exporters.
     var signals: [Signal] = []
+    /// The binding for the window's width.
+    var width: Binding<Int>?
+    /// The binding for the window's height.
+    var height: Binding<Int>?
+    /// Whether to update the default size.
+    var setDefaultSize = false
 
     /// Create a window type with a certain identifier and user interface.
     /// - Parameters:
@@ -77,11 +82,12 @@ public struct Window: WindowScene {
     /// - Returns: The storage of the content of the window.
     func getViewStorage(window: GTUIApplicationWindow) -> ViewStorage {
         let content = content(window)
+        let template = getTemplate(content: content)
         let storage = content.widget(modifiers: []).container(modifiers: [])
         window.setChild(storage.pointer)
-        window.setDefaultSize(width: defaultSize?.0, height: defaultSize?.1)
-        setProperties(window: window)
-        updateShortcuts(window: window)
+        setProperties(window: window, template: template)
+        updateShortcuts(window: window, template: template)
+        window.setDefaultSize(width: template.width?.wrappedValue, height: template.height?.wrappedValue)
         return storage
     }
 
@@ -93,11 +99,12 @@ public struct Window: WindowScene {
     public func update(_ storage: WindowStorage, app: GTUIApp, force: Bool) {
         if let window = storage.window as? GTUIApplicationWindow {
             let content = content(window)
+            let template = getTemplate(content: content)
             if let view = storage.view {
                 content.widget(modifiers: []).updateStorage(view, modifiers: [], updateProperties: force)
             }
-            setProperties(window: window)
-            updateShortcuts(window: window)
+            setProperties(window: window, template: template)
+            updateShortcuts(window: window, template: template)
             updateAppShortcuts(app: app)
         }
         for signal in signals where signal.update {
@@ -107,14 +114,61 @@ public struct Window: WindowScene {
         }
     }
 
+    /// Get the actual window template.
+    /// - Parameter content: The content view.s
+    /// - Returns: The window.
+    func getTemplate(content: Body) -> Self {
+        var windowTemplate = self
+        if let view = content.first as? WindowView {
+            windowTemplate = view.window(windowTemplate)
+        }
+        return windowTemplate
+    }
+
     /// Set some general propreties of the window.
-    /// - Parameter window: The window.
-    func setProperties(window: GTUIApplicationWindow) {
-        if let title {
+    /// - Parameters:
+    ///     - window: The window.
+    ///     - template: The window template.
+    func setProperties(window: GTUIApplicationWindow, template: Self) {
+        if let title = template.title {
             window.setTitle(title)
         }
-        window.setResizability(resizable)
-        window.setDeletability(deletable)
+        window.setResizability(template.resizable)
+        window.setDeletability(template.deletable)
+        var storage = window.fields["storage"] as? ViewStorage
+        if storage == nil {
+            storage = .init(window.pointer?.opaque())
+            window.fields["storage"] = storage
+        }
+        if template.setDefaultSize {
+            window.setDefaultSize(width: template.width?.wrappedValue, height: template.height?.wrappedValue)
+        }
+        if template.width != nil {
+            storage?.notify(name: "default-width") {
+                updateSize(window: window, template: template)
+            }
+        }
+        if template.height != nil {
+            storage?.notify(name: "default-height") {
+                updateSize(window: window, template: template)
+            }
+        }
+    }
+
+    /// Update the window's size.
+    /// - Parameters:
+    ///     - window: The window.
+    ///     - template: The window template.
+    func updateSize(window: GTUIApplicationWindow, template: Self) {
+        var width: Int32 = 0
+        var height: Int32 = 0
+        gtk_window_get_default_size(window.pointer, &width, &height)
+        if width != template.width?.wrappedValue ?? 0 {
+            template.width?.wrappedValue = .init(width)
+        }
+        if height != template.height?.wrappedValue ?? 0 {
+            template.height?.wrappedValue = .init(height)
+        }
     }
 
     /// Add windows that overlay the last instance of this window if presented.
@@ -197,9 +251,9 @@ public struct Window: WindowScene {
     }
 
     /// Update the keyboard shortcuts.
-    /// - Parameter window: The application window.
-    func updateShortcuts(window: GTUIApplicationWindow) {
-        for shortcut in shortcuts {
+    /// - Parameters: window: The application window.
+    func updateShortcuts(window: GTUIApplicationWindow, template: Self) {
+        for shortcut in template.shortcuts {
             window.addKeyboardShortcut(shortcut.key, id: shortcut.key) { shortcut.value(window) }
         }
     }
@@ -217,7 +271,9 @@ public struct Window: WindowScene {
     /// - Returns: The window.
     public func defaultSize(width: Int, height: Int) -> Self {
         var newSelf = self
-        newSelf.defaultSize = (width, height)
+        newSelf.width = .constant(width)
+        newSelf.height = .constant(height)
+        newSelf.setDefaultSize = true
         return newSelf
     }
 
@@ -245,6 +301,18 @@ public struct Window: WindowScene {
     public func deletable(_ deletable: Bool) -> Self {
         var newSelf = self
         newSelf.deletable = deletable
+        return newSelf
+    }
+
+    /// Add a tooltip to the widget.
+    /// - Parameters:
+    ///     - width: The window's actual width.
+    ///     - height: The window's actual height.
+    /// - Returns: The window.
+    public func size(width: Binding<Int>? = nil, height: Binding<Int>? = nil) -> Self {
+        var newSelf = self
+        newSelf.width = width
+        newSelf.height = height
         return newSelf
     }
 

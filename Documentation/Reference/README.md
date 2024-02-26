@@ -12,6 +12,7 @@
 -   [WindowScene](protocols/WindowScene.md)
 -   [WindowSceneGroup](protocols/WindowSceneGroup.md)
 -   [WindowType](protocols/WindowType.md)
+-   [WindowView](protocols/WindowView.md)
 
 ## Structs
 
