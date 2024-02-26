@@ -13,9 +13,16 @@ import Foundation
 struct GenerationConfiguration {
 
     /// The include directory.
-    static let includeDir = "$(pkg-config --variable=includedir gtk4)"
+    static let gtkIncludeDir = "$(pkg-config --variable=includedir gtk4)"
+
+    /// The include directory.
+    static let adwIncludeDir = "$(pkg-config --variable=includedir libadwaita-1)"
+    
     /// The directory containing the GIR files.
-    static let girFilePath = "\(includeDir)/../share/gir-1.0/"
+    static let gtkGirFilePath = "\(gtkIncludeDir)/../share/gir-1.0/"
+
+    /// The directory containing the GIR files.
+    static let adwGirFilePath = "\(adwIncludeDir)/../share/gir-1.0/"
 
     /// Exclude properties of buttons.
     static var excludeButtons: [String] {
@@ -23,9 +30,9 @@ struct GenerationConfiguration {
     }
 
     /// The Gtk GIR file.
-    var gtkGirFilePath = girFilePath + "Gtk-4.0.gir"
+    var gtkGirFilePath = gtkGirFilePath + "Gtk-4.0.gir"
     /// The Adw GIR file.
-    var adwGirFilePath = girFilePath + "Adw-1.gir"
+    var adwGirFilePath = adwGirFilePath + "Adw-1.gir"
 
     /// The folder containing the generated Swift files.
     var folder = "Sources/Adwaita/View/Generated/"
