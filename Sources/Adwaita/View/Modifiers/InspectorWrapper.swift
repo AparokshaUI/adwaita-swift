@@ -166,4 +166,11 @@ extension View {
         }
     }
 
+    /// Add a tooltip to the widget.
+    /// - Parameter tooltip: The tooltip text.
+    /// - Returns: A view.
+    public func tooltip(_ tooltip: String) -> View {
+        inspect { gtk_widget_set_tooltip_markup($0.pointer?.cast(), tooltip) }
+    }
+
 }

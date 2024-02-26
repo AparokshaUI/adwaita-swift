@@ -108,6 +108,7 @@ struct Demo: App {
                 .topToolbar {
                     HeaderBar {
                         Toggle(icon: .default(icon: .sidebarShow), isOn: $sidebarVisible)
+                            .tooltip("Toggle Sidebar")
                     } end: {
                         if sidebarVisible {
                             Text("")
@@ -148,6 +149,7 @@ struct Demo: App {
                 }
             }
             .primary()
+            .tooltip("Main Menu")
         }
 
     }
