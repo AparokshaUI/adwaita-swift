@@ -17,7 +17,7 @@ struct GenerationConfiguration {
 
     /// The include directory.
     static let adwIncludeDir = "$(pkg-config --variable=includedir libadwaita-1)"
-    
+
     /// The directory containing the GIR files.
     static let gtkGirFilePath = "\(gtkIncludeDir)/../share/gir-1.0/"
 
