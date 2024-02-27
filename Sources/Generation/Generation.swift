@@ -23,8 +23,13 @@ struct Generation {
     /// The main function.
     func run() throws {
         removeOldFiles()
-        guard let gtkDefinitions = getDefinitions(path: configuration.gtkGirFilePath),
-        let adwDefinitions = getDefinitions(path: configuration.adwGirFilePath) else {
+        guard let gtkDefinitions = getGtkDefinitions(path: configuration.gtkGirFilePath) else {
+            print("failed to get Gtk definitions")
+            return
+        }
+
+        guard let adwDefinitions = getAdwDefinitions(path: configuration.adwGirFilePath) else {
+            print("failed to get Adw definitions")
             return
         }
         for `class` in gtkDefinitions.namespace.classes {
@@ -66,20 +71,44 @@ struct Generation {
     /// Get the definitions of a GIR file at a specified path.
     /// - Parameter path: The path.
     /// - Returns: The GIR data.
-    func getDefinitions(path: String) -> GIR? {
+    func getGtkDefinitions(path: String) -> GIR? {
         var path = path
-        let girDir = getGirDir()
-        path.replace(GenerationConfiguration.includeDir, with: girDir)
+        let girDir = getGtkGirDir()
+        path.replace(GenerationConfiguration.gtkIncludeDir, with: girDir)
+        let data = (try? Data(contentsOf: .init(fileURLWithPath: path))) ?? .init()
+        return try? GIR.decodeGIR(data)
+    }
+
+    /// Get the definitions of a GIR file at a specified path.
+    /// - Parameter path: The path.
+    /// - Returns: The GIR data.
+    func getAdwDefinitions(path: String) -> GIR? {
+        var path = path
+        let girDir = getAdwGirDir()
+        path.replace(GenerationConfiguration.adwIncludeDir, with: girDir)
         let data = (try? Data(contentsOf: .init(fileURLWithPath: path))) ?? .init()
         return try? GIR.decodeGIR(data)
     }
 
     /// Get the directory of the gir files.
     /// - Returns: The path.
-    func getGirDir() -> String {
+    func getGtkGirDir() -> String {
         let process = Process()
         process.executableURL = .init(fileURLWithPath: "/bin/bash")
         process.arguments = ["-c", "pkg-config --variable=includedir gtk4"]
+        let pipe = Pipe()
+        process.standardOutput = pipe
+        try? process.run()
+        let data = pipe.fileHandleForReading.readDataToEndOfFile()
+        return .init(data: data, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+    }
+
+    /// Get the directory of the gir files.
+    /// - Returns: The path.
+    func getAdwGirDir() -> String {
+        let process = Process()
+        process.executableURL = .init(fileURLWithPath: "/bin/bash")
+        process.arguments = ["-c", "pkg-config --variable=includedir libadwaita-1"]
         let pipe = Pipe()
         process.standardOutput = pipe
         try? process.run()
