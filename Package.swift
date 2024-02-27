@@ -12,7 +12,7 @@ import PackageDescription
 let package = Package(
     name: "Adwaita",
     platforms: [
-        .macOS(.v13)
+        .macOS(.v10_15)
     ],
     products: [
         .library(

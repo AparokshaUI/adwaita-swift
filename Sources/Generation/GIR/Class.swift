@@ -74,7 +74,7 @@ struct Class: ClassLike, Decodable {
         //  \(widgetName).swift
         //  Adwaita
         //
-        //  Created by auto-generation on \(dateFormatter.string(from: .now)).
+        //  Created by auto-generation on \(dateFormatter.string(from: .init())).
         //
 
         import CAdw

@@ -74,7 +74,7 @@ struct Generation {
     func getGtkDefinitions(path: String) -> GIR? {
         var path = path
         let girDir = getGtkGirDir()
-        path.replace(GenerationConfiguration.gtkIncludeDir, with: girDir)
+        path = path.replacingOccurrences(of: GenerationConfiguration.gtkIncludeDir, with: girDir)
         let data = (try? Data(contentsOf: .init(fileURLWithPath: path))) ?? .init()
         return try? GIR.decodeGIR(data)
     }
@@ -85,7 +85,7 @@ struct Generation {
     func getAdwDefinitions(path: String) -> GIR? {
         var path = path
         let girDir = getAdwGirDir()
-        path.replace(GenerationConfiguration.adwIncludeDir, with: girDir)
+        path = path.replacingOccurrences(of: GenerationConfiguration.adwIncludeDir, with: girDir)
         let data = (try? Data(contentsOf: .init(fileURLWithPath: path))) ?? .init()
         return try? GIR.decodeGIR(data)
     }
