@@ -26,8 +26,8 @@ extension View {
     ///   - toolbar: The toolbar's content.
     ///   - visible: Whether the toolbar is visible.
     /// - Returns: A view.
-    public func topToolbar(visible: Bool = true, @ViewBuilder _ toolbar: @escaping () -> Body) -> View {
-        ToolbarView()
+    public func topToolbar(visible: Bool = true, @ViewBuilder _ toolbar: @escaping () -> Body) -> ToolbarView {
+        .init()
             .content { self }
             .top(toolbar)
             .revealTopBars(visible)
@@ -38,8 +38,8 @@ extension View {
     ///   - toolbar: The toolbar's content.
     ///   - visible: Whether the toolbar is visible.
     /// - Returns: A view.
-    public func bottomToolbar(visible: Bool = true, @ViewBuilder _ toolbar: @escaping () -> Body) -> View {
-        ToolbarView()
+    public func bottomToolbar(visible: Bool = true, @ViewBuilder _ toolbar: @escaping () -> Body) -> ToolbarView {
+        .init()
             .content { self }
             .bottom(toolbar)
             .revealBottomBars(visible)
@@ -49,8 +49,8 @@ extension View {
     /// - Parameters:
     ///     - overlay: The overlay view.
     /// - Returns: A view.
-    public func overlay(@ViewBuilder _ overlay: @escaping () -> Body) -> View {
-        Overlay()
+    public func overlay(@ViewBuilder _ overlay: @escaping () -> Body) -> Overlay {
+        .init()
             .child { self }
             .overlay(overlay)
     }

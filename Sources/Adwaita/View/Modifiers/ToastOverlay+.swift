@@ -57,8 +57,8 @@ extension View {
     ///     - title: The title of the toast.
     ///     - signal: The signal which activates the presentation of a toast.
     /// - Returns: A view.
-    public func toast(_ title: String, signal: Signal) -> View {
-        ToastOverlay(title, signal: signal)
+    public func toast(_ title: String, signal: Signal) -> ToastOverlay {
+        .init(title, signal: signal)
             .child { self }
     }
 
@@ -69,8 +69,8 @@ extension View {
     ///     - button: The button's label.
     ///     - handler: The handler for the button.
     /// - Returns: A view.
-    public func toast(_ title: String, signal: Signal, button: String, handler: @escaping () -> Void) -> View {
-        ToastOverlay(title, signal: signal)
+    public func toast(_ title: String, signal: Signal, button: String, handler: @escaping () -> Void) -> ToastOverlay {
+        .init(title, signal: signal)
             .child { self }
             .action(button: button, handler: handler)
     }

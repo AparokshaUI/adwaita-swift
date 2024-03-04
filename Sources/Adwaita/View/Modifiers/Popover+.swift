@@ -43,7 +43,7 @@ extension View {
     ///     - visible: Whether the popover is displayed.
     ///     - content: The popover's content.
     /// - Returns: The view.
-    public func popover(visible: Binding<Bool>, @ViewBuilder content: @escaping () -> Body) -> View {
+    public func popover(visible: Binding<Bool>, @ViewBuilder content: @escaping () -> Body) -> Overlay {
         overlay {
             Popover(visible: visible)
                 .child(content)
