@@ -13,6 +13,7 @@
 ## Advanced
 
 * [Creating Widgets][7]
+* [Publishing Apps](user-manual/Advanced/PublishingApps.md)
 
 ## Information
 

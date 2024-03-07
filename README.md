@@ -106,6 +106,7 @@ I recommend using the [template repository](https://github.com/AparokshaUI/Adwai
 ### Advanced
 
 * [Creating Widgets][17]
+* [Publishing Apps](user-manual/Advanced/PublishingApps.md)
 
 ### Information
 
