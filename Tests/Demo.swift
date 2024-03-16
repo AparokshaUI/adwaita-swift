@@ -81,6 +81,8 @@ struct Demo: App {
         private var width = 650
         @State("height")
         private var height = 450
+        @State("maximized")
+        private var maximized = false
         var window: GTUIApplicationWindow
         var app: GTUIApp!
 
@@ -158,6 +160,7 @@ struct Demo: App {
         func window(_ window: Window) -> Window {
             window
                 .size(width: $width, height: $height)
+                .maximized($maximized)
         }
 
     }

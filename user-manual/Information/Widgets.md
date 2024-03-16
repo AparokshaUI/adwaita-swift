@@ -165,6 +165,8 @@ There are many more widgets available using auto-generation. Learn [how to use t
 | `title(_:)`                                                        | Set the window's title.                                                                 |
 | `resizable(_:)`                                                    | Set the window's resizability.                                                          |
 | `deletable(_:)`                                                    | Set the window's deletability.                                                          |
+| `maximized(_:)`                                                    | Get and set whether the window is maximized.                                            |
+| `size(width:height:)`                                              | Get and set the window's width and height.                                              |
 
 ### `AboutWindow` Modifiers
 | Syntax          | Description                                                                             |

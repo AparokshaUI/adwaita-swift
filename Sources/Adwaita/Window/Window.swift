@@ -41,6 +41,8 @@ public struct Window: WindowScene {
     var height: Binding<Int>?
     /// Whether to update the default size.
     var setDefaultSize = false
+    /// Whether the window is maximized.
+    var maximized: Binding<Bool>?
 
     /// Create a window type with a certain identifier and user interface.
     /// - Parameters:
@@ -135,6 +137,11 @@ public struct Window: WindowScene {
         }
         window.setResizability(template.resizable)
         window.setDeletability(template.deletable)
+        if !(template.maximized?.wrappedValue ?? false) {
+            gtk_window_unmaximize(window.pointer)
+        } else {
+            gtk_window_maximize(window.pointer)
+        }
         var storage = window.fields["storage"] as? ViewStorage
         if storage == nil {
             storage = .init(window.pointer?.opaque())
@@ -153,6 +160,11 @@ public struct Window: WindowScene {
                 updateSize(window: window, template: template)
             }
         }
+        if template.maximized != nil {
+            storage?.notify(name: "maximized") {
+                updateSize(window: window, template: template)
+            }
+        }
     }
 
     /// Update the window's size.
@@ -163,11 +175,15 @@ public struct Window: WindowScene {
         var width: Int32 = 0
         var height: Int32 = 0
         gtk_window_get_default_size(window.pointer, &width, &height)
-        if width != template.width?.wrappedValue ?? 0 {
+        let maximized = gtk_window_is_maximized(window.pointer) != 0
+        if width != template.width?.wrappedValue ?? -1 {
             template.width?.wrappedValue = .init(width)
         }
-        if height != template.height?.wrappedValue ?? 0 {
+        if height != template.height?.wrappedValue ?? -1 {
             template.height?.wrappedValue = .init(height)
+        }
+        if maximized != template.maximized?.wrappedValue {
+            template.maximized?.wrappedValue = maximized
         }
     }
 
@@ -304,7 +320,7 @@ public struct Window: WindowScene {
         return newSelf
     }
 
-    /// Add a tooltip to the widget.
+    /// Get the window's width and height.
     /// - Parameters:
     ///     - width: The window's actual width.
     ///     - height: The window's actual height.
@@ -313,6 +329,15 @@ public struct Window: WindowScene {
         var newSelf = self
         newSelf.width = width
         newSelf.height = height
+        return newSelf
+    }
+
+    /// Get and set whether the window is maximized.
+    /// - Parameter maximized: Whether the window is maximized.
+    /// - Returns: The window.
+    public func maximized(_ maximized: Binding<Bool>) -> Self {
+        var newSelf = self
+        newSelf.maximized = maximized
         return newSelf
     }
 
