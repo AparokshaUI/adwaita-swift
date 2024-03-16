@@ -28,7 +28,7 @@ struct CustomText: Widget {
     var text: String
 
     public func container(modifiers: [(View) -> View]) -> ViewStorage { }
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View]) { }
+    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) { }
 
 }
 ```
@@ -44,20 +44,22 @@ func container(modifiers: [(View) -> View]) -> ViewStorage {
 }
 ```
 
-## The `update(_:modifiers:)` Function
-Whenever a state of the app changes, the `update(_:)` function of the widget gets called.
+## The `update(_:modifiers:updateProperties:)` Function
+Whenever a state of the app changes, the `update(_:modifiers:updateProperties:)` function of the widget gets called.
 You get the view storage that you have previously initialized as a parameter.
 Update the storage to reflect the current state of the widget:
 ```swift
-func update(_ storage: ViewStorage, modifiers: [(View) -> View]) {
-    gtk_label_set_label(storage.pointer, text)
+func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    if updateProperties {
+        gtk_label_set_label(storage.pointer, text)
+    }
 }
 ```
 
 ## Containers
 Some widgets act as containers that accept other widgets as children.
 In that case, use the `ViewStorage`'s `content` property for storing their view storages.
-In the `update(_:modifiers:)` function, update the children's storages.
+In the `update(_:modifiers:updateProperties:)` function, update the children's storages.
 An example showcasing how to implement containers is the [Box][1] (it is auto-generated).
 
 [1]:    ../../Sources/Adwaita/View/Generated/Box.swift
