@@ -12,6 +12,8 @@ struct Dialog: Widget {
 
     /// Whether the dialog is visible.
     @Binding var visible: Bool
+    /// An identifier used if multiple dialogs are on one view.
+    var id: String
     /// The dialog's title.
     var title: String?
     /// The wrapped view.
@@ -44,7 +46,7 @@ struct Dialog: Widget {
     ///     - updateProperties: Whether to update properties.
     func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         child.widget(modifiers: modifiers).update(storage, modifiers: modifiers, updateProperties: updateProperties)
-        if let storage = storage.content[contentID]?.first as? ViewStorage {
+        if let storage = storage.content[contentID + id]?.first as? ViewStorage {
             content
                 .widget(modifiers: modifiers)
                 .update(storage, modifiers: modifiers, updateProperties: updateProperties)
@@ -53,17 +55,17 @@ struct Dialog: Widget {
             return
         }
         if visible {
-            if storage.content[dialogID]?.first == nil {
+            if storage.content[dialogID + id]?.first == nil {
                 createDialog(storage: storage, modifiers: modifiers)
-                adw_dialog_present(storage.content[dialogID]?.first?.pointer?.cast(), storage.pointer?.cast())
+                adw_dialog_present(storage.content[dialogID + id]?.first?.pointer?.cast(), storage.pointer?.cast())
             }
-            let pointer = storage.content[dialogID]?.first?.pointer
+            let pointer = storage.content[dialogID + id]?.first?.pointer
             adw_dialog_set_title(pointer?.cast(), title ?? "")
             adw_dialog_set_content_width(pointer?.cast(), width?.cInt ?? -1)
             adw_dialog_set_content_height(pointer?.cast(), height?.cInt ?? -1)
         } else {
-            if storage.content[dialogID]?.first != nil {
-                adw_dialog_close(storage.content[dialogID]?.first?.pointer?.cast())
+            if storage.content[dialogID + id]?.first != nil {
+                adw_dialog_close(storage.content[dialogID + id]?.first?.pointer?.cast())
             }
         }
     }
@@ -75,13 +77,13 @@ struct Dialog: Widget {
     func createDialog(storage: ViewStorage, modifiers: [(View) -> View]) {
         let pointer = adw_dialog_new()
         let dialog = ViewStorage(pointer?.opaque())
-        storage.content[dialogID] = [dialog]
+        storage.content[dialogID + id] = [dialog]
         let contentStorage = content.widget(modifiers: modifiers).storage(modifiers: modifiers)
         adw_dialog_set_child(pointer, contentStorage.pointer?.cast())
-        storage.content[contentID] = [contentStorage]
+        storage.content[contentID + id] = [contentStorage]
         dialog.connectSignal(name: "closed") {
-            storage.content[dialogID] = []
-            storage.content[contentID] = []
+            storage.content[dialogID + id] = []
+            storage.content[contentID + id] = []
             if visible {
                 visible = false
             }
@@ -102,11 +104,20 @@ extension View {
     public func dialog(
         visible: Binding<Bool>,
         title: String? = nil,
+        id: String? = nil,
         width: Int? = nil,
         height: Int? = nil,
         @ViewBuilder content: () -> Body
     ) -> View {
-        Dialog(visible: visible, title: title, child: self, content: content(), width: width, height: height)
+        Dialog(
+            visible: visible,
+            id: id ?? "",
+            title: title,
+            child: self,
+            content: content(),
+            width: width,
+            height: height
+        )
     }
 
 }
