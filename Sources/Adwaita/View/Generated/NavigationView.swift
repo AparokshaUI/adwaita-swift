@@ -2,7 +2,7 @@
 //  NavigationView.swift
 //  Adwaita
 //
-//  Created by auto-generation on 17.02.24.
+//  Created by auto-generation on 20.03.24.
 //
 
 import CAdw
@@ -51,7 +51,7 @@ import LevenshteinTransformations
 /// at once, potentially across multiple navigation views.
 /// 
 /// Set [property@HeaderBar:show-back-button] to `FALSE` to disable this behavior
-/// if it's unwanted.
+/// in rare scenarios where it's unwanted.
 /// 
 /// `AdwHeaderBar` will also display the title of the `AdwNavigationPage` it's
 /// placed into, so most applications shouldn't need to customize it at all.

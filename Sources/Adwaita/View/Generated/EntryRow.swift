@@ -2,7 +2,7 @@
 //  EntryRow.swift
 //  Adwaita
 //
-//  Created by auto-generation on 17.02.24.
+//  Created by auto-generation on 20.03.24.
 //
 
 import CAdw
@@ -62,6 +62,8 @@ public struct EntryRow: Widget {
     /// operation, e.g. network activity, to avoid triggering it after typing every
     /// character.
     var showApplyButton: Bool?
+    /// The length of the text in the entry row.
+    var textLength: UInt?
     /// The title of the preference represented by this row.
     /// 
     /// The title is interpreted as Pango markup unless
@@ -222,6 +224,14 @@ public struct EntryRow: Widget {
     public func showApplyButton(_ showApplyButton: Bool? = true) -> Self {
         var newSelf = self
         newSelf.showApplyButton = showApplyButton
+        
+        return newSelf
+    }
+
+    /// The length of the text in the entry row.
+    public func textLength(_ textLength: UInt?) -> Self {
+        var newSelf = self
+        newSelf.textLength = textLength
         
         return newSelf
     }

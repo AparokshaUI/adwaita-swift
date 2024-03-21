@@ -2,7 +2,7 @@
 //  Label.swift
 //  Adwaita
 //
-//  Created by auto-generation on 17.02.24.
+//  Created by auto-generation on 20.03.24.
 //
 
 import CAdw
@@ -15,7 +15,7 @@ import LevenshteinTransformations
 /// 
 /// ![An example GtkLabel](label.png)
 /// 
-/// # CSS nodes
+/// ## CSS nodes
 /// 
 /// ```
 /// label
@@ -36,7 +36,7 @@ import LevenshteinTransformations
 /// carry the link or visited state depending on whether they have been
 /// visited. In this case, label node also gets a .link style class.
 /// 
-/// # GtkLabel as GtkBuildable
+/// ## GtkLabel as GtkBuildable
 /// 
 /// The GtkLabel implementation of the GtkBuildable interface supports a
 /// custom `<attributes>` element, which supports any number of `<attribute>`
@@ -45,6 +45,7 @@ import LevenshteinTransformations
 /// values for this label.
 /// 
 /// An example of a UI definition fragment specifying Pango attributes:
+/// 
 /// ```xml
 /// <object class="GtkLabel"><attributes><attribute name="weight" value="PANGO_WEIGHT_BOLD"/><attribute name="background" value="red" start="5" end="10"/></attributes></object>
 /// ```
@@ -55,11 +56,11 @@ import LevenshteinTransformations
 /// sense with translatable attributes. Use markup embedded in the translatable
 /// content instead.
 /// 
-/// # Accessibility
+/// ## Accessibility
 /// 
 /// `GtkLabel` uses the %GTK_ACCESSIBLE_ROLE_LABEL role.
 /// 
-/// # Mnemonics
+/// ## Mnemonics
 /// 
 /// Labels may contain “mnemonics”. Mnemonics are underlined characters in the
 /// label, used for keyboard navigation. Mnemonics are created by providing a
@@ -100,7 +101,7 @@ import LevenshteinTransformations
 /// gtk_label_set_mnemonic_widget (GTK_LABEL (label), entry);
 /// ```
 /// 
-/// # Markup (styled text)
+/// ## Markup (styled text)
 /// 
 /// To make it easy to format text in a label (changing colors,
 /// fonts, etc.), label text can be provided in a simple
@@ -130,14 +131,14 @@ import LevenshteinTransformations
 /// end_index for a [struct@Pango.Attribute] requires knowledge of the exact
 /// string being displayed, so translations will cause problems.
 /// 
-/// # Selectable labels
+/// ## Selectable labels
 /// 
 /// Labels can be made selectable with [method@Gtk.Label.set_selectable].
 /// Selectable labels allow the user to copy the label contents to
-/// the clipboard. Only labels that contain useful-to-copy information
-/// — such as error messages — should be made selectable.
+/// the clipboard. Only labels that contain useful-to-copy information—such
+/// as error messages—should be made selectable.
 /// 
-/// # Text layout
+/// ## Text layout
 /// 
 /// A label can contain any number of paragraphs, but will have
 /// performance problems if it contains more than a small number.
@@ -160,7 +161,7 @@ import LevenshteinTransformations
 /// is used as the natural width. Even if max-width-chars specified, wrapping
 /// labels will be rewrapped to use all of the available width.
 /// 
-/// # Links
+/// ## Links
 /// 
 /// GTK supports markup for clickable hyperlinks in addition to regular Pango
 /// markup. The markup for links is borrowed from HTML, using the `<a>` with
@@ -169,7 +170,7 @@ import LevenshteinTransformations
 /// attribute is displayed as a tooltip on the link. The “class“ attribute is
 /// used as style class on the CSS node for the link.
 /// 
-/// An example looks like this:
+/// An example of inline links looks like this:
 /// 
 /// ```c
 /// const char *text =

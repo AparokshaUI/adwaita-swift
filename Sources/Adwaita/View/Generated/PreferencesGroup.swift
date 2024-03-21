@@ -2,7 +2,7 @@
 //  PreferencesGroup.swift
 //  Adwaita
 //
-//  Created by auto-generation on 17.02.24.
+//  Created by auto-generation on 20.03.24.
 //
 
 import CAdw
@@ -16,7 +16,7 @@ import LevenshteinTransformations
 /// which in turn are represented by [class@PreferencesRow].
 /// 
 /// To summarize the role of the preferences it gathers, a group can have both a
-/// title and a description. The title will be used by [class@PreferencesWindow]
+/// title and a description. The title will be used by [class@PreferencesDialog]
 /// to let the user look for a preference.
 /// 
 /// ## AdwPreferencesGroup as GtkBuildable

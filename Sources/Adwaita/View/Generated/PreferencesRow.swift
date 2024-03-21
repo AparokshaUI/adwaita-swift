@@ -2,7 +2,7 @@
 //  PreferencesRow.swift
 //  Adwaita
 //
-//  Created by auto-generation on 17.02.24.
+//  Created by auto-generation on 20.03.24.
 //
 
 import CAdw
@@ -10,7 +10,7 @@ import LevenshteinTransformations
 
 /// A [class@Gtk.ListBoxRow] used to present preferences.
 /// 
-/// The `AdwPreferencesRow` widget has a title that [class@PreferencesWindow]
+/// The `AdwPreferencesRow` widget has a title that [class@PreferencesDialog]
 /// will use to let the user look for a preference. It doesn't present the title
 /// in any way and lets you present the preference as you please.
 /// 

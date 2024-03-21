@@ -254,7 +254,11 @@ struct GenerationConfiguration {
             ),
             excludeProperties: ["selection-mode", "orientation"]
         ),
-        .init(class: "SearchEntry", bindings: [.init(property: "text")]),
+        .init(
+            class: "SearchEntry",
+            bindings: [.init(property: "text")],
+            excludeProperties: ["input-hints", "input-purpose"]
+        ),
         .init(class: "SearchBar")
     ]
 

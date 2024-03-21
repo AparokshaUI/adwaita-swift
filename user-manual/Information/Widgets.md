@@ -20,7 +20,7 @@ There are many more widgets available using auto-generation. Learn [how to use t
 
 ### View Modifiers
 
-| Syntax                            | Description                                                                             |
+| Syntax                            | Description                                                                                                                    |
 | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
 | `freeze(_:)`                      | Prevent a view from being updated.                                                                                             |
 | `inspect(_:)`                     | Edit the underlying Gtk or Libadwaita widget.                                                                                  |
@@ -31,7 +31,7 @@ There are many more widgets available using auto-generation. Learn [how to use t
 | `valign(_:)`                      | Set the vertical alignment of a view.                                                                                          |
 | `frame(minWidth:minHeight:)`      | Set the view’s minimum width or height.                                                                                        |
 | `frame(maxWidth:)`                | Set the view’s maximum width.                                                                                                  |
-| `frame(maxHeight:)`               | Set the view’s maximum height.                                                                                                  |
+| `frame(maxHeight:)`               | Set the view’s maximum height.                                                                                                 |
 | `transition(_:)`                  | Assign a transition with the view that is used if it is a direct child of an EitherView.                                       |
 | `onUpdate(_:)`                    | Run a function every time a view gets updated.                                                                                 |
 | `navigationTitle(_:)`             | Add a title that is used if the view is a direct child of a NavigationView.                                                    |
@@ -51,6 +51,7 @@ There are many more widgets available using auto-generation. Learn [how to use t
 | `focus(_:)`                       | Bind a signal that focuses the view.                                                                                           |
 | `verticalCenter()`                | Wrap a view in a `VStack` and center vertically.                                                                               |
 | `horizontalCenter()`              | Wrap a view in an `HStack` and center horizontally.                                                                            |
+| `dialog(visible:title:content:)`  | Add a dialog to the window containing the view.                                                                                |
 
 ### `Button` Modifiers
 | Syntax                       | Description                                                                             |

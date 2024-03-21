@@ -2,7 +2,7 @@
 //  Carousel.swift
 //  Adwaita
 //
-//  Created by auto-generation on 17.02.24.
+//  Created by auto-generation on 20.03.24.
 //
 
 import CAdw
@@ -56,8 +56,10 @@ public struct Carousel<Element>: Widget where Element: Identifiable {
     /// This signal is emitted after a page has been changed.
     /// 
     /// It can be used to implement "infinite scrolling" by amending the pages
-    /// after every scroll. Note that an empty carousel is indicated by
-    /// `(int)index == -1`.
+    /// after every scroll.
+    /// 
+    /// ::: note
+    /// An empty carousel is indicated by `(int)index == -1`.
     var pageChanged: (() -> Void)?
     /// The dynamic widget elements.
     var elements: [Element]
@@ -219,8 +221,10 @@ public struct Carousel<Element>: Widget where Element: Identifiable {
     /// This signal is emitted after a page has been changed.
     /// 
     /// It can be used to implement "infinite scrolling" by amending the pages
-    /// after every scroll. Note that an empty carousel is indicated by
-    /// `(int)index == -1`.
+    /// after every scroll.
+    /// 
+    /// ::: note
+    /// An empty carousel is indicated by `(int)index == -1`.
     public func pageChanged(_ pageChanged: @escaping () -> Void) -> Self {
         var newSelf = self
         newSelf.pageChanged = pageChanged

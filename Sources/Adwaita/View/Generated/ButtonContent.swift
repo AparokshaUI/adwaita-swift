@@ -2,7 +2,7 @@
 //  ButtonContent.swift
 //  Adwaita
 //
-//  Created by auto-generation on 17.02.24.
+//  Created by auto-generation on 20.03.24.
 //
 
 import CAdw
@@ -29,12 +29,13 @@ import LevenshteinTransformations
 /// 
 /// ```
 /// buttoncontent
+/// ╰── box
 /// ├── image
 /// ╰── label
 /// ```
 /// 
-/// `AdwButtonContent`'s CSS node is called `buttoncontent`. It contains the
-/// subnodes `image` and `label`.
+/// `AdwButtonContent`'s CSS node is called `buttoncontent`. It contains a `box`
+/// subnode that serves as a container for the  `image` and `label` nodes.
 /// 
 /// When inside a `GtkButton` or `AdwSplitButton`, the button will receive the
 /// `.image-text-button` style class. When inside a `GtkMenuButton`, the

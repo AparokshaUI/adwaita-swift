@@ -17,7 +17,7 @@ enum Page: String, Identifiable, CaseIterable, Codable {
     case toolbar
     case transition
     case dice
-    case overlayWindow
+    case dialog
     case toast
     case list
     case carousel
@@ -33,8 +33,6 @@ enum Page: String, Identifiable, CaseIterable, Codable {
 
     var label: String {
         switch self {
-        case .overlayWindow:
-            return "Overlay Window"
         case .viewSwitcher:
             return "View Switcher"
         case .flowBox:
@@ -58,35 +56,35 @@ enum Page: String, Identifiable, CaseIterable, Codable {
     var description: String {
         switch self {
         case .welcome:
-            return "This is a collection of examples for the Swift Adwaita package."
+            return "This is a collection of examples for the Swift Adwaita package"
         case .counter:
-            return "A simple sample view."
+            return "A simple sample view"
         case .windows:
-            return "Showcase window management."
+            return "Showcase window management"
         case .toolbar:
-            return "Toggle the bottom toolbar."
+            return "Toggle the bottom toolbar"
         case .transition:
-            return "A slide transition between two views."
+            return "A slide transition between two views"
         case .dice:
-            return "Roll the dice."
-        case .overlayWindow:
-            return "A window on top of another window."
+            return "Roll the dice"
+        case .dialog:
+            return "A window on top of another window"
         case .toast:
-            return "Show a notification inside of your app."
+            return "Show a notification inside of your app"
         case .list:
-            return "Organize content in multiple rows."
+            return "Organize content in multiple rows"
         case .carousel:
-            return "Scroll horizontally on a touchpad or touchscreen, or scroll down on your mouse wheel."
+            return "Scroll horizontally on a touchpad or touchscreen, or scroll down on your mouse wheel"
         case .viewSwitcher:
-            return "Switch the window's view."
+            return "Switch the window's view"
         case .form:
-            return "Group controls used for data entry."
+            return "Group controls used for data entry"
         case .popover:
-            return "Present content in a bubble-like context popup."
+            return "Present content in a bubble-like context popup"
         case .flowBox:
-            return "Display views in a reflowing grid."
+            return "Display views in a reflowing grid"
         case .navigationView:
-            return "A page-based navigation container."
+            return "A page-based navigation container"
         }
     }
 
@@ -106,8 +104,8 @@ enum Page: String, Identifiable, CaseIterable, Codable {
             TransitionDemo()
         case .dice:
             DiceDemo()
-        case .overlayWindow:
-            OverlayWindowDemo(app: app, window: window)
+        case .dialog:
+            DialogDemo()
         case .toast:
             ToastDemo(toast: toast)
         case .list:

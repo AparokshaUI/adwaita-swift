@@ -24,11 +24,6 @@ struct Demo: App {
                 .icon(.default(icon: .applicationXExecutable))
                 .website(.init(string: "https://david-swift.gitbook.io/adwaita"))
                 .issues(.init(string: "https://github.com/AparokshaUI/adwaita-swift/issues"))
-            Window(id: "overlay", open: 0) { window in
-                OverlayWindowDemo.WindowContent(window: window)
-            }
-            .keyboardShortcut("Escape") { $0.close() }
-            .defaultSize(width: 300, height: 200)
         }
         HelperWindows()
     }

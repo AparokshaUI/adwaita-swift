@@ -2,7 +2,7 @@
 //  HeaderBar.swift
 //  Adwaita
 //
-//  Created by auto-generation on 17.02.24.
+//  Created by auto-generation on 20.03.24.
 //
 
 import CAdw
@@ -16,6 +16,15 @@ import LevenshteinTransformations
 /// features compared to it. Refer to `GtkHeaderBar` for details. It is typically
 /// used as a top bar within [class@ToolbarView].
 /// 
+/// ## Dialog Integration
+/// 
+/// When placed inside an [class@Dialog], `AdwHeaderBar` will display the dialog
+/// title intead of window title. It will also adjust the decoration layout to
+/// ensure it always has a close button and nothing else. Set
+/// [property@HeaderBar:show-start-title-buttons] and
+/// [property@HeaderBar:show-end-title-buttons] to `FALSE` to remove it if it's
+/// unwanted.
+/// 
 /// ## Navigation View Integration
 /// 
 /// When placed inside an [class@NavigationPage], `AdwHeaderBar` will display the
@@ -24,9 +33,10 @@ import LevenshteinTransformations
 /// When used together with [class@NavigationView] or [class@NavigationSplitView],
 /// it will also display a back button that can be used to go back to the previous
 /// page. The button also has a context menu, allowing to pop multiple pages at
-/// once, potentially across multiple navigation views. In rare scenarios, set
-/// [property@HeaderBar:show-back-button] to `FALSE` to disable the back button
-/// if it's unwanted (e.g. in an extra header bar on the same page).
+/// once, potentially across multiple navigation views.
+/// 
+/// Set [property@HeaderBar:show-back-button] to `FALSE` to disable this behavior
+/// in rare scenarios where it's unwanted.
 /// 
 /// ## Split View Integration
 /// 

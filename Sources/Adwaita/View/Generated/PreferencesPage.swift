@@ -2,13 +2,13 @@
 //  PreferencesPage.swift
 //  Adwaita
 //
-//  Created by auto-generation on 17.02.24.
+//  Created by auto-generation on 20.03.24.
 //
 
 import CAdw
 import LevenshteinTransformations
 
-/// A page from [class@PreferencesWindow].
+/// A page from [class@PreferencesDialog].
 /// 
 /// <picture><source srcset="preferences-page-dark.png" media="(prefers-color-scheme: dark)"><img src="preferences-page.png" alt="preferences-page"></picture>
 /// 
