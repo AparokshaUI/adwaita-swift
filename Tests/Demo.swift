@@ -19,12 +19,6 @@ struct Demo: App {
         Window(id: "main") { window in
             DemoContent(window: window, app: app)
         }
-        .overlay {
-            AboutWindow(id: "about", appName: "Demo", developer: "david-swift", version: "Test")
-                .icon(.default(icon: .applicationXExecutable))
-                .website(.init(string: "https://david-swift.gitbook.io/adwaita"))
-                .issues(.init(string: "https://github.com/AparokshaUI/adwaita-swift/issues"))
-        }
         HelperWindows()
     }
 
@@ -78,6 +72,7 @@ struct Demo: App {
         private var height = 450
         @State("maximized")
         private var maximized = false
+        @State private var about = false
         var window: GTUIApplicationWindow
         var app: GTUIApp!
 
@@ -130,6 +125,15 @@ struct Demo: App {
                 }
                 .toast("This is a toast!", signal: toast)
             }
+            .aboutDialog(
+                visible: $about,
+                app: "Demo",
+                developer: "david-swift",
+                version: "Test",
+                icon: .default(icon: .applicationXExecutable),
+                website: .init(string: "https://david-swift.gitbook.io/adwaita"),
+                issues: .init(string: "https://github.com/AparokshaUI/adwaita-swift/issues")
+            )
         }
 
         var menu: View {
@@ -143,7 +147,7 @@ struct Demo: App {
                 }
                 .keyboardShortcut("w".ctrl())
                 MenuSection {
-                    MenuButton("About") { app.addWindow("about", parent: window) }
+                    MenuButton("About") { about = true }
                     MenuButton("Quit", window: false) { app.quit() }
                         .keyboardShortcut("q".ctrl())
                 }
