@@ -13,6 +13,8 @@ struct DialogDemo: View {
 
     @State private var dialog = false
     let padding = 20
+    let width = 300
+    let height = 200
 
     var view: Body {
         VStack {
@@ -23,7 +25,7 @@ struct DialogDemo: View {
             .frame(maxSize: 100)
             .padding()
         }
-        .dialog(visible: $dialog, title: "Counter") {
+        .dialog(visible: $dialog, title: "Counter", width: width, height: height) {
             CounterDemo()
                 .padding(padding)
                 .topToolbar {

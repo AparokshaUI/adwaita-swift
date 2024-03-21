@@ -18,6 +18,10 @@ struct Dialog: Widget {
     var child: View
     /// The content of the dialog.
     var content: Body
+    /// The dialog's width.
+    var width: Int?
+    /// The dialog's height.
+    var height: Int?
 
     /// The ID for the dialog's storage.
     let dialogID = "dialog"
@@ -53,7 +57,10 @@ struct Dialog: Widget {
                 createDialog(storage: storage, modifiers: modifiers)
                 adw_dialog_present(storage.content[dialogID]?.first?.pointer?.cast(), storage.pointer?.cast())
             }
-            adw_dialog_set_title(storage.content[dialogID]?.first?.pointer?.cast(), title ?? "")
+            let pointer = storage.content[dialogID]?.first?.pointer
+            adw_dialog_set_title(pointer?.cast(), title ?? "")
+            adw_dialog_set_content_width(pointer?.cast(), width?.cInt ?? -1)
+            adw_dialog_set_content_height(pointer?.cast(), height?.cInt ?? -1)
         } else {
             if storage.content[dialogID]?.first != nil {
                 adw_dialog_close(storage.content[dialogID]?.first?.pointer?.cast())
@@ -89,9 +96,17 @@ extension View {
     /// - Parameters:
     ///     - visible: Whether the dialog is presented.
     ///     - title: The dialog's title.
+    ///     - width: The dialog's width.
+    ///     - height: The dialog's height.
     ///     - content: The dialog's content.
-    public func dialog(visible: Binding<Bool>, title: String? = nil, @ViewBuilder content: () -> Body) -> View {
-        Dialog(visible: visible, title: title, child: self, content: content())
+    public func dialog(
+        visible: Binding<Bool>,
+        title: String? = nil,
+        width: Int? = nil,
+        height: Int? = nil,
+        @ViewBuilder content: () -> Body
+    ) -> View {
+        Dialog(visible: visible, title: title, child: self, content: content(), width: width, height: height)
     }
 
 }
