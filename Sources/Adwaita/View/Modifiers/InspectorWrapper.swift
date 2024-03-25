@@ -38,6 +38,9 @@ struct InspectorWrapper: Widget {
 
 extension View {
 
+    /// The identifier for the focus event controller.
+    static var focus: String { "focus" }
+
     /// Modify a GTUI widget before being displayed and when being updated.
     /// - Parameter modify: Modify the widget.
     /// - Returns: A view.
@@ -142,14 +145,22 @@ extension View {
     /// - Parameter focus: Whether the view is focused.
     /// - Returns: A view.
     public func focused(_ focused: Binding<Bool>) -> View {
-        inspect { storage in
-            storage.notify(name: "has-focus", id: "focused") {
-                let newValue = gtk_widget_has_focus(storage.pointer?.cast()) != 0
+        inspectOnAppear { storage in
+            let controller = gtk_event_controller_focus_new()
+            storage.content[Self.focus] = [.init(controller)]
+            gtk_widget_add_controller(storage.pointer?.cast(), controller)
+        }
+        .inspect { storage in
+            guard let controller = storage.content[Self.focus]?.first else {
+                return
+            }
+            controller.notify(name: "contains-focus", id: "focused") {
+                let newValue = gtk_event_controller_focus_contains_focus(controller.pointer) != 0
                 if focused.wrappedValue != newValue {
                     focused.wrappedValue = newValue
                 }
             }
-            if focused.wrappedValue != (gtk_widget_has_focus(storage.pointer?.cast()) != 0) {
+            if focused.wrappedValue != (gtk_event_controller_focus_contains_focus(controller.pointer) != 0) {
                 gtk_widget_grab_focus(storage.pointer?.cast())
             }
         }
