@@ -14,8 +14,19 @@ This is a beginner tutorial. We will create a simple "Hello, world!" app using _
 ## Add the Dependency
 1. Open the `Package.swift` file.
 2. Add the following line of code after `name: "HelloWorld",`:
-```
+```swift
 dependencies: [.package(url: "https://github.com/AparokshaUI/Adwaita", from: "0.1.1")],
+```
+3. Add the dependency to the executable target:
+```swift
+targets: [
+    // Targets are the basic building blocks of a package, defining a module or a test suite.
+    // Targets can depend on other targets in this package and products from dependencies.
+    .executableTarget(
+        name: "HelloWorld",
+        dependencies: [.product(name: "Adwaita", package: "Adwaita")]
+    ),
+]
 ```
 
 ## Create the App
