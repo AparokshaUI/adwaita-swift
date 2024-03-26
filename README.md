@@ -67,6 +67,8 @@ _Adwaita_’s main goal is to provide an easy-to-use interface for creating GNOM
 
 If you want to use _Adwaita_ in a project, but there are widgets missing, open an [issue on GitHub][9].
 
+Find more information about the project's motivation in [this blog post](https://www.swift.org/blog/adwaita-swift/).
+
 ## Widgets
 
 An overview of the widgets supported by _Adwaita_ is available [here](user-manual/Information/Widgets.md).
