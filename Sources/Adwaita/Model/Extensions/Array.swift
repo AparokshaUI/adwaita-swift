@@ -91,23 +91,16 @@ extension Array {
     ///   ```
     public subscript(safe index: Int?) -> Element? {
         get {
-            if let index, checkIndex(index) {
+            if let index, indices.contains(index) {
                 return self[index]
             }
             return nil
         }
         set {
-            if let index, let value = newValue, checkIndex(index) {
+            if let index, let value = newValue, indices.contains(index) {
                 self[index] = value
             }
         }
-    }
-
-    /// Check if a given index is valid for the array.
-    /// - Parameter index: The index to test.
-    /// - Returns: Return whether the index is valid or not.
-    private func checkIndex(_ index: Int) -> Bool {
-        index < count && index >= 0
     }
 
 }
