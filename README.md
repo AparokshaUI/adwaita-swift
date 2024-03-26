@@ -73,6 +73,17 @@ An overview of the widgets supported by _Adwaita_ is available [here](user-manua
 
 ## Installation
 ### Dependencies
+#### Flatpak
+
+It is recommended to develop apps inside of a Flatpak.
+That way, you don't have to install Swift or any of the dependencies on your system, and you always have access to the latest versions.
+Take a look at the [template repository](https://github.com/AparokshaUI/AdwaitaTemplate).
+This works on Linux only.
+
+#### Directly on System
+
+You can also run your apps directly on the system.
+
 If you are using a Linux distribution, install `libadwaita-devel` or `libadwaita` (or something similar, based on the package manager) as well as `gtk4-devel`, `gtk4` or similar.
 
 On macOS, follow these steps:
