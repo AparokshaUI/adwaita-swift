@@ -1,0 +1,82 @@
+@Tutorial {
+
+    @Intro(title: "The template") {
+        This is a beginner tutorial. It shows how to create a simple "Hello, world!" app using ``Adwaita``.
+        While there are instructions for building on macOS, _Adwaita for Swift_ works best on Linux.
+    }
+    
+    @Section(title: "Installation") {
+        @ContentAndMedia {
+            Learn how to set up your Linux system or your Mac.
+        }
+        @Steps {
+            @Step {
+                **If you are on Linux,** install the [GNOME Builder IDE](https://flathub.org/apps/org.gnome.Builder).
+                @Image(source: "Builder.png", alt: "GNOME Builder in the GNOME Software app store.")
+            }
+            @Step {
+                **If you are on macOS,** install [Xcode](https://developer.apple.com/xcode/).
+                Open your terminal client and follow the [installation instructions for Homebrew](https://brew.sh).
+                Then, run `brew install libadwaita`.
+                @Image(source: "InstallLibadwaita.png", alt: "The macOS Terminal application.")
+            }
+        }
+    }
+    
+    @Section(title: "Clone the template repository") {
+        @ContentAndMedia {
+            The template repository provides a simple, working app that can be used as a starting point for your own app.
+            In this section, you'll create a simple "Hello, world!" app and run the app.
+        }
+        @Steps {
+            @Step {
+                Open your terminal client and navigate to a directory you want to create the package in (e.g. `~/Documents/`).
+                @Image(source: "ChangeDirectory.png", alt: "The GNOME Console app.")
+            }
+            @Step {
+                Clone the template repository into the `HelloWorld` directory using `git clone https://github.com/AparokshaUI/AdwaitaTemplate HelloWorld`.
+                
+                This creates a directory `HelloWorld` containing the content of the [Adwaita Template](https://github.com/AparokshaUI/AdwaitaTemplate).
+                @Image(source: "GitClone.png", alt: "The GNOME Console app.")
+            }
+            @Step {
+                **If you are on Linux,** use the `Select a Folder...` button in the welcome window of GNOME Builder to open the `HelloWorld` directory.
+                
+                It will start to install the dependencies automatically.
+                @Image(source: "OpenFolder.png", alt: "GNOME Builder's welcome view.")
+            }
+            @Step {
+                **If you are on macOS,** use the `Open Existing Project...` button in the welcome window of Xcode to open the `HelloWorld` directory.
+                @Image(source: "OpenXcode.png", alt: "Xcode's welcome view.")
+            }
+            @Step {
+                Select the `Package.swift` file in the sidebar.
+                
+                This file defines that this Swift _package_ contains an executable, and lists the dependencies required by the executable.
+                One can see that the Swift files that are part of the executable are located in the `Sources` folder.
+                @Code(name: "Package.swift", file: "Package.swift")
+            }
+            @Step {
+                Open the `io.github.AparokshaUI.AdwaitaTemplate.json` file.
+                
+                This file is relevant for Linux only.
+                It informs the GNOME Builder about the required dependencies of your app, and how to build and install your app.
+                It is called a [Flatpak manifest](https://docs.flatpak.org/en/latest/manifests.html).
+                @Code(name: "io.github.AparokshaUI.AdwaitaTemplate.json", file: "io.github.AparokshaUI.AdwaitaTemplate.json")
+            }
+            @Step {
+                The `Sources` folder contains the actual Swift code of your app.
+                Open the `AdwaitaTemplate.swift` file to see the definition of an app and its user interface.
+                @Code(name: "AdwaitaTemplate.swift", file: "AdwaitaTemplate.swift")
+            }
+            @Step {
+                Run the app using the play button in Xcode or GNOME Builder.
+                A window should open.
+                
+                On macOS, the window will look slightly different from the one in the screenshot. Note that libadwaita is built for Linux and therefore works best on Linux.
+                @Image(source: "AdwaitaTemplate.png", alt: "The result.")
+            }
+        }
+    }
+
+}

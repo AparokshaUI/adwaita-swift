@@ -1,0 +1,13 @@
+@Tutorials(name: "Develop Apps for GNOME") {
+
+    @Intro(title: "Develop Apps for GNOME") {
+        Learn the basics of _Adwaita for Swift_ to create beautiful apps for the GNOME desktop.
+    }
+
+    @Chapter(name: "Adwaita for Swift essentials") {
+        Get to know the most important principles of the _Adwaita for Swift_ framework.
+        @TutorialReference(tutorial: "doc:HelloWorld")
+        @Image(source: "AdwaitaIcon.png", alt: "The Adwaita for Swift icon.")
+    }
+
+}
