@@ -29,14 +29,14 @@ targets: [
 ]
 ```
 
-4. On macos you may need to set the platform version. Add the following after `name: "HelloWorld",`:
+4. On macOS you may need to set the platform version. Add the following after `name: "HelloWorld",`:
 
 ```swift
 platforms: [.macOS(.v10_15)],
 ```
 
 ## Create the App
-1. Navigate to `Sources/main.swift`.
+1. Navigate to `Sources/main.swift`. On macOS, you may have to change the file name to something else, e.g. `HelloWorld.swift`.
 2. An app that uses the _Adwaita_ framework has a structure that conforms to the `App` protocol. The `scene` property returns one or more windows which provide content for display. An `@main` attribute marks it as the entry point of the app.
    Replace `print("Hello, world!")` by your first app:
 ```swift
