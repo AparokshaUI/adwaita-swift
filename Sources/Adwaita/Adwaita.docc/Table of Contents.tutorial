@@ -1,7 +1,7 @@
 @Tutorials(name: "Develop Apps for GNOME") {
 
     @Intro(title: "Develop Apps for GNOME") {
-        Learn the basics of _Adwaita for Swift_ to create beautiful apps for the GNOME desktop.
+        Learn the basics of _``Adwaita`` for Swift_ to create beautiful apps for the GNOME desktop.
     }
 
     @Chapter(name: "Adwaita for Swift essentials") {
