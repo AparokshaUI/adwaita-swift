@@ -30,7 +30,7 @@ In this example, the widgets ``HeaderBar`` and ``Text`` are used.
 `padding` is a view modifier, a function that modifies a view, which adds some padding around the text.
 
 ## Create custom views
-While directly adding widgets into the `Window`'s body might work for very simple apps,
+While directly adding widgets into the ``Window``'s body might work for very simple apps,
 it can get messy very quickly.
 Create custom views by declaring types that conform to the ``View`` protocol:
 ```swift

@@ -81,3 +81,14 @@ Find more information in the [template repository](https://github.com/AparokshaU
 ### Tutorials
 
 - <doc:Table-of-Contents>
+
+### Basics
+
+- <doc:CreatingViews>
+- <doc:Windows>
+- <doc:KeyboardShortcuts>
+
+### Advanced
+
+- <doc:CreatingWidgets>
+- <doc:PublishingApps>

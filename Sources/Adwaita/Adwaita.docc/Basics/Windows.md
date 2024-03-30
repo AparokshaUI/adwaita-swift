@@ -32,7 +32,7 @@ struct HelloWorld: App {
 ```
 
 ## Showing windows
-Every app contains the property `app`. 
+Every app contains the property ``App/app``. 
 You can use this property for running functions that affect the whole app, e.g. quitting the app.
 Another use case is showing a window:
 ```swift
@@ -66,7 +66,7 @@ It should be used for opening windows that cannot be presented more than once
 and for moving a window that is already open into the foreground.
 
 ## Adding windows
-You can call the `addWindow(_:parent:)` function instead of `showWindow(_:)`
+You can call the ``GTUIApp/addWindow(_:parent:)`` function instead of ``GTUIApp/showWindow(_:)``
 if you want to add and focus another instance of a window type:
 ```swift
 @main
