@@ -1,5 +1,0 @@
-**TYPEALIAS**
-
-# `Icon`
-
-An icon.

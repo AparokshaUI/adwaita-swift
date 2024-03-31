@@ -27,9 +27,9 @@ Open the project folder in GNOME Builder, Xcode or another IDE.
 - The `LICENSE.md` contains an GPL-3.0 license.
 - `CONTRIBUTING.md` is this file.
 - Directory `Icons` that contains PNG and PXD (Pixelmator Pro) files for the images used in the app and guides.
-- Directory `Documentation` that contains the documentation generated with [SourceDocs][1].
 - `Sources` contains the source code of the project.
 	- `Adwaita` contains the source code of the project.
+    - `Adwaita.docc` contains documentation.
 		- `Model` is the directory with Adwaita's basis.
 			- `Data Flow` contains property wrappers and protocols required for managing the updates of a view.
 			- `Extensions` contains all the extensions of types that are not defined in this project.
@@ -48,5 +48,3 @@ Commit and push the fork.
 
 ### 6. Pull Request
 Open GitHub to submit a pull request. Thank you very much for your contribution!
-
-[1]:	https://github.com/SourceDocs/SourceDocs
