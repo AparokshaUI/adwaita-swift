@@ -48,6 +48,9 @@ public struct Binding<Value> {
         }
         nonmutating set {
             setValue(newValue)
+            for handler in handlers {
+                handler(newValue)
+            }
         }
     }
 
@@ -64,6 +67,8 @@ public struct Binding<Value> {
     private let getValue: () -> Value
     /// The closure for settings the value.
     private let setValue: (Value) -> Void
+    /// Handlers observing whether the binding changes.
+    private var handlers: [(Value) -> Void] = []
 
     /// Get a property of any content of a `Binding` as a `Binding`.
     /// - Parameter dynamicMember: The path to the member.
@@ -94,6 +99,15 @@ public struct Binding<Value> {
             value
         } set: { _ in
         }
+    }
+
+    /// Observe whether data is changed over this binding.
+    /// - Parameter handler: The handler.
+    /// - Returns: The binding.
+    public func onSet(_ handler: @escaping (Value) -> Void) -> Self {
+        var newSelf = self
+        newSelf.handlers.append(handler)
+        return newSelf
     }
 
 }
