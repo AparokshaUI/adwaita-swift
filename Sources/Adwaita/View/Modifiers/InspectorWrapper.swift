@@ -160,7 +160,7 @@ extension View {
                     focused.wrappedValue = newValue
                 }
             }
-            if focused.wrappedValue != (gtk_event_controller_focus_contains_focus(controller.pointer) != 0) {
+            if gtk_event_controller_focus_contains_focus(controller.pointer) == 0, focused.wrappedValue {
                 gtk_widget_grab_focus(storage.pointer?.cast())
             }
         }
