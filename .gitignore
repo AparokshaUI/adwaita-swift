@@ -9,3 +9,4 @@ DerivedData/
 .netrc
 /Package.resolved
 .Ulysses-Group.plist
+/.docc-build

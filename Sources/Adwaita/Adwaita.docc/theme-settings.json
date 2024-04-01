@@ -1,0 +1,45 @@
+{
+    "theme": {
+        "border-radius": "10px",
+        "button": {
+            "border-radius": "20px"
+        },
+        "color": {
+            "button-background": "#ea3358",
+            "button-background-active": "#ea3358",
+            "button-background-hover": "#fc557a",
+            "button-text": "#ffffff",
+            "header": "#7f313b",
+            "documentation-intro-accent": "var(--color-header)",
+            "documentation-intro-fill": "radial-gradient(circle at top, var(--color-header) 30%, #000 100%)",
+            "link": "#ea3358",
+            "nav-link-color": "#ea3358",
+            "nav-dark-link-color": "#ea3358",
+            "tutorials-overview-link": "#fb4469",
+            "step-background": {
+                "light": "#fffaff",
+                "dark": "#302c2d"
+            },
+            "step-focused": "#ea3358",
+            "tabnav-item-border-color": "#ea3358",
+            "tutorial-background": {
+                "light": "",
+                "dark": "#1d1d1f"
+            },
+            "fill-light-blue-secondary": "#ea3358",
+            "fill-blue": "#ea3358",
+            "figure-blue": "#ea3358",
+            "standard-blue-documentation-intro-fill": "#ea3358",
+            "figure-blue": "#ea3358",
+            "tutorial-hero-background": "#100a0b",
+            "navigator-item-hover": {
+                "light": "#ea335815",
+                "dark": "#7f313b"
+            }
+        },
+        "additionalProperties": "#ea3358",
+        "tutorial-step": {
+            "border-radius": "15px"
+        }
+    }
+}
