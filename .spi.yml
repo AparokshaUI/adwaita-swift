@@ -1,6 +1,6 @@
 version: 1
 external_links:
-  documentation: "aparokshaui.github.io/adwaita-swift/"
+  documentation: "https://aparokshaui.github.io/adwaita-swift/"
 builder:
   configs:
     - platform: linux
