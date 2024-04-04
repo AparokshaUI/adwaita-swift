@@ -1,3 +1,17 @@
 version: 1
 external_links:
-    documentation: "aparokshaui.github.io/adwaita-swift/"
+  documentation: "https://aparokshaui.github.io/adwaita-swift/"
+builder:
+  configs:
+    - platform: linux
+      swift_version: '5.10'
+      image: registry.gitlab.com/finestructure/spi-images:adwaita-5.10-latest
+    - platform: linux
+      swift_version: '5.9'
+      image: registry.gitlab.com/finestructure/spi-images:adwaita-5.9-latest
+    - platform: linux
+      swift_version: '5.8'
+      image: registry.gitlab.com/finestructure/spi-images:adwaita-5.8-latest
+    - platform: linux
+      swift_version: '5.7'
+      image: registry.gitlab.com/finestructure/spi-images:adwaita-5.7-latest

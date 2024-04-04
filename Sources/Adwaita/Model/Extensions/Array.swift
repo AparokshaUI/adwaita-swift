@@ -105,18 +105,23 @@ extension Array {
 
 }
 
-extension Binding where Value == [Any] {
+extension Binding where Value: MutableCollection {
 
     /// Get a child at a certain index of the array as a binding.
     /// - Parameters:
     ///     - index: The child's index.
     ///     - defaultValue: The value used if the index is out of range does not exist.
     /// - Returns: The child as a binding.
-    public subscript(safe index: Int?, default defaultValue: Value.Element) -> Binding<Value.Element> {
+    public subscript(safe index: Value.Index?, default defaultValue: Value.Element) -> Binding<Value.Element> {
         .init {
-            wrappedValue[safe: index] ?? defaultValue
+            if let index, wrappedValue.indices.contains(index) {
+                return wrappedValue[index] ?? defaultValue
+            }
+            return defaultValue
         } set: { newValue in
-            wrappedValue[safe: index] = newValue
+            if let index, wrappedValue.indices.contains(index) {
+                wrappedValue[index] = newValue
+            }
         }
     }
 
