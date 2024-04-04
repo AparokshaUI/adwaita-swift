@@ -105,24 +105,19 @@ extension Array {
 
 }
 
-extension Binding where Value: MutableCollection {
+extension Array where Element: Identifiable {
 
-    /// Get a child at a certain index of the array as a binding.
+    /// Accesses the element with a certain id safely.
     /// - Parameters:
-    ///     - index: The child's index.
-    ///     - defaultValue: The value used if the index is out of range does not exist.
-    /// - Returns: The child as a binding.
-    public subscript(safe index: Value.Index?, default defaultValue: Value.Element) -> Binding<Value.Element> {
-        .init {
-            if let index, wrappedValue.indices.contains(index) {
-                return wrappedValue[index] ?? defaultValue
-            }
-            return defaultValue
-        } set: { newValue in
-            if let index, wrappedValue.indices.contains(index) {
-                wrappedValue[index] = newValue
-            }
-        }
+    ///   - id: The child's id.
+    ///
+    ///   Access and set elements the safe way:
+    ///   ```swift
+    ///   var array = ["Hello", "World"]
+    ///   print(array[safe: 2] ?? "Out of range")
+    ///   ```
+    public subscript(id id: Element.ID) -> Element? {
+        self[safe: firstIndex { $0.id == id }]
     }
 
 }

@@ -111,3 +111,38 @@ public struct Binding<Value> {
     }
 
 }
+
+extension Binding where Value: MutableCollection {
+
+    /// Get a child at a certain index of the array as a binding.
+    /// - Parameters:
+    ///     - index: The child's index.
+    ///     - defaultValue: The value used if the index is out of range does not exist.
+    /// - Returns: The child as a binding.
+    public subscript(safe index: Value.Index?, default defaultValue: Value.Element) -> Binding<Value.Element> {
+        .init {
+            if let index, wrappedValue.indices.contains(index) {
+                return wrappedValue[index] ?? defaultValue
+            }
+            return defaultValue
+        } set: { newValue in
+            if let index, wrappedValue.indices.contains(index) {
+                wrappedValue[index] = newValue
+            }
+        }
+    }
+
+}
+
+extension Binding where Value: MutableCollection, Value.Element: Identifiable {
+
+    /// Get a child of the array with a certain id as a binding.
+    /// - Parameters:
+    ///     - id: The child's id.
+    ///     - defaultValue: The value used if the index is out of range does not exist.
+    /// - Returns: The child as a binding.
+    public subscript(id id: Value.Element.ID?, default defaultValue: Value.Element) -> Binding<Value.Element> {
+        self[safe: wrappedValue.firstIndex { $0.id == id }, default: defaultValue]
+    }
+
+}
