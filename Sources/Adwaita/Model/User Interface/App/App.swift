@@ -47,7 +47,7 @@ extension App {
 
     /// Initialize and get the GTUI app.
     ///
-    /// To run the app, call the ``GTUIApp/run()`` function.
+    /// To run the app, call the ``GTUIApp/run(automaticSetup:manualSetup:)`` function.
     public static func setupApp() -> GTUIApp {
         var appInstance = self.init()
         appInstance.app = GTUIApp(appInstance.id) { appInstance }

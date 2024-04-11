@@ -244,7 +244,7 @@ func alertdialog_on_close_cb(
     var id = ""
     if let answer {
         let answer = String(cString: answer)
-        id = .init(answer.split(separator: "....").first ?? "")
+        id = .init(answer.components(separatedBy: "....").first ?? "")
         (storage.fields[AlertDialog.callbacks + id] as? [String: () -> Void])?[answer]?()
     }
     storage.content[AlertDialog.dialogID + id] = []
