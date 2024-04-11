@@ -41,6 +41,14 @@ extension App {
 
     /// The application's entry point.
     public static func main() {
+        let app = setupApp()
+        app.run()
+    }
+
+    /// Initialize and get the GTUI app.
+    ///
+    /// To run the app, call the ``GTUIApp/run()`` function.
+    public static func setupApp() -> GTUIApp {
         var appInstance = self.init()
         appInstance.app = GTUIApp(appInstance.id) { appInstance }
         GTUIApp.updateHandlers.append { force in
@@ -57,7 +65,7 @@ extension App {
             }
         }
         GTUIApp.appID = appInstance.id
-        appInstance.app.run()
+        return appInstance.app
     }
 
 }

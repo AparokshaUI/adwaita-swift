@@ -48,8 +48,16 @@ public class GTUIApp {
     }
 
     /// Run the application.
-    public func run() {
-        let data = ViewStorage.SignalData { self.onActivate() }
+    /// - Parameters:
+    ///     - automaticSetup: Whether the initial windows should be added.
+    ///     - manualSetup: A closure that is executed in the main loop.
+    public func run(automaticSetup: Bool = true, manualSetup: @escaping () -> Void = { }) {
+        let data = ViewStorage.SignalData {
+            if automaticSetup {
+                self.onActivate()
+            }
+            manualSetup()
+        }
         fields["run"] = data
         g_signal_connect_data(
             pointer?.cast(),
