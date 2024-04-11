@@ -91,11 +91,15 @@ struct AboutDialog: Widget {
 
 extension View {
 
-    /// Add a dialog to the parent window.
+    /// Add an about dialog to the parent window.
     /// - Parameters:
     ///     - visible: Whether the dialog is presented.
-    ///     - title: The dialog's title.
-    ///     - content: The dialog's content.
+    ///     - app: The app's name.
+    ///     - developer: The developer's name.
+    ///     - version: The version string.
+    ///     - icon: The app icon.
+    ///     - website: The app's website.
+    ///     - issues: Website for reporting issues.
     public func aboutDialog(
         visible: Binding<Bool>,
         app: String? = nil,

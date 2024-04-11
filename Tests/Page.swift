@@ -18,6 +18,7 @@ enum Page: String, Identifiable, CaseIterable, Codable {
     case transition
     case dice
     case dialog
+    case alertDialog
     case toast
     case list
     case carousel
@@ -39,6 +40,8 @@ enum Page: String, Identifiable, CaseIterable, Codable {
             return "Flow Box"
         case .navigationView:
             return "Navigation View"
+        case .alertDialog:
+            return "Alert Dialog"
         default:
             return rawValue.capitalized
         }
@@ -69,6 +72,8 @@ enum Page: String, Identifiable, CaseIterable, Codable {
             return "Roll the dice"
         case .dialog:
             return "A window on top of another window"
+        case .alertDialog:
+            return "A dialog presenting a message or question"
         case .toast:
             return "Show a notification inside of your app"
         case .list:
@@ -106,6 +111,8 @@ enum Page: String, Identifiable, CaseIterable, Codable {
             DiceDemo()
         case .dialog:
             DialogDemo()
+        case .alertDialog:
+            AlertDialogDemo()
         case .toast:
             ToastDemo(toast: toast)
         case .list:
