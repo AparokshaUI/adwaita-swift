@@ -26,6 +26,12 @@ jobs:
           brew update
           brew install libadwaita
           sed -i '' 's/-I..includedir.//g' $(brew --prefix)/Library/Homebrew/os/mac/pkgconfig/*/libffi.pc
+      - name: Clone DocC Repo
+        run: |
+          git clone https://github.com/AparokshaUI/Adwaita.docc Sources/Adwaita/Adwaita.docc
+          rm Sources/Adwaita/Adwaita.docc/LICENSE.md
+          rm Sources/Adwaita/Adwaita.docc/README.md
+          y | rm -r Sources/Adwaita/Adwaita.docc/.git
       - name: Build Docs
         run: |
           xcrun xcodebuild docbuild \
