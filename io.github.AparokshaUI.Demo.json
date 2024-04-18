@@ -1,0 +1,50 @@
+{
+  "app-id": "io.github.AparokshaUI.Demo",
+  "runtime": "org.gnome.Platform",
+  "runtime-version": "46",
+  "sdk": "org.gnome.Sdk",
+  "sdk-extensions": [
+    "org.freedesktop.Sdk.Extension.swift5"
+  ],
+  "command": "Demo",
+  "finish-args": [
+    "--share=network",
+    "--share=ipc",
+    "--socket=fallback-x11",
+    "--device=dri",
+    "--socket=wayland"
+  ],
+  "build-options": {
+    "append-path": "/usr/lib/sdk/swift5/bin",
+    "prepend-ld-library-path": "/usr/lib/sdk/swift5/lib"
+  },
+  "cleanup": [
+    "/include",
+    "/lib/pkgconfig",
+    "/man",
+    "/share/doc",
+    "/share/gtk-doc",
+    "/share/man",
+    "/share/pkgconfig",
+    "/share/vala",
+    "*.la",
+    "*.a"
+  ],
+  "modules": [
+    {
+      "name": "Demo",
+      "builddir": true,
+      "buildsystem": "simple",
+      "sources": [
+        {
+          "type": "dir",
+          "path": "."
+        }
+      ],
+      "build-commands": [
+        "swift build -c release --static-swift-stdlib",
+        "install -Dm755 .build/release/Demo /app/bin/Demo"
+      ]
+    }
+  ]
+}
