@@ -72,7 +72,7 @@ public struct State<Value>: StateProtocol {
     ///     - wrappedValue: The wrapped value.
     ///     - forceUpdates: Whether to force update all available views when the property gets modified.
     public init(wrappedValue: Value, forceUpdates: Bool = false) {
-        content = .init(storage: .init(value: wrappedValue))
+        content = .init(initialValue: wrappedValue)
         self.forceUpdates = forceUpdates
     }
 
@@ -80,12 +80,39 @@ public struct State<Value>: StateProtocol {
     public class Content {
 
         /// The storage.
-        public var storage: Storage
+        public var storage: Storage {
+            get {
+                if let internalStorage {
+                    return internalStorage
+                }
+                let storage = Storage(value: initialValue)
+                internalStorage = storage
+                return storage
+            }
+            set {
+                internalStorage = newValue
+            }
+        }
+        /// The internal storage.
+        var internalStorage: Storage?
+        /// The initial value.
+        private var initialValue: Value
 
         /// Initialize the content.
         /// - Parameter storage: The storage.
+        @available(*, deprecated, message: "Use a safer initializer instead")
         public init(storage: Storage) {
+            // swiftlint:disable force_cast
+            let initialValue = storage.value as! Value
+            // swiftlint:enable force_cast
+            self.initialValue = initialValue
             self.storage = storage
+        }
+
+        /// Initialize the content.
+        /// - Parameter initialValue: The initial value.
+        public init(initialValue: Value) {
+            self.initialValue = initialValue
         }
 
     }
@@ -156,7 +183,7 @@ extension State where Value: Codable {
     ///
     /// The folder path will be appended to the XDG data home directory.
     public init(wrappedValue: Value, _ key: String, folder: String? = nil, forceUpdates: Bool = false) {
-        content = .init(storage: .init(value: wrappedValue))
+        content = .init(initialValue: wrappedValue)
         self.forceUpdates = forceUpdates
         content.storage.key = key
         content.storage.folder = folder

@@ -122,7 +122,7 @@ extension Binding where Value: MutableCollection {
     public subscript(safe index: Value.Index?, default defaultValue: Value.Element) -> Binding<Value.Element> {
         .init {
             if let index, wrappedValue.indices.contains(index) {
-                return wrappedValue[index] ?? defaultValue
+                return wrappedValue[index]
             }
             return defaultValue
         } set: { newValue in
