@@ -8,6 +8,7 @@
 // swiftlint:disable missing_docs implicitly_unwrapped_optional
 
 import Adwaita
+import Foundation
 
 enum Page: String, Identifiable, CaseIterable, Codable {
 
@@ -27,6 +28,7 @@ enum Page: String, Identifiable, CaseIterable, Codable {
     case popover
     case flowBox
     case navigationView
+    case picture
 
     var id: Self {
         self
@@ -90,12 +92,14 @@ enum Page: String, Identifiable, CaseIterable, Codable {
             return "Display views in a reflowing grid"
         case .navigationView:
             return "A page-based navigation container"
+        case .picture:
+            return "Display an image"
         }
     }
 
     // swiftlint:disable cyclomatic_complexity
     @ViewBuilder
-    func view(app: GTUIApp!, window: GTUIApplicationWindow, toast: Signal) -> Body {
+    func view(app: GTUIApp!, window: GTUIApplicationWindow, toast: Signal, pictureURL: URL?) -> Body {
         switch self {
         case .welcome:
             []
@@ -129,6 +133,8 @@ enum Page: String, Identifiable, CaseIterable, Codable {
             FlowBoxDemo()
         case .navigationView:
             NavigationViewDemo(app: app)
+        case .picture:
+            PictureDemo(url: pictureURL, app: app, window: window)
         }
     }
     // swiftlint:enable cyclomatic_complexity

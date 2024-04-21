@@ -8,6 +8,7 @@
 // swiftlint:disable missing_docs implicitly_unwrapped_optional no_magic_numbers
 
 import Adwaita
+import Foundation
 
 @main
 struct Demo: App {
@@ -15,11 +16,14 @@ struct Demo: App {
     let id = "io.github.AparokshaUI.Demo"
     var app: GTUIApp!
 
+    @State private var pictureURL: URL?
+
     var scene: Scene {
         Window(id: "main") { window in
-            DemoContent(window: window, app: app)
+            DemoContent(window: window, app: app, pictureURL: pictureURL)
         }
         HelperWindows()
+        FileDialog(importer: "picture", extensions: ["jpg", "jpeg", "png", "svg"]) { pictureURL = $0 } onClose: { }
     }
 
     struct HelperWindows: WindowSceneGroup {
@@ -75,6 +79,7 @@ struct Demo: App {
         @State private var about = false
         var window: GTUIApplicationWindow
         var app: GTUIApp!
+        var pictureURL: URL?
 
         var view: Body {
             OverlaySplitView(visible: $sidebarVisible) {
@@ -99,7 +104,7 @@ struct Demo: App {
                     selection.label,
                     icon: selection.icon,
                     description: selection.description
-                ) { selection.view(app: app, window: window, toast: toast) }
+                ) { selection.view(app: app, window: window, toast: toast, pictureURL: pictureURL) }
                 .topToolbar {
                     HeaderBar {
                         Toggle(icon: .default(icon: .sidebarShow), isOn: $sidebarVisible)

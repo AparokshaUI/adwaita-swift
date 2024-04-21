@@ -2,7 +2,7 @@
 //  ToolbarView.swift
 //  Adwaita
 //
-//  Created by auto-generation on 20.03.24.
+//  Created by auto-generation on 21.04.24.
 //
 
 import CAdw
@@ -34,8 +34,8 @@ import LevenshteinTransformations
 /// 
 /// By default, top and bottom bars are flat and scrolling content has a subtle
 /// undershoot shadow, same as when using the
-/// [`.undershoot-top`](style-classes.html#undershot-indicators) and
-/// [`.undershoot-bottom`](style-classes.html#undershot-indicators) style
+/// [`.undershoot-top`](style-classes.html#undershoot-indicators) and
+/// [`.undershoot-bottom`](style-classes.html#undershoot-indicators) style
 /// classes. This works well in most cases, e.g. with [class@StatusPage] or
 /// [class@PreferencesPage], where the background at the top and bottom parts of
 /// the page is uniform. Additionally, windows with sidebars should always use

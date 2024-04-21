@@ -2,7 +2,7 @@
 //  ScrolledWindow.swift
 //  Adwaita
 //
-//  Created by auto-generation on 20.03.24.
+//  Created by auto-generation on 21.04.24.
 //
 
 import CAdw

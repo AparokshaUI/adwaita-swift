@@ -259,7 +259,8 @@ struct GenerationConfiguration {
             bindings: [.init(property: "text")],
             excludeProperties: ["input-hints", "input-purpose"]
         ),
-        .init(class: "SearchBar")
+        .init(class: "SearchBar"),
+        .init(class: "Picture", excludeProperties: ["content-fit", "file", "paintable"])
     ]
 
     /// The unshortening map.
