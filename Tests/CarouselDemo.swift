@@ -36,7 +36,7 @@ struct CarouselDemo: View {
             .onClick { print(element.id) }
             .padding(20)
             .frame(minWidth: 300, minHeight: 200)
-            .frame(maxSize: 500)
+            .frame(maxWidth: 500)
         }
         .longSwipes()
     }

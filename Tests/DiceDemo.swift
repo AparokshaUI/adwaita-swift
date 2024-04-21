@@ -28,7 +28,7 @@ struct DiceDemo: View {
             }
             .style("pill")
             .style("suggested-action")
-            .frame(maxSize: 100)
+            .frame(maxWidth: 100)
         }
         .valign(.center)
         .padding()

@@ -19,7 +19,7 @@ struct FormDemo: View {
                 app.showWindow("form-demo")
             }
             .style("suggested-action")
-            .frame(maxSize: 100)
+            .frame(maxWidth: 100)
         }
     }
 
@@ -62,7 +62,7 @@ struct FormDemo: View {
                     })
                 }
                 .padding()
-                .frame(maxSize: 400)
+                .frame(maxWidth: 400)
             }
             .topToolbar {
                 HeaderBar.empty()

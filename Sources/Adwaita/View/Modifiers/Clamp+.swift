@@ -27,6 +27,7 @@ extension View {
     /// Set the view's maximum width.
     /// - Parameter maxSize: The maximum width.
     /// - Returns: A view.
+    @available(*, deprecated, message: "Use frame(maxWidth:) on views instead")
     public func frame(maxSize: Int? = nil) -> Clamp {
         frame(maxWidth: maxSize)
     }

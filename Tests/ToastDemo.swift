@@ -19,7 +19,7 @@ struct ToastDemo: View {
                 toast.signal()
             }
             .style("suggested-action")
-            .frame(maxSize: 100)
+            .frame(maxWidth: 100)
         }
     }
 

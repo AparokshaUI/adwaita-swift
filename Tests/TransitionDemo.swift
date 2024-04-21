@@ -27,14 +27,14 @@ struct TransitionDemo: View {
         }
         .modifyContent(Text.self) { $0.style("title-2").padding() }
         .style("card")
-        .frame(maxSize: 200)
+        .frame(maxWidth: 200)
         .padding()
         Button("Toggle View") {
             firstView.toggle()
         }
         .style("pill")
         .padding()
-        .frame(maxSize: 100)
+        .frame(maxWidth: 100)
     }
 
 }

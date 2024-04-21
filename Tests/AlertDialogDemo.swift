@@ -20,7 +20,7 @@ struct AlertDialogDemo: View {
                 dialog = true
             }
             .style("pill")
-            .frame(maxSize: 100)
+            .frame(maxWidth: 100)
             .padding()
         }
         .alertDialog(visible: $dialog, heading: "Alert Dialog", body: "This is an alert dialog")

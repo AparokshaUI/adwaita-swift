@@ -29,7 +29,7 @@ struct WindowsDemo: View {
             .style("linked")
             .padding()
         }
-        .frame(maxSize: 100)
+        .frame(maxWidth: 100)
     }
 
     struct WindowContent: View {

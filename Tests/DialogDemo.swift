@@ -22,7 +22,7 @@ struct DialogDemo: View {
                 dialog = true
             }
             .style("pill")
-            .frame(maxSize: 100)
+            .frame(maxWidth: 100)
             .padding()
         }
         .dialog(visible: $dialog, title: "Counter", width: width, height: height) {

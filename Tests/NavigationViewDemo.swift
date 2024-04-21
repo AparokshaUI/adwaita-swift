@@ -19,7 +19,7 @@ struct NavigationViewDemo: View {
                 app.showWindow("navigation")
             }
             .style("suggested-action")
-            .frame(maxSize: 100)
+            .frame(maxWidth: 100)
             .padding()
         }
     }
