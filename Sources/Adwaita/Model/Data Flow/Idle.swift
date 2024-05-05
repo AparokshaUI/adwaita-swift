@@ -31,8 +31,28 @@ public struct Idle {
     ///     - priority: The task's priority, default priority by default.
     ///     - closure: The closure to run. Return if you want to exit the loop.
     @discardableResult
+    @available(macOS, introduced: 13)
     public init(
         delay: Duration,
+        priority: Priority = .defaultIdle,
+        closure: @escaping () -> Bool
+    ) {
+        let secondsToMilliseconds: Int64 = 1_000
+        let attosecondsToMilliseconds: Int64 = 1_000_000_000_000_000
+        let milliseconds = delay.components.seconds * secondsToMilliseconds
+        + (delay.components.attoseconds / attosecondsToMilliseconds)
+        self.init(delay: milliseconds, priority: priority, closure: closure)
+    }
+
+    /// Repeat a function with a certain delay.
+    /// - Parameters:
+    ///     - delay: The delay between the repetitions in milliseconds.
+    ///     - priority: The task's priority, default priority by default.
+    ///     - closure: The closure to run. Return if you want to exit the loop.
+    @discardableResult
+    @available(macOS, deprecated: 13)
+    public init(
+        delay: Int64,
         priority: Priority = .defaultIdle,
         closure: @escaping () -> Bool
     ) {
@@ -60,15 +80,11 @@ public struct Idle {
 
         /// Add a function to be called whenever there are no higher priority events pending to the default main loop.
         /// - Parameter closure: The function.
-        func add(_ closure: @escaping () -> Bool, priority: Int32, delay: Duration? = nil) {
+        func add(_ closure: @escaping () -> Bool, priority: Int32, delay: Int64? = nil) {
             let context = UnsafeMutableRawPointer(Unmanaged.passRetained(ClosureContainer(closure: closure)).toOpaque())
-            let secondsToMilliseconds: Int64 = 1_000
-            let attosecondsToMilliseconds: Int64 = 1_000_000_000_000_000
             if let delay {
-                let milliseconds = delay.components.seconds * secondsToMilliseconds
-                + (delay.components.attoseconds / attosecondsToMilliseconds)
                 // swiftlint:disable prefer_self_in_static_references
-                g_timeout_add_full(priority, .init(milliseconds), { IdleHandler.run(pointer: $0) }, context, nil)
+                g_timeout_add_full(priority, .init(delay), { IdleHandler.run(pointer: $0) }, context, nil)
                 // swiftlint:enable prefer_self_in_static_references
             } else {
                 // swiftlint:disable prefer_self_in_static_references

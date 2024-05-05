@@ -14,7 +14,7 @@ struct IdleDemo: View {
     @State private var progress = 0.0
     @State private var activeProcess = false
     let max = 500.0
-    let delayFactor = 5.0
+    let delayFactor = 5_000.0
     let maxWidth = 300
 
     var view: Body {
@@ -28,7 +28,7 @@ struct IdleDemo: View {
                     activeProcess = true
                     progress = 0
                 }
-                Idle(delay: .seconds(delayFactor / max)) {
+                Idle(delay: .init(delayFactor / max)) {
                     progress += 1
                     let done = progress == max
                     if done {
