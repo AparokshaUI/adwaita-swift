@@ -110,7 +110,7 @@ public struct Window: WindowScene {
             updateAppShortcuts(app: app)
         }
         for signal in signals where signal.update {
-            Task {
+            Idle {
                 app.showWindow(signal.id.uuidString)
             }
         }

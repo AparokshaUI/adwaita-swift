@@ -11,4 +11,5 @@ DerivedData/
 .Ulysses-Group.plist
 /.docc-build
 /io.github.AparokshaUI.Generation.json
+/io.github.AparokshaUI.swiftlint.json
 /.vscode

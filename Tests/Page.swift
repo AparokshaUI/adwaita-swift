@@ -29,6 +29,7 @@ enum Page: String, Identifiable, CaseIterable, Codable {
     case flowBox
     case navigationView
     case picture
+    case idle
 
     var id: Self {
         self
@@ -94,6 +95,8 @@ enum Page: String, Identifiable, CaseIterable, Codable {
             return "A page-based navigation container"
         case .picture:
             return "Display an image"
+        case .idle:
+            return "Update UI from an asynchronous context"
         }
     }
 
@@ -135,6 +138,8 @@ enum Page: String, Identifiable, CaseIterable, Codable {
             NavigationViewDemo(app: app)
         case .picture:
             PictureDemo(url: pictureURL, app: app, window: window)
+        case .idle:
+            IdleDemo()
         }
     }
     // swiftlint:enable cyclomatic_complexity
