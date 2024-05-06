@@ -19,6 +19,7 @@ struct ToolbarDemo: View {
                 app.showWindow("toolbar-demo")
             }
             .style("suggested-action")
+            .style("pill")
             .frame(maxWidth: 100)
         }
     }
@@ -34,6 +35,7 @@ struct ToolbarDemo: View {
                     visible.toggle()
                 }
                 .style("suggested-action")
+                .style("pill")
                 .frame(maxWidth: 100)
                 .padding(15)
             }

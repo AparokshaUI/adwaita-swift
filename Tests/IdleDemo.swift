@@ -23,11 +23,9 @@ struct IdleDemo: View {
             .valign(.center)
             .frame(maxWidth: maxWidth)
         Button("Play") {
+            activeProcess = true
+            progress = 0
             Task {
-                Idle {
-                    activeProcess = true
-                    progress = 0
-                }
                 Idle(delay: .seconds(delayFactor / max)) {
                     progress += 1
                     let done = progress == max

@@ -19,6 +19,7 @@ struct PopoverDemo: View {
                 visible = true
             }
             .style("suggested-action")
+            .style("pill")
             .frame(maxWidth: 100)
             .popover(visible: $visible) {
                 CounterDemo()

@@ -19,6 +19,7 @@ struct NavigationViewDemo: View {
                 app.showWindow("navigation")
             }
             .style("suggested-action")
+            .style("pill")
             .frame(maxWidth: 100)
             .padding()
         }

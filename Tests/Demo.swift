@@ -100,35 +100,35 @@ struct Demo: App {
                     }
                 }
             } content: {
-                StatusPage(
-                    selection.label,
-                    icon: selection.icon,
-                    description: selection.description
-                ) { selection.view(app: app, window: window, toast: toast, pictureURL: pictureURL) }
-                .topToolbar {
-                    HeaderBar {
-                        Toggle(icon: .default(icon: .sidebarShow), isOn: $sidebarVisible)
-                            .tooltip("Toggle Sidebar")
-                    } end: {
-                        if sidebarVisible {
-                            Text("")
-                                .transition(.crossfade)
-                        } else {
-                            menu
-                                .transition(.crossfade)
+                ViewStack(element: selection) { selection in
+                    StatusPage(
+                        selection.label,
+                        icon: selection.icon,
+                        description: selection.description
+                    ) { selection.view(app: app, window: window, toast: toast, pictureURL: pictureURL) }
+                    .topToolbar {
+                        HeaderBar {
+                            Toggle(icon: .default(icon: .sidebarShow), isOn: $sidebarVisible)
+                                .tooltip("Toggle Sidebar")
+                        } end: {
+                            if sidebarVisible {
+                                Text("").transition(.crossfade)
+                            } else {
+                                menu.transition(.crossfade)
+                            }
+                        }
+                        .headerBarTitle {
+                            if sidebarVisible {
+                                Text("")
+                                    .transition(.crossfade)
+                            } else {
+                                WindowTitle(subtitle: "Demo", title: selection.label)
+                                    .transition(.crossfade)
+                            }
                         }
                     }
-                    .headerBarTitle {
-                        if sidebarVisible {
-                            Text("")
-                                .transition(.crossfade)
-                        } else {
-                            WindowTitle(subtitle: "Demo", title: selection.label)
-                                .transition(.crossfade)
-                        }
-                    }
+                    .toast("This is a toast!", signal: toast)
                 }
-                .toast("This is a toast!", signal: toast)
             }
             .aboutDialog(
                 visible: $about,

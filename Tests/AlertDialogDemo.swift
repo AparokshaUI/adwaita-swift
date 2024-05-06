@@ -20,6 +20,7 @@ struct AlertDialogDemo: View {
                 dialog = true
             }
             .style("pill")
+            .style("suggested-action")
             .frame(maxWidth: 100)
             .padding()
         }

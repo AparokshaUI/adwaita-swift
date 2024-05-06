@@ -19,6 +19,7 @@ struct ViewSwitcherDemo: View {
                 app.showWindow("switcher-demo")
             }
             .style("suggested-action")
+            .style("pill")
             .frame(maxWidth: 100)
         }
     }

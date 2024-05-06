@@ -10,7 +10,7 @@
 import Adwaita
 import Foundation
 
-enum Page: String, Identifiable, CaseIterable, Codable {
+enum Page: String, Identifiable, CaseIterable, Codable, CustomStringConvertible {
 
     case welcome
     case counter

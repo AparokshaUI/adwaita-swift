@@ -19,6 +19,7 @@ struct FormDemo: View {
                 app.showWindow("form-demo")
             }
             .style("suggested-action")
+            .style("pill")
             .frame(maxWidth: 100)
         }
     }

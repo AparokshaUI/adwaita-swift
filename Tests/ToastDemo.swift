@@ -19,6 +19,7 @@ struct ToastDemo: View {
                 toast.signal()
             }
             .style("suggested-action")
+            .style("pill")
             .frame(maxWidth: 100)
         }
     }
