@@ -2,7 +2,7 @@
 //  PasswordEntryRow.swift
 //  Adwaita
 //
-//  Created by auto-generation on 21.04.24.
+//  Created by auto-generation on 09.05.24.
 //
 
 import CAdw
@@ -90,6 +90,9 @@ public struct PasswordEntryRow: Widget {
     /// - Returns: The view storage.
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let storage = ViewStorage(adw_password_entry_row_new()?.opaque())
+        for function in appearFunctions {
+            function(storage, modifiers)
+        }
         update(storage, modifiers: modifiers, updateProperties: true)
 
         var suffixStorage: [ViewStorage] = []
@@ -104,9 +107,6 @@ public struct PasswordEntryRow: Widget {
             adw_entry_row_add_prefix(storage.pointer?.cast(), prefixStorage.last?.pointer?.cast())
         }
         storage.content["prefix"] = prefixStorage
-        for function in appearFunctions {
-            function(storage, modifiers)
-        }
         return storage
     }
 

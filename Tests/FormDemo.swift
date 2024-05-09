@@ -30,7 +30,7 @@ struct FormDemo: View {
         @State private var password = "Password"
         @State private var value = 0
         @State private var isOn = true
-        @State private var selection = "Hello"
+        @State private var selection = "World"
 
         let values: [ListDemo.Element] = [.init(id: "Hello"), .init(id: "World")]
 

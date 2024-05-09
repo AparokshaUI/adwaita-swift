@@ -2,7 +2,7 @@
 //  OverlaySplitView.swift
 //  Adwaita
 //
-//  Created by auto-generation on 21.04.24.
+//  Created by auto-generation on 09.05.24.
 //
 
 import CAdw
@@ -184,6 +184,9 @@ public struct OverlaySplitView: Widget {
     /// - Returns: The view storage.
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let storage = ViewStorage(adw_overlay_split_view_new()?.opaque())
+        for function in appearFunctions {
+            function(storage, modifiers)
+        }
         update(storage, modifiers: modifiers, updateProperties: true)
         if let contentStorage = content?().widget(modifiers: modifiers).storage(modifiers: modifiers) {
             storage.content["content"] = [contentStorage]
@@ -194,9 +197,6 @@ public struct OverlaySplitView: Widget {
             adw_overlay_split_view_set_sidebar(storage.pointer, sidebarStorage.pointer?.cast())
         }
 
-        for function in appearFunctions {
-            function(storage, modifiers)
-        }
         return storage
     }
 

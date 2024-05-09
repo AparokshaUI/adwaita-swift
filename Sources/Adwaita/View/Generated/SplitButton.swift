@@ -2,7 +2,7 @@
 //  SplitButton.swift
 //  Adwaita
 //
-//  Created by auto-generation on 21.04.24.
+//  Created by auto-generation on 09.05.24.
 //
 
 import CAdw
@@ -109,6 +109,9 @@ public struct SplitButton: Widget {
     /// - Returns: The view storage.
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let storage = ViewStorage(adw_split_button_new()?.opaque())
+        for function in appearFunctions {
+            function(storage, modifiers)
+        }
         update(storage, modifiers: modifiers, updateProperties: true)
         if let childStorage = child?().widget(modifiers: modifiers).storage(modifiers: modifiers) {
             storage.content["child"] = [childStorage]
@@ -122,9 +125,6 @@ public struct SplitButton: Widget {
             }
         }
 
-        for function in appearFunctions {
-            function(storage, modifiers)
-        }
         return storage
     }
 

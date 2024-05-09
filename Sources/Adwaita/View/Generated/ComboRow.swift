@@ -2,7 +2,7 @@
 //  ComboRow.swift
 //  Adwaita
 //
-//  Created by auto-generation on 21.04.24.
+//  Created by auto-generation on 09.05.24.
 //
 
 import CAdw
@@ -137,6 +137,9 @@ public struct ComboRow: Widget {
     /// - Returns: The view storage.
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let storage = ViewStorage(adw_combo_row_new()?.opaque())
+        for function in appearFunctions {
+            function(storage, modifiers)
+        }
         update(storage, modifiers: modifiers, updateProperties: true)
         if let activatableWidgetStorage = activatableWidget?().widget(modifiers: modifiers).storage(modifiers: modifiers) {
             storage.content["activatableWidget"] = [activatableWidgetStorage]
@@ -155,9 +158,6 @@ public struct ComboRow: Widget {
             adw_action_row_add_prefix(storage.pointer?.cast(), prefixStorage.last?.pointer?.cast())
         }
         storage.content["prefix"] = prefixStorage
-        for function in appearFunctions {
-            function(storage, modifiers)
-        }
         return storage
     }
 

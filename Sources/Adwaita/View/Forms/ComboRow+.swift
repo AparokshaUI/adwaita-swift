@@ -36,23 +36,32 @@ extension ComboRow {
             let list = gtk_string_list_new(nil)
             storage.fields[Self.stringList] = list
             adw_combo_row_set_model(storage.pointer?.cast(), list)
+            Self.updateContent(storage: storage, values: values, element: Element.self)
         }
         updateFunctions.append { storage, _, _ in
-            if let list = storage.fields[Self.stringList] as? OpaquePointer {
-                let old = storage.fields[Self.values] as? [Element] ?? []
-                old.identifiableTransform(
-                    to: values,
-                    functions: .init { index, element in
-                        gtk_string_list_remove(list, .init(index))
-                        gtk_string_list_append(list, element.description)
-                    } delete: { index in
-                        gtk_string_list_remove(list, .init(index))
-                    } insert: { _, element in
-                        gtk_string_list_append(list, element.description)
-                    }
-                )
-                storage.fields[Self.values] = values
-            }
+            Self.updateContent(storage: storage, values: values, element: Element.self)
+        }
+    }
+
+    static func updateContent<Element>(
+        storage: ViewStorage,
+        values: [Element],
+        element: Element.Type
+    ) where Element: Identifiable, Element: CustomStringConvertible {
+        if let list = storage.fields[Self.stringList] as? OpaquePointer {
+            let old = storage.fields[Self.values] as? [Element] ?? []
+            old.identifiableTransform(
+                to: values,
+                functions: .init { index, element in
+                    gtk_string_list_remove(list, .init(index))
+                    gtk_string_list_append(list, element.description)
+                } delete: { index in
+                    gtk_string_list_remove(list, .init(index))
+                } insert: { _, element in
+                    gtk_string_list_append(list, element.description)
+                }
+            )
+            storage.fields[Self.values] = values
         }
     }
 

@@ -97,11 +97,11 @@ struct Class: ClassLike, Decodable {
             /// - Returns: The view storage.
             public func container(modifiers: [(View) -> View]) -> ViewStorage {
                 let storage = ViewStorage(\(generateInitializer(name: widgetName, config: config, namespace: namespace, configs: configs))?.opaque())
-                update(storage, modifiers: modifiers, updateProperties: true)
-        \(generateWidgetAssignments(config: config, genConfig: genConfig, namespace: namespace, configs: configs))
                 for function in appearFunctions {
                     function(storage, modifiers)
                 }
+                update(storage, modifiers: modifiers, updateProperties: true)
+        \(generateWidgetAssignments(config: config, genConfig: genConfig, namespace: namespace, configs: configs))
                 return storage
             }
 

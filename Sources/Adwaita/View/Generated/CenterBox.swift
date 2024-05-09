@@ -2,7 +2,7 @@
 //  CenterBox.swift
 //  Adwaita
 //
-//  Created by auto-generation on 21.04.24.
+//  Created by auto-generation on 09.05.24.
 //
 
 import CAdw
@@ -90,6 +90,9 @@ public struct CenterBox: Widget {
     /// - Returns: The view storage.
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let storage = ViewStorage(gtk_center_box_new()?.opaque())
+        for function in appearFunctions {
+            function(storage, modifiers)
+        }
         update(storage, modifiers: modifiers, updateProperties: true)
         if let centerWidgetStorage = centerWidget?().widget(modifiers: modifiers).storage(modifiers: modifiers) {
             storage.content["centerWidget"] = [centerWidgetStorage]
@@ -104,9 +107,6 @@ public struct CenterBox: Widget {
             gtk_center_box_set_start_widget(storage.pointer, startWidgetStorage.pointer?.cast())
         }
 
-        for function in appearFunctions {
-            function(storage, modifiers)
-        }
         return storage
     }
 

@@ -2,7 +2,7 @@
 //  PreferencesPage.swift
 //  Adwaita
 //
-//  Created by auto-generation on 21.04.24.
+//  Created by auto-generation on 09.05.24.
 //
 
 import CAdw
@@ -55,6 +55,9 @@ public struct PreferencesPage: Widget {
     /// - Returns: The view storage.
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let storage = ViewStorage(adw_preferences_page_new()?.opaque())
+        for function in appearFunctions {
+            function(storage, modifiers)
+        }
         update(storage, modifiers: modifiers, updateProperties: true)
 
         var childStorage: [ViewStorage] = []
@@ -63,9 +66,6 @@ public struct PreferencesPage: Widget {
             adw_preferences_group_add(storage.pointer?.cast(), childStorage.last?.pointer?.cast())
         }
         storage.content["child"] = childStorage
-        for function in appearFunctions {
-            function(storage, modifiers)
-        }
         return storage
     }
 

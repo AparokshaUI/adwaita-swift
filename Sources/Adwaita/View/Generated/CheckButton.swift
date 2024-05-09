@@ -2,7 +2,7 @@
 //  CheckButton.swift
 //  Adwaita
 //
-//  Created by auto-generation on 21.04.24.
+//  Created by auto-generation on 09.05.24.
 //
 
 import CAdw
@@ -123,15 +123,15 @@ public struct CheckButton: Widget {
     /// - Returns: The view storage.
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let storage = ViewStorage(gtk_check_button_new()?.opaque())
+        for function in appearFunctions {
+            function(storage, modifiers)
+        }
         update(storage, modifiers: modifiers, updateProperties: true)
         if let childStorage = child?().widget(modifiers: modifiers).storage(modifiers: modifiers) {
             storage.content["child"] = [childStorage]
             gtk_check_button_set_child(storage.pointer?.cast(), childStorage.pointer?.cast())
         }
 
-        for function in appearFunctions {
-            function(storage, modifiers)
-        }
         return storage
     }
 

@@ -2,7 +2,7 @@
 //  Box.swift
 //  Adwaita
 //
-//  Created by auto-generation on 21.04.24.
+//  Created by auto-generation on 09.05.24.
 //
 
 import CAdw
@@ -78,6 +78,9 @@ public struct Box: Widget {
     /// - Returns: The view storage.
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let storage = ViewStorage(gtk_box_new(GTK_ORIENTATION_VERTICAL, spacing.cInt)?.opaque())
+        for function in appearFunctions {
+            function(storage, modifiers)
+        }
         update(storage, modifiers: modifiers, updateProperties: true)
 
         var appendStorage: [ViewStorage] = []
@@ -92,9 +95,6 @@ public struct Box: Widget {
             gtk_box_prepend(storage.pointer?.cast(), prependStorage.last?.pointer?.cast())
         }
         storage.content["prepend"] = prependStorage
-        for function in appearFunctions {
-            function(storage, modifiers)
-        }
         return storage
     }
 

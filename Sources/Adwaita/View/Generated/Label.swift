@@ -2,7 +2,7 @@
 //  Label.swift
 //  Adwaita
 //
-//  Created by auto-generation on 21.04.24.
+//  Created by auto-generation on 09.05.24.
 //
 
 import CAdw
@@ -283,15 +283,15 @@ public struct Label: Widget {
     /// - Returns: The view storage.
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
         let storage = ViewStorage(gtk_label_new(label)?.opaque())
+        for function in appearFunctions {
+            function(storage, modifiers)
+        }
         update(storage, modifiers: modifiers, updateProperties: true)
         if let mnemonicWidgetStorage = mnemonicWidget?().widget(modifiers: modifiers).storage(modifiers: modifiers) {
             storage.content["mnemonicWidget"] = [mnemonicWidgetStorage]
             gtk_label_set_mnemonic_widget(storage.pointer, mnemonicWidgetStorage.pointer?.cast())
         }
 
-        for function in appearFunctions {
-            function(storage, modifiers)
-        }
         return storage
     }
 
