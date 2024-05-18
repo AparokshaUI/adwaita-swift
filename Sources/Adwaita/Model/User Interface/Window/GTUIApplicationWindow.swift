@@ -30,6 +30,13 @@ public class GTUIApplicationWindow: GTUIWindow {
         app.addKeyboardShortcut(shortcut, id: id, window: self, handler: handler)
     }
 
+    /// Remove a keyboard shortcut.
+    /// - Parameters:
+    ///     - id: The action's id.
+    public func removeKeyboardShortcut(id: String) {
+        app.removeKeyboardShortcut(id: id, window: self)
+    }
+
     /// Set the window's child.
     /// - Parameter child: The child.
     override public func setChild(_ child: OpaquePointer?) {

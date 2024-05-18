@@ -102,6 +102,23 @@ public class GTUIApp {
         gtk_application_set_accels_for_action(pointer, (window == nil ? "app." : "win.") + id, [shortcut].cArray)
     }
 
+    /// Remove a keyboard shortcut from the application.
+    /// - Parameters:
+    ///     - id: The keyboard shortcut's id.
+    ///     - window: Optionally an application window.
+    public func removeKeyboardShortcut(
+        id: String,
+        window: GTUIApplicationWindow? = nil
+    ) {
+        if let window {
+            g_action_map_remove_action(.init(window.pointer), id)
+            window.fields.removeValue(forKey: id)
+        } else {
+            g_action_map_remove_action(.init(pointer), id)
+            fields.removeValue(forKey: id)
+        }
+    }
+
     /// Focus the window with a certain id. Create the window if it doesn't already exist.
     /// - Parameters:
     ///     - id: The window's id.

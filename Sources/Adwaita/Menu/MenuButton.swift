@@ -16,6 +16,8 @@ public struct MenuButton: MenuItem {
     var handler: () -> Void
     /// The keyboard shortcut.
     var shortcut = ""
+    /// Whether the keyboard shortcut is currently available.
+    var active = true
     /// Whether to prefer adding the action to the application window.
     var preferApplicationWindow: Bool
 
@@ -40,10 +42,10 @@ public struct MenuButton: MenuItem {
     ///   - window: The application window containing the menu.
     public func addMenuItem(menu: OpaquePointer?, app: GTUIApp, window: GTUIApplicationWindow?) {
         if let window, preferApplicationWindow {
-            window.addKeyboardShortcut(shortcut, id: filteredLabel, handler: handler)
+            window.addKeyboardShortcut(active ? shortcut : "", id: filteredLabel, handler: handler)
             g_menu_append(menu, label, "win." + filteredLabel)
         } else {
-            app.addKeyboardShortcut(shortcut, id: filteredLabel, handler: handler)
+            app.addKeyboardShortcut(active ? shortcut : "", id: filteredLabel, handler: handler)
             g_menu_append(menu, label, "app." + filteredLabel)
         }
     }
@@ -53,10 +55,12 @@ public struct MenuButton: MenuItem {
     /// Note that the keyboard shortcut is available after the view has been visible for the first time.
     /// - Parameters:
     ///     - shortcut: The keyboard shortcut.
+    ///     - active: Whether the keyboard shortcut is currently available.
     /// - Returns: The button.
-    public func keyboardShortcut(_ shortcut: String) -> Self {
+    public func keyboardShortcut(_ shortcut: String, active: Bool = true) -> Self {
         var newSelf = self
         newSelf.shortcut = shortcut
+        newSelf.active = active
         return newSelf
     }
 

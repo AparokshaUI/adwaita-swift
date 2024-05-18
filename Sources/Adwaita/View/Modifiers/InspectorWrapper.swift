@@ -114,10 +114,18 @@ extension View {
     }
 
     /// Add a style class to the view.
-    /// - Parameter style: The style class.
+    /// - Parameters:
+    ///     - style: The style class.
+    ///     - active: Whether the style is currently applied.
     /// - Returns: A view.
-    public func style(_ style: String) -> View {
-        inspect { gtk_widget_add_css_class($0.pointer?.cast(), style) }
+    public func style(_ style: String, active: Bool = true) -> View {
+        inspect { storage in
+            if active {
+                gtk_widget_add_css_class(storage.pointer?.cast(), style)
+            } else {
+                gtk_widget_remove_css_class(storage.pointer?.cast(), style)
+            }
+        }
     }
 
     /// Run a function when the view gets an update.

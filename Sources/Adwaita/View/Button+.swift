@@ -43,9 +43,14 @@ extension Button {
     /// - Parameters:
     ///     - shortcut: The keyboard shortcut.
     ///     - window: The application window.
+    ///     - active: Whether the keyboard shortcut is active.
     /// - Returns: The button.
-    public func keyboardShortcut(_ shortcut: String, window: GTUIApplicationWindow) -> Self {
-        window.addKeyboardShortcut(shortcut, id: shortcut) { self.clicked?() }
+    public func keyboardShortcut(_ shortcut: String, window: GTUIApplicationWindow, active: Bool = true) -> Self {
+        if active {
+            window.addKeyboardShortcut(shortcut, id: shortcut) { self.clicked?() }
+        } else {
+            window.removeKeyboardShortcut(id: shortcut)
+        }
         return self
     }
 
@@ -55,9 +60,14 @@ extension Button {
     /// - Parameters:
     ///     - shortcut: The keyboard shortcut.
     ///     - window: The application.
+    ///     - active: Whether the keyboard shortcut is active.
     /// - Returns: The button.
-    public func keyboardShortcut(_ shortcut: String, app: GTUIApp) -> Self {
-        app.addKeyboardShortcut(shortcut, id: shortcut) { self.clicked?() }
+    public func keyboardShortcut(_ shortcut: String, app: GTUIApp, active: Bool = true) -> Self {
+        if active {
+            app.addKeyboardShortcut(shortcut, id: shortcut) { self.clicked?() }
+        } else {
+            app.removeKeyboardShortcut(id: shortcut)
+        }
         return self
     }
 
