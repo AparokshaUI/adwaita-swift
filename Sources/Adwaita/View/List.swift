@@ -40,7 +40,8 @@ extension List {
                 storage.connectSignal(name: "selected_rows_changed", id: Self.selectionField) {
                     if let binding = storage.fields[Self.selectionField] as? Binding<Element.ID>,
                     let elements = storage.fields[Self.elementsField] as? [Element],
-                    let id = id(storage, elements) {
+                    let id = id(storage, elements),
+                    binding.wrappedValue != id {
                         binding.wrappedValue = id
                     }
                 }
