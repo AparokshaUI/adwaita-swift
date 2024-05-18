@@ -18,8 +18,8 @@ struct PopoverDemo: View {
             Button("Present Popover") {
                 visible = true
             }
-            .style("suggested-action")
-            .style("pill")
+            .suggested()
+            .pill()
             .frame(maxWidth: 100)
             .popover(visible: $visible) {
                 CounterDemo()

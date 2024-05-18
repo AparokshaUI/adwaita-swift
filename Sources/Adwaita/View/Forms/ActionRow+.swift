@@ -14,4 +14,11 @@ extension ActionRow {
         self = self.title(title)
     }
 
+    /// Deemphasize the row title and emphasize the subtitle.
+    /// - Parameter active: Whether the style is currently applied.
+    /// - Returns: A view.
+    public func property(_ active: Bool = true) -> View {
+        style("property", active: active)
+    }
+
 }

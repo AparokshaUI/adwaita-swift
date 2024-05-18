@@ -21,8 +21,8 @@ struct DialogDemo: View {
             Button("Show Dialog") {
                 dialog = true
             }
-            .style("pill")
-            .style("suggested-action")
+            .pill()
+            .suggested()
             .frame(maxWidth: 100)
             .padding()
         }

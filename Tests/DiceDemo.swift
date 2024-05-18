@@ -26,8 +26,8 @@ struct DiceDemo: View {
             Button(label) {
                 number = .random(in: 1...6)
             }
-            .style("pill")
-            .style("suggested-action")
+            .pill()
+            .suggested()
             .frame(maxWidth: 100)
         }
         .valign(.center)

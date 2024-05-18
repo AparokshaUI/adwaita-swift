@@ -32,7 +32,7 @@ struct CarouselDemo: View {
             }
             .vexpand()
             .hexpand()
-            .style("card")
+            .card()
             .onClick { print(element.id) }
             .padding(20)
             .frame(minWidth: 300, minHeight: 200)

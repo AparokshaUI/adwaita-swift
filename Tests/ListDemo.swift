@@ -28,8 +28,8 @@ struct ListDemo: View {
                 selectedItem = items[safe: index]?.id ?? items[safe: index ?? 0 - 1]?.id ?? items.first?.id ?? ""
             }
         }
+        .linked()
         .padding()
-        .style("linked")
         .halign(.center)
         if !items.isEmpty {
             List(items, selection: $selectedItem) { item in
@@ -39,8 +39,8 @@ struct ListDemo: View {
                 }
                 .padding()
             }
+            .boxedList()
             .valign(.center)
-            .style("boxed-list")
             .padding()
         }
     }

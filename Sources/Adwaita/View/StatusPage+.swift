@@ -26,4 +26,11 @@ extension StatusPage {
         self = self.child(content)
     }
 
+    /// Make the status page more compact.
+    /// - Parameter active: Whether the style is applied.
+    /// - Returns: A view.
+    public func compact(_ active: Bool = true) -> View {
+        style("compact", active: active)
+    }
+
 }

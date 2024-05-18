@@ -18,8 +18,8 @@ struct FormDemo: View {
             Button("View Demo") {
                 app.showWindow("form-demo")
             }
-            .style("suggested-action")
-            .style("pill")
+            .suggested()
+            .pill()
             .frame(maxWidth: 100)
         }
     }
@@ -43,7 +43,7 @@ struct FormDemo: View {
                             EntryRow("Entry Row", text: $text)
                                 .suffix {
                                     Button(icon: .default(icon: .editCopy)) { State<Any>.copy(text) }
-                                        .style("flat")
+                                        .flat()
                                         .verticalCenter()
                                 }
                             EntryRow(password, text: $password)

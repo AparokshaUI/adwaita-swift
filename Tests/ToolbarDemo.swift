@@ -18,8 +18,8 @@ struct ToolbarDemo: View {
             Button("View Demo") {
                 app.showWindow("toolbar-demo")
             }
-            .style("suggested-action")
-            .style("pill")
+            .suggested()
+            .pill()
             .frame(maxWidth: 100)
         }
     }
@@ -34,8 +34,8 @@ struct ToolbarDemo: View {
                 Button("Toggle Toolbar") {
                     visible.toggle()
                 }
-                .style("suggested-action")
-                .style("pill")
+                .suggested()
+                .pill()
                 .frame(maxWidth: 100)
                 .padding(15)
             }

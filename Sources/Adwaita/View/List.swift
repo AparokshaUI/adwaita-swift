@@ -59,8 +59,17 @@ extension List {
     }
 
     /// Add the "navigation-sidebar" style class.
-    public func sidebarStyle() -> View {
-        style("navigation-sidebar")
+    /// - Parameter active: Whether the style is applied.
+    /// - Returns: A view.
+    public func sidebarStyle(_ active: Bool = true) -> View {
+        style("navigation-sidebar", active: active)
+    }
+
+    /// Apply the boxed list style class.
+    /// - Parameter active: Whether the style is applied.
+    /// - Returns: A view.
+    public func boxedList(_ active: Bool = true) -> View {
+        style("boxed-list", active: active)
     }
 
 }

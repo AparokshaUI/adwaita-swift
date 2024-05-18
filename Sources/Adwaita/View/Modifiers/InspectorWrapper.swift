@@ -128,6 +128,204 @@ extension View {
         }
     }
 
+    /// Make a button or similar widget use accent colors.
+    /// - Parameter active: Whether the style is currently applied.
+    /// - Returns: A view.
+    public func suggested(_ active: Bool = true) -> View {
+        style("suggested-action", active: active)
+    }
+
+    /// Make a button or similar widget use destructive colors.
+    /// - Parameter active: Whether the style is currently applied.
+    /// - Returns: A view.
+    public func destructive(_ active: Bool = true) -> View {
+        style("destructive-action", active: active)
+    }
+
+    /// Make a button or similar widget use flat appearance.
+    /// - Parameter active: Whether the style is currently applied.
+    /// - Returns: A view.
+    public func flat(_ active: Bool = true) -> View {
+        style("flat", active: active)
+    }
+
+    /// Make a button or similar widget use the regular appearance instead of the flat one.
+    /// - Parameter active: Whether the style is currently applied.
+    /// - Returns: A view.
+    public func raised(_ active: Bool = true) -> View {
+        style("raised", active: active)
+    }
+
+    /// Make a button or similar widget round.
+    /// - Parameter active: Whether the style is currently applied.
+    /// - Returns: A view.
+    public func circular(_ active: Bool = true) -> View {
+        style("circular", active: active)
+    }
+
+    /// Make a button or similar widget appear as a pill.
+    /// - Parameter active: Whether the style is currently applied.
+    /// - Returns: A view.
+    public func pill(_ active: Bool = true) -> View {
+        style("pill", active: active)
+    }
+
+    /// Make the view partially transparent.
+    /// - Parameter active: Whether the style is currently applied.
+    /// - Returns: A view.
+    public func dimLabel(_ active: Bool = true) -> View {
+        style("dim-label", active: active)
+    }
+
+    /// Use a title typography style.
+    /// - Parameter active: Whether the style is currently applied.
+    /// - Returns: A view.
+    public func title1(_ active: Bool = true) -> View {
+        style("title-1", active: active)
+    }
+
+    /// Use a title typography style.
+    /// - Parameter active: Whether the style is currently applied.
+    /// - Returns: A view.
+    public func title2(_ active: Bool = true) -> View {
+        style("title-2", active: active)
+    }
+
+    /// Use a title typography style.
+    /// - Parameter active: Whether the style is currently applied.
+    /// - Returns: A view.
+    public func title3(_ active: Bool = true) -> View {
+        style("title-3", active: active)
+    }
+
+    /// Use a title typography style.
+    /// - Parameter active: Whether the style is currently applied.
+    /// - Returns: A view.
+    public func title4(_ active: Bool = true) -> View {
+        style("title-4", active: active)
+    }
+
+    /// Use the heading typography style.
+    /// - Parameter active: Whether the style is currently applied.
+    /// - Returns: A view.
+    public func heading(_ active: Bool = true) -> View {
+        style("heading", active: active)
+    }
+
+    /// Use the body typography style.
+    /// - Parameter active: Whether the style is currently applied.
+    /// - Returns: A view.
+    public func body(_ active: Bool = true) -> View {
+        style("body", active: active)
+    }
+
+    /// Use the caption heading typography style.
+    /// - Parameter active: Whether the style is currently applied.
+    /// - Returns: A view.
+    public func captionHeading(_ active: Bool = true) -> View {
+        style("caption-heading", active: active)
+    }
+
+    /// Use the caption typography style.
+    /// - Parameter active: Whether the style is currently applied.
+    /// - Returns: A view.
+    public func caption(_ active: Bool = true) -> View {
+        style("caption", active: active)
+    }
+
+    /// Use the monospace typography style.
+    /// - Parameter active: Whether the style is currently applied.
+    /// - Returns: A view.
+    public func monospace(_ active: Bool = true) -> View {
+        style("monospace", active: active)
+    }
+
+    /// Use the numeric typography style.
+    /// - Parameter active: Whether the style is currently applied.
+    /// - Returns: A view.
+    public func numeric(_ active: Bool = true) -> View {
+        style("numeric", active: active)
+    }
+
+    /// Apply the accent color.
+    /// - Parameter active: Whether the style is currently applied.
+    /// - Returns: A view.
+    public func accent(_ active: Bool = true) -> View {
+        style("accent", active: active)
+    }
+
+    /// Apply the success color.
+    /// - Parameter active: Whether the style is currently applied.
+    /// - Returns: A view.
+    public func success(_ active: Bool = true) -> View {
+        style("success", active: active)
+    }
+
+    /// Apply the warning color.
+    /// - Parameter active: Whether the style is currently applied.
+    /// - Returns: A view.
+    public func warning(_ active: Bool = true) -> View {
+        style("warning", active: active)
+    }
+
+    /// Apply the error color.
+    /// - Parameter active: Whether the style is currently applied.
+    /// - Returns: A view.
+    public func error(_ active: Bool = true) -> View {
+        style("error", active: active)
+    }
+
+    /// Apply the card style.
+    /// - Parameter active: Whether the style is currently applied.
+    /// - Returns: A view.
+    public func card(_ active: Bool = true) -> View {
+        style("card", active: active)
+    }
+
+    /// Apply an icon dropshadow.
+    /// - Parameter active: Whether the style is currently applied.
+    /// - Returns: A view.
+    ///
+    /// Use for icons larger than 32x32 pixels.
+    public func iconDropshadow(_ active: Bool = true) -> View {
+        style("icon-dropshadow", active: active)
+    }
+
+    /// Use for icons smaller than or equal to 32x32 pixels.
+    /// - Parameter active: Whether the style is currently applied.
+    /// - Returns: A view.
+    public func lowresIcon(_ active: Bool = true) -> View {
+        style("lowres-icon", active: active)
+    }
+
+    /// Use the OSD style class.
+    /// - Parameter active: Whether the style is currently applied.
+    /// - Returns: A view.
+    public func osd(_ active: Bool = true) -> View {
+        style("osd", active: active)
+    }
+
+    /// Give a view the default window background and foreground colors.
+    /// - Parameter active: Whether the style is currently applied.
+    /// - Returns: A view.
+    public func backgroundStyle(_ active: Bool = true) -> View {
+        style("background", active: active)
+    }
+
+    /// Give a view the default view background and foreground colors.
+    /// - Parameter active: Whether the style is currently applied.
+    /// - Returns: A view.
+    public func viewStyle(_ active: Bool = true) -> View {
+        style("view", active: active)
+    }
+
+    /// Give a view the default border.
+    /// - Parameter active: Whether the style is currently applied.
+    /// - Returns: A view.
+    public func frameStyle(_ active: Bool = true) -> View {
+        style("frame", active: active)
+    }
+
     /// Run a function when the view gets an update.
     /// - Parameter onUpdate: The function.
     /// - Returns: A view.

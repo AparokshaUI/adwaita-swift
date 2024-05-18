@@ -28,7 +28,7 @@ struct Counter: View {
                 count -= 1
             }
             Text("\(count)")
-                .style("title-1")
+                .title1()
                 .frame(minWidth: 100)
             Button(icon: .default(icon: .goNext)) {
                 count += 1

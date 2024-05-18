@@ -31,8 +31,8 @@ struct PictureDemo: View {
             app.addWindow("picture", parent: window)
         }
         .halign(.center)
-        .style("pill")
-        .style("suggested-action")
+        .pill()
+        .suggested()
         .padding()
     }
 

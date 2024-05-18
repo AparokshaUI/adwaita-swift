@@ -19,7 +19,7 @@ struct CounterDemo: View {
             HStack {
                 CountButton(count: $count, icon: .goPrevious) { $0 -= 1 }
                 Text("\(count)")
-                    .style("title-1")
+                    .title1()
                     .frame(minWidth: 100)
                 CountButton(count: $count, icon: .goNext) { $0 += 1 }
             }
@@ -39,7 +39,7 @@ struct CounterDemo: View {
             Button(icon: .default(icon: icon)) {
                 action(&count)
             }
-            .style("circular")
+            .circular()
         }
     }
 

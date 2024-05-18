@@ -37,7 +37,7 @@ struct IdleDemo: View {
             }
         }
         .padding()
-        .style("pill")
+        .pill()
         .hexpand()
         .halign(.center)
         .insensitive(activeProcess)

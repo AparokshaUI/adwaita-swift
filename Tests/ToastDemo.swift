@@ -18,8 +18,8 @@ struct ToastDemo: View {
             Button("Add Toast") {
                 toast.signal()
             }
-            .style("suggested-action")
-            .style("pill")
+            .suggested()
+            .pill()
             .frame(maxWidth: 100)
         }
     }

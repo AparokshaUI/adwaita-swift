@@ -25,8 +25,8 @@ struct WindowsDemo: View {
                 }
                 .hexpand()
             }
+            .linked()
             .valign(.center)
-            .style("linked")
             .padding()
         }
         .frame(maxWidth: 100)

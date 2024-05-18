@@ -28,8 +28,8 @@ struct FlowBoxDemo: View {
                 selectedItem = items[safe: index]?.id ?? items[safe: index ?? 0 - 1]?.id ?? items.first?.id ?? ""
             }
         }
+        .linked()
         .padding()
-        .style("linked")
         .halign(.center)
         if !items.isEmpty {
             FlowBox(items, selection: $selectedItem) { item in

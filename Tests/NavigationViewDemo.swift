@@ -18,8 +18,8 @@ struct NavigationViewDemo: View {
             Button("View Demo") {
                 app.showWindow("navigation")
             }
-            .style("suggested-action")
-            .style("pill")
+            .suggested()
+            .pill()
             .frame(maxWidth: 100)
             .padding()
         }

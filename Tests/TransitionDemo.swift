@@ -18,21 +18,21 @@ struct TransitionDemo: View {
             if firstView {
                 Text("First View")
                     .transition(.slideDown)
-                    .style("accent")
+                    .accent()
             } else {
                 Text("Second View")
                     .transition(.slideUp)
-                    .style("success")
+                    .success()
             }
         }
-        .modifyContent(Text.self) { $0.style("title-2").padding() }
-        .style("card")
+        .modifyContent(Text.self) { $0.title2().padding() }
+        .card()
         .frame(maxWidth: 200)
         .padding()
         Button("Toggle View") {
             firstView.toggle()
         }
-        .style("pill")
+        .pill()
         .padding()
         .frame(maxWidth: 100)
     }

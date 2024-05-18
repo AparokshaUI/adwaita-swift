@@ -28,4 +28,9 @@ extension VStack {
         }
     }
 
+    /// Link the children.
+    public func linked(_ active: Bool = true) -> View {
+        style("linked", active: active)
+    }
+
 }
