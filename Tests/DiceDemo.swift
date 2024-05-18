@@ -28,6 +28,14 @@ struct DiceDemo: View {
             }
             .pill()
             .suggested()
+            .style("dice-button")
+            .css {
+                """
+                .dice-button {
+                    background-color: @green_5;
+                }
+                """
+            }
             .frame(maxWidth: 100)
         }
         .valign(.center)
