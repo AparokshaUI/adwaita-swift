@@ -43,6 +43,8 @@ public struct Window: WindowScene {
     var setDefaultSize = false
     /// Whether the window is maximized.
     var maximized: Binding<Bool>?
+    /// Whether the window uses the development style.
+    var devel = false
 
     /// Create a window type with a certain identifier and user interface.
     /// - Parameters:
@@ -66,6 +68,9 @@ public struct Window: WindowScene {
             windowStorage.destroy = true
         }
         windowStorage.parentID = parentID
+        if devel {
+            gtk_widget_add_css_class(window.pointer?.cast(), "devel")
+        }
         return windowStorage
     }
 
@@ -338,6 +343,15 @@ public struct Window: WindowScene {
     public func maximized(_ maximized: Binding<Bool>) -> Self {
         var newSelf = self
         newSelf.maximized = maximized
+        return newSelf
+    }
+
+    /// Whether the window used the development style.
+    /// - Parameter active: Whether the style is active.
+    /// - Returns: The window.
+    public func devel(_ active: Bool = true) -> Self {
+        var newSelf = self
+        newSelf.devel = active
         return newSelf
     }
 

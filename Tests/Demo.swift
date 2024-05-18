@@ -22,6 +22,7 @@ struct Demo: App {
         Window(id: "main") { window in
             DemoContent(window: window, app: app, pictureURL: pictureURL)
         }
+        .devel()
         HelperWindows()
         FileDialog(importer: "picture", extensions: ["jpg", "jpeg", "png", "svg"]) { pictureURL = $0 } onClose: { }
     }
