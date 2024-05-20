@@ -21,8 +21,9 @@ extension EntryRow {
         appearFunctions.append { storage, _ in
             storage.fields[Self.textField] = text
             storage.notify(name: "text") {
-                if let binding = storage.fields[Self.textField] as? Binding<String> {
-                    binding.wrappedValue = .init(cString: gtk_editable_get_text(storage.pointer))
+                let newValue = String(cString: gtk_editable_get_text(storage.pointer))
+                if let binding = storage.fields[Self.textField] as? Binding<String>, binding.wrappedValue != newValue {
+                    binding.wrappedValue = newValue
                 }
             }
         }
