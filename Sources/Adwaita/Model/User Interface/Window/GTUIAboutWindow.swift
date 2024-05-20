@@ -15,7 +15,11 @@ public class GTUIAboutWindow: GTUIWindow {
     public init(filePath: String? = nil) {
         super.init(fields: [:])
         if let filePath {
+            #if os(Windows)
+            pointer = adw_about_window_new()?.cast()
+            #else
             pointer = adw_about_window_new_from_appdata(filePath, nil)?.cast()
+            #endif
         } else {
             pointer = adw_about_window_new()?.cast()
         }
