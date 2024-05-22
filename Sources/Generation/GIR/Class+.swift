@@ -186,6 +186,7 @@ extension Class {
     ) -> String {
         var content = ""
         for property in properties(namespace: namespace, configurations: configs)
+        .sorted(by: { config.lastProperties.contains($1.name) })
         where !config.excludeProperties.contains(property.name) {
             content += property.generateModification(config: config, genConfig: genConfig, prefix: prefix())
         }

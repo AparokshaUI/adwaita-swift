@@ -2,7 +2,7 @@
 //  ActionRow.swift
 //  Adwaita
 //
-//  Created by auto-generation on 09.05.24.
+//  Created by auto-generation on 22.05.24.
 //
 
 import CAdw
@@ -156,17 +156,11 @@ public struct ActionRow: Widget {
             if let iconName, updateProperties {
                 adw_action_row_set_icon_name(widget?.cast(), iconName)
             }
-            if let subtitle, updateProperties {
-                adw_action_row_set_subtitle(widget?.cast(), subtitle)
-            }
             if let subtitleLines, updateProperties {
                 adw_action_row_set_subtitle_lines(widget?.cast(), subtitleLines.cInt)
             }
             if let subtitleSelectable, updateProperties {
                 adw_action_row_set_subtitle_selectable(widget?.cast(), subtitleSelectable.cBool)
-            }
-            if let title, updateProperties {
-                adw_preferences_row_set_title(widget?.cast(), title)
             }
             if let titleLines, updateProperties {
                 adw_action_row_set_title_lines(widget?.cast(), titleLines.cInt)
@@ -179,6 +173,12 @@ public struct ActionRow: Widget {
             }
             if let useUnderline, updateProperties {
                 adw_preferences_row_set_use_underline(widget?.cast(), useUnderline.cBool)
+            }
+            if let title, updateProperties {
+                adw_preferences_row_set_title(widget?.cast(), title)
+            }
+            if let subtitle, updateProperties {
+                adw_action_row_set_subtitle(widget?.cast(), subtitle)
             }
 
             if let suffixStorage = storage.content["suffix"] {

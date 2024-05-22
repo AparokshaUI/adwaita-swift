@@ -71,7 +71,8 @@ struct GenerationConfiguration {
                 .init(name: "suffix", add: "adw_action_row_add_suffix"),
                 .init(name: "prefix", add: "adw_action_row_add_prefix")
             ],
-            cast: true
+            cast: true,
+            lastProperties: ["title", "subtitle"]
         ),
         .init(class: "SwitchRow", bindings: [.init(property: "active")]),
         .init(

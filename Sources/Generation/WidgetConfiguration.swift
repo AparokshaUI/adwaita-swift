@@ -32,6 +32,8 @@ struct WidgetConfiguration {
     var cast = false
     /// Conditions for when to update a property.
     var setConditions: [String: String] = [:]
+    /// Properties that are set in the end of an update.
+    var lastProperties: [String] = []
 
     /// The configuration for a binding.
     struct BindingConfiguration {
