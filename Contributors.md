@@ -4,3 +4,4 @@
 - [Greg Cotten](https://github.com/gregcotten)
 - [Zev Eisenberg](https://github.com/ZevEisenberg)
 - [Jay Wren](https://github.com/jrwren)
+- [Amzd](https://github.com/amzd)
