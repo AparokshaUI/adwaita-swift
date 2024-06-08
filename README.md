@@ -48,7 +48,6 @@ More examples are available in the [demo app][1].
 ## Table of Contents
 
 - [Goals][2]
-- [Widgets][3]
 - [Installation][4]
 - [Usage][5]
 - [Thanks][6]
@@ -60,10 +59,6 @@ _Adwaita_’s main goal is to provide an easy-to-use interface for creating GNOM
 If you want to use _Adwaita_ in a project, but there are widgets missing, open an [issue on GitHub][9].
 
 Find more information about the project's motivation in [this blog post](https://www.swift.org/blog/adwaita-swift/).
-
-## Widgets
-
-An overview of the widgets supported by _Adwaita_ is available [here](user-manual/Information/Widgets.md).
 
 ## Installation
 ### Dependencies
@@ -115,7 +110,6 @@ Follow the [interactive tutorial](https://aparokshaui.github.io/adwaita-swift/tu
 
 [1]:    Tests/
 [2]:	#goals
-[3]:	#widgets
 [4]:	#installation
 [5]:	#usage
 [6]:	#thanks
