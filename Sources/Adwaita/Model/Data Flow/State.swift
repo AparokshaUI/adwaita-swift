@@ -37,7 +37,13 @@ public struct State<Value>: StateProtocol {
     /// Get and set the value without updating the views.
     public var rawValue: Value {
         get {
-            content.storage.value as! Value
+            if let readValue, !content.fetched {
+                let newValue = readValue()
+                content.storage.value = newValue
+                content.fetched = true
+                return newValue
+            }
+            return content.storage.value as! Value
         }
         nonmutating set {
             content.storage.value = newValue
@@ -54,6 +60,8 @@ public struct State<Value>: StateProtocol {
 
     /// The function for updating the value in the settings file.
     private var writeValue: (() -> Void)?
+    /// The function for reading the value in the settings file.
+    var readValue: (() -> Value)?
 
     /// The value with an erased type.
     public var value: Any {
@@ -97,6 +105,8 @@ public struct State<Value>: StateProtocol {
         var internalStorage: Storage?
         /// The initial value.
         private var initialValue: Value
+        /// Whether the value has already been fetched from the file stored on the system.
+        var fetched = false
 
         /// Initialize the content.
         /// - Parameter storage: The storage.
@@ -159,15 +169,18 @@ public struct State<Value>: StateProtocol {
 
     /// Get the settings directory path.
     /// - Returns: The path.
-    private func dirPath() -> URL {
-        Self.userDataDir()
-            .appendingPathComponent(content.storage.folder ?? GTUIApp.appID, isDirectory: true)
+    private func dirPath() -> URL? {
+        guard let folder = content.storage.folder ?? GTUIApp.appID else {
+            return nil
+        }
+        return Self.userDataDir()
+            .appendingPathComponent(folder, isDirectory: true)
     }
 
     /// Get the settings file path.
     /// - Returns: The path.
-    private func filePath() -> URL {
-        dirPath().appendingPathComponent("\(content.storage.key ?? "temporary").json")
+    private func filePath() -> URL? {
+        dirPath()?.appendingPathComponent("\(content.storage.key ?? "temporary").json")
     }
 
 }
@@ -187,32 +200,41 @@ extension State where Value: Codable {
         self.forceUpdates = forceUpdates
         content.storage.key = key
         content.storage.folder = folder
-        checkFile()
-        readValue()
+        let value = self
+        self.readValue = {
+            value.checkFile()
+            return value.readActualValue() ?? wrappedValue
+        }
         self.writeValue = writeCodableValue
     }
 
     /// Check whether the settings file exists, and, if not, create it.
     private func checkFile() {
         let fileManager = FileManager.default
-        if !fileManager.fileExists(atPath: dirPath().path) {
+        guard let dirPath = dirPath(), let filePath = filePath() else {
+            print("Stored state value accessed before initializing app id.")
+            return
+        }
+        if !fileManager.fileExists(atPath: dirPath.path) {
             try? fileManager.createDirectory(
-                at: .init(fileURLWithPath: dirPath().path),
+                at: .init(fileURLWithPath: dirPath.path),
                 withIntermediateDirectories: true,
                 attributes: nil
             )
         }
-        if !fileManager.fileExists(atPath: filePath().path) {
-            fileManager.createFile(atPath: filePath().path, contents: .init(), attributes: nil)
+        if !fileManager.fileExists(atPath: filePath.path) {
+            fileManager.createFile(atPath: filePath.path, contents: .init(), attributes: nil)
         }
     }
 
     /// Update the local value with the value from the file.
-    private func readValue() {
-        let data = try? Data(contentsOf: filePath())
-        if let data, let value = try? JSONDecoder().decode(Value.self, from: data) {
-            rawValue = value
+    private func readActualValue() -> Value? {
+        if let filePath = filePath(),
+           let data = try? Data(contentsOf: filePath),
+           let value = try? JSONDecoder().decode(Value.self, from: data) {
+            return value
         }
+        return nil
     }
 
     /// Update the value on the file with the local value.
@@ -220,7 +242,10 @@ extension State where Value: Codable {
         let encoder = JSONEncoder()
         encoder.outputFormatting = .prettyPrinted
         let data = try? encoder.encode(rawValue)
-        try? data?.write(to: filePath())
+        guard let filePath = filePath() else {
+            return
+        }
+        try? data?.write(to: filePath)
     }
 
 }

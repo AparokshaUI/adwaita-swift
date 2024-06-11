@@ -25,6 +25,7 @@ public protocol App {
 
     /// The app's application ID.
     var id: String { get }
+
     /// The app's windows.
     @SceneBuilder var scene: Scene { get }
     // swiftlint:disable implicitly_unwrapped_optional
