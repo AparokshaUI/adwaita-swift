@@ -24,7 +24,7 @@
 public protocol App {
 
     /// The app's application ID.
-    static var id: String { get }
+    var id: String { get }
 
     /// The app's windows.
     @SceneBuilder var scene: Scene { get }
@@ -40,12 +40,8 @@ public protocol App {
 
 extension App {
 
-    @available(*, deprecated, message: "The 'id' property is removed. Please use the new static id instead.")
-    var id: String { Self.id }
-
     /// The application's entry point.
     public static func main() {
-        GTUIApp.appID = Self.id
         let app = setupApp()
         app.run()
     }
@@ -55,7 +51,7 @@ extension App {
     /// To run the app, call the ``GTUIApp/run(automaticSetup:manualSetup:)`` function.
     public static func setupApp() -> GTUIApp {
         var appInstance = self.init()
-        appInstance.app = GTUIApp(Self.id) { appInstance }
+        appInstance.app = GTUIApp(appInstance.id) { appInstance }
         GTUIApp.updateHandlers.append { force in
             var removeIndices: [Int] = []
             for (index, window) in appInstance.app.sceneStorage.enumerated() {
@@ -69,6 +65,7 @@ extension App {
                 appInstance.app.sceneStorage.remove(at: index)
             }
         }
+        GTUIApp.appID = appInstance.id
         return appInstance.app
     }
 
