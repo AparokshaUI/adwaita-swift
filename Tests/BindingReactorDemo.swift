@@ -12,6 +12,9 @@ import Adwaita
 enum PasswordChecker: String, CaseIterable, CustomStringConvertible, Identifiable {
     case length
     case upper
+    case lower
+    case special
+    case numeric
 
     var id: String {
         self.rawValue
@@ -23,6 +26,12 @@ enum PasswordChecker: String, CaseIterable, CustomStringConvertible, Identifiabl
             return "Password Length"
         case .upper:
             return "Password Uppercase Characters"
+        case .lower:
+            return "Password Lowercase Characters"
+        case .special:
+            return "Password Special Characters"
+        case .numeric:
+            return "Password Numeric Characters"
         }
     }
 
@@ -32,6 +41,12 @@ enum PasswordChecker: String, CaseIterable, CustomStringConvertible, Identifiabl
             return "Password needs to be greater than 8 characters long"
         case .upper:
                 return "Password needs to contain at least one uppercase character"
+        case .lower:
+                return "Password needs to contain at least one lowercase character"
+        case .special:
+                return "Password needs to contain at least one special character `!&^%$#@()/`"
+        case .numeric:
+                return "Password needs to contain at least one numeric character"
         }
     }
 }
@@ -127,6 +142,15 @@ struct BindingReactorDemo: View {
             case .upper:
                 let result = password.range(of: ".*[A-Z]+.*", options: .regularExpression)
                 return (PasswordChecker.upper.rawValue, result != nil ? true : false)
+            case .lower:
+                let result = password.range(of: ".*[a-z]+.*", options: .regularExpression)
+                return (PasswordChecker.lower.rawValue, result != nil ? true : false)
+            case .special:
+                let result = password.range(of: ".*[!&^%$#@()/]+.*", options: .regularExpression)
+                return (PasswordChecker.special.rawValue, result != nil ? true : false)
+            case .numeric:
+                let result = password.range(of: ".*[0-9]+.*", options: .regularExpression)
+                return (PasswordChecker.numeric.rawValue, result != nil ? true : false)
             }
         }
     }
