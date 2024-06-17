@@ -55,6 +55,13 @@ struct Demo: App {
             .closeShortcut()
             .defaultSize(width: 400, height: 250)
             .title("Form Demo")
+            Window(id: "binding-reactor-demo", open: 0) { _ in
+                BindingReactorDemo.WindowContent()
+            }
+            .closeShortcut()
+            .defaultSize(width: 400, height: 250)
+            .title("Binding Reactor Demo")
+
             Window(id: "navigation", open: 0) { _ in
                 NavigationViewDemo.WindowContent()
             }
