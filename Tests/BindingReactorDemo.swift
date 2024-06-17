@@ -69,33 +69,25 @@ struct BindingReactorDemo: View {
     struct WindowContent: View {
 
         @State private var password = ""
-        @State var checkStatus = PasswordChecker.allCases.enumerated().reduce([String: Bool]()) { dict, checker in
-            var dict = dict
-            dict[checker.element.rawValue] = false
-            return dict
+        var checkStatus: [String: Bool] {
+            PasswordChecker.allCases.enumerated().reduce([String: Bool]()) { dict, checker in
+                var dict = dict
+                dict[checker.element.rawValue] = check(password: password, checker: checker.element).1
+                return dict
+            }
         }
 
         var view: Body {
             VStack {
                 FormSection("Password Checker") {
                     Form {
-                        EntryRow("Password", text: $password.onSet { _ in
-                            Task {
-                                let results = await checkPassword(content: password)
-
-                                Idle {
-                                    for result in results {
-                                        checkStatus[result.0] = result.1
-                                    }
-                                }
-                            }
-                        })
+                        EntryRow("Password", text: $password)
                     }
                 }
                 .padding()
                 ForEach(PasswordChecker.allCases) { checker in
                     CheckerButton(
-                        isValid: binding(for: checker.rawValue),
+                        isValid: .constant(checkStatus[checker.rawValue] ?? false),
                         checkerName: checker.label,
                         checkerInfo: checker.description
                     )
@@ -106,14 +98,6 @@ struct BindingReactorDemo: View {
             .frame(minWidth: 340, minHeight: 400)
             .topToolbar {
                 HeaderBar.empty()
-            }
-        }
-
-        private func binding(for key: String) -> Binding<Bool> {
-            .init {
-                checkStatus[key] ?? false
-            } set: { newValue in
-                checkStatus[key] = newValue
             }
         }
 
@@ -135,7 +119,7 @@ struct BindingReactorDemo: View {
             return results
         }
 
-        private func check(password: String, checker: PasswordChecker) async -> (String, Bool) {
+        private func check(password: String, checker: PasswordChecker) -> (String, Bool) {
             switch checker {
             case .length:
                 return (PasswordChecker.length.rawValue, password.count > 8)
