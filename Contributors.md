@@ -5,3 +5,4 @@
 - [Zev Eisenberg](https://github.com/ZevEisenberg)
 - [Jay Wren](https://github.com/jrwren)
 - [Amzd](https://github.com/amzd)
+- [lambdaclan](https://github.com/lambdaclan)
