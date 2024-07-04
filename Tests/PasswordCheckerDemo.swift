@@ -58,7 +58,7 @@ struct PasswordCheckerDemo: View {
     var view: Body {
         VStack {
             Button("View Demo") {
-                app.showWindow("binding-reactor-demo")
+                app.showWindow("password-checker-demo")
             }
             .suggested()
             .pill()

@@ -55,7 +55,7 @@ struct Demo: App {
             .closeShortcut()
             .defaultSize(width: 400, height: 250)
             .title("Form Demo")
-            Window(id: "binding-reactor-demo", open: 0) { _ in
+            Window(id: "password-checker-demo", open: 0) { _ in
                 PasswordCheckerDemo.WindowContent()
             }
             .closeShortcut()
