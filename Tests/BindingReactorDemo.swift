@@ -101,24 +101,6 @@ struct BindingReactorDemo: View {
             }
         }
 
-        private func checkPassword(content password: String) async -> [(String, Bool)] {
-            var results: [(String, Bool)] = []
-
-            await withTaskGroup(of: (String, Bool).self) { group in
-                for checker in PasswordChecker.allCases {
-                    group.addTask {
-                        await check(password: password, checker: checker)
-                    }
-                }
-
-                for await result in group {
-                    results.append(result)
-                }
-            }
-
-            return results
-        }
-
         private func check(password: String, checker: PasswordChecker) -> (String, Bool) {
             switch checker {
             case .length:
