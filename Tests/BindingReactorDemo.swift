@@ -40,13 +40,13 @@ enum PasswordChecker: String, CaseIterable, CustomStringConvertible, Identifiabl
         case .length:
             return "Password needs to be greater than 8 characters long"
         case .upper:
-                return "Password needs to contain at least one uppercase character"
+            return "Password needs to contain at least one uppercase character"
         case .lower:
-                return "Password needs to contain at least one lowercase character"
+            return "Password needs to contain at least one lowercase character"
         case .special:
-                return "Password needs to contain at least one special character `!&^%$#@()/`"
+            return "Password needs to contain at least one special character `!&^%$#@()/`"
         case .numeric:
-                return "Password needs to contain at least one numeric character"
+            return "Password needs to contain at least one numeric character"
         }
     }
 }
@@ -135,7 +135,7 @@ struct BindingReactorDemo: View {
                     isInfoVisible = true
                 }
                 .child {
-                        ButtonContent()
+                    ButtonContent()
                         .iconName(Icon.DefaultIcon.emblemOk.string)
                         .label(checkerName)
                         .halign(.start)
@@ -152,7 +152,7 @@ struct BindingReactorDemo: View {
                     isInfoVisible = true
                 }
                 .child {
-                        ButtonContent()
+                    ButtonContent()
                         .iconName(Icon.DefaultIcon.faceAngry.string)
                         .label(checkerName)
                         .halign(.start)
