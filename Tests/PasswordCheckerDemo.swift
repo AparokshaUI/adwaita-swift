@@ -79,7 +79,7 @@ struct PasswordCheckerDemo: View {
 
         var view: Body {
             VStack {
-                FormSection("Password Checker") {
+                FormSection("") {
                     Form {
                         EntryRow("Password", text: $password)
                     }
