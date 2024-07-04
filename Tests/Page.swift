@@ -47,7 +47,7 @@ enum Page: String, Identifiable, CaseIterable, Codable, CustomStringConvertible 
         case .alertDialog:
             return "Alert Dialog"
         case .passwordChecker:
-            return "Binding Reactor"
+            return "Password Checker"
         default:
             return rawValue.capitalized
         }
@@ -91,7 +91,7 @@ enum Page: String, Identifiable, CaseIterable, Codable, CustomStringConvertible 
         case .form:
             return "Group controls used for data entry"
         case .passwordChecker:
-            return "React to binding variable changes"
+            return "Check the validity of a password"
         case .popover:
             return "Present content in a bubble-like context popup"
         case .flowBox:

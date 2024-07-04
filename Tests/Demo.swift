@@ -60,7 +60,7 @@ struct Demo: App {
             }
             .closeShortcut()
             .defaultSize(width: 400, height: 250)
-            .title("Binding Reactor Demo")
+            .title("Password Checker Demo")
 
             Window(id: "navigation", open: 0) { _ in
                 NavigationViewDemo.WindowContent()
