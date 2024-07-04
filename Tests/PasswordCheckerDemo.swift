@@ -82,6 +82,18 @@ struct PasswordCheckerDemo: View {
                 FormSection("") {
                     Form {
                         EntryRow("Password", text: $password)
+                            .suffix {
+                                Button(icon: .default(icon: .editCopy)) {
+                                    State<Any>.copy(password)
+                                }
+                                .flat()
+                                .verticalCenter()
+                                Button(icon: .default(icon: .editClear)) {
+                                    password = ""
+                                }
+                                .flat()
+                                .verticalCenter()
+                            }
                     }
                 }
                 .padding()
