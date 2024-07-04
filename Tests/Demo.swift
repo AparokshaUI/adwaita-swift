@@ -55,6 +55,13 @@ struct Demo: App {
             .closeShortcut()
             .defaultSize(width: 400, height: 250)
             .title("Form Demo")
+            Window(id: "password-checker-demo", open: 0) { _ in
+                PasswordCheckerDemo.WindowContent()
+            }
+            .closeShortcut()
+            .defaultSize(width: 400, height: 250)
+            .title("Password Checker Demo")
+
             Window(id: "navigation", open: 0) { _ in
                 NavigationViewDemo.WindowContent()
             }
