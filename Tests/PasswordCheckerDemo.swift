@@ -1,5 +1,5 @@
 //
-//  BindingReactorDemo.swift
+//  PasswordCheckerDemo.swift
 //  Adwaita
 //
 //  Created by lambdaclan on 13.06.24.
@@ -51,7 +51,7 @@ enum PasswordChecker: String, CaseIterable, CustomStringConvertible, Identifiabl
     }
 }
 
-struct BindingReactorDemo: View {
+struct PasswordCheckerDemo: View {
 
     var app: GTUIApp
 

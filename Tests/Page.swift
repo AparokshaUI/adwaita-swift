@@ -25,7 +25,7 @@ enum Page: String, Identifiable, CaseIterable, Codable, CustomStringConvertible 
     case carousel
     case viewSwitcher
     case form
-    case bindingReactor
+    case passwordChecker
     case popover
     case flowBox
     case navigationView
@@ -46,7 +46,7 @@ enum Page: String, Identifiable, CaseIterable, Codable, CustomStringConvertible 
             return "Navigation View"
         case .alertDialog:
             return "Alert Dialog"
-        case .bindingReactor:
+        case .passwordChecker:
             return "Binding Reactor"
         default:
             return rawValue.capitalized
@@ -90,7 +90,7 @@ enum Page: String, Identifiable, CaseIterable, Codable, CustomStringConvertible 
             return "Switch the window's view"
         case .form:
             return "Group controls used for data entry"
-        case .bindingReactor:
+        case .passwordChecker:
             return "React to binding variable changes"
         case .popover:
             return "Present content in a bubble-like context popup"
@@ -135,8 +135,8 @@ enum Page: String, Identifiable, CaseIterable, Codable, CustomStringConvertible 
             ViewSwitcherDemo(app: app)
         case .form:
             FormDemo(app: app)
-        case .bindingReactor:
-            BindingReactorDemo(app: app)
+        case .passwordChecker:
+            PasswordCheckerDemo(app: app)
         case .popover:
             PopoverDemo()
         case .flowBox:
