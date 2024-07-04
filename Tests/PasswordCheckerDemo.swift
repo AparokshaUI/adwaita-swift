@@ -70,6 +70,8 @@ struct PasswordCheckerDemo: View {
     struct WindowContent: View {
 
         @State private var password = ""
+        @State private var copied: Signal = .init()
+
         var checkStatus: [String: Bool] {
             PasswordChecker.allCases.enumerated().reduce([String: Bool]()) { dict, checker in
                 var dict = dict
@@ -86,14 +88,17 @@ struct PasswordCheckerDemo: View {
                             .suffix {
                                 Button(icon: .default(icon: .editCopy)) {
                                     State<Any>.copy(password)
+                                    copied.signal()
                                 }
                                 .flat()
                                 .verticalCenter()
+                                .tooltip("Copy")
                                 Button(icon: .default(icon: .editClear)) {
                                     password = ""
                                 }
                                 .flat()
                                 .verticalCenter()
+                                .tooltip("Clear")
                             }
                     }
                 }
@@ -108,6 +113,7 @@ struct PasswordCheckerDemo: View {
                 }
             }
             .padding()
+            .toast("Copied to clipboard", signal: copied)
             .frame(minWidth: 340, minHeight: 400)
             .topToolbar {
                 HeaderBar.empty()
