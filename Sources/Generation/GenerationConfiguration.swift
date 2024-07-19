@@ -261,7 +261,12 @@ struct GenerationConfiguration {
             excludeProperties: ["input-hints", "input-purpose"]
         ),
         .init(class: "SearchBar"),
-        .init(class: "Picture", excludeProperties: ["file", "paintable"])
+        .init(class: "Picture", excludeProperties: ["file", "paintable"]),
+        .init(
+            class: "AspectFrame",
+            initializer: "gtk_aspect_frame_new(0.5, 0.5, ratio, 0)",
+            requiredProperties: ["ratio"]
+        )
     ]
 
     /// The unshortening map.

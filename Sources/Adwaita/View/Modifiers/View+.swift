@@ -7,6 +7,13 @@
 
 extension View {
 
+    /// Set the view's aspect ratio.
+    /// - Parameter aspectRatio: The aspect ratio.
+    public func aspectRatio(_ aspectRatio: Float) -> AspectFrame {
+        .init(ratio: aspectRatio)
+            .child { self }
+    }
+
     /// Wrap the view in a vertical stack and center vertically.
     /// - Returns: The view.
     public func verticalCenter() -> View {
