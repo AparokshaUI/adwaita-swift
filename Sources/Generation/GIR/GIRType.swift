@@ -24,6 +24,8 @@ struct GIRType: Decodable {
     func generate(configuration: GenerationConfiguration) throws -> String {
         if let cType {
             return cType.convertCType(configuration: configuration)
+        } else if let name, let type = configuration.cTypeReplacements[name] {
+            return type
         }
         return "String"
     }

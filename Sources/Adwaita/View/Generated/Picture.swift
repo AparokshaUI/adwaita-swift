@@ -2,7 +2,7 @@
 //  Picture.swift
 //  Adwaita
 //
-//  Created by auto-generation on 22.05.24.
+//  Created by auto-generation on 19.07.24.
 //
 
 import CAdw
@@ -69,6 +69,8 @@ public struct Picture: Widget {
     var alternativeText: String?
     /// If the `GtkPicture` can be made smaller than the natural size of its contents.
     var canShrink: Bool?
+    /// How the content should be resized to fit inside the `GtkPicture`.
+    var contentFit: ContentFit?
     /// Whether the GtkPicture will render its contents trying to preserve the aspect
     /// ratio.
     var keepAspectRatio: Bool?
@@ -108,6 +110,9 @@ public struct Picture: Widget {
             if let canShrink, updateProperties {
                 gtk_picture_set_can_shrink(widget, canShrink.cBool)
             }
+            if let contentFit, updateProperties {
+                gtk_picture_set_content_fit(widget, contentFit.gtkValue)
+            }
             if let keepAspectRatio, updateProperties {
                 gtk_picture_set_keep_aspect_ratio(widget, keepAspectRatio.cBool)
             }
@@ -141,6 +146,14 @@ public struct Picture: Widget {
     public func canShrink(_ canShrink: Bool? = true) -> Self {
         var newSelf = self
         newSelf.canShrink = canShrink
+        
+        return newSelf
+    }
+
+    /// How the content should be resized to fit inside the `GtkPicture`.
+    public func contentFit(_ contentFit: ContentFit?) -> Self {
+        var newSelf = self
+        newSelf.contentFit = contentFit
         
         return newSelf
     }

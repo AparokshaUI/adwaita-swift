@@ -261,7 +261,7 @@ struct GenerationConfiguration {
             excludeProperties: ["input-hints", "input-purpose"]
         ),
         .init(class: "SearchBar"),
-        .init(class: "Picture", excludeProperties: ["content-fit", "file", "paintable"])
+        .init(class: "Picture", excludeProperties: ["file", "paintable"])
     ]
 
     /// The unshortening map.
@@ -284,14 +284,16 @@ struct GenerationConfiguration {
         "GIcon*": "OpaquePointer",
         "GdkPixbuf*": "OpaquePointer",
         "GdkPaintable*": "OpaquePointer",
-        "NavigationPage": "NavigationPage"
+        "NavigationPage": "NavigationPage",
+        "ContentFit": "ContentFit"
     ]
 
     /// Modifications for converting a Swift into a C type.
     var cTypeProperties = [
         "Bool": "cBool",
         "Int": "cInt",
-        "UInt": "cInt"
+        "UInt": "cInt",
+        "ContentFit": "gtkValue"
     ]
 
     /// Default values for modifiers with a certain type.
