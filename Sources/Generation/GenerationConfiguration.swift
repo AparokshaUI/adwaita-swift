@@ -266,6 +266,11 @@ struct GenerationConfiguration {
             class: "AspectFrame",
             initializer: "gtk_aspect_frame_new(0.5, 0.5, ratio, 0)",
             requiredProperties: ["ratio"]
+        ),
+        .init(
+            class: "Separator",
+            initializer: "gtk_separator_new(GTK_ORIENTATION_VERTICAL)",
+            excludeProperties: ["orientation"]
         )
     ]
 

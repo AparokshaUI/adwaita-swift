@@ -2,7 +2,7 @@
 //  PreferencesPage.swift
 //  Adwaita
 //
-//  Created by auto-generation on 19.07.24.
+//  Created by auto-generation on 21.07.24.
 //
 
 import CAdw

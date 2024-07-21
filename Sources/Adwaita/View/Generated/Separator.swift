@@ -1,5 +1,5 @@
 //
-//  Spinner.swift
+//  Separator.swift
 //  Adwaita
 //
 //  Created by auto-generation on 21.07.24.
@@ -8,22 +8,23 @@
 import CAdw
 import LevenshteinTransformations
 
-/// A `GtkSpinner` widget displays an icon-size spinning animation.
+/// `GtkSeparator` is a horizontal or vertical separator widget.
 /// 
-/// It is often used as an alternative to a [class@Gtk.ProgressBar]
-/// for displaying indefinite activity, instead of actual progress.
+/// ![An example GtkSeparator](separator.png)
 /// 
-/// ![An example GtkSpinner](spinner.png)
-/// 
-/// To start the animation, use [method@Gtk.Spinner.start], to stop it
-/// use [method@Gtk.Spinner.stop].
+/// A `GtkSeparator` can be used to group the widgets within a window.
+/// It displays a line with a shadow to make it appear sunken into the
+/// interface.
 /// 
 /// # CSS nodes
 /// 
-/// `GtkSpinner` has a single CSS node with the name spinner.
-/// When the animation is active, the :checked pseudoclass is
-/// added to this node.
-public struct Spinner: Widget {
+/// `GtkSeparator` has a single CSS node with name separator. The node
+/// gets one of the .horizontal or .vertical style classes.
+/// 
+/// # Accessibility
+/// 
+/// `GtkSeparator` uses the %GTK_ACCESSIBLE_ROLE_SEPARATOR role.
+public struct Separator: Widget {
 
     /// Additional update functions for type extensions.
     var updateFunctions: [(ViewStorage, [(View) -> View], Bool) -> Void] = []
@@ -34,14 +35,12 @@ public struct Spinner: Widget {
     /// 
     /// The accessible role cannot be changed once set.
     var accessibleRole: String?
-    /// Whether the spinner is spinning
-    var spinning: Bool?
     /// The application.
     var app: GTUIApp?
     /// The window.
     var window: GTUIApplicationWindow?
 
-    /// Initialize `Spinner`.
+    /// Initialize `Separator`.
     public init() {
     }
 
@@ -49,7 +48,7 @@ public struct Spinner: Widget {
     /// - Parameter modifiers: The view modifiers.
     /// - Returns: The view storage.
     public func container(modifiers: [(View) -> View]) -> ViewStorage {
-        let storage = ViewStorage(gtk_spinner_new()?.opaque())
+        let storage = ViewStorage(gtk_separator_new(GTK_ORIENTATION_VERTICAL)?.opaque())
         for function in appearFunctions {
             function(storage, modifiers)
         }
@@ -66,9 +65,6 @@ public struct Spinner: Widget {
     public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
         storage.modify { widget in
 
-            if let spinning, updateProperties {
-                gtk_spinner_set_spinning(widget, spinning.cBool)
-            }
 
 
         }
@@ -83,14 +79,6 @@ public struct Spinner: Widget {
     public func accessibleRole(_ accessibleRole: String?) -> Self {
         var newSelf = self
         newSelf.accessibleRole = accessibleRole
-        
-        return newSelf
-    }
-
-    /// Whether the spinner is spinning
-    public func spinning(_ spinning: Bool? = true) -> Self {
-        var newSelf = self
-        newSelf.spinning = spinning
         
         return newSelf
     }
