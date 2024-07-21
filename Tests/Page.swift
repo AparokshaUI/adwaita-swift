@@ -31,6 +31,7 @@ enum Page: String, Identifiable, CaseIterable, Codable, CustomStringConvertible 
     case navigationView
     case picture
     case idle
+    case fixed
 
     var id: Self {
         self
@@ -102,6 +103,8 @@ enum Page: String, Identifiable, CaseIterable, Codable, CustomStringConvertible 
             return "Display an image"
         case .idle:
             return "Update UI from an asynchronous context"
+        case .fixed:
+            return "Place widgets in a coordinate system"
         }
     }
 
@@ -147,6 +150,8 @@ enum Page: String, Identifiable, CaseIterable, Codable, CustomStringConvertible 
             PictureDemo(url: pictureURL, app: app, window: window)
         case .idle:
             IdleDemo()
+        case .fixed:
+            FixedDemo()
         }
     }
     // swiftlint:enable cyclomatic_complexity

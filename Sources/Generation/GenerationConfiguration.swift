@@ -271,7 +271,8 @@ struct GenerationConfiguration {
             class: "Separator",
             initializer: "gtk_separator_new(GTK_ORIENTATION_VERTICAL)",
             excludeProperties: ["orientation"]
-        )
+        ),
+        .init(class: "Fixed")
     ]
 
     /// The unshortening map.
