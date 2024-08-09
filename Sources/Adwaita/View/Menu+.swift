@@ -7,6 +7,7 @@
 
 import CAdw
 
+// An extension
 extension Menu {
 
     // swiftlint:disable function_default_parameter_at_end

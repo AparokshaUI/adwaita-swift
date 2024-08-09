@@ -15,6 +15,7 @@ public protocol MenuItemGroup {
 
 }
 
+/// An extension
 extension MenuItemGroup {
 
     /// Add the menu items described by the group to a menu.

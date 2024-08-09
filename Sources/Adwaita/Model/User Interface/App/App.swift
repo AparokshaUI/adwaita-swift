@@ -38,6 +38,7 @@ public protocol App {
 
 }
 
+/// An extension
 extension App {
 
     /// The application's entry point.

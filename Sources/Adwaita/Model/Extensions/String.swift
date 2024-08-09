@@ -5,6 +5,7 @@
 //  Created by david-swift on 09.09.23.
 //
 
+// An extension
 extension String {
 
     /// A label for main content in a view storage.

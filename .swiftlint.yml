@@ -164,3 +164,4 @@ type_contents_order:
 excluded:
     - Sources/Adwaita/View/Generated/
     - Sources/Adwaita/Adwaita.docc/
+    - .build/

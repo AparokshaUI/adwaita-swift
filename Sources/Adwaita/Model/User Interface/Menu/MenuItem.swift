@@ -19,6 +19,7 @@ public protocol MenuItem: MenuItemGroup {
 
 }
 
+/// An extension
 extension MenuItem {
 
     /// The menu item's content is itself.

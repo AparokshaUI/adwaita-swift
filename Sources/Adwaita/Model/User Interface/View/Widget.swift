@@ -20,6 +20,7 @@ public protocol Widget: View {
 
 }
 
+/// An extension
 extension Widget {
 
     /// A widget's view is empty.

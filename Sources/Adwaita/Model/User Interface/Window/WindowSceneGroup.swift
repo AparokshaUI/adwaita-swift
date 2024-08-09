@@ -13,6 +13,7 @@ public protocol WindowSceneGroup {
 
 }
 
+/// An extension
 extension WindowSceneGroup {
 
     /// Get the windows described by the group.

@@ -7,6 +7,7 @@
 
 import Foundation
 
+// An extension
 extension Array: View where Element == View {
 
     /// The array's view body is the array itself.
@@ -46,6 +47,7 @@ extension Array: View where Element == View {
 
 }
 
+// An extension
 extension Array where Element == WindowSceneGroup {
 
     /// Get the content of an array of window scene groups.
@@ -56,6 +58,7 @@ extension Array where Element == WindowSceneGroup {
 
 }
 
+// An extension
 extension Array where Element == String {
 
     /// Get the C version of the array.
@@ -78,6 +81,7 @@ extension Array where Element == String {
 
 }
 
+// An extension
 extension Array {
 
     /// Accesses the element at the specified position safely.
@@ -105,6 +109,7 @@ extension Array {
 
 }
 
+// An extension
 extension Array where Element: Identifiable {
 
     /// Accesses the element with a certain id safely.

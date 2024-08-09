@@ -25,6 +25,7 @@ public protocol View {
 
 }
 
+/// An extension
 extension View {
 
     /// Wrap the view into a widget.
@@ -54,6 +55,8 @@ extension View {
         }
     }
 
+    /// Get the state.
+    /// - Returns: The state.
     func getState() -> [String: StateProtocol] {
         var state: [String: StateProtocol] = [:]
         for property in Mirror(reflecting: self).children {
@@ -71,6 +74,9 @@ extension View {
         widget(modifiers: modifiers).container(modifiers: modifiers)
     }
 
+    /// Get the modified view.
+    /// - Parameter modifiers: The modifiers.
+    /// - Returns: The modified view.
     func getModified(modifiers: [(View) -> View]) -> View {
         var modified: View = self
         for modifier in modifiers {

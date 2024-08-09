@@ -185,6 +185,7 @@ public struct State<Value>: StateProtocol {
 
 }
 
+/// An extension
 extension State where Value: Codable {
 
     /// Initialize a property representing a state in the view.

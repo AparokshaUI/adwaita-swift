@@ -29,6 +29,7 @@ public protocol WindowScene: WindowSceneGroup {
 
 }
 
+/// An extension
 extension WindowScene {
 
     /// The window scene's body is itself.
