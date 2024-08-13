@@ -2,7 +2,7 @@
 //  Avatar.swift
 //  Adwaita
 //
-//  Created by auto-generation on 21.07.24.
+//  Created by auto-generation on 03.08.24.
 //
 
 import CAdw
@@ -28,12 +28,12 @@ import LevenshteinTransformations
 /// ## CSS nodes
 /// 
 /// `AdwAvatar` has a single CSS node with name `avatar`.
-public struct Avatar: Widget {
+public struct Avatar: AdwaitaWidget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage, [(View) -> View], Bool) -> Void] = []
+    var updateFunctions: [(ViewStorage, [(AnyView) -> AnyView], Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage, [(View) -> View]) -> Void] = []
+    var appearFunctions: [(ViewStorage, [(AnyView) -> AnyView]) -> Void] = []
 
     /// The name of an icon to use as a fallback.
     /// 
@@ -51,9 +51,9 @@ public struct Avatar: Widget {
     /// `FALSE`.
     var text: String?
     /// The application.
-    var app: GTUIApp?
+    var app: AdwaitaApp?
     /// The window.
-    var window: GTUIApplicationWindow?
+    var window: AdwaitaWindow?
 
     /// Initialize `Avatar`.
     public init(showInitials: Bool, size: Int) {
@@ -61,37 +61,40 @@ public struct Avatar: Widget {
         self.size = size
     }
 
-    /// Get the widget's view storage.
-    /// - Parameter modifiers: The view modifiers.
+    /// The view storage.
+    /// - Parameters:
+    ///     - modifiers: Modify views before being updated.
+    ///     - type: The type of the app storage.
     /// - Returns: The view storage.
-    public func container(modifiers: [(View) -> View]) -> ViewStorage {
+    public func container<Data>(modifiers: [(AnyView) -> AnyView], type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(adw_avatar_new(size.cInt, text, showInitials.cBool)?.opaque())
         for function in appearFunctions {
             function(storage, modifiers)
         }
-        update(storage, modifiers: modifiers, updateProperties: true)
+        update(storage, modifiers: modifiers, updateProperties: true, type: type)
 
         return storage
     }
 
-    /// Update the widget's view storage.
+    /// Update the stored content.
     /// - Parameters:
-    ///     - storage: The view storage.
-    ///     - modifiers: The view modifiers.
+    ///     - storage: The storage to update.
+    ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    ///     - type: The type of the app storage.
+    public func update<Data>(_ storage: ViewStorage, modifiers: [(AnyView) -> AnyView], updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         storage.modify { widget in
 
-            if let iconName, updateProperties {
+            if let iconName, updateProperties, (storage.previousState as? Self)?.iconName != iconName {
                 adw_avatar_set_icon_name(widget, iconName)
             }
-            if updateProperties {
+            if updateProperties, (storage.previousState as? Self)?.showInitials != showInitials {
                 adw_avatar_set_show_initials(widget, showInitials.cBool)
             }
-            if updateProperties {
+            if updateProperties, (storage.previousState as? Self)?.size != size {
                 adw_avatar_set_size(widget, size.cInt)
             }
-            if let text, updateProperties {
+            if let text, updateProperties, (storage.previousState as? Self)?.text != text {
                 adw_avatar_set_text(widget, text)
             }
 
@@ -99,6 +102,9 @@ public struct Avatar: Widget {
         }
         for function in updateFunctions {
             function(storage, modifiers, updateProperties)
+        }
+        if updateProperties {
+            storage.previousState = self
         }
     }
 

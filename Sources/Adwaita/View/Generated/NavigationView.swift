@@ -2,7 +2,7 @@
 //  NavigationView.swift
 //  Adwaita
 //
-//  Created by auto-generation on 21.07.24.
+//  Created by auto-generation on 03.08.24.
 //
 
 import CAdw
@@ -118,12 +118,12 @@ import LevenshteinTransformations
 /// ## Accessibility
 /// 
 /// `AdwNavigationView` uses the `GTK_ACCESSIBLE_ROLE_GROUP` role.
-public struct NavigationView: Widget {
+public struct NavigationView: AdwaitaWidget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage, [(View) -> View], Bool) -> Void] = []
+    var updateFunctions: [(ViewStorage, [(AnyView) -> AnyView], Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage, [(View) -> View]) -> Void] = []
+    var appearFunctions: [(ViewStorage, [(AnyView) -> AnyView]) -> Void] = []
 
     /// Whether to animate page transitions.
     /// 
@@ -163,33 +163,36 @@ public struct NavigationView: Widget {
     /// See [method@NavigationView.replace].
     var replaced: (() -> Void)?
     /// The application.
-    var app: GTUIApp?
+    var app: AdwaitaApp?
     /// The window.
-    var window: GTUIApplicationWindow?
+    var window: AdwaitaWindow?
 
     /// Initialize `NavigationView`.
     public init() {
     }
 
-    /// Get the widget's view storage.
-    /// - Parameter modifiers: The view modifiers.
+    /// The view storage.
+    /// - Parameters:
+    ///     - modifiers: Modify views before being updated.
+    ///     - type: The type of the app storage.
     /// - Returns: The view storage.
-    public func container(modifiers: [(View) -> View]) -> ViewStorage {
+    public func container<Data>(modifiers: [(AnyView) -> AnyView], type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(adw_navigation_view_new()?.opaque())
         for function in appearFunctions {
             function(storage, modifiers)
         }
-        update(storage, modifiers: modifiers, updateProperties: true)
+        update(storage, modifiers: modifiers, updateProperties: true, type: type)
 
         return storage
     }
 
-    /// Update the widget's view storage.
+    /// Update the stored content.
     /// - Parameters:
-    ///     - storage: The view storage.
-    ///     - modifiers: The view modifiers.
+    ///     - storage: The storage to update.
+    ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    ///     - type: The type of the app storage.
+    public func update<Data>(_ storage: ViewStorage, modifiers: [(AnyView) -> AnyView], updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         if let getNextPage {
             storage.connectSignal(name: "get-next-page", argCount: 0) {
                 getNextPage()
@@ -212,10 +215,10 @@ public struct NavigationView: Widget {
         }
         storage.modify { widget in
 
-            if let animateTransitions, updateProperties {
+            if let animateTransitions, updateProperties, (storage.previousState as? Self)?.animateTransitions != animateTransitions {
                 adw_navigation_view_set_animate_transitions(widget, animateTransitions.cBool)
             }
-            if let popOnEscape, updateProperties {
+            if let popOnEscape, updateProperties, (storage.previousState as? Self)?.popOnEscape != popOnEscape {
                 adw_navigation_view_set_pop_on_escape(widget, popOnEscape.cBool)
             }
 
@@ -223,6 +226,9 @@ public struct NavigationView: Widget {
         }
         for function in updateFunctions {
             function(storage, modifiers, updateProperties)
+        }
+        if updateProperties {
+            storage.previousState = self
         }
     }
 

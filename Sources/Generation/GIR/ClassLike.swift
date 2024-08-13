@@ -29,7 +29,7 @@ extension ClassLike {
     ///     - configurations: The configurations for the classes in the namespace.
     /// - Returns: The properties.
     func properties(namespace: Namespace, configurations: [WidgetConfiguration]) -> [Property] {
-        var properties = properties
+        var properties = properties.filter { !($0.deprecated ?? false) }
         for type in parentTypes(namespace: namespace) {
             properties += type
                 .properties(namespace: namespace, configurations: configurations)
@@ -85,14 +85,14 @@ extension ClassLike {
         guard let config = configs.first(where: { $0.class == name }) else {
             return content
         }
-        let widgetPointer = config.cast ? "storage.pointer?.cast()" : "storage.pointer"
+        let widgetPointer = config.cast ? "storage.opaquePointer?.cast()" : "storage.opaquePointer"
         for widget in config.staticWidgets {
             content += """
 
                     var \(widget.name)Storage: [ViewStorage] = []
                     for view in \(widget.name)() {
-                        \(widget.name)Storage.append(view.storage(modifiers: modifiers))
-                        \(widget.add)(\(widgetPointer), \(widget.name)Storage.last?.pointer?.cast())
+                        \(widget.name)Storage.append(view.storage(modifiers: modifiers, type: type))
+                        \(widget.add)(\(widgetPointer), \(widget.name)Storage.last?.opaquePointer?.cast())
                     }
                     storage.content["\(widget.name)"] = \(widget.name)Storage
             """

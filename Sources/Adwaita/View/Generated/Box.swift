@@ -2,7 +2,7 @@
 //  Box.swift
 //  Adwaita
 //
-//  Created by auto-generation on 21.07.24.
+//  Created by auto-generation on 03.08.24.
 //
 
 import CAdw
@@ -42,12 +42,12 @@ import LevenshteinTransformations
 /// Until GTK 4.10, `GtkBox` used the `GTK_ACCESSIBLE_ROLE_GROUP` role.
 /// 
 /// Starting from GTK 4.12, `GtkBox` uses the `GTK_ACCESSIBLE_ROLE_GENERIC` role.
-public struct Box: Widget {
+public struct Box: AdwaitaWidget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage, [(View) -> View], Bool) -> Void] = []
+    var updateFunctions: [(ViewStorage, [(AnyView) -> AnyView], Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage, [(View) -> View]) -> Void] = []
+    var appearFunctions: [(ViewStorage, [(AnyView) -> AnyView]) -> Void] = []
 
     /// The accessible role of the given `GtkAccessible` implementation.
     /// 
@@ -64,55 +64,58 @@ public struct Box: Widget {
     /// The body for the widget "prepend".
     var prepend: () -> Body = { [] }
     /// The application.
-    var app: GTUIApp?
+    var app: AdwaitaApp?
     /// The window.
-    var window: GTUIApplicationWindow?
+    var window: AdwaitaWindow?
 
     /// Initialize `Box`.
     public init(spacing: Int) {
         self.spacing = spacing
     }
 
-    /// Get the widget's view storage.
-    /// - Parameter modifiers: The view modifiers.
+    /// The view storage.
+    /// - Parameters:
+    ///     - modifiers: Modify views before being updated.
+    ///     - type: The type of the app storage.
     /// - Returns: The view storage.
-    public func container(modifiers: [(View) -> View]) -> ViewStorage {
+    public func container<Data>(modifiers: [(AnyView) -> AnyView], type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(gtk_box_new(GTK_ORIENTATION_VERTICAL, spacing.cInt)?.opaque())
         for function in appearFunctions {
             function(storage, modifiers)
         }
-        update(storage, modifiers: modifiers, updateProperties: true)
+        update(storage, modifiers: modifiers, updateProperties: true, type: type)
 
         var appendStorage: [ViewStorage] = []
         for view in append() {
-            appendStorage.append(view.storage(modifiers: modifiers))
-            gtk_box_append(storage.pointer?.cast(), appendStorage.last?.pointer?.cast())
+            appendStorage.append(view.storage(modifiers: modifiers, type: type))
+            gtk_box_append(storage.opaquePointer?.cast(), appendStorage.last?.opaquePointer?.cast())
         }
         storage.content["append"] = appendStorage
         var prependStorage: [ViewStorage] = []
         for view in prepend() {
-            prependStorage.append(view.storage(modifiers: modifiers))
-            gtk_box_prepend(storage.pointer?.cast(), prependStorage.last?.pointer?.cast())
+            prependStorage.append(view.storage(modifiers: modifiers, type: type))
+            gtk_box_prepend(storage.opaquePointer?.cast(), prependStorage.last?.opaquePointer?.cast())
         }
         storage.content["prepend"] = prependStorage
         return storage
     }
 
-    /// Update the widget's view storage.
+    /// Update the stored content.
     /// - Parameters:
-    ///     - storage: The view storage.
-    ///     - modifiers: The view modifiers.
+    ///     - storage: The storage to update.
+    ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    ///     - type: The type of the app storage.
+    public func update<Data>(_ storage: ViewStorage, modifiers: [(AnyView) -> AnyView], updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         storage.modify { widget in
 
-            if let baselineChild, updateProperties {
+            if let baselineChild, updateProperties, (storage.previousState as? Self)?.baselineChild != baselineChild {
                 gtk_box_set_baseline_child(widget?.cast(), baselineChild.cInt)
             }
-            if let homogeneous, updateProperties {
+            if let homogeneous, updateProperties, (storage.previousState as? Self)?.homogeneous != homogeneous {
                 gtk_box_set_homogeneous(widget?.cast(), homogeneous.cBool)
             }
-            if updateProperties {
+            if updateProperties, (storage.previousState as? Self)?.spacing != spacing {
                 gtk_box_set_spacing(widget?.cast(), spacing.cInt)
             }
 
@@ -122,7 +125,8 @@ public struct Box: Widget {
                         view.updateStorage(
                             storage,
                             modifiers: modifiers,
-                            updateProperties: updateProperties
+                            updateProperties: updateProperties,
+                            type: type
                         )
                     }
                 }
@@ -133,7 +137,8 @@ public struct Box: Widget {
                         view.updateStorage(
                             storage,
                             modifiers: modifiers,
-                            updateProperties: updateProperties
+                            updateProperties: updateProperties,
+                            type: type
                         )
                     }
                 }
@@ -142,6 +147,9 @@ public struct Box: Widget {
         }
         for function in updateFunctions {
             function(storage, modifiers, updateProperties)
+        }
+        if updateProperties {
+            storage.previousState = self
         }
     }
 

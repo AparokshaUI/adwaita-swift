@@ -13,30 +13,23 @@ extension Popover {
     /// - Parameter vertical: Whether it is a vertical clamp.
     init(visible: Binding<Bool>) {
         self.init()
-        appearFunctions.append { storage, _ in
-            storage.fields["visible"] = visible
+        updateFunctions.append { storage, _, _ in
             storage.connectSignal(name: "closed", id: "visible") {
-                if let binding = storage.fields["visible"] as? Binding<Bool> {
-                    if binding.wrappedValue {
-                        binding.wrappedValue = false
-                    }
+                if visible.wrappedValue {
+                    visible.wrappedValue = false
                 }
             }
-        }
-        updateFunctions.append { storage, _, _ in
-            if let binding = storage.fields["visible"] as? Binding<Bool> {
-                if binding.wrappedValue {
-                    gtk_popover_popup(storage.pointer?.cast())
-                } else {
-                    gtk_popover_popdown(storage.pointer?.cast())
-                }
+            if visible.wrappedValue {
+                gtk_popover_popup(storage.opaquePointer?.cast())
+            } else {
+                gtk_popover_popdown(storage.opaquePointer?.cast())
             }
         }
     }
 
 }
 
-extension View {
+extension AnyView {
 
     /// Add a popover on top of the view.
     /// - Parameters:

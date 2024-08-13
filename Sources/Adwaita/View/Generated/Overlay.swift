@@ -2,7 +2,7 @@
 //  Overlay.swift
 //  Adwaita
 //
-//  Created by auto-generation on 21.07.24.
+//  Created by auto-generation on 03.08.24.
 //
 
 import CAdw
@@ -40,19 +40,19 @@ import LevenshteinTransformations
 /// `GtkOverlay` has a single CSS node with the name “overlay”. Overlay children
 /// whose alignments cause them to be positioned at an edge get the style classes
 /// “.left”, “.right”, “.top”, and/or “.bottom” according to their position.
-public struct Overlay: Widget {
+public struct Overlay: AdwaitaWidget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage, [(View) -> View], Bool) -> Void] = []
+    var updateFunctions: [(ViewStorage, [(AnyView) -> AnyView], Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage, [(View) -> View]) -> Void] = []
+    var appearFunctions: [(ViewStorage, [(AnyView) -> AnyView]) -> Void] = []
 
     /// The accessible role of the given `GtkAccessible` implementation.
     /// 
     /// The accessible role cannot be changed once set.
     var accessibleRole: String?
     /// The main child widget.
-    var child:  (() -> Body)?
+    var child: (() -> Body)?
     /// Emitted to determine the position and size of any overlay
     /// child widgets.
     /// 
@@ -71,43 +71,46 @@ public struct Overlay: Widget {
     /// The body for the widget "overlay".
     var overlay: () -> Body = { [] }
     /// The application.
-    var app: GTUIApp?
+    var app: AdwaitaApp?
     /// The window.
-    var window: GTUIApplicationWindow?
+    var window: AdwaitaWindow?
 
     /// Initialize `Overlay`.
     public init() {
     }
 
-    /// Get the widget's view storage.
-    /// - Parameter modifiers: The view modifiers.
+    /// The view storage.
+    /// - Parameters:
+    ///     - modifiers: Modify views before being updated.
+    ///     - type: The type of the app storage.
     /// - Returns: The view storage.
-    public func container(modifiers: [(View) -> View]) -> ViewStorage {
+    public func container<Data>(modifiers: [(AnyView) -> AnyView], type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(gtk_overlay_new()?.opaque())
         for function in appearFunctions {
             function(storage, modifiers)
         }
-        update(storage, modifiers: modifiers, updateProperties: true)
-        if let childStorage = child?().widget(modifiers: modifiers).storage(modifiers: modifiers) {
+        update(storage, modifiers: modifiers, updateProperties: true, type: type)
+        if let childStorage = child?().storage(modifiers: modifiers, type: type) {
             storage.content["child"] = [childStorage]
-            gtk_overlay_set_child(storage.pointer, childStorage.pointer?.cast())
+            gtk_overlay_set_child(storage.opaquePointer, childStorage.opaquePointer?.cast())
         }
 
         var overlayStorage: [ViewStorage] = []
         for view in overlay() {
-            overlayStorage.append(view.storage(modifiers: modifiers))
-            gtk_overlay_add_overlay(storage.pointer, overlayStorage.last?.pointer?.cast())
+            overlayStorage.append(view.storage(modifiers: modifiers, type: type))
+            gtk_overlay_add_overlay(storage.opaquePointer, overlayStorage.last?.opaquePointer?.cast())
         }
         storage.content["overlay"] = overlayStorage
         return storage
     }
 
-    /// Update the widget's view storage.
+    /// Update the stored content.
     /// - Parameters:
-    ///     - storage: The view storage.
-    ///     - modifiers: The view modifiers.
+    ///     - storage: The storage to update.
+    ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    ///     - type: The type of the app storage.
+    public func update<Data>(_ storage: ViewStorage, modifiers: [(AnyView) -> AnyView], updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         if let getChildPosition {
             storage.connectSignal(name: "get-child-position", argCount: 2) {
                 getChildPosition()
@@ -116,7 +119,7 @@ public struct Overlay: Widget {
         storage.modify { widget in
 
             if let widget = storage.content["child"]?.first {
-                child?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
+                child?().updateStorage(widget, modifiers: modifiers, updateProperties: updateProperties, type: type)
             }
 
             if let overlayStorage = storage.content["overlay"] {
@@ -125,7 +128,8 @@ public struct Overlay: Widget {
                         view.updateStorage(
                             storage,
                             modifiers: modifiers,
-                            updateProperties: updateProperties
+                            updateProperties: updateProperties,
+                            type: type
                         )
                     }
                 }
@@ -134,6 +138,9 @@ public struct Overlay: Widget {
         }
         for function in updateFunctions {
             function(storage, modifiers, updateProperties)
+        }
+        if updateProperties {
+            storage.previousState = self
         }
     }
 

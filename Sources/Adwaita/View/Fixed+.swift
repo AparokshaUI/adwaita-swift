@@ -24,10 +24,10 @@ extension Fixed {
     ) -> Self {
         var newSelf = self
         newSelf.appearFunctions.append { storage, modifiers in
-            let view = view().storage(modifiers: modifiers)
+            let view = view().storage(modifiers: modifiers, type: AdwaitaMainView.self)
             gtk_fixed_put(
-                storage.pointer?.cast(),
-                view.pointer?.cast(),
+                storage.opaquePointer?.cast(),
+                view.opaquePointer?.cast(),
                 xCoordinate,
                 yCoordinate
             )
@@ -37,11 +37,17 @@ extension Fixed {
             guard let content = storage.content[id]?.first else {
                 return
             }
-            view().updateStorage(content, modifiers: modifiers, updateProperties: updateProperties)
+            view()
+                .updateStorage(
+                    content,
+                    modifiers: modifiers,
+                    updateProperties: updateProperties,
+                    type: AdwaitaMainView.self
+                )
             if updateProperties {
                 gtk_fixed_move(
-                    storage.pointer?.cast(),
-                    content.pointer?.cast(),
+                    storage.opaquePointer?.cast(),
+                    content.opaquePointer?.cast(),
                     xCoordinate,
                     yCoordinate
                 )

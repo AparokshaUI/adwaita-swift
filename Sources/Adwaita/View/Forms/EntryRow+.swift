@@ -18,18 +18,15 @@ extension EntryRow {
     public init(_ title: String, text: Binding<String>) {
         self.init()
         self = self.title(title)
-        appearFunctions.append { storage, _ in
-            storage.fields[Self.textField] = text
+        updateFunctions.append { storage, _, _ in
             storage.notify(name: "text") {
-                let newValue = String(cString: gtk_editable_get_text(storage.pointer))
-                if let binding = storage.fields[Self.textField] as? Binding<String>, binding.wrappedValue != newValue {
-                    binding.wrappedValue = newValue
+                let newValue = String(cString: gtk_editable_get_text(storage.opaquePointer))
+                if text.wrappedValue != newValue {
+                    text.wrappedValue = newValue
                 }
             }
-        }
-        updateFunctions.append { storage, _, _ in
-            if text.wrappedValue != .init(cString: gtk_editable_get_text(storage.pointer)) {
-                gtk_editable_set_text(storage.pointer, text.wrappedValue)
+            if text.wrappedValue != .init(cString: gtk_editable_get_text(storage.opaquePointer)) {
+                gtk_editable_set_text(storage.opaquePointer, text.wrappedValue)
             }
         }
     }

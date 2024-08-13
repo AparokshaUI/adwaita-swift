@@ -11,7 +11,7 @@ extension CheckButton {
     /// Apply the selection mode style class.
     /// - Parameter active: Whether it is applied.
     /// - Returns: A view.
-    public func selectionMode(_ active: Bool = true) -> View {
+    public func selectionMode(_ active: Bool = true) -> AnyView {
         style("selection-mode", active: active)
     }
 

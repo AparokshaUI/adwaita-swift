@@ -20,9 +20,9 @@ extension Menu {
     public init(
         _ label: String? = nil,
         icon: Icon,
-        app: GTUIApp,
-        window: GTUIApplicationWindow?,
-        @MenuBuilder content: @escaping () -> MenuContent
+        app: AdwaitaApp,
+        window: AdwaitaWindow?,
+        @ViewBuilder content: @escaping () -> Body
     ) {
         self.init()
         self = self
@@ -43,11 +43,14 @@ extension Menu {
     ///   - content: The menu's content.
     public init(
         _ label: String,
-        app: GTUIApp,
-        window: GTUIApplicationWindow?,
-        @MenuBuilder content: () -> MenuContent
+        app: AdwaitaApp,
+        window: AdwaitaWindow?,
+        @ViewBuilder content: @escaping () -> Body
     ) {
         self.init()
+        self = self
+            .label(label)
+            .menuModel(app: app, window: window, content)
     }
 
 }

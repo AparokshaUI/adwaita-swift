@@ -2,7 +2,7 @@
 //  PreferencesRow.swift
 //  Adwaita
 //
-//  Created by auto-generation on 21.07.24.
+//  Created by auto-generation on 03.08.24.
 //
 
 import CAdw
@@ -17,12 +17,12 @@ import LevenshteinTransformations
 /// [class@ActionRow] and its derivatives are convenient to use as preference
 /// rows as they take care of presenting the preference's title while letting you
 /// compose the inputs of the preference around it.
-public struct PreferencesRow: Widget {
+public struct PreferencesRow: AdwaitaWidget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage, [(View) -> View], Bool) -> Void] = []
+    var updateFunctions: [(ViewStorage, [(AnyView) -> AnyView], Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage, [(View) -> View]) -> Void] = []
+    var appearFunctions: [(ViewStorage, [(AnyView) -> AnyView]) -> Void] = []
 
     /// The title of the preference represented by this row.
     /// 
@@ -42,45 +42,48 @@ public struct PreferencesRow: Widget {
     /// Whether an embedded underline in the title indicates a mnemonic.
     var useUnderline: Bool?
     /// The application.
-    var app: GTUIApp?
+    var app: AdwaitaApp?
     /// The window.
-    var window: GTUIApplicationWindow?
+    var window: AdwaitaWindow?
 
     /// Initialize `PreferencesRow`.
     public init() {
     }
 
-    /// Get the widget's view storage.
-    /// - Parameter modifiers: The view modifiers.
+    /// The view storage.
+    /// - Parameters:
+    ///     - modifiers: Modify views before being updated.
+    ///     - type: The type of the app storage.
     /// - Returns: The view storage.
-    public func container(modifiers: [(View) -> View]) -> ViewStorage {
+    public func container<Data>(modifiers: [(AnyView) -> AnyView], type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(adw_preferences_row_new()?.opaque())
         for function in appearFunctions {
             function(storage, modifiers)
         }
-        update(storage, modifiers: modifiers, updateProperties: true)
+        update(storage, modifiers: modifiers, updateProperties: true, type: type)
 
         return storage
     }
 
-    /// Update the widget's view storage.
+    /// Update the stored content.
     /// - Parameters:
-    ///     - storage: The view storage.
-    ///     - modifiers: The view modifiers.
+    ///     - storage: The storage to update.
+    ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    ///     - type: The type of the app storage.
+    public func update<Data>(_ storage: ViewStorage, modifiers: [(AnyView) -> AnyView], updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         storage.modify { widget in
 
-            if let title, updateProperties {
+            if let title, updateProperties, (storage.previousState as? Self)?.title != title {
                 adw_preferences_row_set_title(widget?.cast(), title)
             }
-            if let titleSelectable, updateProperties {
+            if let titleSelectable, updateProperties, (storage.previousState as? Self)?.titleSelectable != titleSelectable {
                 adw_preferences_row_set_title_selectable(widget?.cast(), titleSelectable.cBool)
             }
-            if let useMarkup, updateProperties {
+            if let useMarkup, updateProperties, (storage.previousState as? Self)?.useMarkup != useMarkup {
                 adw_preferences_row_set_use_markup(widget?.cast(), useMarkup.cBool)
             }
-            if let useUnderline, updateProperties {
+            if let useUnderline, updateProperties, (storage.previousState as? Self)?.useUnderline != useUnderline {
                 adw_preferences_row_set_use_underline(widget?.cast(), useUnderline.cBool)
             }
 
@@ -88,6 +91,9 @@ public struct PreferencesRow: Widget {
         }
         for function in updateFunctions {
             function(storage, modifiers, updateProperties)
+        }
+        if updateProperties {
+            storage.previousState = self
         }
     }
 

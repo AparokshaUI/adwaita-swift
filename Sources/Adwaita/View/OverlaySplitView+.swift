@@ -31,7 +31,7 @@ extension OverlaySplitView {
     public func trailingSidebar(_ trailing: Bool = true) -> Self {
         var newSelf = self
         newSelf.updateFunctions.append { storage, _, _ in
-            adw_overlay_split_view_set_sidebar_position(storage.pointer, trailing ? GTK_PACK_END : GTK_PACK_START)
+            adw_overlay_split_view_set_sidebar_position(storage.opaquePointer, trailing ? GTK_PACK_END : GTK_PACK_START)
         }
         return newSelf
     }

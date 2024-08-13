@@ -45,13 +45,14 @@ extension Button {
     ///     - window: The application window.
     ///     - active: Whether the keyboard shortcut is active.
     /// - Returns: The button.
-    public func keyboardShortcut(_ shortcut: String, window: GTUIApplicationWindow, active: Bool = true) -> Self {
-        if active {
-            window.addKeyboardShortcut(shortcut, id: shortcut) { self.clicked?() }
-        } else {
-            window.removeKeyboardShortcut(id: shortcut)
+    public func keyboardShortcut(_ shortcut: String, window: AdwaitaWindow, active: Bool = true) -> AnyView {
+        onUpdate {
+            if active {
+                window.app.addKeyboardShortcut(shortcut, id: shortcut, window: window) { self.clicked?() }
+            } else {
+                window.app.removeKeyboardShortcut(id: shortcut, window: window)
+            }
         }
-        return self
     }
 
     /// Create a keyboard shortcut for an application from a button.
@@ -62,13 +63,14 @@ extension Button {
     ///     - window: The application.
     ///     - active: Whether the keyboard shortcut is active.
     /// - Returns: The button.
-    public func keyboardShortcut(_ shortcut: String, app: GTUIApp, active: Bool = true) -> Self {
-        if active {
-            app.addKeyboardShortcut(shortcut, id: shortcut) { self.clicked?() }
-        } else {
-            app.removeKeyboardShortcut(id: shortcut)
+    public func keyboardShortcut(_ shortcut: String, app: AdwaitaApp, active: Bool = true) -> AnyView {
+        onUpdate {
+            if active {
+                app.addKeyboardShortcut(shortcut, id: shortcut) { self.clicked?() }
+            } else {
+                app.removeKeyboardShortcut(id: shortcut)
+            }
         }
-        return self
     }
 
 }

@@ -16,8 +16,6 @@ opt_in_rules:
     - convenience_type
     - discouraged_none_name
     - discouraged_object_literal
-    - discouraged_optional_boolean
-    - discouraged_optional_collection
     - empty_collection_literal
     - empty_count
     - empty_string
@@ -51,7 +49,6 @@ opt_in_rules:
     - multiline_parameters_brackets
     - no_extension_access_modifier
     - no_grouping_extension
-    - no_magic_numbers
     - number_separator
     - operator_usage_whitespace
     - optional_enum_case_matching
@@ -164,3 +161,4 @@ type_contents_order:
 excluded:
     - Sources/Adwaita/View/Generated/
     - Sources/Adwaita/Adwaita.docc/
+    - .build/

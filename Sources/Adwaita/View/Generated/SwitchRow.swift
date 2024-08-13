@@ -2,7 +2,7 @@
 //  SwitchRow.swift
 //  Adwaita
 //
-//  Created by auto-generation on 21.07.24.
+//  Created by auto-generation on 03.08.24.
 //
 
 import CAdw
@@ -28,12 +28,12 @@ import LevenshteinTransformations
 /// 
 /// The [property@SwitchRow:active] property should be connected to in order to
 /// monitor changes to the active state.
-public struct SwitchRow: Widget {
+public struct SwitchRow: AdwaitaWidget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage, [(View) -> View], Bool) -> Void] = []
+    var updateFunctions: [(ViewStorage, [(AnyView) -> AnyView], Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage, [(View) -> View]) -> Void] = []
+    var appearFunctions: [(ViewStorage, [(AnyView) -> AnyView]) -> Void] = []
 
     /// The widget to activate when the row is activated.
     /// 
@@ -44,11 +44,9 @@ public struct SwitchRow: Widget {
     /// 
     /// The target widget will be activated by emitting the
     /// [signal@Gtk.Widget::mnemonic-activate] signal on it.
-    var activatableWidget:  (() -> Body)?
+    var activatableWidget: (() -> Body)?
     /// Whether the switch row is in the "on" or "off" position.
     var active: Binding<Bool>?
-    /// The icon name for this row.
-    var iconName: String?
     /// The subtitle for this row.
     /// 
     /// The subtitle is interpreted as Pango markup unless
@@ -91,49 +89,52 @@ public struct SwitchRow: Widget {
     /// The body for the widget "prefix".
     var prefix: () -> Body = { [] }
     /// The application.
-    var app: GTUIApp?
+    var app: AdwaitaApp?
     /// The window.
-    var window: GTUIApplicationWindow?
+    var window: AdwaitaWindow?
 
     /// Initialize `SwitchRow`.
     public init() {
     }
 
-    /// Get the widget's view storage.
-    /// - Parameter modifiers: The view modifiers.
+    /// The view storage.
+    /// - Parameters:
+    ///     - modifiers: Modify views before being updated.
+    ///     - type: The type of the app storage.
     /// - Returns: The view storage.
-    public func container(modifiers: [(View) -> View]) -> ViewStorage {
+    public func container<Data>(modifiers: [(AnyView) -> AnyView], type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(adw_switch_row_new()?.opaque())
         for function in appearFunctions {
             function(storage, modifiers)
         }
-        update(storage, modifiers: modifiers, updateProperties: true)
-        if let activatableWidgetStorage = activatableWidget?().widget(modifiers: modifiers).storage(modifiers: modifiers) {
+        update(storage, modifiers: modifiers, updateProperties: true, type: type)
+        if let activatableWidgetStorage = activatableWidget?().storage(modifiers: modifiers, type: type) {
             storage.content["activatableWidget"] = [activatableWidgetStorage]
-            adw_action_row_set_activatable_widget(storage.pointer?.cast(), activatableWidgetStorage.pointer?.cast())
+            adw_action_row_set_activatable_widget(storage.opaquePointer?.cast(), activatableWidgetStorage.opaquePointer?.cast())
         }
 
         var suffixStorage: [ViewStorage] = []
         for view in suffix() {
-            suffixStorage.append(view.storage(modifiers: modifiers))
-            adw_action_row_add_suffix(storage.pointer?.cast(), suffixStorage.last?.pointer?.cast())
+            suffixStorage.append(view.storage(modifiers: modifiers, type: type))
+            adw_action_row_add_suffix(storage.opaquePointer?.cast(), suffixStorage.last?.opaquePointer?.cast())
         }
         storage.content["suffix"] = suffixStorage
         var prefixStorage: [ViewStorage] = []
         for view in prefix() {
-            prefixStorage.append(view.storage(modifiers: modifiers))
-            adw_action_row_add_prefix(storage.pointer?.cast(), prefixStorage.last?.pointer?.cast())
+            prefixStorage.append(view.storage(modifiers: modifiers, type: type))
+            adw_action_row_add_prefix(storage.opaquePointer?.cast(), prefixStorage.last?.opaquePointer?.cast())
         }
         storage.content["prefix"] = prefixStorage
         return storage
     }
 
-    /// Update the widget's view storage.
+    /// Update the stored content.
     /// - Parameters:
-    ///     - storage: The view storage.
-    ///     - modifiers: The view modifiers.
+    ///     - storage: The storage to update.
+    ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    ///     - type: The type of the app storage.
+    public func update<Data>(_ storage: ViewStorage, modifiers: [(AnyView) -> AnyView], updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         if let activated {
             storage.connectSignal(name: "activated", argCount: 0) {
                 activated()
@@ -142,42 +143,39 @@ public struct SwitchRow: Widget {
         storage.modify { widget in
 
         storage.notify(name: "active") {
-            let newValue = adw_switch_row_get_active(storage.pointer) != 0
+            let newValue = adw_switch_row_get_active(storage.opaquePointer) != 0
 if let active, newValue != active.wrappedValue {
     active.wrappedValue = newValue
 }
         }
             if let widget = storage.content["activatableWidget"]?.first {
-                activatableWidget?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
+                activatableWidget?().updateStorage(widget, modifiers: modifiers, updateProperties: updateProperties, type: type)
             }
-            if let active, updateProperties, (adw_switch_row_get_active(storage.pointer) != 0) != active.wrappedValue {
-                adw_switch_row_set_active(storage.pointer, active.wrappedValue.cBool)
+            if let active, updateProperties, (adw_switch_row_get_active(storage.opaquePointer) != 0) != active.wrappedValue {
+                adw_switch_row_set_active(storage.opaquePointer, active.wrappedValue.cBool)
             }
-            if let iconName, updateProperties {
-                adw_action_row_set_icon_name(widget?.cast(), iconName)
-            }
-            if let subtitle, updateProperties {
+            if let subtitle, updateProperties, (storage.previousState as? Self)?.subtitle != subtitle {
                 adw_action_row_set_subtitle(widget?.cast(), subtitle)
             }
-            if let subtitleLines, updateProperties {
+            if let subtitleLines, updateProperties, (storage.previousState as? Self)?.subtitleLines != subtitleLines {
                 adw_action_row_set_subtitle_lines(widget?.cast(), subtitleLines.cInt)
             }
-            if let subtitleSelectable, updateProperties {
+            if let subtitleSelectable, updateProperties, (storage.previousState as? Self)?.subtitleSelectable != subtitleSelectable {
                 adw_action_row_set_subtitle_selectable(widget?.cast(), subtitleSelectable.cBool)
             }
-            if let title, updateProperties {
+            if let title, updateProperties, (storage.previousState as? Self)?.title != title {
                 adw_preferences_row_set_title(widget?.cast(), title)
             }
-            if let titleLines, updateProperties {
+            if let titleLines, updateProperties, (storage.previousState as? Self)?.titleLines != titleLines {
                 adw_action_row_set_title_lines(widget?.cast(), titleLines.cInt)
             }
-            if let titleSelectable, updateProperties {
+            if let titleSelectable, updateProperties, (storage.previousState as? Self)?.titleSelectable != titleSelectable {
                 adw_preferences_row_set_title_selectable(widget?.cast(), titleSelectable.cBool)
             }
-            if let useMarkup, updateProperties {
+            if let useMarkup, updateProperties, (storage.previousState as? Self)?.useMarkup != useMarkup {
                 adw_preferences_row_set_use_markup(widget?.cast(), useMarkup.cBool)
             }
-            if let useUnderline, updateProperties {
+            if let useUnderline, updateProperties, (storage.previousState as? Self)?.useUnderline != useUnderline {
                 adw_preferences_row_set_use_underline(widget?.cast(), useUnderline.cBool)
             }
 
@@ -185,6 +183,9 @@ if let active, newValue != active.wrappedValue {
         }
         for function in updateFunctions {
             function(storage, modifiers, updateProperties)
+        }
+        if updateProperties {
+            storage.previousState = self
         }
     }
 
@@ -208,14 +209,6 @@ if let active, newValue != active.wrappedValue {
     public func active(_ active: Binding<Bool>?) -> Self {
         var newSelf = self
         newSelf.active = active
-        
-        return newSelf
-    }
-
-    /// The icon name for this row.
-    public func iconName(_ iconName: String?) -> Self {
-        var newSelf = self
-        newSelf.iconName = iconName
         
         return newSelf
     }

@@ -2,7 +2,7 @@
 //  Banner.swift
 //  Adwaita
 //
-//  Created by auto-generation on 21.07.24.
+//  Created by auto-generation on 03.08.24.
 //
 
 import CAdw
@@ -27,12 +27,12 @@ import LevenshteinTransformations
 /// ## CSS nodes
 /// 
 /// `AdwBanner` has a main CSS node with the name `banner`.
-public struct Banner: Widget {
+public struct Banner: AdwaitaWidget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage, [(View) -> View], Bool) -> Void] = []
+    var updateFunctions: [(ViewStorage, [(AnyView) -> AnyView], Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage, [(View) -> View]) -> Void] = []
+    var appearFunctions: [(ViewStorage, [(AnyView) -> AnyView]) -> Void] = []
 
     /// The label to show on the button.
     /// 
@@ -56,34 +56,37 @@ public struct Banner: Widget {
     /// It can be used as an alternative to setting an action.
     var buttonClicked: (() -> Void)?
     /// The application.
-    var app: GTUIApp?
+    var app: AdwaitaApp?
     /// The window.
-    var window: GTUIApplicationWindow?
+    var window: AdwaitaWindow?
 
     /// Initialize `Banner`.
     public init(title: String) {
         self.title = title
     }
 
-    /// Get the widget's view storage.
-    /// - Parameter modifiers: The view modifiers.
+    /// The view storage.
+    /// - Parameters:
+    ///     - modifiers: Modify views before being updated.
+    ///     - type: The type of the app storage.
     /// - Returns: The view storage.
-    public func container(modifiers: [(View) -> View]) -> ViewStorage {
+    public func container<Data>(modifiers: [(AnyView) -> AnyView], type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(adw_banner_new(title)?.opaque())
         for function in appearFunctions {
             function(storage, modifiers)
         }
-        update(storage, modifiers: modifiers, updateProperties: true)
+        update(storage, modifiers: modifiers, updateProperties: true, type: type)
 
         return storage
     }
 
-    /// Update the widget's view storage.
+    /// Update the stored content.
     /// - Parameters:
-    ///     - storage: The view storage.
-    ///     - modifiers: The view modifiers.
+    ///     - storage: The storage to update.
+    ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    ///     - type: The type of the app storage.
+    public func update<Data>(_ storage: ViewStorage, modifiers: [(AnyView) -> AnyView], updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         if let buttonClicked {
             storage.connectSignal(name: "button-clicked", argCount: 0) {
                 buttonClicked()
@@ -91,16 +94,16 @@ public struct Banner: Widget {
         }
         storage.modify { widget in
 
-            if let buttonLabel, updateProperties {
+            if let buttonLabel, updateProperties, (storage.previousState as? Self)?.buttonLabel != buttonLabel {
                 adw_banner_set_button_label(widget, buttonLabel)
             }
-            if let revealed, updateProperties {
+            if let revealed, updateProperties, (storage.previousState as? Self)?.revealed != revealed {
                 adw_banner_set_revealed(widget, revealed.cBool)
             }
-            if updateProperties {
+            if updateProperties, (storage.previousState as? Self)?.title != title {
                 adw_banner_set_title(widget, title)
             }
-            if let useMarkup, updateProperties {
+            if let useMarkup, updateProperties, (storage.previousState as? Self)?.useMarkup != useMarkup {
                 adw_banner_set_use_markup(widget, useMarkup.cBool)
             }
 
@@ -108,6 +111,9 @@ public struct Banner: Widget {
         }
         for function in updateFunctions {
             function(storage, modifiers, updateProperties)
+        }
+        if updateProperties {
+            storage.previousState = self
         }
     }
 

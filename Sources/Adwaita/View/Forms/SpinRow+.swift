@@ -36,7 +36,7 @@ extension SpinRow {
         self = self.value(value)
         self = self.step(1)
         updateFunctions.append { storage, _, _ in
-            adw_spin_row_set_range(storage.pointer, min, max)
+            adw_spin_row_set_range(storage.opaquePointer, min, max)
         }
     }
 
@@ -53,7 +53,7 @@ extension SpinRow {
     public func step(_ step: Double) -> Self {
         var newSelf = self
         newSelf.updateFunctions.append { storage, _, _ in
-            let adjustment = adw_spin_row_get_adjustment(storage.pointer)
+            let adjustment = adw_spin_row_get_adjustment(storage.opaquePointer)
             gtk_adjustment_set_step_increment(adjustment, step)
         }
         return newSelf

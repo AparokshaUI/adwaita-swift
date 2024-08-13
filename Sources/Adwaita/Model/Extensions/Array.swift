@@ -5,57 +5,6 @@
 //  Created by david-swift on 06.08.23.
 //
 
-import Foundation
-
-extension Array: View where Element == View {
-
-    /// The array's view body is the array itself.
-    public var view: Body { self }
-
-    /// Get a widget from a collection of views.
-    /// - Parameter modifiers: Modify views before being updated.
-    /// - Returns: A widget.
-    public func widget(modifiers: [(View) -> View]) -> Widget {
-        if count == 1, let widget = self[safe: 0]?.widget(modifiers: modifiers) {
-            return widget
-        } else {
-            var modified = self
-            for (index, view) in modified.enumerated() {
-                for modifier in modifiers {
-                    modified[safe: index] = modifier(view)
-                }
-            }
-            return VStack { modified }
-        }
-    }
-
-    /// Update a collection of views with a collection of view storages.
-    /// - Parameters:
-    ///     - storage: The collection of view storages.
-    ///     - modifiers: Modify views before being updated.
-    ///     - updateProperties: Whether to update properties.
-    public func update(_ storage: [ViewStorage], modifiers: [(View) -> View], updateProperties: Bool) {
-        for (index, element) in enumerated() {
-            if let storage = storage[safe: index] {
-                element
-                    .widget(modifiers: modifiers)
-                    .updateStorage(storage, modifiers: modifiers, updateProperties: updateProperties)
-            }
-        }
-    }
-
-}
-
-extension Array where Element == WindowSceneGroup {
-
-    /// Get the content of an array of window scene groups.
-    /// - Returns: The array of windows.
-    public func windows() -> [WindowScene] {
-        flatMap { $0.windows() }
-    }
-
-}
-
 extension Array where Element == String {
 
     /// Get the C version of the array.
@@ -74,50 +23,6 @@ extension Array where Element == String {
         }
         pointer.advanced(by: flatArray.count).pointee = nil
         return UnsafePointer(pointer)
-    }
-
-}
-
-extension Array {
-
-    /// Accesses the element at the specified position safely.
-    /// - Parameters:
-    ///   - index: The position of the element to access.
-    ///
-    ///   Access and set elements the safe way:
-    ///   ```swift
-    ///   var array = ["Hello", "World"]
-    ///   print(array[safe: 2] ?? "Out of range")
-    ///   ```
-    public subscript(safe index: Int?) -> Element? {
-        get {
-            if let index, indices.contains(index) {
-                return self[index]
-            }
-            return nil
-        }
-        set {
-            if let index, let value = newValue, indices.contains(index) {
-                self[index] = value
-            }
-        }
-    }
-
-}
-
-extension Array where Element: Identifiable {
-
-    /// Accesses the element with a certain id safely.
-    /// - Parameters:
-    ///   - id: The child's id.
-    ///
-    ///   Access and set elements the safe way:
-    ///   ```swift
-    ///   var array = ["Hello", "World"]
-    ///   print(array[safe: 2] ?? "Out of range")
-    ///   ```
-    public subscript(id id: Element.ID) -> Element? {
-        self[safe: firstIndex { $0.id == id }]
     }
 
 }

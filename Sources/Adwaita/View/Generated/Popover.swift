@@ -2,7 +2,7 @@
 //  Popover.swift
 //  Adwaita
 //
-//  Created by auto-generation on 21.07.24.
+//  Created by auto-generation on 03.08.24.
 //
 
 import CAdw
@@ -68,12 +68,12 @@ import LevenshteinTransformations
 /// be the same. The arrow also does not support any border shape other than
 /// solid, no border-radius, only one border width (border-bottom-width is
 /// used) and no box-shadow.
-public struct Popover: Widget {
+public struct Popover: AdwaitaWidget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage, [(View) -> View], Bool) -> Void] = []
+    var updateFunctions: [(ViewStorage, [(AnyView) -> AnyView], Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage, [(View) -> View]) -> Void] = []
+    var appearFunctions: [(ViewStorage, [(AnyView) -> AnyView]) -> Void] = []
 
     /// The accessible role of the given `GtkAccessible` implementation.
     /// 
@@ -86,9 +86,9 @@ public struct Popover: Widget {
     /// This is used to implement the expected behavior of submenus.
     var cascadePopdown: Bool?
     /// The child widget.
-    var child:  (() -> Body)?
+    var child: (() -> Body)?
     /// The default widget inside the popover.
-    var defaultWidget:  (() -> Body)?
+    var defaultWidget: (() -> Body)?
     /// Whether to draw an arrow.
     var hasArrow: Bool?
     /// Whether mnemonics are currently visible in this popover.
@@ -100,41 +100,44 @@ public struct Popover: Widget {
     /// Emitted when the popover is closed.
     var closed: (() -> Void)?
     /// The application.
-    var app: GTUIApp?
+    var app: AdwaitaApp?
     /// The window.
-    var window: GTUIApplicationWindow?
+    var window: AdwaitaWindow?
 
     /// Initialize `Popover`.
     public init() {
     }
 
-    /// Get the widget's view storage.
-    /// - Parameter modifiers: The view modifiers.
+    /// The view storage.
+    /// - Parameters:
+    ///     - modifiers: Modify views before being updated.
+    ///     - type: The type of the app storage.
     /// - Returns: The view storage.
-    public func container(modifiers: [(View) -> View]) -> ViewStorage {
+    public func container<Data>(modifiers: [(AnyView) -> AnyView], type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(gtk_popover_new()?.opaque())
         for function in appearFunctions {
             function(storage, modifiers)
         }
-        update(storage, modifiers: modifiers, updateProperties: true)
-        if let childStorage = child?().widget(modifiers: modifiers).storage(modifiers: modifiers) {
+        update(storage, modifiers: modifiers, updateProperties: true, type: type)
+        if let childStorage = child?().storage(modifiers: modifiers, type: type) {
             storage.content["child"] = [childStorage]
-            gtk_popover_set_child(storage.pointer?.cast(), childStorage.pointer?.cast())
+            gtk_popover_set_child(storage.opaquePointer?.cast(), childStorage.opaquePointer?.cast())
         }
-        if let defaultWidgetStorage = defaultWidget?().widget(modifiers: modifiers).storage(modifiers: modifiers) {
+        if let defaultWidgetStorage = defaultWidget?().storage(modifiers: modifiers, type: type) {
             storage.content["defaultWidget"] = [defaultWidgetStorage]
-            gtk_popover_set_default_widget(storage.pointer?.cast(), defaultWidgetStorage.pointer?.cast())
+            gtk_popover_set_default_widget(storage.opaquePointer?.cast(), defaultWidgetStorage.opaquePointer?.cast())
         }
 
         return storage
     }
 
-    /// Update the widget's view storage.
+    /// Update the stored content.
     /// - Parameters:
-    ///     - storage: The view storage.
-    ///     - modifiers: The view modifiers.
+    ///     - storage: The storage to update.
+    ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    ///     - type: The type of the app storage.
+    public func update<Data>(_ storage: ViewStorage, modifiers: [(AnyView) -> AnyView], updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         if let activateDefault {
             storage.connectSignal(name: "activate-default", argCount: 0) {
                 activateDefault()
@@ -147,22 +150,22 @@ public struct Popover: Widget {
         }
         storage.modify { widget in
 
-            if let autohide, updateProperties {
+            if let autohide, updateProperties, (storage.previousState as? Self)?.autohide != autohide {
                 gtk_popover_set_autohide(widget?.cast(), autohide.cBool)
             }
-            if let cascadePopdown, updateProperties {
+            if let cascadePopdown, updateProperties, (storage.previousState as? Self)?.cascadePopdown != cascadePopdown {
                 gtk_popover_set_cascade_popdown(widget?.cast(), cascadePopdown.cBool)
             }
             if let widget = storage.content["child"]?.first {
-                child?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
+                child?().updateStorage(widget, modifiers: modifiers, updateProperties: updateProperties, type: type)
             }
             if let widget = storage.content["defaultWidget"]?.first {
-                defaultWidget?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
+                defaultWidget?().updateStorage(widget, modifiers: modifiers, updateProperties: updateProperties, type: type)
             }
-            if let hasArrow, updateProperties {
+            if let hasArrow, updateProperties, (storage.previousState as? Self)?.hasArrow != hasArrow {
                 gtk_popover_set_has_arrow(widget?.cast(), hasArrow.cBool)
             }
-            if let mnemonicsVisible, updateProperties {
+            if let mnemonicsVisible, updateProperties, (storage.previousState as? Self)?.mnemonicsVisible != mnemonicsVisible {
                 gtk_popover_set_mnemonics_visible(widget?.cast(), mnemonicsVisible.cBool)
             }
 
@@ -170,6 +173,9 @@ public struct Popover: Widget {
         }
         for function in updateFunctions {
             function(storage, modifiers, updateProperties)
+        }
+        if updateProperties {
+            storage.previousState = self
         }
     }
 

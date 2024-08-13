@@ -2,7 +2,7 @@
 //  CheckButton.swift
 //  Adwaita
 //
-//  Created by auto-generation on 21.07.24.
+//  Created by auto-generation on 03.08.24.
 //
 
 import CAdw
@@ -65,12 +65,12 @@ import LevenshteinTransformations
 /// # Accessibility
 /// 
 /// `GtkCheckButton` uses the %GTK_ACCESSIBLE_ROLE_CHECKBOX role.
-public struct CheckButton: Widget {
+public struct CheckButton: AdwaitaWidget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage, [(View) -> View], Bool) -> Void] = []
+    var updateFunctions: [(ViewStorage, [(AnyView) -> AnyView], Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage, [(View) -> View]) -> Void] = []
+    var appearFunctions: [(ViewStorage, [(AnyView) -> AnyView]) -> Void] = []
 
     /// The accessible role of the given `GtkAccessible` implementation.
     /// 
@@ -84,7 +84,7 @@ public struct CheckButton: Widget {
     /// the check button and the indicator CSS node.
     var active: Binding<Bool>?
     /// The child widget.
-    var child:  (() -> Body)?
+    var child: (() -> Body)?
     /// If the check button is in an “in between” state.
     /// 
     /// The inconsistent state only affects visual appearance,
@@ -110,37 +110,40 @@ public struct CheckButton: Widget {
     /// property changes.
     var toggled: (() -> Void)?
     /// The application.
-    var app: GTUIApp?
+    var app: AdwaitaApp?
     /// The window.
-    var window: GTUIApplicationWindow?
+    var window: AdwaitaWindow?
 
     /// Initialize `CheckButton`.
     public init() {
     }
 
-    /// Get the widget's view storage.
-    /// - Parameter modifiers: The view modifiers.
+    /// The view storage.
+    /// - Parameters:
+    ///     - modifiers: Modify views before being updated.
+    ///     - type: The type of the app storage.
     /// - Returns: The view storage.
-    public func container(modifiers: [(View) -> View]) -> ViewStorage {
+    public func container<Data>(modifiers: [(AnyView) -> AnyView], type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(gtk_check_button_new()?.opaque())
         for function in appearFunctions {
             function(storage, modifiers)
         }
-        update(storage, modifiers: modifiers, updateProperties: true)
-        if let childStorage = child?().widget(modifiers: modifiers).storage(modifiers: modifiers) {
+        update(storage, modifiers: modifiers, updateProperties: true, type: type)
+        if let childStorage = child?().storage(modifiers: modifiers, type: type) {
             storage.content["child"] = [childStorage]
-            gtk_check_button_set_child(storage.pointer?.cast(), childStorage.pointer?.cast())
+            gtk_check_button_set_child(storage.opaquePointer?.cast(), childStorage.opaquePointer?.cast())
         }
 
         return storage
     }
 
-    /// Update the widget's view storage.
+    /// Update the stored content.
     /// - Parameters:
-    ///     - storage: The view storage.
-    ///     - modifiers: The view modifiers.
+    ///     - storage: The storage to update.
+    ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    ///     - type: The type of the app storage.
+    public func update<Data>(_ storage: ViewStorage, modifiers: [(AnyView) -> AnyView], updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         if let activate {
             storage.connectSignal(name: "activate", argCount: 0) {
                 activate()
@@ -154,27 +157,27 @@ public struct CheckButton: Widget {
         storage.modify { widget in
 
         storage.notify(name: "active") {
-            let newValue = gtk_check_button_get_active(storage.pointer?.cast()) != 0
+            let newValue = gtk_check_button_get_active(storage.opaquePointer?.cast()) != 0
 if let active, newValue != active.wrappedValue {
     active.wrappedValue = newValue
 }
         }
-            if let actionName, updateProperties {
+            if let actionName, updateProperties, (storage.previousState as? Self)?.actionName != actionName {
                 gtk_actionable_set_action_name(widget, actionName)
             }
-            if let active, updateProperties, (gtk_check_button_get_active(storage.pointer?.cast()) != 0) != active.wrappedValue {
-                gtk_check_button_set_active(storage.pointer?.cast(), active.wrappedValue.cBool)
+            if let active, updateProperties, (gtk_check_button_get_active(storage.opaquePointer?.cast()) != 0) != active.wrappedValue {
+                gtk_check_button_set_active(storage.opaquePointer?.cast(), active.wrappedValue.cBool)
             }
             if let widget = storage.content["child"]?.first {
-                child?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
+                child?().updateStorage(widget, modifiers: modifiers, updateProperties: updateProperties, type: type)
             }
-            if let inconsistent, updateProperties {
+            if let inconsistent, updateProperties, (storage.previousState as? Self)?.inconsistent != inconsistent {
                 gtk_check_button_set_inconsistent(widget?.cast(), inconsistent.cBool)
             }
-            if let label, storage.content["child"] == nil, updateProperties {
+            if let label, storage.content["child"] == nil, updateProperties, (storage.previousState as? Self)?.label != label {
                 gtk_check_button_set_label(widget?.cast(), label)
             }
-            if let useUnderline, updateProperties {
+            if let useUnderline, updateProperties, (storage.previousState as? Self)?.useUnderline != useUnderline {
                 gtk_check_button_set_use_underline(widget?.cast(), useUnderline.cBool)
             }
 
@@ -182,6 +185,9 @@ if let active, newValue != active.wrappedValue {
         }
         for function in updateFunctions {
             function(storage, modifiers, updateProperties)
+        }
+        if updateProperties {
+            storage.previousState = self
         }
     }
 

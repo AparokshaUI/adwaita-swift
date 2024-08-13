@@ -2,7 +2,7 @@
 //  PasswordEntryRow.swift
 //  Adwaita
 //
-//  Created by auto-generation on 21.07.24.
+//  Created by auto-generation on 03.08.24.
 //
 
 import CAdw
@@ -24,12 +24,12 @@ import LevenshteinTransformations
 /// 
 /// `AdwPasswordEntryRow` has a single CSS node with name `row` that carries
 /// `.entry` and `.password` style classes.
-public struct PasswordEntryRow: Widget {
+public struct PasswordEntryRow: AdwaitaWidget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage, [(View) -> View], Bool) -> Void] = []
+    var updateFunctions: [(ViewStorage, [(AnyView) -> AnyView], Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage, [(View) -> View]) -> Void] = []
+    var appearFunctions: [(ViewStorage, [(AnyView) -> AnyView]) -> Void] = []
 
     /// Whether activating the embedded entry can activate the default widget.
     var activatesDefault: Bool?
@@ -77,45 +77,48 @@ public struct PasswordEntryRow: Widget {
     /// The body for the widget "prefix".
     var prefix: () -> Body = { [] }
     /// The application.
-    var app: GTUIApp?
+    var app: AdwaitaApp?
     /// The window.
-    var window: GTUIApplicationWindow?
+    var window: AdwaitaWindow?
 
     /// Initialize `PasswordEntryRow`.
     public init() {
     }
 
-    /// Get the widget's view storage.
-    /// - Parameter modifiers: The view modifiers.
+    /// The view storage.
+    /// - Parameters:
+    ///     - modifiers: Modify views before being updated.
+    ///     - type: The type of the app storage.
     /// - Returns: The view storage.
-    public func container(modifiers: [(View) -> View]) -> ViewStorage {
+    public func container<Data>(modifiers: [(AnyView) -> AnyView], type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(adw_password_entry_row_new()?.opaque())
         for function in appearFunctions {
             function(storage, modifiers)
         }
-        update(storage, modifiers: modifiers, updateProperties: true)
+        update(storage, modifiers: modifiers, updateProperties: true, type: type)
 
         var suffixStorage: [ViewStorage] = []
         for view in suffix() {
-            suffixStorage.append(view.storage(modifiers: modifiers))
-            adw_entry_row_add_suffix(storage.pointer?.cast(), suffixStorage.last?.pointer?.cast())
+            suffixStorage.append(view.storage(modifiers: modifiers, type: type))
+            adw_entry_row_add_suffix(storage.opaquePointer?.cast(), suffixStorage.last?.opaquePointer?.cast())
         }
         storage.content["suffix"] = suffixStorage
         var prefixStorage: [ViewStorage] = []
         for view in prefix() {
-            prefixStorage.append(view.storage(modifiers: modifiers))
-            adw_entry_row_add_prefix(storage.pointer?.cast(), prefixStorage.last?.pointer?.cast())
+            prefixStorage.append(view.storage(modifiers: modifiers, type: type))
+            adw_entry_row_add_prefix(storage.opaquePointer?.cast(), prefixStorage.last?.opaquePointer?.cast())
         }
         storage.content["prefix"] = prefixStorage
         return storage
     }
 
-    /// Update the widget's view storage.
+    /// Update the stored content.
     /// - Parameters:
-    ///     - storage: The view storage.
-    ///     - modifiers: The view modifiers.
+    ///     - storage: The storage to update.
+    ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    ///     - type: The type of the app storage.
+    public func update<Data>(_ storage: ViewStorage, modifiers: [(AnyView) -> AnyView], updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         if let apply {
             storage.connectSignal(name: "apply", argCount: 0) {
                 apply()
@@ -128,25 +131,25 @@ public struct PasswordEntryRow: Widget {
         }
         storage.modify { widget in
 
-            if let activatesDefault, updateProperties {
+            if let activatesDefault, updateProperties, (storage.previousState as? Self)?.activatesDefault != activatesDefault {
                 adw_entry_row_set_activates_default(widget?.cast(), activatesDefault.cBool)
             }
-            if let enableEmojiCompletion, updateProperties {
+            if let enableEmojiCompletion, updateProperties, (storage.previousState as? Self)?.enableEmojiCompletion != enableEmojiCompletion {
                 adw_entry_row_set_enable_emoji_completion(widget?.cast(), enableEmojiCompletion.cBool)
             }
-            if let showApplyButton, updateProperties {
+            if let showApplyButton, updateProperties, (storage.previousState as? Self)?.showApplyButton != showApplyButton {
                 adw_entry_row_set_show_apply_button(widget?.cast(), showApplyButton.cBool)
             }
-            if let title, updateProperties {
+            if let title, updateProperties, (storage.previousState as? Self)?.title != title {
                 adw_preferences_row_set_title(widget?.cast(), title)
             }
-            if let titleSelectable, updateProperties {
+            if let titleSelectable, updateProperties, (storage.previousState as? Self)?.titleSelectable != titleSelectable {
                 adw_preferences_row_set_title_selectable(widget?.cast(), titleSelectable.cBool)
             }
-            if let useMarkup, updateProperties {
+            if let useMarkup, updateProperties, (storage.previousState as? Self)?.useMarkup != useMarkup {
                 adw_preferences_row_set_use_markup(widget?.cast(), useMarkup.cBool)
             }
-            if let useUnderline, updateProperties {
+            if let useUnderline, updateProperties, (storage.previousState as? Self)?.useUnderline != useUnderline {
                 adw_preferences_row_set_use_underline(widget?.cast(), useUnderline.cBool)
             }
 
@@ -154,6 +157,9 @@ public struct PasswordEntryRow: Widget {
         }
         for function in updateFunctions {
             function(storage, modifiers, updateProperties)
+        }
+        if updateProperties {
+            storage.previousState = self
         }
     }
 

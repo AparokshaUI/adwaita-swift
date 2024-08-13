@@ -8,7 +8,7 @@
 import CAdw
 
 /// The dialog widget.
-struct Dialog: Widget {
+struct Dialog: AdwaitaWidget {
 
     /// Whether the dialog is visible.
     @Binding var visible: Bool
@@ -17,7 +17,7 @@ struct Dialog: Widget {
     /// The dialog's title.
     var title: String?
     /// The wrapped view.
-    var child: View
+    var child: AnyView
     /// The content of the dialog.
     var content: Body
     /// The dialog's width.
@@ -30,42 +30,61 @@ struct Dialog: Widget {
     /// The ID for the content's storage.
     let contentID = "content"
 
-    /// Get the container of the child.
-    /// - Parameter modifiers: Modify views before being updated.
+    /// The view storage.
+    /// - Parameters:
+    ///     - modifiers: Modify views before being updated.
+    ///     - type: The type of the app storage.
     /// - Returns: The view storage.
-    func container(modifiers: [(View) -> View]) -> ViewStorage {
-        let storage = child.storage(modifiers: modifiers)
-        update(storage, modifiers: modifiers, updateProperties: true)
+    func container<Data>(modifiers: [(AnyView) -> AnyView], type: Data.Type) -> ViewStorage where Data: ViewRenderData {
+        let child = child.storage(modifiers: modifiers, type: type)
+        let storage = ViewStorage(child.opaquePointer, content: [.mainContent: [child]])
+        update(storage, modifiers: modifiers, updateProperties: true, type: type)
         return storage
     }
 
-    /// Update the view storage of the child, dialog, and dialog content.
+    /// Update the stored content.
     /// - Parameters:
-    ///     - storage: The view storage.
-    ///     - modifiers: Modify views before being updated.
-    ///     - updateProperties: Whether to update properties.
-    func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
-        child.widget(modifiers: modifiers).update(storage, modifiers: modifiers, updateProperties: updateProperties)
-        if let storage = storage.content[contentID + id]?.first as? ViewStorage {
+    ///     - storage: The storage to update.
+    ///     - modifiers: Modify views before being updated
+    ///     - updateProperties: Whether to update the view's properties.
+    ///     - type: The type of the app storage.
+    func update<Data>(
+        _ storage: ViewStorage,
+        modifiers: [(AnyView) -> AnyView],
+        updateProperties: Bool,
+        type: Data.Type
+    ) where Data: ViewRenderData {
+        if let storage = storage.content[.mainContent]?.first {
+            child.updateStorage(storage, modifiers: modifiers, updateProperties: updateProperties, type: type)
+        }
+        if let storage = storage.content[contentID + id]?.first {
             content
-                .widget(modifiers: modifiers)
-                .update(storage, modifiers: modifiers, updateProperties: updateProperties)
+                .updateStorage(storage, modifiers: modifiers, updateProperties: updateProperties, type: type)
         }
         guard updateProperties else {
             return
         }
         if visible {
             if storage.content[dialogID + id]?.first == nil {
-                createDialog(storage: storage, modifiers: modifiers)
-                adw_dialog_present(storage.content[dialogID + id]?.first?.pointer?.cast(), storage.pointer?.cast())
+                createDialog(storage: storage, modifiers: modifiers, type: type)
+                adw_dialog_present(
+                    storage.content[dialogID + id]?.first?.opaquePointer?.cast(),
+                    storage.opaquePointer?.cast()
+                )
             }
-            let pointer = storage.content[dialogID + id]?.first?.pointer
-            adw_dialog_set_title(pointer?.cast(), title ?? "")
-            adw_dialog_set_content_width(pointer?.cast(), width?.cInt ?? -1)
-            adw_dialog_set_content_height(pointer?.cast(), height?.cInt ?? -1)
+            let pointer = storage.content[dialogID + id]?.first?.opaquePointer
+            if let title {
+                adw_dialog_set_title(pointer?.cast(), title)
+            }
+            if let width {
+                adw_dialog_set_content_width(pointer?.cast(), width.cInt)
+            }
+            if let height {
+                adw_dialog_set_content_height(pointer?.cast(), height.cInt)
+            }
         } else {
             if storage.content[dialogID + id]?.first != nil {
-                adw_dialog_close(storage.content[dialogID + id]?.first?.pointer?.cast())
+                adw_dialog_close(storage.content[dialogID + id]?.first?.opaquePointer?.cast())
             }
         }
     }
@@ -74,12 +93,17 @@ struct Dialog: Widget {
     /// - Parameters:
     ///     - storage: The wrapped view's storage.
     ///     - modifiers: The view modifiers.
-    func createDialog(storage: ViewStorage, modifiers: [(View) -> View]) {
+    ///     - type: The view render data type.
+    func createDialog<Data>(
+        storage: ViewStorage,
+        modifiers: [(AnyView) -> AnyView],
+        type: Data.Type
+    ) where Data: ViewRenderData {
         let pointer = adw_dialog_new()
         let dialog = ViewStorage(pointer?.opaque())
         storage.content[dialogID + id] = [dialog]
-        let contentStorage = content.widget(modifiers: modifiers).storage(modifiers: modifiers)
-        adw_dialog_set_child(pointer, contentStorage.pointer?.cast())
+        let contentStorage = content.storage(modifiers: modifiers, type: type)
+        adw_dialog_set_child(pointer, contentStorage.opaquePointer?.cast())
         storage.content[contentID + id] = [contentStorage]
         dialog.connectSignal(name: "closed") {
             storage.content[dialogID + id] = []
@@ -92,7 +116,7 @@ struct Dialog: Widget {
 
 }
 
-extension View {
+extension AnyView {
 
     /// Add a dialog to the parent window.
     /// - Parameters:
@@ -108,7 +132,7 @@ extension View {
         width: Int? = nil,
         height: Int? = nil,
         @ViewBuilder content: () -> Body
-    ) -> View {
+    ) -> AnyView {
         Dialog(
             visible: visible,
             id: id ?? "",

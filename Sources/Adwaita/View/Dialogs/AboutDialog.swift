@@ -9,12 +9,12 @@ import CAdw
 import Foundation
 
 /// The about dialog widget.
-struct AboutDialog: Widget {
+struct AboutDialog: AdwaitaWidget {
 
     /// Whether the dialog is visible.
     @Binding var visible: Bool
     /// The wrapped view.
-    var child: View
+    var child: AnyView
 
     /// The app's name.
     var appName: String?
@@ -32,50 +32,72 @@ struct AboutDialog: Widget {
     /// The ID for the dialog's storage.
     let dialogID = "dialog"
 
-    /// Get the container of the child.
-    /// - Parameter modifiers: Modify views before being updated.
+    /// The view storage.
+    /// - Parameters:
+    ///     - modifiers: Modify views before being updated.
+    ///     - type: The type of the app storage.
     /// - Returns: The view storage.
-    func container(modifiers: [(View) -> View]) -> ViewStorage {
-        let storage = child.storage(modifiers: modifiers)
-        update(storage, modifiers: modifiers, updateProperties: true)
+    func container<Data>(modifiers: [(AnyView) -> AnyView], type: Data.Type) -> ViewStorage where Data: ViewRenderData {
+        let storage = child.storage(modifiers: modifiers, type: type)
+        update(storage, modifiers: modifiers, updateProperties: true, type: type)
         return storage
     }
 
-    /// Update the view storage of the child, dialog, and dialog content.
+    /// Update the stored content.
     /// - Parameters:
-    ///     - storage: The view storage.
-    ///     - modifiers: Modify views before being updated.
-    ///     - updateProperties: Whether to update properties.
-    func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
-        child.widget(modifiers: modifiers).update(storage, modifiers: modifiers, updateProperties: updateProperties)
-        guard updateProperties else {
+    ///     - storage: The storage to update.
+    ///     - modifiers: Modify views before being updated
+    ///     - updateProperties: Whether to update the view's properties.
+    ///     - type: The type of the app storage.
+    func update<Data>(
+        _ storage: ViewStorage,
+        modifiers: [(AnyView) -> AnyView],
+        updateProperties: Bool,
+        type: Data.Type
+    ) where Data: ViewRenderData {
+        child.updateStorage(storage, modifiers: modifiers, updateProperties: updateProperties, type: type)
+        guard updateProperties, (storage.previousState as? Self)?.visible != visible else {
             return
         }
         if visible {
             if storage.content[dialogID]?.first == nil {
-                createDialog(storage: storage, modifiers: modifiers)
-                adw_dialog_present(storage.content[dialogID]?.first?.pointer?.cast(), storage.pointer?.cast())
+                createDialog(storage: storage)
+                adw_dialog_present(
+                    storage.content[dialogID]?.first?.opaquePointer?.cast(),
+                    storage.opaquePointer?.cast()
+                )
             }
-            let dialog = storage.content[dialogID]?.first?.pointer
-            adw_about_dialog_set_application_name(dialog, appName)
-            adw_about_dialog_set_developer_name(dialog, developer)
-            adw_about_dialog_set_version(dialog, version)
-            adw_about_dialog_set_application_icon(dialog, icon?.string)
-            adw_about_dialog_set_website(dialog, website?.absoluteString)
-            adw_about_dialog_set_support_url(dialog, issues?.absoluteString)
+            let dialog = storage.content[dialogID]?.first?.opaquePointer
+            if let appName {
+                adw_about_dialog_set_application_name(dialog, appName)
+            }
+            if let developer {
+                adw_about_dialog_set_developer_name(dialog, developer)
+            }
+            if let version {
+                adw_about_dialog_set_version(dialog, version)
+            }
+            if let icon {
+                adw_about_dialog_set_application_icon(dialog, icon.string)
+            }
+            if let website {
+                adw_about_dialog_set_website(dialog, website.absoluteString)
+            }
+            if let issues {
+                adw_about_dialog_set_issue_url(dialog, issues.absoluteString)
+            }
             adw_dialog_set_content_height(dialog?.cast(), -1)
         } else {
             if storage.content[dialogID]?.first != nil {
-                adw_dialog_close(storage.content[dialogID]?.first?.pointer?.cast())
+                adw_dialog_close(storage.content[dialogID]?.first?.opaquePointer?.cast())
             }
         }
+        storage.previousState = self
     }
 
     /// Create a new instance of the dialog.
-    /// - Parameters:
-    ///     - storage: The wrapped view's storage.
-    ///     - modifiers: The view modifiers.
-    func createDialog(storage: ViewStorage, modifiers: [(View) -> View]) {
+    /// - Parameter storage: The wrapped view's storage.
+    func createDialog(storage: ViewStorage) {
         let pointer = adw_about_dialog_new()
         let dialog = ViewStorage(pointer?.opaque())
         storage.content[dialogID] = [dialog]
@@ -89,7 +111,7 @@ struct AboutDialog: Widget {
 
 }
 
-extension View {
+extension AnyView {
 
     /// Add an about dialog to the parent window.
     /// - Parameters:
@@ -108,7 +130,7 @@ extension View {
         icon: Icon? = nil,
         website: URL? = nil,
         issues: URL? = nil
-    ) -> View {
+    ) -> AnyView {
         AboutDialog(
             visible: visible,
             child: self,

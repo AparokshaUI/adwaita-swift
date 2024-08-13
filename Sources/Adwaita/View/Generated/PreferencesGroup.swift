@@ -2,7 +2,7 @@
 //  PreferencesGroup.swift
 //  Adwaita
 //
-//  Created by auto-generation on 21.07.24.
+//  Created by auto-generation on 03.08.24.
 //
 
 import CAdw
@@ -36,12 +36,12 @@ import LevenshteinTransformations
 /// ## Accessibility
 /// 
 /// `AdwPreferencesGroup` uses the `GTK_ACCESSIBLE_ROLE_GROUP` role.
-public struct PreferencesGroup: Widget {
+public struct PreferencesGroup: AdwaitaWidget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage, [(View) -> View], Bool) -> Void] = []
+    var updateFunctions: [(ViewStorage, [(AnyView) -> AnyView], Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage, [(View) -> View]) -> Void] = []
+    var appearFunctions: [(ViewStorage, [(AnyView) -> AnyView]) -> Void] = []
 
     /// The description for this group of preferences.
     var description: String?
@@ -51,58 +51,61 @@ public struct PreferencesGroup: Widget {
     /// 
     /// Suffixes are commonly used to show a button or a spinner for the whole
     /// group.
-    var headerSuffix:  (() -> Body)?
+    var headerSuffix: (() -> Body)?
     /// The title for this group of preferences.
     var title: String?
     /// The body for the widget "child".
     var child: () -> Body = { [] }
     /// The application.
-    var app: GTUIApp?
+    var app: AdwaitaApp?
     /// The window.
-    var window: GTUIApplicationWindow?
+    var window: AdwaitaWindow?
 
     /// Initialize `PreferencesGroup`.
     public init() {
     }
 
-    /// Get the widget's view storage.
-    /// - Parameter modifiers: The view modifiers.
+    /// The view storage.
+    /// - Parameters:
+    ///     - modifiers: Modify views before being updated.
+    ///     - type: The type of the app storage.
     /// - Returns: The view storage.
-    public func container(modifiers: [(View) -> View]) -> ViewStorage {
+    public func container<Data>(modifiers: [(AnyView) -> AnyView], type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(adw_preferences_group_new()?.opaque())
         for function in appearFunctions {
             function(storage, modifiers)
         }
-        update(storage, modifiers: modifiers, updateProperties: true)
-        if let headerSuffixStorage = headerSuffix?().widget(modifiers: modifiers).storage(modifiers: modifiers) {
+        update(storage, modifiers: modifiers, updateProperties: true, type: type)
+        if let headerSuffixStorage = headerSuffix?().storage(modifiers: modifiers, type: type) {
             storage.content["headerSuffix"] = [headerSuffixStorage]
-            adw_preferences_group_set_header_suffix(storage.pointer?.cast(), headerSuffixStorage.pointer?.cast())
+            adw_preferences_group_set_header_suffix(storage.opaquePointer?.cast(), headerSuffixStorage.opaquePointer?.cast())
         }
 
         var childStorage: [ViewStorage] = []
         for view in child() {
-            childStorage.append(view.storage(modifiers: modifiers))
-            adw_preferences_group_add(storage.pointer?.cast(), childStorage.last?.pointer?.cast())
+            childStorage.append(view.storage(modifiers: modifiers, type: type))
+            adw_preferences_group_add(storage.opaquePointer?.cast(), childStorage.last?.opaquePointer?.cast())
         }
         storage.content["child"] = childStorage
         return storage
     }
 
-    /// Update the widget's view storage.
+    /// Update the stored content.
     /// - Parameters:
-    ///     - storage: The view storage.
-    ///     - modifiers: The view modifiers.
+    ///     - storage: The storage to update.
+    ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    ///     - type: The type of the app storage.
+    public func update<Data>(_ storage: ViewStorage, modifiers: [(AnyView) -> AnyView], updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         storage.modify { widget in
 
-            if let description, updateProperties {
+            if let description, updateProperties, (storage.previousState as? Self)?.description != description {
                 adw_preferences_group_set_description(widget?.cast(), description)
             }
             if let widget = storage.content["headerSuffix"]?.first {
-                headerSuffix?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
+                headerSuffix?().updateStorage(widget, modifiers: modifiers, updateProperties: updateProperties, type: type)
             }
-            if let title, updateProperties {
+            if let title, updateProperties, (storage.previousState as? Self)?.title != title {
                 adw_preferences_group_set_title(widget?.cast(), title)
             }
 
@@ -112,7 +115,8 @@ public struct PreferencesGroup: Widget {
                         view.updateStorage(
                             storage,
                             modifiers: modifiers,
-                            updateProperties: updateProperties
+                            updateProperties: updateProperties,
+                            type: type
                         )
                     }
                 }
@@ -121,6 +125,9 @@ public struct PreferencesGroup: Widget {
         }
         for function in updateFunctions {
             function(storage, modifiers, updateProperties)
+        }
+        if updateProperties {
+            storage.previousState = self
         }
     }
 

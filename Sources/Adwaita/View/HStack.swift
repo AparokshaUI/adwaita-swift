@@ -6,7 +6,7 @@
 //
 
 /// A horizontal GtkBox equivalent.
-public struct HStack: View {
+public struct HStack: SimpleView {
 
     /// The content.
     var content: () -> Body

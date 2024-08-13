@@ -164,9 +164,9 @@ extension Class {
         content += """
 
             /// The application.
-            var app: GTUIApp?
+            var app: AdwaitaApp?
             /// The window.
-            var window: GTUIApplicationWindow?
+            var window: AdwaitaWindow?
         """
         return content
     }
@@ -199,7 +199,8 @@ extension Class {
                                     view.updateStorage(
                                         storage,
                                         modifiers: modifiers,
-                                        updateProperties: updateProperties
+                                        updateProperties: updateProperties,
+                                        type: type
                                     )
                                 }
                             }
@@ -215,8 +216,8 @@ extension Class {
     ///     - genConfig: The generation configuration.
     /// - Returns: The code.
     func generateDynamicWidgetUpdate(config: WidgetConfiguration, genConfig: GenerationConfiguration) -> String {
-        let child = "let child = content(element).widget(modifiers: modifiers).container(modifiers: modifiers)"
-        let pointer = "child.pointer?.cast()"
+        let child = "let child = content(element).storage(modifiers: modifiers, type: type)"
+        let pointer = "child.opaquePointer?.cast()"
         let widget = "widget" + (config.cast ? "?.cast()" : "")
         if let dynamicWidget = config.dynamicWidget {
             // swiftlint:disable line_length
@@ -243,7 +244,7 @@ extension Class {
                         storage.fields["element"] = elements
                         storage.content[.mainContent] = contentStorage
                         for (index, element) in elements.enumerated() {
-                            content(element).widget(modifiers: modifiers).update(contentStorage[index], modifiers: modifiers, updateProperties: updateProperties)
+                            content(element).updateStorage(contentStorage[index], modifiers: modifiers, updateProperties: updateProperties, type: type)
                         }
             """
             // swiftlint:enable line_length

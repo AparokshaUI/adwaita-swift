@@ -2,7 +2,7 @@
 //  ComboRow.swift
 //  Adwaita
 //
-//  Created by auto-generation on 21.07.24.
+//  Created by auto-generation on 03.08.24.
 //
 
 import CAdw
@@ -41,12 +41,12 @@ import LevenshteinTransformations
 /// ## Accessibility
 /// 
 /// `AdwComboRow` uses the `GTK_ACCESSIBLE_ROLE_COMBO_BOX` role.
-public struct ComboRow: Widget {
+public struct ComboRow: AdwaitaWidget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage, [(View) -> View], Bool) -> Void] = []
+    var updateFunctions: [(ViewStorage, [(AnyView) -> AnyView], Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage, [(View) -> View]) -> Void] = []
+    var appearFunctions: [(ViewStorage, [(AnyView) -> AnyView]) -> Void] = []
 
     /// The widget to activate when the row is activated.
     /// 
@@ -57,7 +57,7 @@ public struct ComboRow: Widget {
     /// 
     /// The target widget will be activated by emitting the
     /// [signal@Gtk.Widget::mnemonic-activate] signal on it.
-    var activatableWidget:  (() -> Body)?
+    var activatableWidget: (() -> Body)?
     /// Whether to show a search entry in the popup.
     /// 
     /// If set to `TRUE`, a search entry will be shown in the popup that
@@ -65,8 +65,6 @@ public struct ComboRow: Widget {
     /// 
     /// Search requires [property@ComboRow:expression] to be set.
     var enableSearch: Bool?
-    /// The icon name for this row.
-    var iconName: String?
     /// The position of the selected item.
     /// 
     /// If no item is selected, the property has the value
@@ -124,49 +122,52 @@ public struct ComboRow: Widget {
     /// The body for the widget "prefix".
     var prefix: () -> Body = { [] }
     /// The application.
-    var app: GTUIApp?
+    var app: AdwaitaApp?
     /// The window.
-    var window: GTUIApplicationWindow?
+    var window: AdwaitaWindow?
 
     /// Initialize `ComboRow`.
     public init() {
     }
 
-    /// Get the widget's view storage.
-    /// - Parameter modifiers: The view modifiers.
+    /// The view storage.
+    /// - Parameters:
+    ///     - modifiers: Modify views before being updated.
+    ///     - type: The type of the app storage.
     /// - Returns: The view storage.
-    public func container(modifiers: [(View) -> View]) -> ViewStorage {
+    public func container<Data>(modifiers: [(AnyView) -> AnyView], type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(adw_combo_row_new()?.opaque())
         for function in appearFunctions {
             function(storage, modifiers)
         }
-        update(storage, modifiers: modifiers, updateProperties: true)
-        if let activatableWidgetStorage = activatableWidget?().widget(modifiers: modifiers).storage(modifiers: modifiers) {
+        update(storage, modifiers: modifiers, updateProperties: true, type: type)
+        if let activatableWidgetStorage = activatableWidget?().storage(modifiers: modifiers, type: type) {
             storage.content["activatableWidget"] = [activatableWidgetStorage]
-            adw_action_row_set_activatable_widget(storage.pointer?.cast(), activatableWidgetStorage.pointer?.cast())
+            adw_action_row_set_activatable_widget(storage.opaquePointer?.cast(), activatableWidgetStorage.opaquePointer?.cast())
         }
 
         var suffixStorage: [ViewStorage] = []
         for view in suffix() {
-            suffixStorage.append(view.storage(modifiers: modifiers))
-            adw_action_row_add_suffix(storage.pointer?.cast(), suffixStorage.last?.pointer?.cast())
+            suffixStorage.append(view.storage(modifiers: modifiers, type: type))
+            adw_action_row_add_suffix(storage.opaquePointer?.cast(), suffixStorage.last?.opaquePointer?.cast())
         }
         storage.content["suffix"] = suffixStorage
         var prefixStorage: [ViewStorage] = []
         for view in prefix() {
-            prefixStorage.append(view.storage(modifiers: modifiers))
-            adw_action_row_add_prefix(storage.pointer?.cast(), prefixStorage.last?.pointer?.cast())
+            prefixStorage.append(view.storage(modifiers: modifiers, type: type))
+            adw_action_row_add_prefix(storage.opaquePointer?.cast(), prefixStorage.last?.opaquePointer?.cast())
         }
         storage.content["prefix"] = prefixStorage
         return storage
     }
 
-    /// Update the widget's view storage.
+    /// Update the stored content.
     /// - Parameters:
-    ///     - storage: The view storage.
-    ///     - modifiers: The view modifiers.
+    ///     - storage: The storage to update.
+    ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    ///     - type: The type of the app storage.
+    public func update<Data>(_ storage: ViewStorage, modifiers: [(AnyView) -> AnyView], updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         if let activated {
             storage.connectSignal(name: "activated", argCount: 0) {
                 activated()
@@ -175,48 +176,45 @@ public struct ComboRow: Widget {
         storage.modify { widget in
 
         storage.notify(name: "selected") {
-            let newValue = UInt(adw_combo_row_get_selected(storage.pointer?.cast()))
+            let newValue = UInt(adw_combo_row_get_selected(storage.opaquePointer?.cast()))
 if let selected, newValue != selected.wrappedValue {
     selected.wrappedValue = newValue
 }
         }
             if let widget = storage.content["activatableWidget"]?.first {
-                activatableWidget?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
+                activatableWidget?().updateStorage(widget, modifiers: modifiers, updateProperties: updateProperties, type: type)
             }
-            if let enableSearch, updateProperties {
+            if let enableSearch, updateProperties, (storage.previousState as? Self)?.enableSearch != enableSearch {
                 adw_combo_row_set_enable_search(widget?.cast(), enableSearch.cBool)
             }
-            if let iconName, updateProperties {
-                adw_action_row_set_icon_name(widget?.cast(), iconName)
+            if let selected, updateProperties, (UInt(adw_combo_row_get_selected(storage.opaquePointer?.cast()))) != selected.wrappedValue {
+                adw_combo_row_set_selected(storage.opaquePointer?.cast(), selected.wrappedValue.cInt)
             }
-            if let selected, updateProperties, (UInt(adw_combo_row_get_selected(storage.pointer?.cast()))) != selected.wrappedValue {
-                adw_combo_row_set_selected(storage.pointer?.cast(), selected.wrappedValue.cInt)
-            }
-            if let subtitle, updateProperties {
+            if let subtitle, updateProperties, (storage.previousState as? Self)?.subtitle != subtitle {
                 adw_action_row_set_subtitle(widget?.cast(), subtitle)
             }
-            if let subtitleLines, updateProperties {
+            if let subtitleLines, updateProperties, (storage.previousState as? Self)?.subtitleLines != subtitleLines {
                 adw_action_row_set_subtitle_lines(widget?.cast(), subtitleLines.cInt)
             }
-            if let subtitleSelectable, updateProperties {
+            if let subtitleSelectable, updateProperties, (storage.previousState as? Self)?.subtitleSelectable != subtitleSelectable {
                 adw_action_row_set_subtitle_selectable(widget?.cast(), subtitleSelectable.cBool)
             }
-            if let title, updateProperties {
+            if let title, updateProperties, (storage.previousState as? Self)?.title != title {
                 adw_preferences_row_set_title(widget?.cast(), title)
             }
-            if let titleLines, updateProperties {
+            if let titleLines, updateProperties, (storage.previousState as? Self)?.titleLines != titleLines {
                 adw_action_row_set_title_lines(widget?.cast(), titleLines.cInt)
             }
-            if let titleSelectable, updateProperties {
+            if let titleSelectable, updateProperties, (storage.previousState as? Self)?.titleSelectable != titleSelectable {
                 adw_preferences_row_set_title_selectable(widget?.cast(), titleSelectable.cBool)
             }
-            if let useMarkup, updateProperties {
+            if let useMarkup, updateProperties, (storage.previousState as? Self)?.useMarkup != useMarkup {
                 adw_preferences_row_set_use_markup(widget?.cast(), useMarkup.cBool)
             }
-            if let useSubtitle, updateProperties {
+            if let useSubtitle, updateProperties, (storage.previousState as? Self)?.useSubtitle != useSubtitle {
                 adw_combo_row_set_use_subtitle(widget?.cast(), useSubtitle.cBool)
             }
-            if let useUnderline, updateProperties {
+            if let useUnderline, updateProperties, (storage.previousState as? Self)?.useUnderline != useUnderline {
                 adw_preferences_row_set_use_underline(widget?.cast(), useUnderline.cBool)
             }
 
@@ -224,6 +222,9 @@ if let selected, newValue != selected.wrappedValue {
         }
         for function in updateFunctions {
             function(storage, modifiers, updateProperties)
+        }
+        if updateProperties {
+            storage.previousState = self
         }
     }
 
@@ -252,14 +253,6 @@ if let selected, newValue != selected.wrappedValue {
     public func enableSearch(_ enableSearch: Bool? = true) -> Self {
         var newSelf = self
         newSelf.enableSearch = enableSearch
-        
-        return newSelf
-    }
-
-    /// The icon name for this row.
-    public func iconName(_ iconName: String?) -> Self {
-        var newSelf = self
-        newSelf.iconName = iconName
         
         return newSelf
     }

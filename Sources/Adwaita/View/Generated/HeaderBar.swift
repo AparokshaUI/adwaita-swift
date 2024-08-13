@@ -2,7 +2,7 @@
 //  HeaderBar.swift
 //  Adwaita
 //
-//  Created by auto-generation on 21.07.24.
+//  Created by auto-generation on 03.08.24.
 //
 
 import CAdw
@@ -92,12 +92,12 @@ import LevenshteinTransformations
 /// ## Accessibility
 /// 
 /// `AdwHeaderBar` uses the `GTK_ACCESSIBLE_ROLE_GROUP` role.
-public struct HeaderBar: Widget {
+public struct HeaderBar: AdwaitaWidget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage, [(View) -> View], Bool) -> Void] = []
+    var updateFunctions: [(ViewStorage, [(AnyView) -> AnyView], Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage, [(View) -> View]) -> Void] = []
+    var appearFunctions: [(ViewStorage, [(AnyView) -> AnyView]) -> Void] = []
 
     /// The decoration layout for buttons.
     /// 
@@ -147,74 +147,77 @@ public struct HeaderBar: Widget {
     /// ```xml
     /// <object class="AdwHeaderBar"><property name="title-widget"><object class="AdwWindowTitle"><property name="title" translatable="yes">Title</property></object></property></object>
     /// ```
-    var titleWidget:  (() -> Body)?
+    var titleWidget: (() -> Body)?
     /// The body for the widget "start".
     var start: () -> Body = { [] }
     /// The body for the widget "end".
     var end: () -> Body = { [] }
     /// The application.
-    var app: GTUIApp?
+    var app: AdwaitaApp?
     /// The window.
-    var window: GTUIApplicationWindow?
+    var window: AdwaitaWindow?
 
     /// Initialize `HeaderBar`.
     public init() {
     }
 
-    /// Get the widget's view storage.
-    /// - Parameter modifiers: The view modifiers.
+    /// The view storage.
+    /// - Parameters:
+    ///     - modifiers: Modify views before being updated.
+    ///     - type: The type of the app storage.
     /// - Returns: The view storage.
-    public func container(modifiers: [(View) -> View]) -> ViewStorage {
+    public func container<Data>(modifiers: [(AnyView) -> AnyView], type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(adw_header_bar_new()?.opaque())
         for function in appearFunctions {
             function(storage, modifiers)
         }
-        update(storage, modifiers: modifiers, updateProperties: true)
-        if let titleWidgetStorage = titleWidget?().widget(modifiers: modifiers).storage(modifiers: modifiers) {
+        update(storage, modifiers: modifiers, updateProperties: true, type: type)
+        if let titleWidgetStorage = titleWidget?().storage(modifiers: modifiers, type: type) {
             storage.content["titleWidget"] = [titleWidgetStorage]
-            adw_header_bar_set_title_widget(storage.pointer, titleWidgetStorage.pointer?.cast())
+            adw_header_bar_set_title_widget(storage.opaquePointer, titleWidgetStorage.opaquePointer?.cast())
         }
 
         var startStorage: [ViewStorage] = []
         for view in start() {
-            startStorage.append(view.storage(modifiers: modifiers))
-            adw_header_bar_pack_start(storage.pointer, startStorage.last?.pointer?.cast())
+            startStorage.append(view.storage(modifiers: modifiers, type: type))
+            adw_header_bar_pack_start(storage.opaquePointer, startStorage.last?.opaquePointer?.cast())
         }
         storage.content["start"] = startStorage
         var endStorage: [ViewStorage] = []
         for view in end() {
-            endStorage.append(view.storage(modifiers: modifiers))
-            adw_header_bar_pack_end(storage.pointer, endStorage.last?.pointer?.cast())
+            endStorage.append(view.storage(modifiers: modifiers, type: type))
+            adw_header_bar_pack_end(storage.opaquePointer, endStorage.last?.opaquePointer?.cast())
         }
         storage.content["end"] = endStorage
         return storage
     }
 
-    /// Update the widget's view storage.
+    /// Update the stored content.
     /// - Parameters:
-    ///     - storage: The view storage.
-    ///     - modifiers: The view modifiers.
+    ///     - storage: The storage to update.
+    ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    ///     - type: The type of the app storage.
+    public func update<Data>(_ storage: ViewStorage, modifiers: [(AnyView) -> AnyView], updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         storage.modify { widget in
 
-            if let decorationLayout, updateProperties {
+            if let decorationLayout, updateProperties, (storage.previousState as? Self)?.decorationLayout != decorationLayout {
                 adw_header_bar_set_decoration_layout(widget, decorationLayout)
             }
-            if let showBackButton, updateProperties {
+            if let showBackButton, updateProperties, (storage.previousState as? Self)?.showBackButton != showBackButton {
                 adw_header_bar_set_show_back_button(widget, showBackButton.cBool)
             }
-            if let showEndTitleButtons, updateProperties {
+            if let showEndTitleButtons, updateProperties, (storage.previousState as? Self)?.showEndTitleButtons != showEndTitleButtons {
                 adw_header_bar_set_show_end_title_buttons(widget, showEndTitleButtons.cBool)
             }
-            if let showStartTitleButtons, updateProperties {
+            if let showStartTitleButtons, updateProperties, (storage.previousState as? Self)?.showStartTitleButtons != showStartTitleButtons {
                 adw_header_bar_set_show_start_title_buttons(widget, showStartTitleButtons.cBool)
             }
-            if let showTitle, updateProperties {
+            if let showTitle, updateProperties, (storage.previousState as? Self)?.showTitle != showTitle {
                 adw_header_bar_set_show_title(widget, showTitle.cBool)
             }
             if let widget = storage.content["titleWidget"]?.first {
-                titleWidget?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
+                titleWidget?().updateStorage(widget, modifiers: modifiers, updateProperties: updateProperties, type: type)
             }
 
             if let startStorage = storage.content["start"] {
@@ -223,7 +226,8 @@ public struct HeaderBar: Widget {
                         view.updateStorage(
                             storage,
                             modifiers: modifiers,
-                            updateProperties: updateProperties
+                            updateProperties: updateProperties,
+                            type: type
                         )
                     }
                 }
@@ -234,7 +238,8 @@ public struct HeaderBar: Widget {
                         view.updateStorage(
                             storage,
                             modifiers: modifiers,
-                            updateProperties: updateProperties
+                            updateProperties: updateProperties,
+                            type: type
                         )
                     }
                 }
@@ -243,6 +248,9 @@ public struct HeaderBar: Widget {
         }
         for function in updateFunctions {
             function(storage, modifiers, updateProperties)
+        }
+        if updateProperties {
+            storage.previousState = self
         }
     }
 

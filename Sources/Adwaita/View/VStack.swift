@@ -23,14 +23,64 @@ extension VStack {
         self = self.append(content)
         if horizontal {
             appearFunctions.append { storage, _ in
-                gtk_orientable_set_orientation(storage.pointer, GTK_ORIENTATION_HORIZONTAL)
+                gtk_orientable_set_orientation(storage.opaquePointer, GTK_ORIENTATION_HORIZONTAL)
             }
         }
     }
 
     /// Link the children.
-    public func linked(_ active: Bool = true) -> View {
+    public func linked(_ active: Bool = true) -> AnyView {
         style("linked", active: active)
+    }
+
+}
+
+/// A wrapper around ``VStack`` which applies the ``VStack`` only if there is more than one view.
+public struct VStackWrapper: AdwaitaWidget, Wrapper {
+
+    /// The content.
+    var content: Body
+
+    /// Initialize the wrapper.
+    /// - Parameter content: The view content.
+    public init(@ViewBuilder content: () -> Body) {
+        self.content = content()
+    }
+
+    /// The view storage.
+    /// - Parameters:
+    ///     - modifiers: Modify views before being updated.
+    ///     - type: The type of the app storage.
+    /// - Returns: The view storage.
+    public func container<Data>(
+        modifiers: [(AnyView) -> AnyView],
+        type: Data.Type
+    ) -> ViewStorage where Data: ViewRenderData {
+        if content.count == 1, let element = content.first {
+            return element.storage(modifiers: modifiers, type: type)
+        } else {
+            return VStack { content }.storage(modifiers: modifiers, type: type)
+        }
+    }
+
+    /// Update the stored content.
+    /// - Parameters:
+    ///     - storage: The storage to update.
+    ///     - modifiers: Modify views before being updated
+    ///     - updateProperties: Whether to update the view's properties.
+    ///     - type: The type of the app storage.
+    public func update<Data>(
+        _ storage: ViewStorage,
+        modifiers: [(AnyView) -> AnyView],
+        updateProperties: Bool,
+        type: Data.Type
+    ) where Data: ViewRenderData {
+        if content.count == 1, let element = content.first {
+            element.updateStorage(storage, modifiers: modifiers, updateProperties: updateProperties, type: type)
+        } else {
+            VStack { content }
+                .updateStorage(storage, modifiers: modifiers, updateProperties: updateProperties, type: type)
+        }
     }
 
 }
