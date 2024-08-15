@@ -2,7 +2,7 @@
 //  Banner.swift
 //  Adwaita
 //
-//  Created by auto-generation on 03.08.24.
+//  Created by auto-generation on 15.08.24.
 //
 
 import CAdw
@@ -30,9 +30,9 @@ import LevenshteinTransformations
 public struct Banner: AdwaitaWidget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage, [(AnyView) -> AnyView], Bool) -> Void] = []
+    var updateFunctions: [(ViewStorage, WidgetData, Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage, [(AnyView) -> AnyView]) -> Void] = []
+    var appearFunctions: [(ViewStorage, WidgetData) -> Void] = []
 
     /// The label to show on the button.
     /// 
@@ -55,10 +55,6 @@ public struct Banner: AdwaitaWidget {
     /// 
     /// It can be used as an alternative to setting an action.
     var buttonClicked: (() -> Void)?
-    /// The application.
-    var app: AdwaitaApp?
-    /// The window.
-    var window: AdwaitaWindow?
 
     /// Initialize `Banner`.
     public init(title: String) {
@@ -70,12 +66,12 @@ public struct Banner: AdwaitaWidget {
     ///     - modifiers: Modify views before being updated.
     ///     - type: The type of the app storage.
     /// - Returns: The view storage.
-    public func container<Data>(modifiers: [(AnyView) -> AnyView], type: Data.Type) -> ViewStorage where Data: ViewRenderData {
+    public func container<Data>(data: WidgetData, type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(adw_banner_new(title)?.opaque())
         for function in appearFunctions {
-            function(storage, modifiers)
+            function(storage, data)
         }
-        update(storage, modifiers: modifiers, updateProperties: true, type: type)
+        update(storage, data: data, updateProperties: true, type: type)
 
         return storage
     }
@@ -86,7 +82,7 @@ public struct Banner: AdwaitaWidget {
     ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
     ///     - type: The type of the app storage.
-    public func update<Data>(_ storage: ViewStorage, modifiers: [(AnyView) -> AnyView], updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
+    public func update<Data>(_ storage: ViewStorage, data: WidgetData, updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         if let buttonClicked {
             storage.connectSignal(name: "button-clicked", argCount: 0) {
                 buttonClicked()
@@ -110,7 +106,7 @@ public struct Banner: AdwaitaWidget {
 
         }
         for function in updateFunctions {
-            function(storage, modifiers, updateProperties)
+            function(storage, data, updateProperties)
         }
         if updateProperties {
             storage.previousState = self

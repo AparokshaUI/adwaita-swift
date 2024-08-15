@@ -39,26 +39,26 @@ public struct NavigationSplitView: AdwaitaWidget {
     ///     - type: The type of the app storage.
     /// - Returns: The view storage.
     public func container<Data>(
-        modifiers: [(AnyView) -> AnyView],
+        data: WidgetData,
         type: Data.Type
     ) -> ViewStorage where Data: ViewRenderData {
         let splitView = adw_navigation_split_view_new()
         var content: [String: [ViewStorage]] = [:]
 
-        let sidebar = sidebar.storage(modifiers: modifiers, type: type)
+        let sidebar = sidebar.storage(data: data, type: type)
         let label = sidebar.fields[.navigationLabel] as? String ?? ""
         let sidebarPage = adw_navigation_page_new(sidebar.opaquePointer?.cast(), label)
         adw_navigation_split_view_set_sidebar(.init(splitView), sidebarPage?.cast())
         content[sidebarID] = [sidebar]
 
-        let mainContent = self.content.storage(modifiers: modifiers, type: type)
+        let mainContent = self.content.storage(data: data, type: type)
         let mainLabel = mainContent.fields[.navigationLabel] as? String ?? ""
         let mainPage = adw_navigation_page_new(mainContent.opaquePointer?.cast(), mainLabel)
         adw_navigation_split_view_set_content(.init(splitView), mainPage?.cast())
         content[contentID] = [mainContent]
 
         let storage = ViewStorage(splitView?.opaque(), content: content)
-        update(storage, modifiers: modifiers, updateProperties: true, type: type)
+        update(storage, data: data, updateProperties: true, type: type)
 
         storage.notify(name: "show-content") {
             showContent?.wrappedValue = adw_navigation_split_view_get_show_content(storage.opaquePointer) != 0
@@ -75,17 +75,17 @@ public struct NavigationSplitView: AdwaitaWidget {
     ///     - type: The type of the app storage.
     public func update<Data>(
         _ storage: ViewStorage,
-        modifiers: [(AnyView) -> AnyView],
+        data: WidgetData,
         updateProperties: Bool,
         type: Data.Type
     ) where Data: ViewRenderData {
         if let storage = storage.content[contentID]?[safe: 0] {
             content
-                .updateStorage(storage, modifiers: modifiers, updateProperties: updateProperties, type: type)
+                .updateStorage(storage, data: data, updateProperties: updateProperties, type: type)
         }
         if let storage = storage.content[sidebarID]?[safe: 0] {
             sidebar
-                .updateStorage(storage, modifiers: modifiers, updateProperties: updateProperties, type: type)
+                .updateStorage(storage, data: data, updateProperties: updateProperties, type: type)
         }
         guard updateProperties else {
             return

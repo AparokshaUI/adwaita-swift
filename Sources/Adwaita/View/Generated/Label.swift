@@ -2,7 +2,7 @@
 //  Label.swift
 //  Adwaita
 //
-//  Created by auto-generation on 03.08.24.
+//  Created by auto-generation on 15.08.24.
 //
 
 import CAdw
@@ -187,9 +187,9 @@ import LevenshteinTransformations
 public struct Label: AdwaitaWidget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage, [(AnyView) -> AnyView], Bool) -> Void] = []
+    var updateFunctions: [(ViewStorage, WidgetData, Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage, [(AnyView) -> AnyView]) -> Void] = []
+    var appearFunctions: [(ViewStorage, WidgetData) -> Void] = []
 
     /// The accessible role of the given `GtkAccessible` implementation.
     /// 
@@ -268,10 +268,6 @@ public struct Label: AdwaitaWidget {
     /// 
     /// The default binding for this signal is <kbd>Ctrl</kbd>+<kbd>c</kbd>.
     var copyClipboard: (() -> Void)?
-    /// The application.
-    var app: AdwaitaApp?
-    /// The window.
-    var window: AdwaitaWindow?
 
     /// Initialize `Label`.
     public init(label: String) {
@@ -283,13 +279,13 @@ public struct Label: AdwaitaWidget {
     ///     - modifiers: Modify views before being updated.
     ///     - type: The type of the app storage.
     /// - Returns: The view storage.
-    public func container<Data>(modifiers: [(AnyView) -> AnyView], type: Data.Type) -> ViewStorage where Data: ViewRenderData {
+    public func container<Data>(data: WidgetData, type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(gtk_label_new(label)?.opaque())
         for function in appearFunctions {
-            function(storage, modifiers)
+            function(storage, data)
         }
-        update(storage, modifiers: modifiers, updateProperties: true, type: type)
-        if let mnemonicWidgetStorage = mnemonicWidget?().storage(modifiers: modifiers, type: type) {
+        update(storage, data: data, updateProperties: true, type: type)
+        if let mnemonicWidgetStorage = mnemonicWidget?().storage(data: data, type: type) {
             storage.content["mnemonicWidget"] = [mnemonicWidgetStorage]
             gtk_label_set_mnemonic_widget(storage.opaquePointer, mnemonicWidgetStorage.opaquePointer?.cast())
         }
@@ -303,7 +299,7 @@ public struct Label: AdwaitaWidget {
     ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
     ///     - type: The type of the app storage.
-    public func update<Data>(_ storage: ViewStorage, modifiers: [(AnyView) -> AnyView], updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
+    public func update<Data>(_ storage: ViewStorage, data: WidgetData, updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         if let copyClipboard {
             storage.connectSignal(name: "copy-clipboard", argCount: 0) {
                 copyClipboard()
@@ -321,7 +317,7 @@ public struct Label: AdwaitaWidget {
                 gtk_label_set_max_width_chars(widget, maxWidthChars.cInt)
             }
             if let widget = storage.content["mnemonicWidget"]?.first {
-                mnemonicWidget?().updateStorage(widget, modifiers: modifiers, updateProperties: updateProperties, type: type)
+                mnemonicWidget?().updateStorage(widget, data: data, updateProperties: updateProperties, type: type)
             }
             if let selectable, updateProperties, (storage.previousState as? Self)?.selectable != selectable {
                 gtk_label_set_selectable(widget, selectable.cBool)
@@ -351,7 +347,7 @@ public struct Label: AdwaitaWidget {
 
         }
         for function in updateFunctions {
-            function(storage, modifiers, updateProperties)
+            function(storage, data, updateProperties)
         }
         if updateProperties {
             storage.previousState = self

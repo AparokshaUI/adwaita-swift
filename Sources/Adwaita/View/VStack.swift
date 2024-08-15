@@ -53,13 +53,13 @@ public struct VStackWrapper: AdwaitaWidget, Wrapper {
     ///     - type: The type of the app storage.
     /// - Returns: The view storage.
     public func container<Data>(
-        modifiers: [(AnyView) -> AnyView],
+        data: WidgetData,
         type: Data.Type
     ) -> ViewStorage where Data: ViewRenderData {
         if content.count == 1, let element = content.first {
-            return element.storage(modifiers: modifiers, type: type)
+            return element.storage(data: data, type: type)
         } else {
-            return VStack { content }.storage(modifiers: modifiers, type: type)
+            return VStack { content }.storage(data: data, type: type)
         }
     }
 
@@ -71,15 +71,15 @@ public struct VStackWrapper: AdwaitaWidget, Wrapper {
     ///     - type: The type of the app storage.
     public func update<Data>(
         _ storage: ViewStorage,
-        modifiers: [(AnyView) -> AnyView],
+        data: WidgetData,
         updateProperties: Bool,
         type: Data.Type
     ) where Data: ViewRenderData {
         if content.count == 1, let element = content.first {
-            element.updateStorage(storage, modifiers: modifiers, updateProperties: updateProperties, type: type)
+            element.updateStorage(storage, data: data, updateProperties: updateProperties, type: type)
         } else {
             VStack { content }
-                .updateStorage(storage, modifiers: modifiers, updateProperties: updateProperties, type: type)
+                .updateStorage(storage, data: data, updateProperties: updateProperties, type: type)
         }
     }
 

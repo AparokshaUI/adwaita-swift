@@ -47,12 +47,12 @@ public struct ViewStack: AdwaitaWidget {
     ///     - type: The type of the app storage.
     /// - Returns: The view storage.
     public func container<Data>(
-        modifiers: [(AnyView) -> AnyView],
+        data: WidgetData,
         type: Data.Type
     ) -> ViewStorage where Data: ViewRenderData {
         let stack = gtk_stack_new()
         let storage = ViewStorage(stack?.opaque())
-        update(storage, modifiers: modifiers, updateProperties: true, type: type)
+        update(storage, data: data, updateProperties: true, type: type)
         return storage
     }
 
@@ -64,14 +64,14 @@ public struct ViewStack: AdwaitaWidget {
     ///     - type: The type of the app storage.
     public func update<Data>(
         _ storage: ViewStorage,
-        modifiers: [(AnyView) -> AnyView],
+        data: WidgetData,
         updateProperties: Bool,
         type: Data.Type
     ) where Data: ViewRenderData {
         if let view = storage.content[id.description]?.first {
-            content.updateStorage(view, modifiers: modifiers, updateProperties: updateProperties, type: type)
+            content.updateStorage(view, data: data, updateProperties: updateProperties, type: type)
         } else {
-            let view = content.storage(modifiers: modifiers, type: type)
+            let view = content.storage(data: data, type: type)
             gtk_stack_add_named(storage.opaquePointer, view.opaquePointer?.cast(), id.description)
             storage.content[id.description] = [view]
         }

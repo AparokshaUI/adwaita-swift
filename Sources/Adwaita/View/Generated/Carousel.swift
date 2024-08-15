@@ -2,7 +2,7 @@
 //  Carousel.swift
 //  Adwaita
 //
-//  Created by auto-generation on 03.08.24.
+//  Created by auto-generation on 15.08.24.
 //
 
 import CAdw
@@ -24,9 +24,9 @@ import LevenshteinTransformations
 public struct Carousel<Element>: AdwaitaWidget where Element: Identifiable {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage, [(AnyView) -> AnyView], Bool) -> Void] = []
+    var updateFunctions: [(ViewStorage, WidgetData, Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage, [(AnyView) -> AnyView]) -> Void] = []
+    var appearFunctions: [(ViewStorage, WidgetData) -> Void] = []
 
     /// Whether to allow swiping for more than one page at a time.
     /// 
@@ -65,10 +65,6 @@ public struct Carousel<Element>: AdwaitaWidget where Element: Identifiable {
     var elements: [Element]
     /// The dynamic widget content.
     var content: (Element) -> Body
-    /// The application.
-    var app: AdwaitaApp?
-    /// The window.
-    var window: AdwaitaWindow?
 
     /// Initialize `Carousel`.
     public init(_ elements: [Element], @ViewBuilder content: @escaping (Element) -> Body) {
@@ -81,12 +77,12 @@ public struct Carousel<Element>: AdwaitaWidget where Element: Identifiable {
     ///     - modifiers: Modify views before being updated.
     ///     - type: The type of the app storage.
     /// - Returns: The view storage.
-    public func container<Data>(modifiers: [(AnyView) -> AnyView], type: Data.Type) -> ViewStorage where Data: ViewRenderData {
+    public func container<Data>(data: WidgetData, type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(adw_carousel_new()?.opaque())
         for function in appearFunctions {
-            function(storage, modifiers)
+            function(storage, data)
         }
-        update(storage, modifiers: modifiers, updateProperties: true, type: type)
+        update(storage, data: data, updateProperties: true, type: type)
 
         return storage
     }
@@ -97,7 +93,7 @@ public struct Carousel<Element>: AdwaitaWidget where Element: Identifiable {
     ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
     ///     - type: The type of the app storage.
-    public func update<Data>(_ storage: ViewStorage, modifiers: [(AnyView) -> AnyView], updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
+    public func update<Data>(_ storage: ViewStorage, data: WidgetData, updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         if let pageChanged {
             storage.connectSignal(name: "page-changed", argCount: 1) {
                 pageChanged()
@@ -129,7 +125,7 @@ public struct Carousel<Element>: AdwaitaWidget where Element: Identifiable {
             old.identifiableTransform(
                 to: elements,
                 functions: .init { index, element in
-                    let child = content(element).storage(modifiers: modifiers, type: type)
+                    let child = content(element).storage(data: data, type: type)
                     adw_carousel_remove(widget, adw_carousel_get_nth_page(widget, UInt(index).cInt))
                     adw_carousel_insert(widget, child.opaquePointer?.cast(), index.cInt)
                     contentStorage.remove(at: index)
@@ -138,7 +134,7 @@ public struct Carousel<Element>: AdwaitaWidget where Element: Identifiable {
                     adw_carousel_remove(widget, adw_carousel_get_nth_page(widget, UInt(index).cInt))
                     contentStorage.remove(at: index)
                 } insert: { index, element in
-                    let child = content(element).storage(modifiers: modifiers, type: type)
+                    let child = content(element).storage(data: data, type: type)
                     adw_carousel_insert(widget, child.opaquePointer?.cast(), index.cInt)
                     contentStorage.insert(child, at: index)
                 }
@@ -146,11 +142,11 @@ public struct Carousel<Element>: AdwaitaWidget where Element: Identifiable {
             storage.fields["element"] = elements
             storage.content[.mainContent] = contentStorage
             for (index, element) in elements.enumerated() {
-                content(element).updateStorage(contentStorage[index], modifiers: modifiers, updateProperties: updateProperties, type: type)
+                content(element).updateStorage(contentStorage[index], data: data, updateProperties: updateProperties, type: type)
             }
         }
         for function in updateFunctions {
-            function(storage, modifiers, updateProperties)
+            function(storage, data, updateProperties)
         }
         if updateProperties {
             storage.previousState = self

@@ -37,7 +37,7 @@ extension ToastOverlay {
     /// - Returns: The toast overlay.
     public func action(button: String, handler: @escaping () -> Void) -> Self {
         var newSelf = self
-        let action: (ViewStorage, [(AnyView) -> AnyView], Bool) -> Void = { storage, _, _ in
+        let action: (ViewStorage, WidgetData, Bool) -> Void = { storage, _, _ in
             storage.fields["button"] = button
             storage.fields["handler"] = handler
         }

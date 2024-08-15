@@ -25,16 +25,14 @@ public struct MenuSection: MenuWidget {
     ///     - type: The type of the views.
     /// - Returns: The view storage.
     public func container<Data>(
-        modifiers: [(any AnyView) -> any AnyView],
+        data: WidgetData,
         type: Data.Type
     ) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(nil)
-        let getItem: (AdwaitaApp, AdwaitaWindow?) -> OpaquePointer? = { app, window in
-            let childStorage = MenuCollection { sectionContent }.getMenu(app: app, window: window)
-            storage.content[.mainContent] = [childStorage]
-            return g_menu_item_new_section(nil, childStorage.opaquePointer?.cast())
-        }
-        storage.pointer = getItem
+        let childStorage = MenuCollection { sectionContent }.getMenu(data: data)
+        storage.content[.mainContent] = [childStorage]
+        let pointer = g_menu_item_new_section(nil, childStorage.opaquePointer?.cast())
+        storage.pointer = pointer
         return storage
     }
 
@@ -46,7 +44,7 @@ public struct MenuSection: MenuWidget {
     ///     - type: The type of the views.
     public func update<Data>(
         _ storage: ViewStorage,
-        modifiers: [(AnyView) -> AnyView],
+        data: WidgetData,
         updateProperties: Bool,
         type: Data.Type
     ) where Data: ViewRenderData {
@@ -54,7 +52,7 @@ public struct MenuSection: MenuWidget {
             return
         }
         MenuCollection { sectionContent }
-            .updateStorage(content, modifiers: [], updateProperties: updateProperties, type: MenuContext.self)
+            .updateStorage(content, data: data, updateProperties: updateProperties, type: MenuContext.self)
     }
 
 }

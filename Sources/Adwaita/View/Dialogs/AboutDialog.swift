@@ -37,9 +37,9 @@ struct AboutDialog: AdwaitaWidget {
     ///     - modifiers: Modify views before being updated.
     ///     - type: The type of the app storage.
     /// - Returns: The view storage.
-    func container<Data>(modifiers: [(AnyView) -> AnyView], type: Data.Type) -> ViewStorage where Data: ViewRenderData {
-        let storage = child.storage(modifiers: modifiers, type: type)
-        update(storage, modifiers: modifiers, updateProperties: true, type: type)
+    func container<Data>(data: WidgetData, type: Data.Type) -> ViewStorage where Data: ViewRenderData {
+        let storage = child.storage(data: data, type: type)
+        update(storage, data: data, updateProperties: true, type: type)
         return storage
     }
 
@@ -51,11 +51,11 @@ struct AboutDialog: AdwaitaWidget {
     ///     - type: The type of the app storage.
     func update<Data>(
         _ storage: ViewStorage,
-        modifiers: [(AnyView) -> AnyView],
+        data: WidgetData,
         updateProperties: Bool,
         type: Data.Type
     ) where Data: ViewRenderData {
-        child.updateStorage(storage, modifiers: modifiers, updateProperties: updateProperties, type: type)
+        child.updateStorage(storage, data: data, updateProperties: updateProperties, type: type)
         guard updateProperties, (storage.previousState as? Self)?.visible != visible else {
             return
         }

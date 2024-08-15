@@ -2,7 +2,7 @@
 //  HeaderBar.swift
 //  Adwaita
 //
-//  Created by auto-generation on 03.08.24.
+//  Created by auto-generation on 15.08.24.
 //
 
 import CAdw
@@ -95,9 +95,9 @@ import LevenshteinTransformations
 public struct HeaderBar: AdwaitaWidget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage, [(AnyView) -> AnyView], Bool) -> Void] = []
+    var updateFunctions: [(ViewStorage, WidgetData, Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage, [(AnyView) -> AnyView]) -> Void] = []
+    var appearFunctions: [(ViewStorage, WidgetData) -> Void] = []
 
     /// The decoration layout for buttons.
     /// 
@@ -152,10 +152,6 @@ public struct HeaderBar: AdwaitaWidget {
     var start: () -> Body = { [] }
     /// The body for the widget "end".
     var end: () -> Body = { [] }
-    /// The application.
-    var app: AdwaitaApp?
-    /// The window.
-    var window: AdwaitaWindow?
 
     /// Initialize `HeaderBar`.
     public init() {
@@ -166,26 +162,26 @@ public struct HeaderBar: AdwaitaWidget {
     ///     - modifiers: Modify views before being updated.
     ///     - type: The type of the app storage.
     /// - Returns: The view storage.
-    public func container<Data>(modifiers: [(AnyView) -> AnyView], type: Data.Type) -> ViewStorage where Data: ViewRenderData {
+    public func container<Data>(data: WidgetData, type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(adw_header_bar_new()?.opaque())
         for function in appearFunctions {
-            function(storage, modifiers)
+            function(storage, data)
         }
-        update(storage, modifiers: modifiers, updateProperties: true, type: type)
-        if let titleWidgetStorage = titleWidget?().storage(modifiers: modifiers, type: type) {
+        update(storage, data: data, updateProperties: true, type: type)
+        if let titleWidgetStorage = titleWidget?().storage(data: data, type: type) {
             storage.content["titleWidget"] = [titleWidgetStorage]
             adw_header_bar_set_title_widget(storage.opaquePointer, titleWidgetStorage.opaquePointer?.cast())
         }
 
         var startStorage: [ViewStorage] = []
         for view in start() {
-            startStorage.append(view.storage(modifiers: modifiers, type: type))
+            startStorage.append(view.storage(data: data, type: type))
             adw_header_bar_pack_start(storage.opaquePointer, startStorage.last?.opaquePointer?.cast())
         }
         storage.content["start"] = startStorage
         var endStorage: [ViewStorage] = []
         for view in end() {
-            endStorage.append(view.storage(modifiers: modifiers, type: type))
+            endStorage.append(view.storage(data: data, type: type))
             adw_header_bar_pack_end(storage.opaquePointer, endStorage.last?.opaquePointer?.cast())
         }
         storage.content["end"] = endStorage
@@ -198,7 +194,7 @@ public struct HeaderBar: AdwaitaWidget {
     ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
     ///     - type: The type of the app storage.
-    public func update<Data>(_ storage: ViewStorage, modifiers: [(AnyView) -> AnyView], updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
+    public func update<Data>(_ storage: ViewStorage, data: WidgetData, updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         storage.modify { widget in
 
             if let decorationLayout, updateProperties, (storage.previousState as? Self)?.decorationLayout != decorationLayout {
@@ -217,7 +213,7 @@ public struct HeaderBar: AdwaitaWidget {
                 adw_header_bar_set_show_title(widget, showTitle.cBool)
             }
             if let widget = storage.content["titleWidget"]?.first {
-                titleWidget?().updateStorage(widget, modifiers: modifiers, updateProperties: updateProperties, type: type)
+                titleWidget?().updateStorage(widget, data: data, updateProperties: updateProperties, type: type)
             }
 
             if let startStorage = storage.content["start"] {
@@ -225,7 +221,7 @@ public struct HeaderBar: AdwaitaWidget {
                     if let storage = startStorage[safe: index] {
                         view.updateStorage(
                             storage,
-                            modifiers: modifiers,
+                            data: data,
                             updateProperties: updateProperties,
                             type: type
                         )
@@ -237,7 +233,7 @@ public struct HeaderBar: AdwaitaWidget {
                     if let storage = endStorage[safe: index] {
                         view.updateStorage(
                             storage,
-                            modifiers: modifiers,
+                            data: data,
                             updateProperties: updateProperties,
                             type: type
                         )
@@ -247,7 +243,7 @@ public struct HeaderBar: AdwaitaWidget {
 
         }
         for function in updateFunctions {
-            function(storage, modifiers, updateProperties)
+            function(storage, data, updateProperties)
         }
         if updateProperties {
             storage.previousState = self

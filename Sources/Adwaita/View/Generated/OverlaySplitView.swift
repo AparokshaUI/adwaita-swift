@@ -2,7 +2,7 @@
 //  OverlaySplitView.swift
 //  Adwaita
 //
-//  Created by auto-generation on 03.08.24.
+//  Created by auto-generation on 15.08.24.
 //
 
 import CAdw
@@ -116,9 +116,9 @@ import LevenshteinTransformations
 public struct OverlaySplitView: AdwaitaWidget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage, [(AnyView) -> AnyView], Bool) -> Void] = []
+    var updateFunctions: [(ViewStorage, WidgetData, Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage, [(AnyView) -> AnyView]) -> Void] = []
+    var appearFunctions: [(ViewStorage, WidgetData) -> Void] = []
 
     /// Whether the split view is collapsed.
     /// 
@@ -170,10 +170,6 @@ public struct OverlaySplitView: AdwaitaWidget {
     /// The sidebar widget can be allocated with larger width if its own minimum
     /// width exceeds the preferred width.
     var sidebarWidthFraction: Double?
-    /// The application.
-    var app: AdwaitaApp?
-    /// The window.
-    var window: AdwaitaWindow?
 
     /// Initialize `OverlaySplitView`.
     public init() {
@@ -184,17 +180,17 @@ public struct OverlaySplitView: AdwaitaWidget {
     ///     - modifiers: Modify views before being updated.
     ///     - type: The type of the app storage.
     /// - Returns: The view storage.
-    public func container<Data>(modifiers: [(AnyView) -> AnyView], type: Data.Type) -> ViewStorage where Data: ViewRenderData {
+    public func container<Data>(data: WidgetData, type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(adw_overlay_split_view_new()?.opaque())
         for function in appearFunctions {
-            function(storage, modifiers)
+            function(storage, data)
         }
-        update(storage, modifiers: modifiers, updateProperties: true, type: type)
-        if let contentStorage = content?().storage(modifiers: modifiers, type: type) {
+        update(storage, data: data, updateProperties: true, type: type)
+        if let contentStorage = content?().storage(data: data, type: type) {
             storage.content["content"] = [contentStorage]
             adw_overlay_split_view_set_content(storage.opaquePointer, contentStorage.opaquePointer?.cast())
         }
-        if let sidebarStorage = sidebar?().storage(modifiers: modifiers, type: type) {
+        if let sidebarStorage = sidebar?().storage(data: data, type: type) {
             storage.content["sidebar"] = [sidebarStorage]
             adw_overlay_split_view_set_sidebar(storage.opaquePointer, sidebarStorage.opaquePointer?.cast())
         }
@@ -208,7 +204,7 @@ public struct OverlaySplitView: AdwaitaWidget {
     ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
     ///     - type: The type of the app storage.
-    public func update<Data>(_ storage: ViewStorage, modifiers: [(AnyView) -> AnyView], updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
+    public func update<Data>(_ storage: ViewStorage, data: WidgetData, updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         storage.modify { widget in
 
         storage.notify(name: "show-sidebar") {
@@ -221,7 +217,7 @@ if let showSidebar, newValue != showSidebar.wrappedValue {
                 adw_overlay_split_view_set_collapsed(widget, collapsed.cBool)
             }
             if let widget = storage.content["content"]?.first {
-                content?().updateStorage(widget, modifiers: modifiers, updateProperties: updateProperties, type: type)
+                content?().updateStorage(widget, data: data, updateProperties: updateProperties, type: type)
             }
             if let enableHideGesture, updateProperties, (storage.previousState as? Self)?.enableHideGesture != enableHideGesture {
                 adw_overlay_split_view_set_enable_hide_gesture(widget, enableHideGesture.cBool)
@@ -242,7 +238,7 @@ if let showSidebar, newValue != showSidebar.wrappedValue {
                 adw_overlay_split_view_set_show_sidebar(storage.opaquePointer, showSidebar.wrappedValue.cBool)
             }
             if let widget = storage.content["sidebar"]?.first {
-                sidebar?().updateStorage(widget, modifiers: modifiers, updateProperties: updateProperties, type: type)
+                sidebar?().updateStorage(widget, data: data, updateProperties: updateProperties, type: type)
             }
             if let sidebarWidthFraction, updateProperties, (storage.previousState as? Self)?.sidebarWidthFraction != sidebarWidthFraction {
                 adw_overlay_split_view_set_sidebar_width_fraction(widget, sidebarWidthFraction)
@@ -251,7 +247,7 @@ if let showSidebar, newValue != showSidebar.wrappedValue {
 
         }
         for function in updateFunctions {
-            function(storage, modifiers, updateProperties)
+            function(storage, data, updateProperties)
         }
         if updateProperties {
             storage.previousState = self

@@ -26,10 +26,10 @@ public struct MenuCollection: MenuWidget, Wrapper {
     ///     - type: The type of the views.
     /// - Returns: The view storage.
     public func container<Data>(
-        modifiers: [(any AnyView) -> any AnyView],
+        data: WidgetData,
         type: Data.Type
     ) -> ViewStorage where Data: ViewRenderData {
-        let storages = content.storages(modifiers: modifiers, type: type)
+        let storages = content.storages(data: data, type: type)
         return .init(nil, content: [.mainContent: storages])
     }
 
@@ -41,25 +41,25 @@ public struct MenuCollection: MenuWidget, Wrapper {
     ///     - type: The type of the views.
     public func update<Data>(
         _ storage: ViewStorage,
-        modifiers: [(AnyView) -> AnyView],
+        data: WidgetData,
         updateProperties: Bool,
         type: Data.Type
     ) where Data: ViewRenderData {
         guard let storages = storage.content[.mainContent] else {
             return
         }
-        content.update(storages, modifiers: modifiers, updateProperties: updateProperties, type: type)
+        content.update(storages, data: data, updateProperties: updateProperties, type: type)
     }
 
     /// Render the collection as a menu.
-    /// - Parameters:
-    ///     - app: The app object.
-    ///     - window: The window object.
+    /// - Parameter data: The widget data.
     /// - Returns: The view storage with the GMenu as the pointer.
-    public func getMenu(app: AdwaitaApp, window: AdwaitaWindow?) -> ViewStorage {
+    public func getMenu(data: WidgetData) -> ViewStorage {
         let menu = g_menu_new()
-        let storage = container(modifiers: [], type: MenuContext.self)
-        initializeMenu(menu: menu, storage: storage, app: app, window: window)
+        let storage = container(data: data.noModifiers, type: MenuContext.self)
+        if let app = data.appStorage as? AdwaitaApp, let window = data.sceneStorage.pointer as? AdwaitaWindow {
+            initializeMenu(menu: menu, storage: storage, app: app, window: window)
+        }
         storage.pointer = menu
         return storage
     }
@@ -71,14 +71,13 @@ public struct MenuCollection: MenuWidget, Wrapper {
     ///     - app: The app object.
     ///     - window: The window object.
     func initializeMenu(menu: OpaquePointer?, storage: ViewStorage, app: AdwaitaApp, window: AdwaitaWindow?) {
-        if storage.pointer == nil {
+        if let item = storage.opaquePointer {
+            g_menu_append_item(menu, item)
+            storage.pointer = item
+        } else {
             for element in storage.content[.mainContent] ?? [] {
                 initializeMenu(menu: menu, storage: element, app: app, window: window)
             }
-        } else if let item = (storage.pointer as? (AdwaitaApp, AdwaitaWindow?) -> OpaquePointer?) {
-            let item = item(app, window)
-            g_menu_append_item(menu, item)
-            storage.pointer = item
         }
     }
 

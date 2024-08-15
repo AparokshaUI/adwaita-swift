@@ -91,7 +91,7 @@ extension ClassLike {
 
                     var \(widget.name)Storage: [ViewStorage] = []
                     for view in \(widget.name)() {
-                        \(widget.name)Storage.append(view.storage(modifiers: modifiers, type: type))
+                        \(widget.name)Storage.append(view.storage(data: data, type: type))
                         \(widget.add)(\(widgetPointer), \(widget.name)Storage.last?.opaquePointer?.cast())
                     }
                     storage.content["\(widget.name)"] = \(widget.name)Storage

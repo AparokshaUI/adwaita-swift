@@ -2,7 +2,7 @@
 //  ExpanderRow.swift
 //  Adwaita
 //
-//  Created by auto-generation on 03.08.24.
+//  Created by auto-generation on 15.08.24.
 //
 
 import CAdw
@@ -36,9 +36,9 @@ import LevenshteinTransformations
 public struct ExpanderRow: AdwaitaWidget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage, [(AnyView) -> AnyView], Bool) -> Void] = []
+    var updateFunctions: [(ViewStorage, WidgetData, Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage, [(AnyView) -> AnyView]) -> Void] = []
+    var appearFunctions: [(ViewStorage, WidgetData) -> Void] = []
 
     /// Whether expansion is enabled.
     var enableExpansion: Binding<Bool>?
@@ -83,10 +83,6 @@ public struct ExpanderRow: AdwaitaWidget {
     var suffix: () -> Body = { [] }
     /// The body for the widget "prefix".
     var prefix: () -> Body = { [] }
-    /// The application.
-    var app: AdwaitaApp?
-    /// The window.
-    var window: AdwaitaWindow?
 
     /// Initialize `ExpanderRow`.
     public init() {
@@ -97,28 +93,28 @@ public struct ExpanderRow: AdwaitaWidget {
     ///     - modifiers: Modify views before being updated.
     ///     - type: The type of the app storage.
     /// - Returns: The view storage.
-    public func container<Data>(modifiers: [(AnyView) -> AnyView], type: Data.Type) -> ViewStorage where Data: ViewRenderData {
+    public func container<Data>(data: WidgetData, type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(adw_expander_row_new()?.opaque())
         for function in appearFunctions {
-            function(storage, modifiers)
+            function(storage, data)
         }
-        update(storage, modifiers: modifiers, updateProperties: true, type: type)
+        update(storage, data: data, updateProperties: true, type: type)
 
         var rowsStorage: [ViewStorage] = []
         for view in rows() {
-            rowsStorage.append(view.storage(modifiers: modifiers, type: type))
+            rowsStorage.append(view.storage(data: data, type: type))
             adw_expander_row_add_row(storage.opaquePointer?.cast(), rowsStorage.last?.opaquePointer?.cast())
         }
         storage.content["rows"] = rowsStorage
         var suffixStorage: [ViewStorage] = []
         for view in suffix() {
-            suffixStorage.append(view.storage(modifiers: modifiers, type: type))
+            suffixStorage.append(view.storage(data: data, type: type))
             adw_expander_row_add_suffix(storage.opaquePointer?.cast(), suffixStorage.last?.opaquePointer?.cast())
         }
         storage.content["suffix"] = suffixStorage
         var prefixStorage: [ViewStorage] = []
         for view in prefix() {
-            prefixStorage.append(view.storage(modifiers: modifiers, type: type))
+            prefixStorage.append(view.storage(data: data, type: type))
             adw_expander_row_add_prefix(storage.opaquePointer?.cast(), prefixStorage.last?.opaquePointer?.cast())
         }
         storage.content["prefix"] = prefixStorage
@@ -131,7 +127,7 @@ public struct ExpanderRow: AdwaitaWidget {
     ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
     ///     - type: The type of the app storage.
-    public func update<Data>(_ storage: ViewStorage, modifiers: [(AnyView) -> AnyView], updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
+    public func update<Data>(_ storage: ViewStorage, data: WidgetData, updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         storage.modify { widget in
 
         storage.notify(name: "enable-expansion") {
@@ -182,7 +178,7 @@ if let expanded, newValue != expanded.wrappedValue {
                     if let storage = rowsStorage[safe: index] {
                         view.updateStorage(
                             storage,
-                            modifiers: modifiers,
+                            data: data,
                             updateProperties: updateProperties,
                             type: type
                         )
@@ -194,7 +190,7 @@ if let expanded, newValue != expanded.wrappedValue {
                     if let storage = suffixStorage[safe: index] {
                         view.updateStorage(
                             storage,
-                            modifiers: modifiers,
+                            data: data,
                             updateProperties: updateProperties,
                             type: type
                         )
@@ -206,7 +202,7 @@ if let expanded, newValue != expanded.wrappedValue {
                     if let storage = prefixStorage[safe: index] {
                         view.updateStorage(
                             storage,
-                            modifiers: modifiers,
+                            data: data,
                             updateProperties: updateProperties,
                             type: type
                         )
@@ -216,7 +212,7 @@ if let expanded, newValue != expanded.wrappedValue {
 
         }
         for function in updateFunctions {
-            function(storage, modifiers, updateProperties)
+            function(storage, data, updateProperties)
         }
         if updateProperties {
             storage.previousState = self

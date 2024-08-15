@@ -29,7 +29,7 @@ public struct ViewSwitcher<Element>: AdwaitaWidget where Element: ViewSwitcherOp
     ///     - type: The type of the app storage.
     /// - Returns: The view storage.
     public func container<Data>(
-        modifiers: [(AnyView) -> AnyView],
+        data: WidgetData,
         type: Data.Type
     ) -> ViewStorage where Data: ViewRenderData {
         let switcher = ViewStorage(adw_view_switcher_new()?.opaque())
@@ -57,7 +57,7 @@ public struct ViewSwitcher<Element>: AdwaitaWidget where Element: ViewSwitcherOp
     ///     - type: The type of the app storage.
     public func update<Data>(
         _ storage: ViewStorage,
-        modifiers: [(AnyView) -> AnyView],
+        data: WidgetData,
         updateProperties: Bool,
         type: Data.Type
     ) where Data: ViewRenderData {

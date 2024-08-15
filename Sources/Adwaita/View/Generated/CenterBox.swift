@@ -2,7 +2,7 @@
 //  CenterBox.swift
 //  Adwaita
 //
-//  Created by auto-generation on 03.08.24.
+//  Created by auto-generation on 15.08.24.
 //
 
 import CAdw
@@ -45,9 +45,9 @@ import LevenshteinTransformations
 public struct CenterBox: AdwaitaWidget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage, [(AnyView) -> AnyView], Bool) -> Void] = []
+    var updateFunctions: [(ViewStorage, WidgetData, Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage, [(AnyView) -> AnyView]) -> Void] = []
+    var appearFunctions: [(ViewStorage, WidgetData) -> Void] = []
 
     /// The accessible role of the given `GtkAccessible` implementation.
     /// 
@@ -76,10 +76,6 @@ public struct CenterBox: AdwaitaWidget {
     /// In horizontal orientation, the start position is at the leading
     /// edge wrt. to the text direction.
     var startWidget: (() -> Body)?
-    /// The application.
-    var app: AdwaitaApp?
-    /// The window.
-    var window: AdwaitaWindow?
 
     /// Initialize `CenterBox`.
     public init() {
@@ -90,21 +86,21 @@ public struct CenterBox: AdwaitaWidget {
     ///     - modifiers: Modify views before being updated.
     ///     - type: The type of the app storage.
     /// - Returns: The view storage.
-    public func container<Data>(modifiers: [(AnyView) -> AnyView], type: Data.Type) -> ViewStorage where Data: ViewRenderData {
+    public func container<Data>(data: WidgetData, type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(gtk_center_box_new()?.opaque())
         for function in appearFunctions {
-            function(storage, modifiers)
+            function(storage, data)
         }
-        update(storage, modifiers: modifiers, updateProperties: true, type: type)
-        if let centerWidgetStorage = centerWidget?().storage(modifiers: modifiers, type: type) {
+        update(storage, data: data, updateProperties: true, type: type)
+        if let centerWidgetStorage = centerWidget?().storage(data: data, type: type) {
             storage.content["centerWidget"] = [centerWidgetStorage]
             gtk_center_box_set_center_widget(storage.opaquePointer, centerWidgetStorage.opaquePointer?.cast())
         }
-        if let endWidgetStorage = endWidget?().storage(modifiers: modifiers, type: type) {
+        if let endWidgetStorage = endWidget?().storage(data: data, type: type) {
             storage.content["endWidget"] = [endWidgetStorage]
             gtk_center_box_set_end_widget(storage.opaquePointer, endWidgetStorage.opaquePointer?.cast())
         }
-        if let startWidgetStorage = startWidget?().storage(modifiers: modifiers, type: type) {
+        if let startWidgetStorage = startWidget?().storage(data: data, type: type) {
             storage.content["startWidget"] = [startWidgetStorage]
             gtk_center_box_set_start_widget(storage.opaquePointer, startWidgetStorage.opaquePointer?.cast())
         }
@@ -118,26 +114,26 @@ public struct CenterBox: AdwaitaWidget {
     ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
     ///     - type: The type of the app storage.
-    public func update<Data>(_ storage: ViewStorage, modifiers: [(AnyView) -> AnyView], updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
+    public func update<Data>(_ storage: ViewStorage, data: WidgetData, updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         storage.modify { widget in
 
             if let widget = storage.content["centerWidget"]?.first {
-                centerWidget?().updateStorage(widget, modifiers: modifiers, updateProperties: updateProperties, type: type)
+                centerWidget?().updateStorage(widget, data: data, updateProperties: updateProperties, type: type)
             }
             if let widget = storage.content["endWidget"]?.first {
-                endWidget?().updateStorage(widget, modifiers: modifiers, updateProperties: updateProperties, type: type)
+                endWidget?().updateStorage(widget, data: data, updateProperties: updateProperties, type: type)
             }
             if let shrinkCenterLast, updateProperties, (storage.previousState as? Self)?.shrinkCenterLast != shrinkCenterLast {
                 gtk_center_box_set_shrink_center_last(widget, shrinkCenterLast.cBool)
             }
             if let widget = storage.content["startWidget"]?.first {
-                startWidget?().updateStorage(widget, modifiers: modifiers, updateProperties: updateProperties, type: type)
+                startWidget?().updateStorage(widget, data: data, updateProperties: updateProperties, type: type)
             }
 
 
         }
         for function in updateFunctions {
-            function(storage, modifiers, updateProperties)
+            function(storage, data, updateProperties)
         }
         if updateProperties {
             storage.previousState = self

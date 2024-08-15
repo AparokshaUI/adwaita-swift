@@ -35,10 +35,10 @@ struct Dialog: AdwaitaWidget {
     ///     - modifiers: Modify views before being updated.
     ///     - type: The type of the app storage.
     /// - Returns: The view storage.
-    func container<Data>(modifiers: [(AnyView) -> AnyView], type: Data.Type) -> ViewStorage where Data: ViewRenderData {
-        let child = child.storage(modifiers: modifiers, type: type)
+    func container<Data>(data: WidgetData, type: Data.Type) -> ViewStorage where Data: ViewRenderData {
+        let child = child.storage(data: data, type: type)
         let storage = ViewStorage(child.opaquePointer, content: [.mainContent: [child]])
-        update(storage, modifiers: modifiers, updateProperties: true, type: type)
+        update(storage, data: data, updateProperties: true, type: type)
         return storage
     }
 
@@ -50,23 +50,23 @@ struct Dialog: AdwaitaWidget {
     ///     - type: The type of the app storage.
     func update<Data>(
         _ storage: ViewStorage,
-        modifiers: [(AnyView) -> AnyView],
+        data: WidgetData,
         updateProperties: Bool,
         type: Data.Type
     ) where Data: ViewRenderData {
         if let storage = storage.content[.mainContent]?.first {
-            child.updateStorage(storage, modifiers: modifiers, updateProperties: updateProperties, type: type)
+            child.updateStorage(storage, data: data, updateProperties: updateProperties, type: type)
         }
         if let storage = storage.content[contentID + id]?.first {
             content
-                .updateStorage(storage, modifiers: modifiers, updateProperties: updateProperties, type: type)
+                .updateStorage(storage, data: data, updateProperties: updateProperties, type: type)
         }
         guard updateProperties else {
             return
         }
         if visible {
             if storage.content[dialogID + id]?.first == nil {
-                createDialog(storage: storage, modifiers: modifiers, type: type)
+                createDialog(storage: storage, data: data, type: type)
                 adw_dialog_present(
                     storage.content[dialogID + id]?.first?.opaquePointer?.cast(),
                     storage.opaquePointer?.cast()
@@ -96,13 +96,13 @@ struct Dialog: AdwaitaWidget {
     ///     - type: The view render data type.
     func createDialog<Data>(
         storage: ViewStorage,
-        modifiers: [(AnyView) -> AnyView],
+        data: WidgetData,
         type: Data.Type
     ) where Data: ViewRenderData {
         let pointer = adw_dialog_new()
         let dialog = ViewStorage(pointer?.opaque())
         storage.content[dialogID + id] = [dialog]
-        let contentStorage = content.storage(modifiers: modifiers, type: type)
+        let contentStorage = content.storage(data: data, type: type)
         adw_dialog_set_child(pointer, contentStorage.opaquePointer?.cast())
         storage.content[contentID + id] = [contentStorage]
         dialog.connectSignal(name: "closed") {

@@ -91,10 +91,6 @@ struct Property: Decodable {
         let mainParameter = parameter(config: config, genConfig: genConfig, modifier: true, defaultValue: true)
         var sideParameters = ""
         var sideAssignments = ""
-        if type?.isMenu ?? false {
-            sideParameters += "app: AdwaitaApp, window: AdwaitaWindow? = nil, "
-            sideAssignments += "newSelf.app = app; newSelf.window = window"
-        }
         return """
 
         \(doc?.docComment(indent: "    ") ?? "/// \(name)")
@@ -124,7 +120,7 @@ struct Property: Decodable {
         guard !(type?.isWidget ?? false) else {
             return """
                         if let widget = storage.content["\(name)"]?.first {
-                            \(name)?().updateStorage(widget, modifiers: modifiers, updateProperties: updateProperties, type: type)
+                            \(name)?().updateStorage(widget, data: data, updateProperties: updateProperties, type: type)
                         }
 
             """
@@ -133,7 +129,7 @@ struct Property: Decodable {
             return """
                         if let menu = storage.content["\(name)"]?.first {
                             MenuCollection { \(name)?() ?? [] }
-                                .updateStorage(menu, modifiers: [], updateProperties: updateProperties, type: MenuContext.self)
+                                .updateStorage(menu, data: data.noModifiers, updateProperties: updateProperties, type: MenuContext.self)
                         }
 
             """
@@ -205,7 +201,7 @@ struct Property: Decodable {
         let name = convertPropertyName(configuration: genConfig)
         let view = (self.cast ?? config.cast) ? "storage.opaquePointer?.cast()" : "storage.opaquePointer"
         return """
-                if let \(name)Storage = \(name)?().storage(modifiers: modifiers, type: type) {
+                if let \(name)Storage = \(name)?().storage(data: data, type: type) {
                     storage.content["\(name)"] = [\(name)Storage]
                     \(setter)(\(view), \(name)Storage.opaquePointer?.cast())
                 }
@@ -231,8 +227,8 @@ struct Property: Decodable {
         let name = convertPropertyName(configuration: genConfig)
         let view = (self.cast ?? config.cast) ? "storage.opaquePointer?.cast()" : "storage.opaquePointer"
         return """
-                if let menu = \(name)?(), let app {
-                    let childStorage = MenuCollection { menu }.getMenu(app: app, window: window)
+                if let menu = \(name)?() {
+                    let childStorage = MenuCollection { menu }.getMenu(data: data)
                     storage.content["\(name)"] = [childStorage]
                     \(setter)(\(view), childStorage.opaquePointer?.cast())
                 }

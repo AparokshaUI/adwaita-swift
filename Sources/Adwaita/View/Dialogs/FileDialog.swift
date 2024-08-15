@@ -33,10 +33,10 @@ struct FileDialog: AdwaitaWidget {
     ///     - modifiers: Modify views before being updated.
     ///     - type: The type of the app storage.
     /// - Returns: The view storage.
-    func container<Data>(modifiers: [(AnyView) -> AnyView], type: Data.Type) -> ViewStorage where Data: ViewRenderData {
-        let child = child.storage(modifiers: modifiers, type: type)
+    func container<Data>(data: WidgetData, type: Data.Type) -> ViewStorage where Data: ViewRenderData {
+        let child = child.storage(data: data, type: type)
         let storage = ViewStorage(child.opaquePointer, content: [.mainContent: [child]])
-        update(storage, modifiers: modifiers, updateProperties: true, type: type)
+        update(storage, data: data, updateProperties: true, type: type)
         return storage
     }
 
@@ -48,7 +48,7 @@ struct FileDialog: AdwaitaWidget {
     ///     - type: The type of the app storage.
     func update<Data>(
         _ storage: ViewStorage,
-        modifiers: [(AnyView) -> AnyView],
+        data: WidgetData,
         updateProperties: Bool,
         type: Data.Type
     ) where Data: ViewRenderData {
@@ -57,7 +57,7 @@ struct FileDialog: AdwaitaWidget {
         guard let mainStorage = storage.content[.mainContent]?.first else {
             return
         }
-        child.updateStorage(storage, modifiers: modifiers, updateProperties: updateProperties, type: type)
+        child.updateStorage(storage, data: data, updateProperties: updateProperties, type: type)
         if open.update, storage.fields["callbacks"] == nil {
             let pointer = gtk_file_dialog_new()
             if let initialName {

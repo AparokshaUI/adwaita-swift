@@ -2,7 +2,7 @@
 //  SpinRow.swift
 //  Adwaita
 //
-//  Created by auto-generation on 03.08.24.
+//  Created by auto-generation on 15.08.24.
 //
 
 import CAdw
@@ -27,9 +27,9 @@ import LevenshteinTransformations
 public struct SpinRow: AdwaitaWidget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage, [(AnyView) -> AnyView], Bool) -> Void] = []
+    var updateFunctions: [(ViewStorage, WidgetData, Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage, [(AnyView) -> AnyView]) -> Void] = []
+    var appearFunctions: [(ViewStorage, WidgetData) -> Void] = []
 
     /// The widget to activate when the row is activated.
     /// 
@@ -111,10 +111,6 @@ public struct SpinRow: AdwaitaWidget {
     var suffix: () -> Body = { [] }
     /// The body for the widget "prefix".
     var prefix: () -> Body = { [] }
-    /// The application.
-    var app: AdwaitaApp?
-    /// The window.
-    var window: AdwaitaWindow?
 
     /// Initialize `SpinRow`.
     public init(climbRate: Double, digits: UInt) {
@@ -127,26 +123,26 @@ public struct SpinRow: AdwaitaWidget {
     ///     - modifiers: Modify views before being updated.
     ///     - type: The type of the app storage.
     /// - Returns: The view storage.
-    public func container<Data>(modifiers: [(AnyView) -> AnyView], type: Data.Type) -> ViewStorage where Data: ViewRenderData {
+    public func container<Data>(data: WidgetData, type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(adw_spin_row_new(nil, climbRate, digits.cInt)?.opaque())
         for function in appearFunctions {
-            function(storage, modifiers)
+            function(storage, data)
         }
-        update(storage, modifiers: modifiers, updateProperties: true, type: type)
-        if let activatableWidgetStorage = activatableWidget?().storage(modifiers: modifiers, type: type) {
+        update(storage, data: data, updateProperties: true, type: type)
+        if let activatableWidgetStorage = activatableWidget?().storage(data: data, type: type) {
             storage.content["activatableWidget"] = [activatableWidgetStorage]
             adw_action_row_set_activatable_widget(storage.opaquePointer?.cast(), activatableWidgetStorage.opaquePointer?.cast())
         }
 
         var suffixStorage: [ViewStorage] = []
         for view in suffix() {
-            suffixStorage.append(view.storage(modifiers: modifiers, type: type))
+            suffixStorage.append(view.storage(data: data, type: type))
             adw_action_row_add_suffix(storage.opaquePointer?.cast(), suffixStorage.last?.opaquePointer?.cast())
         }
         storage.content["suffix"] = suffixStorage
         var prefixStorage: [ViewStorage] = []
         for view in prefix() {
-            prefixStorage.append(view.storage(modifiers: modifiers, type: type))
+            prefixStorage.append(view.storage(data: data, type: type))
             adw_action_row_add_prefix(storage.opaquePointer?.cast(), prefixStorage.last?.opaquePointer?.cast())
         }
         storage.content["prefix"] = prefixStorage
@@ -159,7 +155,7 @@ public struct SpinRow: AdwaitaWidget {
     ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
     ///     - type: The type of the app storage.
-    public func update<Data>(_ storage: ViewStorage, modifiers: [(AnyView) -> AnyView], updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
+    public func update<Data>(_ storage: ViewStorage, data: WidgetData, updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         if let activated {
             storage.connectSignal(name: "activated", argCount: 0) {
                 activated()
@@ -189,7 +185,7 @@ if let value, newValue != value.wrappedValue {
 }
         }
             if let widget = storage.content["activatableWidget"]?.first {
-                activatableWidget?().updateStorage(widget, modifiers: modifiers, updateProperties: updateProperties, type: type)
+                activatableWidget?().updateStorage(widget, data: data, updateProperties: updateProperties, type: type)
             }
             if updateProperties, (storage.previousState as? Self)?.climbRate != climbRate {
                 adw_spin_row_set_climb_rate(widget, climbRate)
@@ -237,7 +233,7 @@ if let value, newValue != value.wrappedValue {
 
         }
         for function in updateFunctions {
-            function(storage, modifiers, updateProperties)
+            function(storage, data, updateProperties)
         }
         if updateProperties {
             storage.previousState = self

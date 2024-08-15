@@ -2,7 +2,7 @@
 //  Popover.swift
 //  Adwaita
 //
-//  Created by auto-generation on 03.08.24.
+//  Created by auto-generation on 15.08.24.
 //
 
 import CAdw
@@ -71,9 +71,9 @@ import LevenshteinTransformations
 public struct Popover: AdwaitaWidget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage, [(AnyView) -> AnyView], Bool) -> Void] = []
+    var updateFunctions: [(ViewStorage, WidgetData, Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage, [(AnyView) -> AnyView]) -> Void] = []
+    var appearFunctions: [(ViewStorage, WidgetData) -> Void] = []
 
     /// The accessible role of the given `GtkAccessible` implementation.
     /// 
@@ -99,10 +99,6 @@ public struct Popover: AdwaitaWidget {
     var activateDefault: (() -> Void)?
     /// Emitted when the popover is closed.
     var closed: (() -> Void)?
-    /// The application.
-    var app: AdwaitaApp?
-    /// The window.
-    var window: AdwaitaWindow?
 
     /// Initialize `Popover`.
     public init() {
@@ -113,17 +109,17 @@ public struct Popover: AdwaitaWidget {
     ///     - modifiers: Modify views before being updated.
     ///     - type: The type of the app storage.
     /// - Returns: The view storage.
-    public func container<Data>(modifiers: [(AnyView) -> AnyView], type: Data.Type) -> ViewStorage where Data: ViewRenderData {
+    public func container<Data>(data: WidgetData, type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(gtk_popover_new()?.opaque())
         for function in appearFunctions {
-            function(storage, modifiers)
+            function(storage, data)
         }
-        update(storage, modifiers: modifiers, updateProperties: true, type: type)
-        if let childStorage = child?().storage(modifiers: modifiers, type: type) {
+        update(storage, data: data, updateProperties: true, type: type)
+        if let childStorage = child?().storage(data: data, type: type) {
             storage.content["child"] = [childStorage]
             gtk_popover_set_child(storage.opaquePointer?.cast(), childStorage.opaquePointer?.cast())
         }
-        if let defaultWidgetStorage = defaultWidget?().storage(modifiers: modifiers, type: type) {
+        if let defaultWidgetStorage = defaultWidget?().storage(data: data, type: type) {
             storage.content["defaultWidget"] = [defaultWidgetStorage]
             gtk_popover_set_default_widget(storage.opaquePointer?.cast(), defaultWidgetStorage.opaquePointer?.cast())
         }
@@ -137,7 +133,7 @@ public struct Popover: AdwaitaWidget {
     ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
     ///     - type: The type of the app storage.
-    public func update<Data>(_ storage: ViewStorage, modifiers: [(AnyView) -> AnyView], updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
+    public func update<Data>(_ storage: ViewStorage, data: WidgetData, updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         if let activateDefault {
             storage.connectSignal(name: "activate-default", argCount: 0) {
                 activateDefault()
@@ -157,10 +153,10 @@ public struct Popover: AdwaitaWidget {
                 gtk_popover_set_cascade_popdown(widget?.cast(), cascadePopdown.cBool)
             }
             if let widget = storage.content["child"]?.first {
-                child?().updateStorage(widget, modifiers: modifiers, updateProperties: updateProperties, type: type)
+                child?().updateStorage(widget, data: data, updateProperties: updateProperties, type: type)
             }
             if let widget = storage.content["defaultWidget"]?.first {
-                defaultWidget?().updateStorage(widget, modifiers: modifiers, updateProperties: updateProperties, type: type)
+                defaultWidget?().updateStorage(widget, data: data, updateProperties: updateProperties, type: type)
             }
             if let hasArrow, updateProperties, (storage.previousState as? Self)?.hasArrow != hasArrow {
                 gtk_popover_set_has_arrow(widget?.cast(), hasArrow.cBool)
@@ -172,7 +168,7 @@ public struct Popover: AdwaitaWidget {
 
         }
         for function in updateFunctions {
-            function(storage, modifiers, updateProperties)
+            function(storage, data, updateProperties)
         }
         if updateProperties {
             storage.previousState = self

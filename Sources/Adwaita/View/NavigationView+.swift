@@ -25,8 +25,8 @@ extension NavigationView {
         @ViewBuilder initialView: @escaping () -> Body
     ) {
         self.init()
-        appearFunctions.append { storage, modifiers in
-            let initialStorage = initialView().storage(modifiers: modifiers, type: AdwaitaMainView.self)
+        appearFunctions.append { storage, data in
+            let initialStorage = initialView().storage(data: data, type: AdwaitaMainView.self)
             storage.fields[.mainContent] = [initialStorage]
             adw_navigation_view_push(
                 storage.opaquePointer,
@@ -43,10 +43,10 @@ extension NavigationView {
                 }
             }
         }
-        updateFunctions.append { [self] storage, modifiers, updateProperties in
+        updateFunctions.append { [self] storage, data, updateProperties in
             updateFunction(
                 storage: storage,
-                modifiers: modifiers,
+                data: data,
                 stack: stack,
                 views: (content, initialView()),
                 updateProperties: updateProperties
@@ -95,7 +95,7 @@ extension NavigationView {
     ///   - updateProperties: Whether to update properties.
     func updateFunction<Component>(
         storage: ViewStorage,
-        modifiers: [(AnyView) -> AnyView],
+        data: WidgetData,
         stack: Binding<NavigationStack<Component>>,
         views: ((Component) -> Body, Body),
         updateProperties: Bool
@@ -110,7 +110,7 @@ extension NavigationView {
                 storages.removeLast()
             } else { print("Warning: removing the initial view is not allowed.") }
         case let .push(component):
-            let contentStorage = views.0(component).storage(modifiers: modifiers, type: AdwaitaMainView.self)
+            let contentStorage = views.0(component).storage(data: data, type: AdwaitaMainView.self)
             contentStorage.fields[Self.componentID] = component
             storages.append(contentStorage)
             adw_navigation_view_push(
@@ -127,7 +127,7 @@ extension NavigationView {
                 views.0(component)
                     .updateStorage(
                         storage,
-                        modifiers: modifiers,
+                        data: data,
                         updateProperties: updateProperties,
                         type: AdwaitaMainView.self
                     )
@@ -135,7 +135,7 @@ extension NavigationView {
                 views.1
                     .updateStorage(
                         storage,
-                        modifiers: modifiers,
+                        data: data,
                         updateProperties: updateProperties,
                         type: AdwaitaMainView.self
                     )

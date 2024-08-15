@@ -161,13 +161,6 @@ extension Class {
             """
         }
         content += staticWidgetProperties(namespace: namespace, configs: configs)
-        content += """
-
-            /// The application.
-            var app: AdwaitaApp?
-            /// The window.
-            var window: AdwaitaWindow?
-        """
         return content
     }
 
@@ -198,7 +191,7 @@ extension Class {
                                 if let storage = \(widget.name)Storage[safe: index] {
                                     view.updateStorage(
                                         storage,
-                                        modifiers: modifiers,
+                                        data: data,
                                         updateProperties: updateProperties,
                                         type: type
                                     )
@@ -216,7 +209,7 @@ extension Class {
     ///     - genConfig: The generation configuration.
     /// - Returns: The code.
     func generateDynamicWidgetUpdate(config: WidgetConfiguration, genConfig: GenerationConfiguration) -> String {
-        let child = "let child = content(element).storage(modifiers: modifiers, type: type)"
+        let child = "let child = content(element).storage(data: data, type: type)"
         let pointer = "child.opaquePointer?.cast()"
         let widget = "widget" + (config.cast ? "?.cast()" : "")
         if let dynamicWidget = config.dynamicWidget {
@@ -244,7 +237,7 @@ extension Class {
                         storage.fields["element"] = elements
                         storage.content[.mainContent] = contentStorage
                         for (index, element) in elements.enumerated() {
-                            content(element).updateStorage(contentStorage[index], modifiers: modifiers, updateProperties: updateProperties, type: type)
+                            content(element).updateStorage(contentStorage[index], data: data, updateProperties: updateProperties, type: type)
                         }
             """
             // swiftlint:enable line_length

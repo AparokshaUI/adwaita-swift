@@ -2,7 +2,7 @@
 //  SearchBar.swift
 //  Adwaita
 //
-//  Created by auto-generation on 03.08.24.
+//  Created by auto-generation on 15.08.24.
 //
 
 import CAdw
@@ -55,9 +55,9 @@ import LevenshteinTransformations
 public struct SearchBar: AdwaitaWidget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage, [(AnyView) -> AnyView], Bool) -> Void] = []
+    var updateFunctions: [(ViewStorage, WidgetData, Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage, [(AnyView) -> AnyView]) -> Void] = []
+    var appearFunctions: [(ViewStorage, WidgetData) -> Void] = []
 
     /// The accessible role of the given `GtkAccessible` implementation.
     /// 
@@ -71,10 +71,6 @@ public struct SearchBar: AdwaitaWidget {
     var searchModeEnabled: Bool?
     /// Whether to show the close button in the search bar.
     var showCloseButton: Bool?
-    /// The application.
-    var app: AdwaitaApp?
-    /// The window.
-    var window: AdwaitaWindow?
 
     /// Initialize `SearchBar`.
     public init() {
@@ -85,17 +81,17 @@ public struct SearchBar: AdwaitaWidget {
     ///     - modifiers: Modify views before being updated.
     ///     - type: The type of the app storage.
     /// - Returns: The view storage.
-    public func container<Data>(modifiers: [(AnyView) -> AnyView], type: Data.Type) -> ViewStorage where Data: ViewRenderData {
+    public func container<Data>(data: WidgetData, type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(gtk_search_bar_new()?.opaque())
         for function in appearFunctions {
-            function(storage, modifiers)
+            function(storage, data)
         }
-        update(storage, modifiers: modifiers, updateProperties: true, type: type)
-        if let childStorage = child?().storage(modifiers: modifiers, type: type) {
+        update(storage, data: data, updateProperties: true, type: type)
+        if let childStorage = child?().storage(data: data, type: type) {
             storage.content["child"] = [childStorage]
             gtk_search_bar_set_child(storage.opaquePointer, childStorage.opaquePointer?.cast())
         }
-        if let keyCaptureWidgetStorage = keyCaptureWidget?().storage(modifiers: modifiers, type: type) {
+        if let keyCaptureWidgetStorage = keyCaptureWidget?().storage(data: data, type: type) {
             storage.content["keyCaptureWidget"] = [keyCaptureWidgetStorage]
             gtk_search_bar_set_key_capture_widget(storage.opaquePointer, keyCaptureWidgetStorage.opaquePointer?.cast())
         }
@@ -109,14 +105,14 @@ public struct SearchBar: AdwaitaWidget {
     ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
     ///     - type: The type of the app storage.
-    public func update<Data>(_ storage: ViewStorage, modifiers: [(AnyView) -> AnyView], updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
+    public func update<Data>(_ storage: ViewStorage, data: WidgetData, updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         storage.modify { widget in
 
             if let widget = storage.content["child"]?.first {
-                child?().updateStorage(widget, modifiers: modifiers, updateProperties: updateProperties, type: type)
+                child?().updateStorage(widget, data: data, updateProperties: updateProperties, type: type)
             }
             if let widget = storage.content["keyCaptureWidget"]?.first {
-                keyCaptureWidget?().updateStorage(widget, modifiers: modifiers, updateProperties: updateProperties, type: type)
+                keyCaptureWidget?().updateStorage(widget, data: data, updateProperties: updateProperties, type: type)
             }
             if let showCloseButton, updateProperties, (storage.previousState as? Self)?.showCloseButton != showCloseButton {
                 gtk_search_bar_set_show_close_button(widget, showCloseButton.cBool)
@@ -125,7 +121,7 @@ public struct SearchBar: AdwaitaWidget {
 
         }
         for function in updateFunctions {
-            function(storage, modifiers, updateProperties)
+            function(storage, data, updateProperties)
         }
         if updateProperties {
             storage.previousState = self

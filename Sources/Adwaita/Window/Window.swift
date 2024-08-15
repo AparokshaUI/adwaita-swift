@@ -111,7 +111,8 @@ public struct Window: AdwaitaSceneElement {
         let storage = SceneStorage(id: id, pointer: window) {
             gtk_window_present(window.pointer?.cast())
         }
-        let viewStorage = content.storage(modifiers: [], type: AdwaitaMainView.self)
+        let viewStorage = content
+            .storage(data: .init(sceneStorage: storage, appStorage: app), type: AdwaitaMainView.self)
         adw_application_window_set_content(window.pointer?.cast(), viewStorage.opaquePointer?.cast())
         storage.content[.mainContent] = [viewStorage]
         let data = SignalData {
@@ -163,7 +164,12 @@ public struct Window: AdwaitaSceneElement {
         }
         let content = content(window)
         content
-            .updateStorage(viewStorage, modifiers: [], updateProperties: updateProperties, type: AdwaitaMainView.self)
+            .updateStorage(
+                viewStorage,
+                data: .init(sceneStorage: storage, appStorage: app),
+                updateProperties: updateProperties,
+                type: AdwaitaMainView.self
+            )
         let template = getTemplate(content: content)
         if let app = app as? AdwaitaApp {
             for shortcut in template.shortcuts {

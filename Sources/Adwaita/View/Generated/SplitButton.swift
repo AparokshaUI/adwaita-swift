@@ -2,7 +2,7 @@
 //  SplitButton.swift
 //  Adwaita
 //
-//  Created by auto-generation on 03.08.24.
+//  Created by auto-generation on 15.08.24.
 //
 
 import CAdw
@@ -43,9 +43,9 @@ import LevenshteinTransformations
 public struct SplitButton: AdwaitaWidget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage, [(AnyView) -> AnyView], Bool) -> Void] = []
+    var updateFunctions: [(ViewStorage, WidgetData, Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage, [(AnyView) -> AnyView]) -> Void] = []
+    var appearFunctions: [(ViewStorage, WidgetData) -> Void] = []
 
     /// Whether the button can be smaller than the natural size of its contents.
     /// 
@@ -95,10 +95,6 @@ public struct SplitButton: AdwaitaWidget {
     var activate: (() -> Void)?
     /// Emitted when the button has been activated (pressed and released).
     var clicked: (() -> Void)?
-    /// The application.
-    var app: AdwaitaApp?
-    /// The window.
-    var window: AdwaitaWindow?
 
     /// Initialize `SplitButton`.
     public init() {
@@ -109,18 +105,18 @@ public struct SplitButton: AdwaitaWidget {
     ///     - modifiers: Modify views before being updated.
     ///     - type: The type of the app storage.
     /// - Returns: The view storage.
-    public func container<Data>(modifiers: [(AnyView) -> AnyView], type: Data.Type) -> ViewStorage where Data: ViewRenderData {
+    public func container<Data>(data: WidgetData, type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(adw_split_button_new()?.opaque())
         for function in appearFunctions {
-            function(storage, modifiers)
+            function(storage, data)
         }
-        update(storage, modifiers: modifiers, updateProperties: true, type: type)
-        if let childStorage = child?().storage(modifiers: modifiers, type: type) {
+        update(storage, data: data, updateProperties: true, type: type)
+        if let childStorage = child?().storage(data: data, type: type) {
             storage.content["child"] = [childStorage]
             adw_split_button_set_child(storage.opaquePointer, childStorage.opaquePointer?.cast())
         }
-        if let menu = menuModel?(), let app {
-            let childStorage = MenuCollection { menu }.getMenu(app: app, window: window)
+        if let menu = menuModel?() {
+            let childStorage = MenuCollection { menu }.getMenu(data: data)
             storage.content["menuModel"] = [childStorage]
             adw_split_button_set_menu_model(storage.opaquePointer, childStorage.opaquePointer?.cast())
         }
@@ -134,7 +130,7 @@ public struct SplitButton: AdwaitaWidget {
     ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
     ///     - type: The type of the app storage.
-    public func update<Data>(_ storage: ViewStorage, modifiers: [(AnyView) -> AnyView], updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
+    public func update<Data>(_ storage: ViewStorage, data: WidgetData, updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         if let activate {
             storage.connectSignal(name: "activate", argCount: 0) {
                 activate()
@@ -151,7 +147,7 @@ public struct SplitButton: AdwaitaWidget {
                 adw_split_button_set_can_shrink(widget, canShrink.cBool)
             }
             if let widget = storage.content["child"]?.first {
-                child?().updateStorage(widget, modifiers: modifiers, updateProperties: updateProperties, type: type)
+                child?().updateStorage(widget, data: data, updateProperties: updateProperties, type: type)
             }
             if let dropdownTooltip, updateProperties, (storage.previousState as? Self)?.dropdownTooltip != dropdownTooltip {
                 adw_split_button_set_dropdown_tooltip(widget, dropdownTooltip)
@@ -164,7 +160,7 @@ public struct SplitButton: AdwaitaWidget {
             }
             if let menu = storage.content["menuModel"]?.first {
                 MenuCollection { menuModel?() ?? [] }
-                    .updateStorage(menu, modifiers: [], updateProperties: updateProperties, type: MenuContext.self)
+                    .updateStorage(menu, data: data.noModifiers, updateProperties: updateProperties, type: MenuContext.self)
             }
             if let useUnderline, updateProperties, (storage.previousState as? Self)?.useUnderline != useUnderline {
                 adw_split_button_set_use_underline(widget, useUnderline.cBool)
@@ -173,7 +169,7 @@ public struct SplitButton: AdwaitaWidget {
 
         }
         for function in updateFunctions {
-            function(storage, modifiers, updateProperties)
+            function(storage, data, updateProperties)
         }
         if updateProperties {
             storage.previousState = self
@@ -246,10 +242,10 @@ public struct SplitButton: AdwaitaWidget {
     /// 
     /// If [property@SplitButton:popover] is already set, it will be dissociated
     /// from the button, and the property is set to `NULL`.
-    public func menuModel(app: AdwaitaApp, window: AdwaitaWindow? = nil, @ViewBuilder _ menuModel: @escaping (() -> Body)) -> Self {
+    public func menuModel(@ViewBuilder _ menuModel: @escaping (() -> Body)) -> Self {
         var newSelf = self
         newSelf.menuModel = menuModel
-        newSelf.app = app; newSelf.window = window
+        
         return newSelf
     }
 

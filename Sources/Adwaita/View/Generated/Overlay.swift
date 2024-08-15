@@ -2,7 +2,7 @@
 //  Overlay.swift
 //  Adwaita
 //
-//  Created by auto-generation on 03.08.24.
+//  Created by auto-generation on 15.08.24.
 //
 
 import CAdw
@@ -43,9 +43,9 @@ import LevenshteinTransformations
 public struct Overlay: AdwaitaWidget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage, [(AnyView) -> AnyView], Bool) -> Void] = []
+    var updateFunctions: [(ViewStorage, WidgetData, Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage, [(AnyView) -> AnyView]) -> Void] = []
+    var appearFunctions: [(ViewStorage, WidgetData) -> Void] = []
 
     /// The accessible role of the given `GtkAccessible` implementation.
     /// 
@@ -70,10 +70,6 @@ public struct Overlay: AdwaitaWidget {
     var getChildPosition: (() -> Void)?
     /// The body for the widget "overlay".
     var overlay: () -> Body = { [] }
-    /// The application.
-    var app: AdwaitaApp?
-    /// The window.
-    var window: AdwaitaWindow?
 
     /// Initialize `Overlay`.
     public init() {
@@ -84,20 +80,20 @@ public struct Overlay: AdwaitaWidget {
     ///     - modifiers: Modify views before being updated.
     ///     - type: The type of the app storage.
     /// - Returns: The view storage.
-    public func container<Data>(modifiers: [(AnyView) -> AnyView], type: Data.Type) -> ViewStorage where Data: ViewRenderData {
+    public func container<Data>(data: WidgetData, type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(gtk_overlay_new()?.opaque())
         for function in appearFunctions {
-            function(storage, modifiers)
+            function(storage, data)
         }
-        update(storage, modifiers: modifiers, updateProperties: true, type: type)
-        if let childStorage = child?().storage(modifiers: modifiers, type: type) {
+        update(storage, data: data, updateProperties: true, type: type)
+        if let childStorage = child?().storage(data: data, type: type) {
             storage.content["child"] = [childStorage]
             gtk_overlay_set_child(storage.opaquePointer, childStorage.opaquePointer?.cast())
         }
 
         var overlayStorage: [ViewStorage] = []
         for view in overlay() {
-            overlayStorage.append(view.storage(modifiers: modifiers, type: type))
+            overlayStorage.append(view.storage(data: data, type: type))
             gtk_overlay_add_overlay(storage.opaquePointer, overlayStorage.last?.opaquePointer?.cast())
         }
         storage.content["overlay"] = overlayStorage
@@ -110,7 +106,7 @@ public struct Overlay: AdwaitaWidget {
     ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
     ///     - type: The type of the app storage.
-    public func update<Data>(_ storage: ViewStorage, modifiers: [(AnyView) -> AnyView], updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
+    public func update<Data>(_ storage: ViewStorage, data: WidgetData, updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         if let getChildPosition {
             storage.connectSignal(name: "get-child-position", argCount: 2) {
                 getChildPosition()
@@ -119,7 +115,7 @@ public struct Overlay: AdwaitaWidget {
         storage.modify { widget in
 
             if let widget = storage.content["child"]?.first {
-                child?().updateStorage(widget, modifiers: modifiers, updateProperties: updateProperties, type: type)
+                child?().updateStorage(widget, data: data, updateProperties: updateProperties, type: type)
             }
 
             if let overlayStorage = storage.content["overlay"] {
@@ -127,7 +123,7 @@ public struct Overlay: AdwaitaWidget {
                     if let storage = overlayStorage[safe: index] {
                         view.updateStorage(
                             storage,
-                            modifiers: modifiers,
+                            data: data,
                             updateProperties: updateProperties,
                             type: type
                         )
@@ -137,7 +133,7 @@ public struct Overlay: AdwaitaWidget {
 
         }
         for function in updateFunctions {
-            function(storage, modifiers, updateProperties)
+            function(storage, data, updateProperties)
         }
         if updateProperties {
             storage.previousState = self

@@ -39,24 +39,23 @@ public struct MenuButton: MenuWidget {
     ///     - type: The type of the views.
     /// - Returns: The view storage.
     public func container<Data>(
-        modifiers: [(any AnyView) -> any AnyView],
+        data: WidgetData,
         type: Data.Type
     ) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(nil)
-        let getItem: (AdwaitaApp, AdwaitaWindow?) -> OpaquePointer? = { app, window in
-            var label = filteredLabel
-            storage.fields["app"] = app
-            if let window, preferApplicationWindow {
-                app.addKeyboardShortcut(shortcut, id: filteredLabel, window: window, handler: handler)
-                label = "win." + label
-                storage.fields["window"] = window
-            } else {
-                app.addKeyboardShortcut(shortcut, id: filteredLabel, handler: handler)
-                label = "app." + label
-            }
-            return g_menu_item_new(self.label, label)
+        var label = filteredLabel
+        guard let app = data.appStorage as? AdwaitaApp else {
+            return .init(nil)
         }
-        storage.pointer = getItem
+        if let window = data.sceneStorage.pointer as? AdwaitaWindow, preferApplicationWindow {
+            app.addKeyboardShortcut(shortcut, id: filteredLabel, window: window, handler: handler)
+            label = "win." + label
+        } else {
+            app.addKeyboardShortcut(shortcut, id: filteredLabel, handler: handler)
+            label = "app." + label
+        }
+        let pointer = g_menu_item_new(self.label, label)
+        storage.pointer = pointer
         return storage
     }
 
@@ -68,14 +67,14 @@ public struct MenuButton: MenuWidget {
     ///     - type: The type of the views.
     public func update<Data>(
         _ storage: ViewStorage,
-        modifiers: [(AnyView) -> AnyView],
+        data: WidgetData,
         updateProperties: Bool,
         type: Data.Type
     ) where Data: ViewRenderData {
-        guard let app = storage.fields["app"] as? AdwaitaApp else {
+        guard let app = data.appStorage as? AdwaitaApp else {
             return
         }
-        if let window = storage.fields["window"] as? AdwaitaWindow, preferApplicationWindow {
+        if let window = data.sceneStorage.pointer as? AdwaitaWindow, preferApplicationWindow {
             app.addKeyboardShortcut(shortcut, id: filteredLabel, window: window, handler: handler)
         } else {
             app.addKeyboardShortcut(shortcut, id: filteredLabel, handler: handler)

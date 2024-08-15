@@ -138,7 +138,7 @@ struct Demo: App {
         }
 
         var menu: AnyView {
-            Menu(icon: .default(icon: .openMenu), app: app, window: window) {
+            Menu(icon: .default(icon: .openMenu)) {
                 MenuButton("New Window", window: false) {
                     app.addWindow("main")
                 }

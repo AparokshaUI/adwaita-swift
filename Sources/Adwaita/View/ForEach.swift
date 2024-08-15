@@ -31,13 +31,13 @@ public struct ForEach<Element>: AdwaitaWidget where Element: Identifiable {
     ///     - type: The type of the app storage.
     /// - Returns: The view storage.
     public func container<Data>(
-        modifiers: [(AnyView) -> AnyView],
+        data: WidgetData,
         type: Data.Type
     ) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(
             gtk_box_new(horizontal ? GTK_ORIENTATION_HORIZONTAL : GTK_ORIENTATION_VERTICAL, 0)?.opaque()
         )
-        update(storage, modifiers: modifiers, updateProperties: true, type: type)
+        update(storage, data: data, updateProperties: true, type: type)
         return storage
     }
 
@@ -49,7 +49,7 @@ public struct ForEach<Element>: AdwaitaWidget where Element: Identifiable {
     ///     - type: The type of the app storage.
     public func update<Data>(
         _ storage: ViewStorage,
-        modifiers: [(AnyView) -> AnyView],
+        data: WidgetData,
         updateProperties: Bool,
         type: Data.Type
     ) where Data: ViewRenderData {
@@ -59,7 +59,7 @@ public struct ForEach<Element>: AdwaitaWidget where Element: Identifiable {
         old.identifiableTransform(
             to: elements,
             functions: .init { index, element in
-                let child = content(element).storage(modifiers: modifiers, type: type)
+                let child = content(element).storage(data: data, type: type)
                 gtk_box_remove(widget, contentStorage[safe: index]?.opaquePointer?.cast())
                 gtk_box_insert_child_after(
                     widget,
@@ -72,7 +72,7 @@ public struct ForEach<Element>: AdwaitaWidget where Element: Identifiable {
                 gtk_box_remove(widget, contentStorage[safe: index]?.opaquePointer?.cast())
                 contentStorage.remove(at: index)
             } insert: { index, element in
-                let child = content(element).storage(modifiers: modifiers, type: type)
+                let child = content(element).storage(data: data, type: type)
                 gtk_box_insert_child_after(
                     widget,
                     child.opaquePointer?.cast(),
@@ -93,7 +93,7 @@ public struct ForEach<Element>: AdwaitaWidget where Element: Identifiable {
             content(element)
                 .updateStorage(
                     contentStorage[index],
-                    modifiers: modifiers,
+                    data: data,
                     updateProperties: updateProperties,
                     type: type
                 )

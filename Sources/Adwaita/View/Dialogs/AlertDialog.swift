@@ -77,11 +77,11 @@ public struct AlertDialog: AdwaitaWidget {
     ///     - type: The type of the app storage.
     /// - Returns: The view storage.
     public func container<Data>(
-        modifiers: [(AnyView) -> AnyView],
+        data: WidgetData,
         type: Data.Type
     ) -> ViewStorage where Data: ViewRenderData {
-        let storage = child.storage(modifiers: modifiers, type: type)
-        update(storage, modifiers: modifiers, updateProperties: true, type: type)
+        let storage = child.storage(data: data, type: type)
+        update(storage, data: data, updateProperties: true, type: type)
         return storage
     }
 
@@ -93,12 +93,12 @@ public struct AlertDialog: AdwaitaWidget {
     ///     - type: The type of the app storage.
     public func update<Data>(
         _ storage: ViewStorage,
-        modifiers: [(AnyView) -> AnyView],
+        data: WidgetData,
         updateProperties: Bool,
         type: Data.Type
     ) where Data: ViewRenderData {
         storage.fields[Self.visibleID + id] = _visible
-        child.updateStorage(storage, modifiers: modifiers, updateProperties: updateProperties, type: type)
+        child.updateStorage(storage, data: data, updateProperties: updateProperties, type: type)
         guard updateProperties else {
             return
         }
