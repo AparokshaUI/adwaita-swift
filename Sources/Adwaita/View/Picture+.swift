@@ -18,8 +18,14 @@ extension Picture {
         return inspect { storage, updateProperties in
             if updateProperties {
                 let pointer = storage.opaquePointer
-                guard let data, data != storage.fields[oldData] as? Data else {
-                    gtk_picture_set_paintable(pointer, gdk_paintable_new_empty(0, 0))
+                guard let data else {
+                    if storage.fields[oldData] != nil {
+                        gtk_picture_set_paintable(pointer, gdk_paintable_new_empty(0, 0))
+                        storage.fields[oldData] = nil
+                    }
+                    return
+                }
+                guard data != storage.fields[oldData] as? Data else {
                     return
                 }
                 let bytes = data.withUnsafeBytes { ptr in
