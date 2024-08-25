@@ -11,7 +11,7 @@ extension Int: Identifiable {
     public var id: Int { self }
     /// The C integer.
     public var cInt: Int32 {
-        .init(self)
+        .init(truncatingIfNeeded: self)
     }
 
 }

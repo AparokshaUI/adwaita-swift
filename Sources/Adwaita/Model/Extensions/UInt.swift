@@ -9,7 +9,7 @@ extension UInt {
 
     /// Convert an unsigned integer into the C form.
     public var cInt: UInt32 {
-        .init(self)
+        .init(truncatingIfNeeded: self)
     }
 
 }
