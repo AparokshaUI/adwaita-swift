@@ -26,7 +26,7 @@ public struct ViewSwitcher<Element>: AdwaitaWidget where Element: ViewSwitcherOp
     /// The view storage.
     /// - Parameters:
     ///     - modifiers: Modify views before being updated.
-    ///     - type: The type of the app storage.
+    ///     - type: The view render data type.
     /// - Returns: The view storage.
     public func container<Data>(
         data: WidgetData,
@@ -54,7 +54,7 @@ public struct ViewSwitcher<Element>: AdwaitaWidget where Element: ViewSwitcherOp
     ///     - storage: The storage to update.
     ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
-    ///     - type: The type of the app storage.
+    ///     - type: The view render data type.
     public func update<Data>(
         _ storage: ViewStorage,
         data: WidgetData,

@@ -11,10 +11,8 @@ import Adwaita
 
 struct IdleDemo: View {
 
-    @State(id: "progress")
-    private var progress = 0.0
-    @State(id: "active-process")
-    private var activeProcess = false
+    @State private var progress = 0.0
+    @State private var activeProcess = false
     let max = 500.0
     let delayFactor = 5_000.0
     let maxWidth = 300

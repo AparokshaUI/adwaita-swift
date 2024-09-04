@@ -125,7 +125,7 @@ public struct ListBox<Element>: AdwaitaWidget where Element: Identifiable {
     /// The view storage.
     /// - Parameters:
     ///     - modifiers: Modify views before being updated.
-    ///     - type: The type of the app storage.
+    ///     - type: The view render data type.
     /// - Returns: The view storage.
     public func container<Data>(data: WidgetData, type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(gtk_list_box_new()?.opaque())
@@ -142,7 +142,7 @@ public struct ListBox<Element>: AdwaitaWidget where Element: Identifiable {
     ///     - storage: The storage to update.
     ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
-    ///     - type: The type of the app storage.
+    ///     - type: The view render data type.
     public func update<Data>(_ storage: ViewStorage, data: WidgetData, updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         if let activateCursorRow {
             storage.connectSignal(name: "activate-cursor-row", argCount: 0) {

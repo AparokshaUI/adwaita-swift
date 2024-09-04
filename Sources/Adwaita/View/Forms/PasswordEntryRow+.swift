@@ -9,8 +9,6 @@ import CAdw
 
 extension PasswordEntryRow {
 
-    static var textField: String { "text" }
-
     /// Initialize an entry row.
     /// - Parameters:
     ///     - title: The row's title.

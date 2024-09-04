@@ -138,7 +138,7 @@ file_header:
 missing_docs:
     warning: [internal, private]
     error: [open, public]
-    excludes_extensions: false
+    excludes_extensions: true
     excludes_inherited_types: false
 type_contents_order:
     order:

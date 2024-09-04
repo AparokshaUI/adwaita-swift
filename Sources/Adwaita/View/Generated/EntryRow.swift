@@ -99,7 +99,7 @@ public struct EntryRow: AdwaitaWidget {
     /// The view storage.
     /// - Parameters:
     ///     - modifiers: Modify views before being updated.
-    ///     - type: The type of the app storage.
+    ///     - type: The view render data type.
     /// - Returns: The view storage.
     public func container<Data>(data: WidgetData, type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(adw_entry_row_new()?.opaque())
@@ -128,7 +128,7 @@ public struct EntryRow: AdwaitaWidget {
     ///     - storage: The storage to update.
     ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
-    ///     - type: The type of the app storage.
+    ///     - type: The view render data type.
     public func update<Data>(_ storage: ViewStorage, data: WidgetData, updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         if let apply {
             storage.connectSignal(name: "apply", argCount: 0) {
