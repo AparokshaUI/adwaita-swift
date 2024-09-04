@@ -51,79 +51,6 @@ extension AnyView {
             .overlay(overlay)
     }
 
-    /// Add padding around a view.
-    /// - Parameters:
-    ///   - padding: The size of the padding.
-    ///   - edges: The edges which are affected by the padding.
-    /// - Returns: A view.
-    public func padding(_ padding: Int = 10, _ edges: Set<Edge> = .all) -> AnyView {
-        inspect { widget, updateProperties in
-            if updateProperties {
-                if edges.contains(.leading) { gtk_widget_set_margin_start(widget.opaquePointer?.cast(), padding.cInt) }
-                if edges.contains(.trailing) { gtk_widget_set_margin_end(widget.opaquePointer?.cast(), padding.cInt) }
-                if edges.contains(.top) { gtk_widget_set_margin_top(widget.opaquePointer?.cast(), padding.cInt) }
-                if edges.contains(.bottom) { gtk_widget_set_margin_bottom(widget.opaquePointer?.cast(), padding.cInt) }
-            }
-        }
-    }
-
-    /// Enable or disable the horizontal expansion.
-    /// - Parameter enabled: Whether it is enabled or disabled.
-    /// - Returns: A view.
-    public func hexpand(_ enabled: Bool = true) -> AnyView {
-        inspect { storage, updateProperties in
-            if updateProperties {
-                gtk_widget_set_hexpand(storage.opaquePointer?.cast(), enabled.cBool)
-            }
-        }
-    }
-
-    /// Enable or disable the vertical expansion.
-    /// - Parameter enabled: Whether it is enabled or disabled.
-    /// - Returns: A view.
-    public func vexpand(_ enabled: Bool = true) -> AnyView {
-        inspect { storage, updateProperties in
-            if updateProperties {
-                gtk_widget_set_vexpand(storage.opaquePointer?.cast(), enabled.cBool)
-            }
-        }
-    }
-
-    /// Set the horizontal alignment.
-    /// - Parameter align: The alignment.
-    /// - Returns: A view.
-    public func halign(_ align: Alignment) -> AnyView {
-        inspect { storage, updateProperties in
-            if updateProperties {
-                gtk_widget_set_halign(storage.opaquePointer?.cast(), align.cAlign)
-            }
-        }
-    }
-
-    /// Set the vertical alignment.
-    /// - Parameter align: The alignment.
-    /// - Returns: A view.
-    public func valign(_ align: Alignment) -> AnyView {
-        inspect { storage, updateProperties in
-            if updateProperties {
-                gtk_widget_set_valign(storage.opaquePointer?.cast(), align.cAlign)
-            }
-        }
-    }
-
-    /// Set the view's minimal width or height.
-    /// - Parameters:
-    ///   - minWidth: The minimal width.
-    ///   - minHeight: The minimal height.
-    /// - Returns: A view.
-    public func frame(minWidth: Int? = nil, minHeight: Int? = nil) -> AnyView {
-        inspect { storage, updateProperties in
-            if updateProperties {
-                gtk_widget_set_size_request(storage.opaquePointer?.cast(), minWidth?.cInt ?? 1, minHeight?.cInt ?? -1)
-            }
-        }
-    }
-
     /// Set the view's transition.
     /// - Parameter transition: The transition.
     /// - Returns: A view.
@@ -142,24 +69,6 @@ extension AnyView {
         inspect { storage, updateProperties in
             if updateProperties {
                 storage.fields[.navigationLabel] = label
-            }
-        }
-    }
-
-    /// Add a style class to the view.
-    /// - Parameters:
-    ///     - style: The style class.
-    ///     - active: Whether the style is currently applied.
-    /// - Returns: A view.
-    public func style(_ style: String, active: Bool = true) -> AnyView {
-        inspect { storage, updateProperties in
-            guard updateProperties else {
-                return
-            }
-            if active {
-                gtk_widget_add_css_class(storage.opaquePointer?.cast(), style)
-            } else {
-                gtk_widget_remove_css_class(storage.opaquePointer?.cast(), style)
             }
         }
     }
@@ -360,6 +269,89 @@ extension AnyView {
     /// - Returns: A view.
     public func frameStyle(_ active: Bool = true) -> AnyView {
         style("frame", active: active)
+    }
+
+    /// Run a function when the view gets an update.
+    /// - Parameter onUpdate: The function.
+    /// - Returns: A view.
+    public func onUpdate(_ onUpdate: @escaping () -> Void) -> AnyView {
+        inspect { _, _ in onUpdate() }
+    }
+
+    /// Bind to the view's focus.
+    /// - Parameter focus: Whether the view is focused.
+    /// - Returns: A view.
+    public func focused(_ focused: Binding<Bool>) -> AnyView {
+        let focus = "focus"
+        return inspectOnAppear { storage in
+            let controller = gtk_event_controller_focus_new()
+            storage.content[focus] = [.init(controller)]
+            gtk_widget_add_controller(storage.opaquePointer?.cast(), controller)
+        }
+        .inspect { storage, _ in
+            guard let controller = storage.content[focus]?.first else {
+                return
+            }
+            controller.notify(name: "contains-focus", id: "focused") {
+                let newValue = gtk_event_controller_focus_contains_focus(controller.opaquePointer) != 0
+                if focused.wrappedValue != newValue {
+                    focused.wrappedValue = newValue
+                }
+            }
+            if gtk_event_controller_focus_contains_focus(controller.opaquePointer) == 0, focused.wrappedValue {
+                gtk_widget_grab_focus(storage.opaquePointer?.cast())
+            }
+        }
+    }
+
+    /// Bind a signal that focuses the view.
+    /// - Parameter focus: Whether the view is focused.
+    /// - Returns: A view.
+    public func focus(_ signal: Signal) -> AnyView {
+        inspect { storage, _ in
+            if signal.update {
+                gtk_widget_grab_focus(storage.opaquePointer?.cast())
+            }
+        }
+    }
+
+    /// Run a function when the view appears for the first time.
+    /// - Parameter closure: The function.
+    /// - Returns: A view.
+    public func onAppear(_ closure: @escaping () -> Void) -> AnyView {
+        inspectOnAppear { _ in closure() }
+    }
+
+    /// Run a function when the widget gets clicked.
+    /// - Parameter handler: The function.
+    /// - Returns: A view.
+    public func onClick(handler: @escaping () -> Void) -> AnyView {
+        inspectOnAppear { storage in
+            let controller = ViewStorage(gtk_gesture_click_new())
+            gtk_widget_add_controller(storage.opaquePointer?.cast(), controller.opaquePointer)
+            storage.fields["controller"] = controller
+            let argCount = 3
+            controller.connectSignal(name: "released", argCount: argCount, handler: handler)
+        }
+    }
+
+    /// Add CSS classes to the app as soon as the view appears.
+    /// - Parameter getString: Get the CSS.
+    /// - Returns: A view.
+    public func css(_ getString: @escaping () -> String) -> AnyView {
+        inspectOnAppear { _ in
+            let provider = gtk_css_provider_new()
+            gtk_css_provider_load_from_string(
+                provider,
+                getString()
+            )
+            let display = gdk_display_get_default()
+            gtk_style_context_add_provider_for_display(
+                display,
+                provider?.opaque(),
+                .init(GTK_STYLE_PROVIDER_PRIORITY_APPLICATION)
+            )
+        }
     }
 
 }
