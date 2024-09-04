@@ -8,7 +8,7 @@
 import CAdw
 
 /// A widget showing one of two widgets based on a condition.
-public struct EitherView: View, Meta.EitherView {
+public struct EitherView: SimpleView, Meta.EitherView {
 
     /// Whether the first view is visible.
     var condition: Bool
