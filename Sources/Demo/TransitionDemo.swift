@@ -17,12 +17,12 @@ struct TransitionDemo: View {
         VStack {
             if firstView {
                 Text("First View")
-                    .transition(.slideDown)
                     .accent()
+                    .transition(.slideDown)
             } else {
                 Text("Second View")
-                    .transition(.slideUp)
                     .success()
+                    .transition(.slideUp)
             }
         }
         .modifyContent(Text.self) { $0.title2().padding() }
