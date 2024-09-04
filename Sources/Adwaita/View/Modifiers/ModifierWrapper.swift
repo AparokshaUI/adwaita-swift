@@ -45,7 +45,8 @@ struct ModifierWrapper: AdwaitaWidget {
     ///     - type: The view render data type.
     /// - Returns: The view storage.
     func container<Data>(data: WidgetData, type: Data.Type) -> ViewStorage where Data: ViewRenderData {
-        let storage = content.storage(data: data, type: type)
+        let content = content.storage(data: data, type: type)
+        let storage = ViewStorage(content.pointer, content: [.mainContent: [content]])
         update(storage, data: data, updateProperties: true, type: type)
         return storage
     }
@@ -62,7 +63,9 @@ struct ModifierWrapper: AdwaitaWidget {
         updateProperties: Bool,
         type: Data.Type
     ) where Data: ViewRenderData {
-        content.updateStorage(storage, data: data, updateProperties: updateProperties, type: type)
+        if let storage = storage.content[.mainContent]?.first {
+            content.updateStorage(storage, data: data, updateProperties: updateProperties, type: type)
+        }
         guard updateProperties else {
             return
         }
