@@ -5,7 +5,7 @@
 //  Created by david-swift on 14.01.24.
 //
 
-extension String: CodingKey {
+extension String: @retroactive CodingKey {
 
     /// The string.
     public var stringValue: String {

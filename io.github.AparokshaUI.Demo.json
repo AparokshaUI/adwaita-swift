@@ -1,10 +1,10 @@
 {
   "app-id": "io.github.AparokshaUI.Demo",
   "runtime": "org.gnome.Platform",
-  "runtime-version": "46",
+  "runtime-version": "47",
   "sdk": "org.gnome.Sdk",
   "sdk-extensions": [
-    "org.freedesktop.Sdk.Extension.swift5"
+    "org.freedesktop.Sdk.Extension.swift6"
   ],
   "command": "Demo",
   "finish-args": [
@@ -15,8 +15,8 @@
     "--socket=wayland"
   ],
   "build-options": {
-    "append-path": "/usr/lib/sdk/swift5/bin",
-    "prepend-ld-library-path": "/usr/lib/sdk/swift5/lib"
+    "append-path": "/usr/lib/sdk/swift6/bin",
+    "prepend-ld-library-path": "/usr/lib/sdk/swift6/lib"
   },
   "cleanup": [
     "/include",

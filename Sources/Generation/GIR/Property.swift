@@ -89,15 +89,12 @@ struct Property: Decodable {
         let property = convertPropertyName(configuration: genConfig)
         let builder = ((type?.isWidget ?? false) || (type?.isMenu ?? false)) ? "@ViewBuilder " : ""
         let mainParameter = parameter(config: config, genConfig: genConfig, modifier: true, defaultValue: true)
-        var sideParameters = ""
-        var sideAssignments = ""
         return """
 
         \(doc?.docComment(indent: "    ") ?? "/// \(name)")
-            public func \(convertPropertyName(configuration: genConfig))(\(sideParameters)\(builder)_ \(mainParameter)) -> Self {
+            public func \(convertPropertyName(configuration: genConfig))(\(builder)_ \(mainParameter)) -> Self {
                 var newSelf = self
                 newSelf.\(property) = \(property)
-                \(sideAssignments)
                 return newSelf
             }
 
