@@ -5,7 +5,6 @@
 //  Created by david-swift on 15.01.24.
 //
 
-// An extension
 extension UnsafeMutablePointer {
 
     /// Convert into an opaque pointer.

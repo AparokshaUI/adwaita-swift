@@ -2,7 +2,7 @@
 //  ScrolledWindow.swift
 //  Adwaita
 //
-//  Created by auto-generation on 21.07.24.
+//  Created by auto-generation on 15.08.24.
 //
 
 import CAdw
@@ -76,12 +76,12 @@ import LevenshteinTransformations
 /// Until GTK 4.10, `GtkScrolledWindow` used the `GTK_ACCESSIBLE_ROLE_GROUP` role.
 /// 
 /// Starting from GTK 4.12, `GtkScrolledWindow` uses the `GTK_ACCESSIBLE_ROLE_GENERIC` role.
-public struct ScrolledWindow: Widget {
+public struct ScrolledWindow: AdwaitaWidget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage, [(View) -> View], Bool) -> Void] = []
+    var updateFunctions: [(ViewStorage, WidgetData, Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage, [(View) -> View]) -> Void] = []
+    var appearFunctions: [(ViewStorage, WidgetData) -> Void] = []
 
     /// The accessible role of the given `GtkAccessible` implementation.
     /// 
@@ -92,7 +92,7 @@ public struct ScrolledWindow: Widget {
     /// When setting this property, if the child widget does not implement
     /// [iface@Gtk.Scrollable], the scrolled window will add the child to
     /// a [class@Gtk.Viewport] and then set the viewport as the child.
-    var child:  (() -> Body)?
+    var child: (() -> Body)?
     /// Whether to draw a frame around the contents.
     var hasFrame: Bool?
     /// Whether kinetic scrolling is enabled or not.
@@ -164,38 +164,37 @@ public struct ScrolledWindow: Widget {
     /// The horizontal or vertical adjustment is updated which triggers a
     /// signal that the scrolled window’s child may listen to and scroll itself.
     var scrollChild: (() -> Void)?
-    /// The application.
-    var app: GTUIApp?
-    /// The window.
-    var window: GTUIApplicationWindow?
 
     /// Initialize `ScrolledWindow`.
     public init() {
     }
 
-    /// Get the widget's view storage.
-    /// - Parameter modifiers: The view modifiers.
+    /// The view storage.
+    /// - Parameters:
+    ///     - modifiers: Modify views before being updated.
+    ///     - type: The view render data type.
     /// - Returns: The view storage.
-    public func container(modifiers: [(View) -> View]) -> ViewStorage {
+    public func container<Data>(data: WidgetData, type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(gtk_scrolled_window_new()?.opaque())
         for function in appearFunctions {
-            function(storage, modifiers)
+            function(storage, data)
         }
-        update(storage, modifiers: modifiers, updateProperties: true)
-        if let childStorage = child?().widget(modifiers: modifiers).storage(modifiers: modifiers) {
+        update(storage, data: data, updateProperties: true, type: type)
+        if let childStorage = child?().storage(data: data, type: type) {
             storage.content["child"] = [childStorage]
-            gtk_scrolled_window_set_child(storage.pointer, childStorage.pointer?.cast())
+            gtk_scrolled_window_set_child(storage.opaquePointer, childStorage.opaquePointer?.cast())
         }
 
         return storage
     }
 
-    /// Update the widget's view storage.
+    /// Update the stored content.
     /// - Parameters:
-    ///     - storage: The view storage.
-    ///     - modifiers: The view modifiers.
+    ///     - storage: The storage to update.
+    ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    ///     - type: The view render data type.
+    public func update<Data>(_ storage: ViewStorage, data: WidgetData, updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         if let edgeOvershot {
             storage.connectSignal(name: "edge-overshot", argCount: 1) {
                 edgeOvershot()
@@ -219,40 +218,43 @@ public struct ScrolledWindow: Widget {
         storage.modify { widget in
 
             if let widget = storage.content["child"]?.first {
-                child?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
+                child?().updateStorage(widget, data: data, updateProperties: updateProperties, type: type)
             }
-            if let hasFrame, updateProperties {
+            if let hasFrame, updateProperties, (storage.previousState as? Self)?.hasFrame != hasFrame {
                 gtk_scrolled_window_set_has_frame(widget, hasFrame.cBool)
             }
-            if let kineticScrolling, updateProperties {
+            if let kineticScrolling, updateProperties, (storage.previousState as? Self)?.kineticScrolling != kineticScrolling {
                 gtk_scrolled_window_set_kinetic_scrolling(widget, kineticScrolling.cBool)
             }
-            if let maxContentHeight, updateProperties {
+            if let maxContentHeight, updateProperties, (storage.previousState as? Self)?.maxContentHeight != maxContentHeight {
                 gtk_scrolled_window_set_max_content_height(widget, maxContentHeight.cInt)
             }
-            if let maxContentWidth, updateProperties {
+            if let maxContentWidth, updateProperties, (storage.previousState as? Self)?.maxContentWidth != maxContentWidth {
                 gtk_scrolled_window_set_max_content_width(widget, maxContentWidth.cInt)
             }
-            if let minContentHeight, updateProperties {
+            if let minContentHeight, updateProperties, (storage.previousState as? Self)?.minContentHeight != minContentHeight {
                 gtk_scrolled_window_set_min_content_height(widget, minContentHeight.cInt)
             }
-            if let minContentWidth, updateProperties {
+            if let minContentWidth, updateProperties, (storage.previousState as? Self)?.minContentWidth != minContentWidth {
                 gtk_scrolled_window_set_min_content_width(widget, minContentWidth.cInt)
             }
-            if let overlayScrolling, updateProperties {
+            if let overlayScrolling, updateProperties, (storage.previousState as? Self)?.overlayScrolling != overlayScrolling {
                 gtk_scrolled_window_set_overlay_scrolling(widget, overlayScrolling.cBool)
             }
-            if let propagateNaturalHeight, updateProperties {
+            if let propagateNaturalHeight, updateProperties, (storage.previousState as? Self)?.propagateNaturalHeight != propagateNaturalHeight {
                 gtk_scrolled_window_set_propagate_natural_height(widget, propagateNaturalHeight.cBool)
             }
-            if let propagateNaturalWidth, updateProperties {
+            if let propagateNaturalWidth, updateProperties, (storage.previousState as? Self)?.propagateNaturalWidth != propagateNaturalWidth {
                 gtk_scrolled_window_set_propagate_natural_width(widget, propagateNaturalWidth.cBool)
             }
 
 
         }
         for function in updateFunctions {
-            function(storage, modifiers, updateProperties)
+            function(storage, data, updateProperties)
+        }
+        if updateProperties {
+            storage.previousState = self
         }
     }
 

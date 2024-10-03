@@ -8,7 +8,7 @@
 import CAdw
 
 /// A list with no dynamic content styled as a boxed list.
-public struct Form: View {
+public struct Form: SimpleView {
 
     /// The content.
     var content: Body

@@ -2,7 +2,7 @@
 //  SearchBar.swift
 //  Adwaita
 //
-//  Created by auto-generation on 21.07.24.
+//  Created by auto-generation on 15.08.24.
 //
 
 import CAdw
@@ -52,77 +52,79 @@ import LevenshteinTransformations
 /// # Accessibility
 /// 
 /// `GtkSearchBar` uses the %GTK_ACCESSIBLE_ROLE_SEARCH role.
-public struct SearchBar: Widget {
+public struct SearchBar: AdwaitaWidget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage, [(View) -> View], Bool) -> Void] = []
+    var updateFunctions: [(ViewStorage, WidgetData, Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage, [(View) -> View]) -> Void] = []
+    var appearFunctions: [(ViewStorage, WidgetData) -> Void] = []
 
     /// The accessible role of the given `GtkAccessible` implementation.
     /// 
     /// The accessible role cannot be changed once set.
     var accessibleRole: String?
     /// The child widget.
-    var child:  (() -> Body)?
+    var child: (() -> Body)?
     /// The key capture widget.
-    var keyCaptureWidget:  (() -> Body)?
+    var keyCaptureWidget: (() -> Body)?
     /// Whether the search mode is on and the search bar shown.
     var searchModeEnabled: Bool?
     /// Whether to show the close button in the search bar.
     var showCloseButton: Bool?
-    /// The application.
-    var app: GTUIApp?
-    /// The window.
-    var window: GTUIApplicationWindow?
 
     /// Initialize `SearchBar`.
     public init() {
     }
 
-    /// Get the widget's view storage.
-    /// - Parameter modifiers: The view modifiers.
+    /// The view storage.
+    /// - Parameters:
+    ///     - modifiers: Modify views before being updated.
+    ///     - type: The view render data type.
     /// - Returns: The view storage.
-    public func container(modifiers: [(View) -> View]) -> ViewStorage {
+    public func container<Data>(data: WidgetData, type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(gtk_search_bar_new()?.opaque())
         for function in appearFunctions {
-            function(storage, modifiers)
+            function(storage, data)
         }
-        update(storage, modifiers: modifiers, updateProperties: true)
-        if let childStorage = child?().widget(modifiers: modifiers).storage(modifiers: modifiers) {
+        update(storage, data: data, updateProperties: true, type: type)
+        if let childStorage = child?().storage(data: data, type: type) {
             storage.content["child"] = [childStorage]
-            gtk_search_bar_set_child(storage.pointer, childStorage.pointer?.cast())
+            gtk_search_bar_set_child(storage.opaquePointer, childStorage.opaquePointer?.cast())
         }
-        if let keyCaptureWidgetStorage = keyCaptureWidget?().widget(modifiers: modifiers).storage(modifiers: modifiers) {
+        if let keyCaptureWidgetStorage = keyCaptureWidget?().storage(data: data, type: type) {
             storage.content["keyCaptureWidget"] = [keyCaptureWidgetStorage]
-            gtk_search_bar_set_key_capture_widget(storage.pointer, keyCaptureWidgetStorage.pointer?.cast())
+            gtk_search_bar_set_key_capture_widget(storage.opaquePointer, keyCaptureWidgetStorage.opaquePointer?.cast())
         }
 
         return storage
     }
 
-    /// Update the widget's view storage.
+    /// Update the stored content.
     /// - Parameters:
-    ///     - storage: The view storage.
-    ///     - modifiers: The view modifiers.
+    ///     - storage: The storage to update.
+    ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    ///     - type: The view render data type.
+    public func update<Data>(_ storage: ViewStorage, data: WidgetData, updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         storage.modify { widget in
 
             if let widget = storage.content["child"]?.first {
-                child?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
+                child?().updateStorage(widget, data: data, updateProperties: updateProperties, type: type)
             }
             if let widget = storage.content["keyCaptureWidget"]?.first {
-                keyCaptureWidget?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
+                keyCaptureWidget?().updateStorage(widget, data: data, updateProperties: updateProperties, type: type)
             }
-            if let showCloseButton, updateProperties {
+            if let showCloseButton, updateProperties, (storage.previousState as? Self)?.showCloseButton != showCloseButton {
                 gtk_search_bar_set_show_close_button(widget, showCloseButton.cBool)
             }
 
 
         }
         for function in updateFunctions {
-            function(storage, modifiers, updateProperties)
+            function(storage, data, updateProperties)
+        }
+        if updateProperties {
+            storage.previousState = self
         }
     }
 

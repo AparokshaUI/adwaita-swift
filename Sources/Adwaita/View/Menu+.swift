@@ -7,7 +7,6 @@
 
 import CAdw
 
-// An extension
 extension Menu {
 
     // swiftlint:disable function_default_parameter_at_end
@@ -15,15 +14,11 @@ extension Menu {
     /// - Parameters:
     ///   - label: The button's label.
     ///   - icon: The button's icon.
-    ///   - app: The application.
-    ///   - window: The application window.
     ///   - content: The menu's content.
     public init(
         _ label: String? = nil,
         icon: Icon,
-        app: GTUIApp,
-        window: GTUIApplicationWindow?,
-        @MenuBuilder content: @escaping () -> MenuContent
+        @ViewBuilder content: @escaping () -> Body
     ) {
         self.init()
         self = self
@@ -32,23 +27,22 @@ extension Menu {
                     .iconName(icon.string)
                     .label(label)
             }
-            .menuModel(app: app, window: window, content)
+            .menuModel(content)
     }
     // swiftlint:enable function_default_parameter_at_end
 
     /// Initialize a menu button.
     /// - Parameters:
     ///   - label: The buttons label.
-    ///   - app: The application.
-    ///   - window: The application window.
     ///   - content: The menu's content.
     public init(
         _ label: String,
-        app: GTUIApp,
-        window: GTUIApplicationWindow?,
-        @MenuBuilder content: () -> MenuContent
+        @ViewBuilder content: @escaping () -> Body
     ) {
         self.init()
+        self = self
+            .label(label)
+            .menuModel(content)
     }
 
 }

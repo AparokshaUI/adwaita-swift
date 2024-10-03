@@ -2,7 +2,7 @@
 //  FlowBox.swift
 //  Adwaita
 //
-//  Created by auto-generation on 21.07.24.
+//  Created by auto-generation on 15.08.24.
 //
 
 import CAdw
@@ -52,12 +52,12 @@ import LevenshteinTransformations
 /// 
 /// `GtkFlowBox` uses the %GTK_ACCESSIBLE_ROLE_GRID role, and `GtkFlowBoxChild`
 /// uses the %GTK_ACCESSIBLE_ROLE_GRID_CELL role.
-public struct FlowBox<Element>: Widget where Element: Identifiable {
+public struct FlowBox<Element>: AdwaitaWidget where Element: Identifiable {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage, [(View) -> View], Bool) -> Void] = []
+    var updateFunctions: [(ViewStorage, WidgetData, Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage, [(View) -> View]) -> Void] = []
+    var appearFunctions: [(ViewStorage, WidgetData) -> Void] = []
 
 /// accept-unpaired-release
     var acceptUnpairedRelease: Bool?
@@ -138,10 +138,6 @@ public struct FlowBox<Element>: Widget where Element: Identifiable {
     var elements: [Element]
     /// The dynamic widget content.
     var content: (Element) -> Body
-    /// The application.
-    var app: GTUIApp?
-    /// The window.
-    var window: GTUIApplicationWindow?
 
     /// Initialize `FlowBox`.
     public init(_ elements: [Element], @ViewBuilder content: @escaping (Element) -> Body) {
@@ -149,25 +145,28 @@ public struct FlowBox<Element>: Widget where Element: Identifiable {
         self.content = content
     }
 
-    /// Get the widget's view storage.
-    /// - Parameter modifiers: The view modifiers.
+    /// The view storage.
+    /// - Parameters:
+    ///     - modifiers: Modify views before being updated.
+    ///     - type: The view render data type.
     /// - Returns: The view storage.
-    public func container(modifiers: [(View) -> View]) -> ViewStorage {
+    public func container<Data>(data: WidgetData, type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(gtk_flow_box_new()?.opaque())
         for function in appearFunctions {
-            function(storage, modifiers)
+            function(storage, data)
         }
-        update(storage, modifiers: modifiers, updateProperties: true)
+        update(storage, data: data, updateProperties: true, type: type)
 
         return storage
     }
 
-    /// Update the widget's view storage.
+    /// Update the stored content.
     /// - Parameters:
-    ///     - storage: The view storage.
-    ///     - modifiers: The view modifiers.
+    ///     - storage: The storage to update.
+    ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    ///     - type: The view render data type.
+    public func update<Data>(_ storage: ViewStorage, data: WidgetData, updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         if let activateCursorChild {
             storage.connectSignal(name: "activate-cursor-child", argCount: 0) {
                 activateCursorChild()
@@ -205,22 +204,22 @@ public struct FlowBox<Element>: Widget where Element: Identifiable {
         }
         storage.modify { widget in
 
-            if let activateOnSingleClick, updateProperties {
+            if let activateOnSingleClick, updateProperties, (storage.previousState as? Self)?.activateOnSingleClick != activateOnSingleClick {
                 gtk_flow_box_set_activate_on_single_click(widget, activateOnSingleClick.cBool)
             }
-            if let columnSpacing, updateProperties {
+            if let columnSpacing, updateProperties, (storage.previousState as? Self)?.columnSpacing != columnSpacing {
                 gtk_flow_box_set_column_spacing(widget, columnSpacing.cInt)
             }
-            if let homogeneous, updateProperties {
+            if let homogeneous, updateProperties, (storage.previousState as? Self)?.homogeneous != homogeneous {
                 gtk_flow_box_set_homogeneous(widget, homogeneous.cBool)
             }
-            if let maxChildrenPerLine, updateProperties {
+            if let maxChildrenPerLine, updateProperties, (storage.previousState as? Self)?.maxChildrenPerLine != maxChildrenPerLine {
                 gtk_flow_box_set_max_children_per_line(widget, maxChildrenPerLine.cInt)
             }
-            if let minChildrenPerLine, updateProperties {
+            if let minChildrenPerLine, updateProperties, (storage.previousState as? Self)?.minChildrenPerLine != minChildrenPerLine {
                 gtk_flow_box_set_min_children_per_line(widget, minChildrenPerLine.cInt)
             }
-            if let rowSpacing, updateProperties {
+            if let rowSpacing, updateProperties, (storage.previousState as? Self)?.rowSpacing != rowSpacing {
                 gtk_flow_box_set_row_spacing(widget, rowSpacing.cInt)
             }
 
@@ -229,28 +228,31 @@ public struct FlowBox<Element>: Widget where Element: Identifiable {
             old.identifiableTransform(
                 to: elements,
                 functions: .init { index, element in
-                    let child = content(element).widget(modifiers: modifiers).container(modifiers: modifiers)
+                    let child = content(element).storage(data: data, type: type)
                     gtk_flow_box_remove(widget, gtk_flow_box_get_child_at_index(widget, index.cInt)?.cast())
-                    gtk_flow_box_insert(widget, child.pointer?.cast(), index.cInt)
+                    gtk_flow_box_insert(widget, child.opaquePointer?.cast(), index.cInt)
                     contentStorage.remove(at: index)
                     contentStorage.insert(child, at: index)
                 } delete: { index in
                     gtk_flow_box_remove(widget, gtk_flow_box_get_child_at_index(widget, index.cInt)?.cast())
                     contentStorage.remove(at: index)
                 } insert: { index, element in
-                    let child = content(element).widget(modifiers: modifiers).container(modifiers: modifiers)
-                    gtk_flow_box_insert(widget, child.pointer?.cast(), index.cInt)
+                    let child = content(element).storage(data: data, type: type)
+                    gtk_flow_box_insert(widget, child.opaquePointer?.cast(), index.cInt)
                     contentStorage.insert(child, at: index)
                 }
             )
             storage.fields["element"] = elements
             storage.content[.mainContent] = contentStorage
             for (index, element) in elements.enumerated() {
-                content(element).widget(modifiers: modifiers).update(contentStorage[index], modifiers: modifiers, updateProperties: updateProperties)
+                content(element).updateStorage(contentStorage[index], data: data, updateProperties: updateProperties, type: type)
             }
         }
         for function in updateFunctions {
-            function(storage, modifiers, updateProperties)
+            function(storage, data, updateProperties)
+        }
+        if updateProperties {
+            storage.previousState = self
         }
     }
 

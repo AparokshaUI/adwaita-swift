@@ -2,7 +2,7 @@
 //  CenterBox.swift
 //  Adwaita
 //
-//  Created by auto-generation on 21.07.24.
+//  Created by auto-generation on 15.08.24.
 //
 
 import CAdw
@@ -42,25 +42,25 @@ import LevenshteinTransformations
 /// Until GTK 4.10, `GtkCenterBox` used the `GTK_ACCESSIBLE_ROLE_GROUP` role.
 /// 
 /// Starting from GTK 4.12, `GtkCenterBox` uses the `GTK_ACCESSIBLE_ROLE_GENERIC` role.
-public struct CenterBox: Widget {
+public struct CenterBox: AdwaitaWidget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage, [(View) -> View], Bool) -> Void] = []
+    var updateFunctions: [(ViewStorage, WidgetData, Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage, [(View) -> View]) -> Void] = []
+    var appearFunctions: [(ViewStorage, WidgetData) -> Void] = []
 
     /// The accessible role of the given `GtkAccessible` implementation.
     /// 
     /// The accessible role cannot be changed once set.
     var accessibleRole: String?
     /// The widget that is placed at the center position.
-    var centerWidget:  (() -> Body)?
+    var centerWidget: (() -> Body)?
     /// The widget that is placed at the end position.
     /// 
     /// In vertical orientation, the end position is at the bottom.
     /// In horizontal orientation, the end position is at the trailing
     /// edge wrt. to the text direction.
-    var endWidget:  (() -> Body)?
+    var endWidget: (() -> Body)?
     /// Whether to shrink the center widget after other children.
     /// 
     /// By default, when there's no space to give all three children their
@@ -75,66 +75,68 @@ public struct CenterBox: Widget {
     /// In vertical orientation, the start position is at the top.
     /// In horizontal orientation, the start position is at the leading
     /// edge wrt. to the text direction.
-    var startWidget:  (() -> Body)?
-    /// The application.
-    var app: GTUIApp?
-    /// The window.
-    var window: GTUIApplicationWindow?
+    var startWidget: (() -> Body)?
 
     /// Initialize `CenterBox`.
     public init() {
     }
 
-    /// Get the widget's view storage.
-    /// - Parameter modifiers: The view modifiers.
+    /// The view storage.
+    /// - Parameters:
+    ///     - modifiers: Modify views before being updated.
+    ///     - type: The view render data type.
     /// - Returns: The view storage.
-    public func container(modifiers: [(View) -> View]) -> ViewStorage {
+    public func container<Data>(data: WidgetData, type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(gtk_center_box_new()?.opaque())
         for function in appearFunctions {
-            function(storage, modifiers)
+            function(storage, data)
         }
-        update(storage, modifiers: modifiers, updateProperties: true)
-        if let centerWidgetStorage = centerWidget?().widget(modifiers: modifiers).storage(modifiers: modifiers) {
+        update(storage, data: data, updateProperties: true, type: type)
+        if let centerWidgetStorage = centerWidget?().storage(data: data, type: type) {
             storage.content["centerWidget"] = [centerWidgetStorage]
-            gtk_center_box_set_center_widget(storage.pointer, centerWidgetStorage.pointer?.cast())
+            gtk_center_box_set_center_widget(storage.opaquePointer, centerWidgetStorage.opaquePointer?.cast())
         }
-        if let endWidgetStorage = endWidget?().widget(modifiers: modifiers).storage(modifiers: modifiers) {
+        if let endWidgetStorage = endWidget?().storage(data: data, type: type) {
             storage.content["endWidget"] = [endWidgetStorage]
-            gtk_center_box_set_end_widget(storage.pointer, endWidgetStorage.pointer?.cast())
+            gtk_center_box_set_end_widget(storage.opaquePointer, endWidgetStorage.opaquePointer?.cast())
         }
-        if let startWidgetStorage = startWidget?().widget(modifiers: modifiers).storage(modifiers: modifiers) {
+        if let startWidgetStorage = startWidget?().storage(data: data, type: type) {
             storage.content["startWidget"] = [startWidgetStorage]
-            gtk_center_box_set_start_widget(storage.pointer, startWidgetStorage.pointer?.cast())
+            gtk_center_box_set_start_widget(storage.opaquePointer, startWidgetStorage.opaquePointer?.cast())
         }
 
         return storage
     }
 
-    /// Update the widget's view storage.
+    /// Update the stored content.
     /// - Parameters:
-    ///     - storage: The view storage.
-    ///     - modifiers: The view modifiers.
+    ///     - storage: The storage to update.
+    ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    ///     - type: The view render data type.
+    public func update<Data>(_ storage: ViewStorage, data: WidgetData, updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         storage.modify { widget in
 
             if let widget = storage.content["centerWidget"]?.first {
-                centerWidget?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
+                centerWidget?().updateStorage(widget, data: data, updateProperties: updateProperties, type: type)
             }
             if let widget = storage.content["endWidget"]?.first {
-                endWidget?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
+                endWidget?().updateStorage(widget, data: data, updateProperties: updateProperties, type: type)
             }
-            if let shrinkCenterLast, updateProperties {
+            if let shrinkCenterLast, updateProperties, (storage.previousState as? Self)?.shrinkCenterLast != shrinkCenterLast {
                 gtk_center_box_set_shrink_center_last(widget, shrinkCenterLast.cBool)
             }
             if let widget = storage.content["startWidget"]?.first {
-                startWidget?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
+                startWidget?().updateStorage(widget, data: data, updateProperties: updateProperties, type: type)
             }
 
 
         }
         for function in updateFunctions {
-            function(storage, modifiers, updateProperties)
+            function(storage, data, updateProperties)
+        }
+        if updateProperties {
+            storage.previousState = self
         }
     }
 

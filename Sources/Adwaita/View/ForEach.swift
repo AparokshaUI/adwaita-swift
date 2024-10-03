@@ -9,7 +9,7 @@ import CAdw
 import LevenshteinTransformations
 
 /// A dynamic list but without a list design in the user interface.
-public struct ForEach<Element>: Widget where Element: Identifiable {
+public struct ForEach<Element>: AdwaitaWidget where Element: Identifiable {
 
     /// The dynamic widget elements.
     var elements: [Element]
@@ -25,47 +25,58 @@ public struct ForEach<Element>: Widget where Element: Identifiable {
         self.horizontal = horizontal
     }
 
-    /// Get the widget's view storage.
-    /// - Parameter modifiers: The view modifiers.
+    /// The view storage.
+    /// - Parameters:
+    ///     - modifiers: Modify views before being updated.
+    ///     - type: The view render data type.
     /// - Returns: The view storage.
-    public func container(modifiers: [(View) -> View]) -> ViewStorage {
+    public func container<Data>(
+        data: WidgetData,
+        type: Data.Type
+    ) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(
             gtk_box_new(horizontal ? GTK_ORIENTATION_HORIZONTAL : GTK_ORIENTATION_VERTICAL, 0)?.opaque()
         )
-        update(storage, modifiers: modifiers, updateProperties: true)
+        update(storage, data: data, updateProperties: true, type: type)
         return storage
     }
 
-    /// Update the widget's view storage.
+    /// Update the stored content.
     /// - Parameters:
-    ///     - storage: The view storage.
-    ///     - modifiers: The view modifiers.
+    ///     - storage: The storage to update.
+    ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    ///     - type: The view render data type.
+    public func update<Data>(
+        _ storage: ViewStorage,
+        data: WidgetData,
+        updateProperties: Bool,
+        type: Data.Type
+    ) where Data: ViewRenderData {
         var contentStorage: [ViewStorage] = storage.content[.mainContent] ?? []
         let old = storage.fields["element"] as? [Element] ?? []
-        let widget: UnsafeMutablePointer<GtkBox>? = storage.pointer?.cast()
+        let widget: UnsafeMutablePointer<GtkBox>? = storage.opaquePointer?.cast()
         old.identifiableTransform(
             to: elements,
             functions: .init { index, element in
-                let child = content(element).widget(modifiers: modifiers).container(modifiers: modifiers)
-                gtk_box_remove(widget, contentStorage[safe: index]?.pointer?.cast())
+                let child = content(element).storage(data: data, type: type)
+                gtk_box_remove(widget, contentStorage[safe: index]?.opaquePointer?.cast())
                 gtk_box_insert_child_after(
                     widget,
-                    child.pointer?.cast(),
-                    contentStorage[safe: index - 1]?.pointer?.cast()
+                    child.opaquePointer?.cast(),
+                    contentStorage[safe: index - 1]?.opaquePointer?.cast()
                 )
                 contentStorage.remove(at: index)
                 contentStorage.insert(child, at: index)
             } delete: { index in
-                gtk_box_remove(widget, contentStorage[safe: index]?.pointer?.cast())
+                gtk_box_remove(widget, contentStorage[safe: index]?.opaquePointer?.cast())
                 contentStorage.remove(at: index)
             } insert: { index, element in
-                let child = content(element).widget(modifiers: modifiers).container(modifiers: modifiers)
+                let child = content(element).storage(data: data, type: type)
                 gtk_box_insert_child_after(
                     widget,
-                    child.pointer?.cast(),
-                    contentStorage[safe: index - 1]?.pointer?.cast()
+                    child.opaquePointer?.cast(),
+                    contentStorage[safe: index - 1]?.opaquePointer?.cast()
                 )
                 contentStorage.insert(child, at: index)
             }
@@ -80,8 +91,12 @@ public struct ForEach<Element>: Widget where Element: Identifiable {
         storage.content[.mainContent] = contentStorage
         for (index, element) in elements.enumerated() {
             content(element)
-                .widget(modifiers: modifiers)
-                .update(contentStorage[index], modifiers: modifiers, updateProperties: updateProperties)
+                .updateStorage(
+                    contentStorage[index],
+                    data: data,
+                    updateProperties: updateProperties,
+                    type: type
+                )
         }
     }
 

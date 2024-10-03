@@ -24,6 +24,8 @@ struct Property: Decodable {
     /// This overwrites the cast information provided by the caller of a function.
     var cast: Bool?
     // swiftlint:enable discouraged_optional_boolean
+    /// Whether the property is deprecated.
+    var deprecated: Bool?
 
     /// Get the Swift property name.
     /// - Parameter configuration: The generation configuration.
@@ -46,15 +48,13 @@ struct Property: Decodable {
         defaultValue: Bool = false
     ) -> String {
         var type: String
-        if config.bindings.contains { $0.property == name } {
+        if config.bindings.contains(where: { $0.property == name }) {
             type = (try? self.type?.binding(configuration: genConfig)) ?? "Binding<String>"
         } else {
             type = (try? self.type?.generate(configuration: genConfig)) ?? "String"
         }
-        if self.type?.isWidget ?? false {
-            type = "\(modifier ? "@escaping" : "") (() -> Body)"
-        } else if self.type?.isMenu ?? false {
-            type = "\(modifier ? "@escaping" : "") (() -> MenuContent)"
+        if (self.type?.isWidget ?? false) || (self.type?.isMenu ?? false) {
+            type = "\(modifier ? "@escaping " : "")(() -> Body)"
         }
         if !config.requiredProperties.contains(name)
         && !(((self.type?.isWidget ?? false) || (self.type?.isMenu ?? false)) && modifier) {
@@ -87,21 +87,14 @@ struct Property: Decodable {
     /// - Returns: The code.
     func generateModifier(config: WidgetConfiguration, genConfig: GenerationConfiguration) -> String {
         let property = convertPropertyName(configuration: genConfig)
-        let builder = (type?.isWidget ?? false) ? "@ViewBuilder " : ((type?.isMenu ?? false) ? "@MenuBuilder " : "")
+        let builder = ((type?.isWidget ?? false) || (type?.isMenu ?? false)) ? "@ViewBuilder " : ""
         let mainParameter = parameter(config: config, genConfig: genConfig, modifier: true, defaultValue: true)
-        var sideParameters = ""
-        var sideAssignments = ""
-        if type?.isMenu ?? false {
-            sideParameters += "app: GTUIApp, window: GTUIApplicationWindow? = nil, "
-            sideAssignments += "newSelf.app = app; newSelf.window = window"
-        }
         return """
 
         \(doc?.docComment(indent: "    ") ?? "/// \(name)")
-            public func \(convertPropertyName(configuration: genConfig))(\(sideParameters)\(builder)_ \(mainParameter)) -> Self {
+            public func \(convertPropertyName(configuration: genConfig))(\(builder)_ \(mainParameter)) -> Self {
                 var newSelf = self
                 newSelf.\(property) = \(property)
-                \(sideAssignments)
                 return newSelf
             }
 
@@ -124,13 +117,19 @@ struct Property: Decodable {
         guard !(type?.isWidget ?? false) else {
             return """
                         if let widget = storage.content["\(name)"]?.first {
-                            \(name)?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
+                            \(name)?().updateStorage(widget, data: data, updateProperties: updateProperties, type: type)
                         }
 
             """
         }
         guard !(type?.isMenu ?? false) else {
-            return ""
+            return """
+                        if let menu = storage.content["\(name)"]?.first {
+                            MenuCollection { \(name)?() ?? [] }
+                                .updateStorage(menu, data: data.noModifiers, updateProperties: updateProperties, type: MenuContext.self)
+                        }
+
+            """
         }
         guard var setter else {
             return ""
@@ -152,7 +151,7 @@ struct Property: Decodable {
         }
         if config.bindings.contains(where: { $0.property == self.name }) {
             var check = ""
-            let widget = (self.cast ?? config.cast) ? "storage.pointer?.cast()" : "storage.pointer"
+            let widget = (self.cast ?? config.cast) ? "storage.opaquePointer?.cast()" : "storage.opaquePointer"
             if var getter {
                 getter = "\((self.prefix ?? prefix) + "_" + getter)(\(widget))"
                 check = ", (" + (genConfig.getterTypeConversions[self.type?.name ?? ""]?(getter) ?? getter) + ") != \(name).wrappedValue"
@@ -165,14 +164,14 @@ struct Property: Decodable {
             """
         } else if config.requiredProperties.contains(self.name) {
             return """
-                        if updateProperties {
+                        if updateProperties, (storage.previousState as? Self)?.\(name) != \(name) {
                             \(onlySetConditions)\(onlySetConditionsIndentation)\(setter)(\(widget), \(name)\(propertyString))\(onlySetConditionsEnd)
                         }
 
             """
         } else {
             return """
-                        if let \(name)\(setConditions), updateProperties {
+                        if let \(name)\(setConditions), updateProperties, (storage.previousState as? Self)?.\(name) != \(name) {
                             \(setter)(\(widget), \(name)\(propertyString))
                         }
 
@@ -197,11 +196,11 @@ struct Property: Decodable {
         }
         setter = (self.prefix ?? prefix) + "_" + setter
         let name = convertPropertyName(configuration: genConfig)
-        let view = (self.cast ?? config.cast) ? "storage.pointer?.cast()" : "storage.pointer"
+        let view = (self.cast ?? config.cast) ? "storage.opaquePointer?.cast()" : "storage.opaquePointer"
         return """
-                if let \(name)Storage = \(name)?().widget(modifiers: modifiers).storage(modifiers: modifiers) {
+                if let \(name)Storage = \(name)?().storage(data: data, type: type) {
                     storage.content["\(name)"] = [\(name)Storage]
-                    \(setter)(\(view), \(name)Storage.pointer?.cast())
+                    \(setter)(\(view), \(name)Storage.opaquePointer?.cast())
                 }
 
         """
@@ -223,14 +222,12 @@ struct Property: Decodable {
         }
         setter = (self.prefix ?? prefix) + "_" + setter
         let name = convertPropertyName(configuration: genConfig)
-        let view = (self.cast ?? config.cast) ? "storage.pointer?.cast()" : "storage.pointer"
+        let view = (self.cast ?? config.cast) ? "storage.opaquePointer?.cast()" : "storage.opaquePointer"
         return """
-                if let declarative = \(name)?(), let app {
-                    let menu = g_menu_new()
-                    \(setter)(\(view), menu?.cast())
-                    for item in declarative {
-                        item.addMenuItems(menu: menu, app: app, window: window)
-                    }
+                if let menu = \(name)?() {
+                    let childStorage = MenuCollection { menu }.getMenu(data: data)
+                    storage.content["\(name)"] = [childStorage]
+                    \(setter)(\(view), childStorage.opaquePointer?.cast())
                 }
 
         """
@@ -252,7 +249,7 @@ struct Property: Decodable {
         guard var getter else {
             return ""
         }
-        let widget = (self.cast ?? config.cast) ? "storage.pointer?.cast()" : "storage.pointer"
+        let widget = (self.cast ?? config.cast) ? "storage.opaquePointer?.cast()" : "storage.opaquePointer"
         getter = "\((self.prefix ?? prefix) + "_" + getter)(\(widget))"
         let name = convertPropertyName(configuration: genConfig)
         let finalGetter = genConfig.getterTypeConversions[type?.name ?? ""]?(getter) ?? getter

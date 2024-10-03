@@ -2,7 +2,7 @@
 //  Label.swift
 //  Adwaita
 //
-//  Created by auto-generation on 21.07.24.
+//  Created by auto-generation on 15.08.24.
 //
 
 import CAdw
@@ -184,12 +184,12 @@ import LevenshteinTransformations
 /// It is possible to implement custom handling for links and their tooltips
 /// with the [signal@Gtk.Label::activate-link] signal and the
 /// [method@Gtk.Label.get_current_uri] function.
-public struct Label: Widget {
+public struct Label: AdwaitaWidget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage, [(View) -> View], Bool) -> Void] = []
+    var updateFunctions: [(ViewStorage, WidgetData, Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage, [(View) -> View]) -> Void] = []
+    var appearFunctions: [(ViewStorage, WidgetData) -> Void] = []
 
     /// The accessible role of the given `GtkAccessible` implementation.
     /// 
@@ -225,7 +225,7 @@ public struct Label: Widget {
     /// The mnemonic accelerator key for the label.
     var mnemonicKeyval: UInt?
     /// The widget to be activated when the labels mnemonic key is pressed.
-    var mnemonicWidget:  (() -> Body)?
+    var mnemonicWidget: (() -> Body)?
     /// Whether the label text can be selected with the mouse.
     var selectable: Bool?
     /// Whether the label is in single line mode.
@@ -268,39 +268,38 @@ public struct Label: Widget {
     /// 
     /// The default binding for this signal is <kbd>Ctrl</kbd>+<kbd>c</kbd>.
     var copyClipboard: (() -> Void)?
-    /// The application.
-    var app: GTUIApp?
-    /// The window.
-    var window: GTUIApplicationWindow?
 
     /// Initialize `Label`.
     public init(label: String) {
         self.label = label
     }
 
-    /// Get the widget's view storage.
-    /// - Parameter modifiers: The view modifiers.
+    /// The view storage.
+    /// - Parameters:
+    ///     - modifiers: Modify views before being updated.
+    ///     - type: The view render data type.
     /// - Returns: The view storage.
-    public func container(modifiers: [(View) -> View]) -> ViewStorage {
+    public func container<Data>(data: WidgetData, type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(gtk_label_new(label)?.opaque())
         for function in appearFunctions {
-            function(storage, modifiers)
+            function(storage, data)
         }
-        update(storage, modifiers: modifiers, updateProperties: true)
-        if let mnemonicWidgetStorage = mnemonicWidget?().widget(modifiers: modifiers).storage(modifiers: modifiers) {
+        update(storage, data: data, updateProperties: true, type: type)
+        if let mnemonicWidgetStorage = mnemonicWidget?().storage(data: data, type: type) {
             storage.content["mnemonicWidget"] = [mnemonicWidgetStorage]
-            gtk_label_set_mnemonic_widget(storage.pointer, mnemonicWidgetStorage.pointer?.cast())
+            gtk_label_set_mnemonic_widget(storage.opaquePointer, mnemonicWidgetStorage.opaquePointer?.cast())
         }
 
         return storage
     }
 
-    /// Update the widget's view storage.
+    /// Update the stored content.
     /// - Parameters:
-    ///     - storage: The view storage.
-    ///     - modifiers: The view modifiers.
+    ///     - storage: The storage to update.
+    ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    ///     - type: The view render data type.
+    public func update<Data>(_ storage: ViewStorage, data: WidgetData, updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         if let copyClipboard {
             storage.connectSignal(name: "copy-clipboard", argCount: 0) {
                 copyClipboard()
@@ -308,47 +307,50 @@ public struct Label: Widget {
         }
         storage.modify { widget in
 
-            if updateProperties {
+            if updateProperties, (storage.previousState as? Self)?.label != label {
                 gtk_label_set_label(widget, label)
             }
-            if let lines, updateProperties {
+            if let lines, updateProperties, (storage.previousState as? Self)?.lines != lines {
                 gtk_label_set_lines(widget, lines.cInt)
             }
-            if let maxWidthChars, updateProperties {
+            if let maxWidthChars, updateProperties, (storage.previousState as? Self)?.maxWidthChars != maxWidthChars {
                 gtk_label_set_max_width_chars(widget, maxWidthChars.cInt)
             }
             if let widget = storage.content["mnemonicWidget"]?.first {
-                mnemonicWidget?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
+                mnemonicWidget?().updateStorage(widget, data: data, updateProperties: updateProperties, type: type)
             }
-            if let selectable, updateProperties {
+            if let selectable, updateProperties, (storage.previousState as? Self)?.selectable != selectable {
                 gtk_label_set_selectable(widget, selectable.cBool)
             }
-            if let singleLineMode, updateProperties {
+            if let singleLineMode, updateProperties, (storage.previousState as? Self)?.singleLineMode != singleLineMode {
                 gtk_label_set_single_line_mode(widget, singleLineMode.cBool)
             }
-            if let useMarkup, updateProperties {
+            if let useMarkup, updateProperties, (storage.previousState as? Self)?.useMarkup != useMarkup {
                 gtk_label_set_use_markup(widget, useMarkup.cBool)
             }
-            if let useUnderline, updateProperties {
+            if let useUnderline, updateProperties, (storage.previousState as? Self)?.useUnderline != useUnderline {
                 gtk_label_set_use_underline(widget, useUnderline.cBool)
             }
-            if let widthChars, updateProperties {
+            if let widthChars, updateProperties, (storage.previousState as? Self)?.widthChars != widthChars {
                 gtk_label_set_width_chars(widget, widthChars.cInt)
             }
-            if let wrap, updateProperties {
+            if let wrap, updateProperties, (storage.previousState as? Self)?.wrap != wrap {
                 gtk_label_set_wrap(widget, wrap.cBool)
             }
-            if let xalign, updateProperties {
+            if let xalign, updateProperties, (storage.previousState as? Self)?.xalign != xalign {
                 gtk_label_set_xalign(widget, xalign)
             }
-            if let yalign, updateProperties {
+            if let yalign, updateProperties, (storage.previousState as? Self)?.yalign != yalign {
                 gtk_label_set_yalign(widget, yalign)
             }
 
 
         }
         for function in updateFunctions {
-            function(storage, modifiers, updateProperties)
+            function(storage, data, updateProperties)
+        }
+        if updateProperties {
+            storage.previousState = self
         }
     }
 

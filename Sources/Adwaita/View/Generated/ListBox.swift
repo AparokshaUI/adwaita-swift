@@ -2,7 +2,7 @@
 //  ListBox.swift
 //  Adwaita
 //
-//  Created by auto-generation on 21.07.24.
+//  Created by auto-generation on 15.08.24.
 //
 
 import CAdw
@@ -61,12 +61,12 @@ import LevenshteinTransformations
 /// 
 /// `GtkListBox` uses the %GTK_ACCESSIBLE_ROLE_LIST role and `GtkListBoxRow` uses
 /// the %GTK_ACCESSIBLE_ROLE_LIST_ITEM role.
-public struct ListBox<Element>: Widget where Element: Identifiable {
+public struct ListBox<Element>: AdwaitaWidget where Element: Identifiable {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage, [(View) -> View], Bool) -> Void] = []
+    var updateFunctions: [(ViewStorage, WidgetData, Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage, [(View) -> View]) -> Void] = []
+    var appearFunctions: [(ViewStorage, WidgetData) -> Void] = []
 
     /// Whether to accept unpaired release events.
     var acceptUnpairedRelease: Bool?
@@ -115,10 +115,6 @@ public struct ListBox<Element>: Widget where Element: Identifiable {
     var elements: [Element]
     /// The dynamic widget content.
     var content: (Element) -> Body
-    /// The application.
-    var app: GTUIApp?
-    /// The window.
-    var window: GTUIApplicationWindow?
 
     /// Initialize `ListBox`.
     public init(_ elements: [Element], @ViewBuilder content: @escaping (Element) -> Body) {
@@ -126,25 +122,28 @@ public struct ListBox<Element>: Widget where Element: Identifiable {
         self.content = content
     }
 
-    /// Get the widget's view storage.
-    /// - Parameter modifiers: The view modifiers.
+    /// The view storage.
+    /// - Parameters:
+    ///     - modifiers: Modify views before being updated.
+    ///     - type: The view render data type.
     /// - Returns: The view storage.
-    public func container(modifiers: [(View) -> View]) -> ViewStorage {
+    public func container<Data>(data: WidgetData, type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(gtk_list_box_new()?.opaque())
         for function in appearFunctions {
-            function(storage, modifiers)
+            function(storage, data)
         }
-        update(storage, modifiers: modifiers, updateProperties: true)
+        update(storage, data: data, updateProperties: true, type: type)
 
         return storage
     }
 
-    /// Update the widget's view storage.
+    /// Update the stored content.
     /// - Parameters:
-    ///     - storage: The view storage.
-    ///     - modifiers: The view modifiers.
+    ///     - storage: The storage to update.
+    ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    ///     - type: The view render data type.
+    public func update<Data>(_ storage: ViewStorage, data: WidgetData, updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         if let activateCursorRow {
             storage.connectSignal(name: "activate-cursor-row", argCount: 0) {
                 activateCursorRow()
@@ -187,10 +186,10 @@ public struct ListBox<Element>: Widget where Element: Identifiable {
         }
         storage.modify { widget in
 
-            if let activateOnSingleClick, updateProperties {
+            if let activateOnSingleClick, updateProperties, (storage.previousState as? Self)?.activateOnSingleClick != activateOnSingleClick {
                 gtk_list_box_set_activate_on_single_click(widget, activateOnSingleClick.cBool)
             }
-            if let showSeparators, updateProperties {
+            if let showSeparators, updateProperties, (storage.previousState as? Self)?.showSeparators != showSeparators {
                 gtk_list_box_set_show_separators(widget, showSeparators.cBool)
             }
 
@@ -199,28 +198,31 @@ public struct ListBox<Element>: Widget where Element: Identifiable {
             old.identifiableTransform(
                 to: elements,
                 functions: .init { index, element in
-                    let child = content(element).widget(modifiers: modifiers).container(modifiers: modifiers)
+                    let child = content(element).storage(data: data, type: type)
                     gtk_list_box_remove(widget, gtk_list_box_get_row_at_index(widget, index.cInt)?.cast())
-                    gtk_list_box_insert(widget, child.pointer?.cast(), index.cInt)
+                    gtk_list_box_insert(widget, child.opaquePointer?.cast(), index.cInt)
                     contentStorage.remove(at: index)
                     contentStorage.insert(child, at: index)
                 } delete: { index in
                     gtk_list_box_remove(widget, gtk_list_box_get_row_at_index(widget, index.cInt)?.cast())
                     contentStorage.remove(at: index)
                 } insert: { index, element in
-                    let child = content(element).widget(modifiers: modifiers).container(modifiers: modifiers)
-                    gtk_list_box_insert(widget, child.pointer?.cast(), index.cInt)
+                    let child = content(element).storage(data: data, type: type)
+                    gtk_list_box_insert(widget, child.opaquePointer?.cast(), index.cInt)
                     contentStorage.insert(child, at: index)
                 }
             )
             storage.fields["element"] = elements
             storage.content[.mainContent] = contentStorage
             for (index, element) in elements.enumerated() {
-                content(element).widget(modifiers: modifiers).update(contentStorage[index], modifiers: modifiers, updateProperties: updateProperties)
+                content(element).updateStorage(contentStorage[index], data: data, updateProperties: updateProperties, type: type)
             }
         }
         for function in updateFunctions {
-            function(storage, modifiers, updateProperties)
+            function(storage, data, updateProperties)
+        }
+        if updateProperties {
+            storage.previousState = self
         }
     }
 

@@ -2,7 +2,7 @@
 //  SearchEntry.swift
 //  Adwaita
 //
-//  Created by auto-generation on 21.07.24.
+//  Created by auto-generation on 15.08.24.
 //
 
 import CAdw
@@ -52,12 +52,12 @@ import LevenshteinTransformations
 /// ## Accessibility
 /// 
 /// `GtkSearchEntry` uses the %GTK_ACCESSIBLE_ROLE_SEARCH_BOX role.
-public struct SearchEntry: Widget {
+public struct SearchEntry: AdwaitaWidget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage, [(View) -> View], Bool) -> Void] = []
+    var updateFunctions: [(ViewStorage, WidgetData, Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage, [(View) -> View]) -> Void] = []
+    var appearFunctions: [(ViewStorage, WidgetData) -> Void] = []
 
     /// The accessible role of the given `GtkAccessible` implementation.
     /// 
@@ -154,34 +154,33 @@ public struct SearchEntry: Widget {
     /// 
     /// The default bindings for this signal is Escape.
     var stopSearch: (() -> Void)?
-    /// The application.
-    var app: GTUIApp?
-    /// The window.
-    var window: GTUIApplicationWindow?
 
     /// Initialize `SearchEntry`.
     public init() {
     }
 
-    /// Get the widget's view storage.
-    /// - Parameter modifiers: The view modifiers.
+    /// The view storage.
+    /// - Parameters:
+    ///     - modifiers: Modify views before being updated.
+    ///     - type: The view render data type.
     /// - Returns: The view storage.
-    public func container(modifiers: [(View) -> View]) -> ViewStorage {
+    public func container<Data>(data: WidgetData, type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(gtk_search_entry_new()?.opaque())
         for function in appearFunctions {
-            function(storage, modifiers)
+            function(storage, data)
         }
-        update(storage, modifiers: modifiers, updateProperties: true)
+        update(storage, data: data, updateProperties: true, type: type)
 
         return storage
     }
 
-    /// Update the widget's view storage.
+    /// Update the stored content.
     /// - Parameters:
-    ///     - storage: The view storage.
-    ///     - modifiers: The view modifiers.
+    ///     - storage: The storage to update.
+    ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    ///     - type: The view render data type.
+    public func update<Data>(_ storage: ViewStorage, data: WidgetData, updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         if let activate {
             storage.connectSignal(name: "activate", argCount: 0) {
                 activate()
@@ -230,37 +229,40 @@ public struct SearchEntry: Widget {
         storage.modify { widget in
 
         storage.notify(name: "text") {
-            let newValue = String(cString: gtk_editable_get_text(storage.pointer))
+            let newValue = String(cString: gtk_editable_get_text(storage.opaquePointer))
 if let text, newValue != text.wrappedValue {
     text.wrappedValue = newValue
 }
         }
-            if let editable, updateProperties {
+            if let editable, updateProperties, (storage.previousState as? Self)?.editable != editable {
                 gtk_editable_set_editable(widget, editable.cBool)
             }
-            if let enableUndo, updateProperties {
+            if let enableUndo, updateProperties, (storage.previousState as? Self)?.enableUndo != enableUndo {
                 gtk_editable_set_enable_undo(widget, enableUndo.cBool)
             }
-            if let maxWidthChars, updateProperties {
+            if let maxWidthChars, updateProperties, (storage.previousState as? Self)?.maxWidthChars != maxWidthChars {
                 gtk_editable_set_max_width_chars(widget, maxWidthChars.cInt)
             }
-            if let placeholderText, updateProperties {
+            if let placeholderText, updateProperties, (storage.previousState as? Self)?.placeholderText != placeholderText {
                 gtk_search_entry_set_placeholder_text(widget, placeholderText)
             }
-            if let searchDelay, updateProperties {
+            if let searchDelay, updateProperties, (storage.previousState as? Self)?.searchDelay != searchDelay {
                 gtk_search_entry_set_search_delay(widget, searchDelay.cInt)
             }
-            if let text, updateProperties, (String(cString: gtk_editable_get_text(storage.pointer))) != text.wrappedValue {
-                gtk_editable_set_text(storage.pointer, text.wrappedValue)
+            if let text, updateProperties, (String(cString: gtk_editable_get_text(storage.opaquePointer))) != text.wrappedValue {
+                gtk_editable_set_text(storage.opaquePointer, text.wrappedValue)
             }
-            if let widthChars, updateProperties {
+            if let widthChars, updateProperties, (storage.previousState as? Self)?.widthChars != widthChars {
                 gtk_editable_set_width_chars(widget, widthChars.cInt)
             }
 
 
         }
         for function in updateFunctions {
-            function(storage, modifiers, updateProperties)
+            function(storage, data, updateProperties)
+        }
+        if updateProperties {
+            storage.previousState = self
         }
     }
 

@@ -10,7 +10,7 @@ import CAdw
 /// A picker used for indicating multiple views.
 ///
 /// It normally controls a `ViewStack` (e.g. via `switch` statements).
-public struct ViewSwitcher<Element>: Widget where Element: ViewSwitcherOption {
+public struct ViewSwitcher<Element>: AdwaitaWidget where Element: ViewSwitcherOption {
 
     /// The selected element.
     @Binding var selection: Element
@@ -23,51 +23,68 @@ public struct ViewSwitcher<Element>: Widget where Element: ViewSwitcherOption {
         self._selection = selection
     }
 
-    /// Get a view switcher's view storage.
-    /// - Parameter modifiers: Modify views before being updated.
+    /// The view storage.
+    /// - Parameters:
+    ///     - modifiers: Modify views before being updated.
+    ///     - type: The view render data type.
     /// - Returns: The view storage.
-    public func container(modifiers: [(View) -> View]) -> ViewStorage {
-        let switcher = ViewStorage(.init(adw_view_switcher_new()))
-        let stack = ViewStorage(.init(adw_view_stack_new()))
-        adw_view_switcher_set_stack(switcher.pointer, stack.pointer)
+    public func container<Data>(
+        data: WidgetData,
+        type: Data.Type
+    ) -> ViewStorage where Data: ViewRenderData {
+        let switcher = ViewStorage(adw_view_switcher_new()?.opaque())
+        let stack = ViewStorage(adw_view_stack_new()?.opaque())
+        adw_view_switcher_set_stack(switcher.opaquePointer, stack.opaquePointer)
         for option in Element.allCases {
             adw_view_stack_add_titled_with_icon(
-                stack.pointer,
+                stack.opaquePointer,
                 gtk_label_new(""),
                 option.title,
                 option.title,
                 option.icon.string
             )
         }
-        stack.notify(name: "visible-child") {
-            if let title = adw_view_stack_get_visible_child_name(stack.pointer),
-            let option = Element(title: .init(cString: title)) {
-                selection = option
-            }
-        }
         updateSwitcher(switcher: switcher)
         switcher.fields["stack"] = stack
         return switcher
     }
 
-    /// Update a view switcher's view storage.
+    /// Update the stored content.
     /// - Parameters:
-    ///     - storage: The view storage.
-    ///     - modifiers: Modify views before being updated.
-    ///     - updateProperties: Whether to update properties.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    ///     - storage: The storage to update.
+    ///     - modifiers: Modify views before being updated
+    ///     - updateProperties: Whether to update the view's properties.
+    ///     - type: The view render data type.
+    public func update<Data>(
+        _ storage: ViewStorage,
+        data: WidgetData,
+        updateProperties: Bool,
+        type: Data.Type
+    ) where Data: ViewRenderData {
         updateSwitcher(switcher: storage)
     }
 
     /// Update a view switcher's style and selection.
     /// - Parameter switcher: The view switcher.
     func updateSwitcher(switcher: ViewStorage) {
-        adw_view_switcher_set_policy(
-            switcher.pointer,
-            wide ? ADW_VIEW_SWITCHER_POLICY_WIDE : ADW_VIEW_SWITCHER_POLICY_NARROW
-        )
-        let stack = adw_view_switcher_get_stack(switcher.pointer)
-        adw_view_stack_set_visible_child_name(stack, selection.title)
+        let stack = switcher.fields["stack"] as? ViewStorage
+        stack?.notify(name: "visible-child") {
+            if let title = adw_view_stack_get_visible_child_name(stack?.opaquePointer),
+            let option = Element(title: .init(cString: title)) {
+                selection = option
+            }
+        }
+        if (switcher.previousState as? Self)?.wide != wide {
+            adw_view_switcher_set_policy(
+                switcher.opaquePointer,
+                wide ? ADW_VIEW_SWITCHER_POLICY_WIDE : ADW_VIEW_SWITCHER_POLICY_NARROW
+            )
+        }
+        if (switcher.previousState as? Self)?.selection.title != selection.title {
+            let stack = adw_view_switcher_get_stack(switcher.opaquePointer)
+            adw_view_stack_set_visible_child_name(stack, selection.title)
+        }
+        switcher.previousState = self
     }
 
     /// Set whether to use the wide design.

@@ -161,13 +161,6 @@ extension Class {
             """
         }
         content += staticWidgetProperties(namespace: namespace, configs: configs)
-        content += """
-
-            /// The application.
-            var app: GTUIApp?
-            /// The window.
-            var window: GTUIApplicationWindow?
-        """
         return content
     }
 
@@ -198,8 +191,9 @@ extension Class {
                                 if let storage = \(widget.name)Storage[safe: index] {
                                     view.updateStorage(
                                         storage,
-                                        modifiers: modifiers,
-                                        updateProperties: updateProperties
+                                        data: data,
+                                        updateProperties: updateProperties,
+                                        type: type
                                     )
                                 }
                             }
@@ -215,8 +209,8 @@ extension Class {
     ///     - genConfig: The generation configuration.
     /// - Returns: The code.
     func generateDynamicWidgetUpdate(config: WidgetConfiguration, genConfig: GenerationConfiguration) -> String {
-        let child = "let child = content(element).widget(modifiers: modifiers).container(modifiers: modifiers)"
-        let pointer = "child.pointer?.cast()"
+        let child = "let child = content(element).storage(data: data, type: type)"
+        let pointer = "child.opaquePointer?.cast()"
         let widget = "widget" + (config.cast ? "?.cast()" : "")
         if let dynamicWidget = config.dynamicWidget {
             // swiftlint:disable line_length
@@ -243,7 +237,7 @@ extension Class {
                         storage.fields["element"] = elements
                         storage.content[.mainContent] = contentStorage
                         for (index, element) in elements.enumerated() {
-                            content(element).widget(modifiers: modifiers).update(contentStorage[index], modifiers: modifiers, updateProperties: updateProperties)
+                            content(element).updateStorage(contentStorage[index], data: data, updateProperties: updateProperties, type: type)
                         }
             """
             // swiftlint:enable line_length

@@ -2,7 +2,7 @@
 //  SplitButton.swift
 //  Adwaita
 //
-//  Created by auto-generation on 21.07.24.
+//  Created by auto-generation on 15.08.24.
 //
 
 import CAdw
@@ -40,12 +40,12 @@ import LevenshteinTransformations
 /// ## Accessibility
 /// 
 /// `AdwSplitButton` uses the `GTK_ACCESSIBLE_ROLE_GROUP` role.
-public struct SplitButton: Widget {
+public struct SplitButton: AdwaitaWidget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage, [(View) -> View], Bool) -> Void] = []
+    var updateFunctions: [(ViewStorage, WidgetData, Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage, [(View) -> View]) -> Void] = []
+    var appearFunctions: [(ViewStorage, WidgetData) -> Void] = []
 
     /// Whether the button can be smaller than the natural size of its contents.
     /// 
@@ -58,7 +58,7 @@ public struct SplitButton: Widget {
     /// 
     /// Setting the child widget will set [property@SplitButton:label] and
     /// [property@SplitButton:icon-name] to `NULL`.
-    var child:  (() -> Body)?
+    var child: (() -> Body)?
     /// The tooltip of the dropdown button.
     /// 
     /// The tooltip can be marked up with the Pango text markup language.
@@ -83,7 +83,7 @@ public struct SplitButton: Widget {
     /// 
     /// If [property@SplitButton:popover] is already set, it will be dissociated
     /// from the button, and the property is set to `NULL`.
-    var menuModel:  (() -> MenuContent)?
+    var menuModel: (() -> Body)?
     /// Whether an underline in the text indicates a mnemonic.
     /// 
     /// See [property@SplitButton:label].
@@ -95,45 +95,42 @@ public struct SplitButton: Widget {
     var activate: (() -> Void)?
     /// Emitted when the button has been activated (pressed and released).
     var clicked: (() -> Void)?
-    /// The application.
-    var app: GTUIApp?
-    /// The window.
-    var window: GTUIApplicationWindow?
 
     /// Initialize `SplitButton`.
     public init() {
     }
 
-    /// Get the widget's view storage.
-    /// - Parameter modifiers: The view modifiers.
+    /// The view storage.
+    /// - Parameters:
+    ///     - modifiers: Modify views before being updated.
+    ///     - type: The view render data type.
     /// - Returns: The view storage.
-    public func container(modifiers: [(View) -> View]) -> ViewStorage {
+    public func container<Data>(data: WidgetData, type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(adw_split_button_new()?.opaque())
         for function in appearFunctions {
-            function(storage, modifiers)
+            function(storage, data)
         }
-        update(storage, modifiers: modifiers, updateProperties: true)
-        if let childStorage = child?().widget(modifiers: modifiers).storage(modifiers: modifiers) {
+        update(storage, data: data, updateProperties: true, type: type)
+        if let childStorage = child?().storage(data: data, type: type) {
             storage.content["child"] = [childStorage]
-            adw_split_button_set_child(storage.pointer, childStorage.pointer?.cast())
+            adw_split_button_set_child(storage.opaquePointer, childStorage.opaquePointer?.cast())
         }
-        if let declarative = menuModel?(), let app {
-            let menu = g_menu_new()
-            adw_split_button_set_menu_model(storage.pointer, menu?.cast())
-            for item in declarative {
-                item.addMenuItems(menu: menu, app: app, window: window)
-            }
+        if let menu = menuModel?() {
+            let childStorage = MenuCollection { menu }.getMenu(data: data)
+            storage.content["menuModel"] = [childStorage]
+            adw_split_button_set_menu_model(storage.opaquePointer, childStorage.opaquePointer?.cast())
         }
 
         return storage
     }
 
-    /// Update the widget's view storage.
+    /// Update the stored content.
     /// - Parameters:
-    ///     - storage: The view storage.
-    ///     - modifiers: The view modifiers.
+    ///     - storage: The storage to update.
+    ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    ///     - type: The view render data type.
+    public func update<Data>(_ storage: ViewStorage, data: WidgetData, updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         if let activate {
             storage.connectSignal(name: "activate", argCount: 0) {
                 activate()
@@ -146,29 +143,36 @@ public struct SplitButton: Widget {
         }
         storage.modify { widget in
 
-            if let canShrink, updateProperties {
+            if let canShrink, updateProperties, (storage.previousState as? Self)?.canShrink != canShrink {
                 adw_split_button_set_can_shrink(widget, canShrink.cBool)
             }
             if let widget = storage.content["child"]?.first {
-                child?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
+                child?().updateStorage(widget, data: data, updateProperties: updateProperties, type: type)
             }
-            if let dropdownTooltip, updateProperties {
+            if let dropdownTooltip, updateProperties, (storage.previousState as? Self)?.dropdownTooltip != dropdownTooltip {
                 adw_split_button_set_dropdown_tooltip(widget, dropdownTooltip)
             }
-            if let iconName, updateProperties {
+            if let iconName, updateProperties, (storage.previousState as? Self)?.iconName != iconName {
                 adw_split_button_set_icon_name(widget, iconName)
             }
-            if let label, storage.content["child"] == nil, updateProperties {
+            if let label, storage.content["child"] == nil, updateProperties, (storage.previousState as? Self)?.label != label {
                 adw_split_button_set_label(widget, label)
             }
-            if let useUnderline, updateProperties {
+            if let menu = storage.content["menuModel"]?.first {
+                MenuCollection { menuModel?() ?? [] }
+                    .updateStorage(menu, data: data.noModifiers, updateProperties: updateProperties, type: MenuContext.self)
+            }
+            if let useUnderline, updateProperties, (storage.previousState as? Self)?.useUnderline != useUnderline {
                 adw_split_button_set_use_underline(widget, useUnderline.cBool)
             }
 
 
         }
         for function in updateFunctions {
-            function(storage, modifiers, updateProperties)
+            function(storage, data, updateProperties)
+        }
+        if updateProperties {
+            storage.previousState = self
         }
     }
 
@@ -238,10 +242,10 @@ public struct SplitButton: Widget {
     /// 
     /// If [property@SplitButton:popover] is already set, it will be dissociated
     /// from the button, and the property is set to `NULL`.
-    public func menuModel(app: GTUIApp, window: GTUIApplicationWindow? = nil, @MenuBuilder _ menuModel: @escaping (() -> MenuContent)) -> Self {
+    public func menuModel(@ViewBuilder _ menuModel: @escaping (() -> Body)) -> Self {
         var newSelf = self
         newSelf.menuModel = menuModel
-        newSelf.app = app; newSelf.window = window
+        
         return newSelf
     }
 

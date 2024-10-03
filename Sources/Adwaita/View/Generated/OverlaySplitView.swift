@@ -2,7 +2,7 @@
 //  OverlaySplitView.swift
 //  Adwaita
 //
-//  Created by auto-generation on 21.07.24.
+//  Created by auto-generation on 15.08.24.
 //
 
 import CAdw
@@ -113,12 +113,12 @@ import LevenshteinTransformations
 /// ## Accessibility
 /// 
 /// `AdwOverlaySplitView` uses the `GTK_ACCESSIBLE_ROLE_GROUP` role.
-public struct OverlaySplitView: Widget {
+public struct OverlaySplitView: AdwaitaWidget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage, [(View) -> View], Bool) -> Void] = []
+    var updateFunctions: [(ViewStorage, WidgetData, Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage, [(View) -> View]) -> Void] = []
+    var appearFunctions: [(ViewStorage, WidgetData) -> Void] = []
 
     /// Whether the split view is collapsed.
     /// 
@@ -126,7 +126,7 @@ public struct OverlaySplitView: Widget {
     /// content widget, otherwise they are displayed side by side.
     var collapsed: Bool?
     /// The content widget.
-    var content:  (() -> Body)?
+    var content: (() -> Body)?
     /// Whether the sidebar can be closed with a swipe gesture.
     /// 
     /// Only touchscreen swipes are supported.
@@ -160,7 +160,7 @@ public struct OverlaySplitView: Widget {
     /// Whether the sidebar widget is shown.
     var showSidebar: Binding<Bool>?
     /// The sidebar widget.
-    var sidebar:  (() -> Body)?
+    var sidebar: (() -> Body)?
     /// The preferred sidebar width as a fraction of the total width.
     /// 
     /// The preferred width is additionally limited by
@@ -170,85 +170,87 @@ public struct OverlaySplitView: Widget {
     /// The sidebar widget can be allocated with larger width if its own minimum
     /// width exceeds the preferred width.
     var sidebarWidthFraction: Double?
-    /// The application.
-    var app: GTUIApp?
-    /// The window.
-    var window: GTUIApplicationWindow?
 
     /// Initialize `OverlaySplitView`.
     public init() {
     }
 
-    /// Get the widget's view storage.
-    /// - Parameter modifiers: The view modifiers.
+    /// The view storage.
+    /// - Parameters:
+    ///     - modifiers: Modify views before being updated.
+    ///     - type: The view render data type.
     /// - Returns: The view storage.
-    public func container(modifiers: [(View) -> View]) -> ViewStorage {
+    public func container<Data>(data: WidgetData, type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(adw_overlay_split_view_new()?.opaque())
         for function in appearFunctions {
-            function(storage, modifiers)
+            function(storage, data)
         }
-        update(storage, modifiers: modifiers, updateProperties: true)
-        if let contentStorage = content?().widget(modifiers: modifiers).storage(modifiers: modifiers) {
+        update(storage, data: data, updateProperties: true, type: type)
+        if let contentStorage = content?().storage(data: data, type: type) {
             storage.content["content"] = [contentStorage]
-            adw_overlay_split_view_set_content(storage.pointer, contentStorage.pointer?.cast())
+            adw_overlay_split_view_set_content(storage.opaquePointer, contentStorage.opaquePointer?.cast())
         }
-        if let sidebarStorage = sidebar?().widget(modifiers: modifiers).storage(modifiers: modifiers) {
+        if let sidebarStorage = sidebar?().storage(data: data, type: type) {
             storage.content["sidebar"] = [sidebarStorage]
-            adw_overlay_split_view_set_sidebar(storage.pointer, sidebarStorage.pointer?.cast())
+            adw_overlay_split_view_set_sidebar(storage.opaquePointer, sidebarStorage.opaquePointer?.cast())
         }
 
         return storage
     }
 
-    /// Update the widget's view storage.
+    /// Update the stored content.
     /// - Parameters:
-    ///     - storage: The view storage.
-    ///     - modifiers: The view modifiers.
+    ///     - storage: The storage to update.
+    ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    ///     - type: The view render data type.
+    public func update<Data>(_ storage: ViewStorage, data: WidgetData, updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         storage.modify { widget in
 
         storage.notify(name: "show-sidebar") {
-            let newValue = adw_overlay_split_view_get_show_sidebar(storage.pointer) != 0
+            let newValue = adw_overlay_split_view_get_show_sidebar(storage.opaquePointer) != 0
 if let showSidebar, newValue != showSidebar.wrappedValue {
     showSidebar.wrappedValue = newValue
 }
         }
-            if let collapsed, updateProperties {
+            if let collapsed, updateProperties, (storage.previousState as? Self)?.collapsed != collapsed {
                 adw_overlay_split_view_set_collapsed(widget, collapsed.cBool)
             }
             if let widget = storage.content["content"]?.first {
-                content?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
+                content?().updateStorage(widget, data: data, updateProperties: updateProperties, type: type)
             }
-            if let enableHideGesture, updateProperties {
+            if let enableHideGesture, updateProperties, (storage.previousState as? Self)?.enableHideGesture != enableHideGesture {
                 adw_overlay_split_view_set_enable_hide_gesture(widget, enableHideGesture.cBool)
             }
-            if let enableShowGesture, updateProperties {
+            if let enableShowGesture, updateProperties, (storage.previousState as? Self)?.enableShowGesture != enableShowGesture {
                 adw_overlay_split_view_set_enable_show_gesture(widget, enableShowGesture.cBool)
             }
-            if let maxSidebarWidth, updateProperties {
+            if let maxSidebarWidth, updateProperties, (storage.previousState as? Self)?.maxSidebarWidth != maxSidebarWidth {
                 adw_overlay_split_view_set_max_sidebar_width(widget, maxSidebarWidth)
             }
-            if let minSidebarWidth, updateProperties {
+            if let minSidebarWidth, updateProperties, (storage.previousState as? Self)?.minSidebarWidth != minSidebarWidth {
                 adw_overlay_split_view_set_min_sidebar_width(widget, minSidebarWidth)
             }
-            if let pinSidebar, updateProperties {
+            if let pinSidebar, updateProperties, (storage.previousState as? Self)?.pinSidebar != pinSidebar {
                 adw_overlay_split_view_set_pin_sidebar(widget, pinSidebar.cBool)
             }
-            if let showSidebar, updateProperties, (adw_overlay_split_view_get_show_sidebar(storage.pointer) != 0) != showSidebar.wrappedValue {
-                adw_overlay_split_view_set_show_sidebar(storage.pointer, showSidebar.wrappedValue.cBool)
+            if let showSidebar, updateProperties, (adw_overlay_split_view_get_show_sidebar(storage.opaquePointer) != 0) != showSidebar.wrappedValue {
+                adw_overlay_split_view_set_show_sidebar(storage.opaquePointer, showSidebar.wrappedValue.cBool)
             }
             if let widget = storage.content["sidebar"]?.first {
-                sidebar?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
+                sidebar?().updateStorage(widget, data: data, updateProperties: updateProperties, type: type)
             }
-            if let sidebarWidthFraction, updateProperties {
+            if let sidebarWidthFraction, updateProperties, (storage.previousState as? Self)?.sidebarWidthFraction != sidebarWidthFraction {
                 adw_overlay_split_view_set_sidebar_width_fraction(widget, sidebarWidthFraction)
             }
 
 
         }
         for function in updateFunctions {
-            function(storage, modifiers, updateProperties)
+            function(storage, data, updateProperties)
+        }
+        if updateProperties {
+            storage.previousState = self
         }
     }
 

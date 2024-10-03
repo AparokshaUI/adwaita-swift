@@ -6,6 +6,7 @@
 //
 
 import CAdw
+import Meta
 
 /// A list box widget.
 public typealias List = ListBox
@@ -29,32 +30,31 @@ extension List {
     ) {
         self.init(elements, content: content)
         let id: (ViewStorage, [Element]) -> Element.ID? = { storage, elements in
-            if let row = gtk_list_box_get_selected_row(storage.pointer) {
+            if let row = gtk_list_box_get_selected_row(storage.opaquePointer) {
                 return elements[safe: .init(gtk_list_box_row_get_index(row))]?.id
             }
             return nil
         }
         if let selection {
-            appearFunctions.append { storage, _ in
-                storage.fields[Self.selectionField] = selection
+            updateFunctions.append { storage, _, _ in
                 storage.connectSignal(name: "selected_rows_changed", id: Self.selectionField) {
-                    if let binding = storage.fields[Self.selectionField] as? Binding<Element.ID>,
-                    let elements = storage.fields[Self.elementsField] as? [Element],
-                    let id = id(storage, elements),
-                    binding.wrappedValue != id {
-                        binding.wrappedValue = id
+                    if let elements = storage.fields[Self.elementsField] as? [Element],
+                       let id = id(storage, elements),
+                       selection.wrappedValue != id {
+                        selection.wrappedValue = id
                     }
                 }
-            }
-            updateFunctions.append { storage, _, _ in
                 if selection.wrappedValue != id(storage, elements),
                 let index = elements.firstIndex(where: { $0.id == selection.wrappedValue })?.cInt {
-                    gtk_list_box_select_row(storage.pointer, gtk_list_box_get_row_at_index(storage.pointer, index))
+                    gtk_list_box_select_row(
+                        storage.opaquePointer,
+                        gtk_list_box_get_row_at_index(storage.opaquePointer, index)
+                    )
                 }
             }
         } else {
             appearFunctions.append { storage, _ in
-                gtk_list_box_set_selection_mode(storage.pointer, GTK_SELECTION_NONE)
+                gtk_list_box_set_selection_mode(storage.opaquePointer, GTK_SELECTION_NONE)
             }
         }
     }
@@ -62,14 +62,14 @@ extension List {
     /// Add the "navigation-sidebar" style class.
     /// - Parameter active: Whether the style is applied.
     /// - Returns: A view.
-    public func sidebarStyle(_ active: Bool = true) -> View {
+    public func sidebarStyle(_ active: Bool = true) -> AnyView {
         style("navigation-sidebar", active: active)
     }
 
     /// Apply the boxed list style class.
     /// - Parameter active: Whether the style is applied.
     /// - Returns: A view.
-    public func boxedList(_ active: Bool = true) -> View {
+    public func boxedList(_ active: Bool = true) -> AnyView {
         style("boxed-list", active: active)
     }
 

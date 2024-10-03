@@ -65,9 +65,9 @@ struct Class: ClassLike, Decodable {
         let widgetName = config.name ?? config.class
         let definition: String
         if config.dynamicWidget == nil {
-            definition = "\(widgetName): Widget"
+            definition = "\(widgetName): AdwaitaWidget"
         } else {
-            definition = "\(widgetName)<Element>: Widget where Element: Identifiable"
+            definition = "\(widgetName)<Element>: AdwaitaWidget where Element: Identifiable"
         }
         return """
         //
@@ -84,40 +84,46 @@ struct Class: ClassLike, Decodable {
         public struct \(definition) {
 
             /// Additional update functions for type extensions.
-            var updateFunctions: [(ViewStorage, [(View) -> View], Bool) -> Void] = []
+            var updateFunctions: [(ViewStorage, WidgetData, Bool) -> Void] = []
             /// Additional appear functions for type extensions.
-            var appearFunctions: [(ViewStorage, [(View) -> View]) -> Void] = []
+            var appearFunctions: [(ViewStorage, WidgetData) -> Void] = []
         \(generateProperties(config: config, genConfig: genConfig, namespace: namespace, configs: configs))
 
             /// Initialize `\(widgetName)`.
             \(generateAdwaitaInitializer(config: config, genConfig: genConfig, namespace: namespace, configs: configs))
 
-            /// Get the widget's view storage.
-            /// - Parameter modifiers: The view modifiers.
+            /// The view storage.
+            /// - Parameters:
+            ///     - modifiers: Modify views before being updated.
+            ///     - type: The view render data type.
             /// - Returns: The view storage.
-            public func container(modifiers: [(View) -> View]) -> ViewStorage {
+            public func container<Data>(data: WidgetData, type: Data.Type) -> ViewStorage where Data: ViewRenderData {
                 let storage = ViewStorage(\(generateInitializer(name: widgetName, config: config, namespace: namespace, configs: configs))?.opaque())
                 for function in appearFunctions {
-                    function(storage, modifiers)
+                    function(storage, data)
                 }
-                update(storage, modifiers: modifiers, updateProperties: true)
+                update(storage, data: data, updateProperties: true, type: type)
         \(generateWidgetAssignments(config: config, genConfig: genConfig, namespace: namespace, configs: configs))
                 return storage
             }
 
-            /// Update the widget's view storage.
+            /// Update the stored content.
             /// - Parameters:
-            ///     - storage: The view storage.
-            ///     - modifiers: The view modifiers.
+            ///     - storage: The storage to update.
+            ///     - modifiers: Modify views before being updated
             ///     - updateProperties: Whether to update the view's properties.
-            public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {\(generateSignalModifications(config: config, genConfig: genConfig, namespace: namespace))
+            ///     - type: The view render data type.
+            public func update<Data>(_ storage: ViewStorage, data: WidgetData, updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {\(generateSignalModifications(config: config, genConfig: genConfig, namespace: namespace))
                 storage.modify { widget in
         \(generateBindingAssignments(config: config, genConfig: genConfig, namespace: namespace, configs: configs))
         \(generateModifications(config: config, genConfig: genConfig, namespace: namespace, configs: configs))
         \(generateDynamicWidgetUpdate(config: config, genConfig: genConfig))
                 }
                 for function in updateFunctions {
-                    function(storage, modifiers, updateProperties)
+                    function(storage, data, updateProperties)
+                }
+                if updateProperties {
+                    storage.previousState = self
                 }
             }
         \(generateModifiers(config: config, genConfig: genConfig, namespace: namespace, configs: configs))

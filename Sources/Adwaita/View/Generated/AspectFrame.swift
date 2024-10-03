@@ -2,7 +2,7 @@
 //  AspectFrame.swift
 //  Adwaita
 //
-//  Created by auto-generation on 21.07.24.
+//  Created by auto-generation on 15.08.24.
 //
 
 import CAdw
@@ -22,19 +22,19 @@ import LevenshteinTransformations
 /// Until GTK 4.10, `GtkAspectFrame` used the `GTK_ACCESSIBLE_ROLE_GROUP` role.
 /// 
 /// Starting from GTK 4.12, `GtkAspectFrame` uses the `GTK_ACCESSIBLE_ROLE_GENERIC` role.
-public struct AspectFrame: Widget {
+public struct AspectFrame: AdwaitaWidget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage, [(View) -> View], Bool) -> Void] = []
+    var updateFunctions: [(ViewStorage, WidgetData, Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage, [(View) -> View]) -> Void] = []
+    var appearFunctions: [(ViewStorage, WidgetData) -> Void] = []
 
     /// The accessible role of the given `GtkAccessible` implementation.
     /// 
     /// The accessible role cannot be changed once set.
     var accessibleRole: String?
     /// The child widget.
-    var child:  (() -> Body)?
+    var child: (() -> Body)?
     /// Whether the `GtkAspectFrame` should use the aspect ratio of its child.
     var obeyChild: Bool?
     /// The aspect ratio to be used by the `GtkAspectFrame`.
@@ -46,61 +46,63 @@ public struct AspectFrame: Widget {
     var xalign: Float?
     /// The vertical alignment of the child.
     var yalign: Float?
-    /// The application.
-    var app: GTUIApp?
-    /// The window.
-    var window: GTUIApplicationWindow?
 
     /// Initialize `AspectFrame`.
     public init(ratio: Float) {
         self.ratio = ratio
     }
 
-    /// Get the widget's view storage.
-    /// - Parameter modifiers: The view modifiers.
+    /// The view storage.
+    /// - Parameters:
+    ///     - modifiers: Modify views before being updated.
+    ///     - type: The view render data type.
     /// - Returns: The view storage.
-    public func container(modifiers: [(View) -> View]) -> ViewStorage {
+    public func container<Data>(data: WidgetData, type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(gtk_aspect_frame_new(0.5, 0.5, ratio, 0)?.opaque())
         for function in appearFunctions {
-            function(storage, modifiers)
+            function(storage, data)
         }
-        update(storage, modifiers: modifiers, updateProperties: true)
-        if let childStorage = child?().widget(modifiers: modifiers).storage(modifiers: modifiers) {
+        update(storage, data: data, updateProperties: true, type: type)
+        if let childStorage = child?().storage(data: data, type: type) {
             storage.content["child"] = [childStorage]
-            gtk_aspect_frame_set_child(storage.pointer, childStorage.pointer?.cast())
+            gtk_aspect_frame_set_child(storage.opaquePointer, childStorage.opaquePointer?.cast())
         }
 
         return storage
     }
 
-    /// Update the widget's view storage.
+    /// Update the stored content.
     /// - Parameters:
-    ///     - storage: The view storage.
-    ///     - modifiers: The view modifiers.
+    ///     - storage: The storage to update.
+    ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    ///     - type: The view render data type.
+    public func update<Data>(_ storage: ViewStorage, data: WidgetData, updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         storage.modify { widget in
 
             if let widget = storage.content["child"]?.first {
-                child?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
+                child?().updateStorage(widget, data: data, updateProperties: updateProperties, type: type)
             }
-            if let obeyChild, updateProperties {
+            if let obeyChild, updateProperties, (storage.previousState as? Self)?.obeyChild != obeyChild {
                 gtk_aspect_frame_set_obey_child(widget, obeyChild.cBool)
             }
-            if updateProperties {
+            if updateProperties, (storage.previousState as? Self)?.ratio != ratio {
                 gtk_aspect_frame_set_ratio(widget, ratio)
             }
-            if let xalign, updateProperties {
+            if let xalign, updateProperties, (storage.previousState as? Self)?.xalign != xalign {
                 gtk_aspect_frame_set_xalign(widget, xalign)
             }
-            if let yalign, updateProperties {
+            if let yalign, updateProperties, (storage.previousState as? Self)?.yalign != yalign {
                 gtk_aspect_frame_set_yalign(widget, yalign)
             }
 
 
         }
         for function in updateFunctions {
-            function(storage, modifiers, updateProperties)
+            function(storage, data, updateProperties)
+        }
+        if updateProperties {
+            storage.previousState = self
         }
     }
 

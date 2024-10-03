@@ -23,25 +23,31 @@ extension Fixed {
         @ViewBuilder view: @escaping () -> Body
     ) -> Self {
         var newSelf = self
-        newSelf.appearFunctions.append { storage, modifiers in
-            let view = view().storage(modifiers: modifiers)
+        newSelf.appearFunctions.append { storage, data in
+            let view = view().storage(data: data, type: AdwaitaMainView.self)
             gtk_fixed_put(
-                storage.pointer?.cast(),
-                view.pointer?.cast(),
+                storage.opaquePointer?.cast(),
+                view.opaquePointer?.cast(),
                 xCoordinate,
                 yCoordinate
             )
             storage.content[id] = [view]
         }
-        newSelf.updateFunctions.append { storage, modifiers, updateProperties in
+        newSelf.updateFunctions.append { storage, data, updateProperties in
             guard let content = storage.content[id]?.first else {
                 return
             }
-            view().updateStorage(content, modifiers: modifiers, updateProperties: updateProperties)
+            view()
+                .updateStorage(
+                    content,
+                    data: data,
+                    updateProperties: updateProperties,
+                    type: AdwaitaMainView.self
+                )
             if updateProperties {
                 gtk_fixed_move(
-                    storage.pointer?.cast(),
-                    content.pointer?.cast(),
+                    storage.opaquePointer?.cast(),
+                    content.opaquePointer?.cast(),
                     xCoordinate,
                     yCoordinate
                 )

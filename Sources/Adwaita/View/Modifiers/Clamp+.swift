@@ -15,22 +15,14 @@ extension Clamp {
         self.init()
         if vertical {
             appearFunctions.append { storage, _ in
-                gtk_orientable_set_orientation(storage.pointer, GTK_ORIENTATION_VERTICAL)
+                gtk_orientable_set_orientation(storage.opaquePointer, GTK_ORIENTATION_VERTICAL)
             }
         }
     }
 
 }
 
-extension View {
-
-    /// Set the view's maximum width.
-    /// - Parameter maxSize: The maximum width.
-    /// - Returns: A view.
-    @available(*, deprecated, message: "Use frame(maxWidth:) on views instead")
-    public func frame(maxSize: Int? = nil) -> Clamp {
-        frame(maxWidth: maxSize)
-    }
+extension AnyView {
 
     /// Set the view's maximum width.
     /// - Parameter maxWidth: The maximum width.

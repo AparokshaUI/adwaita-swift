@@ -2,7 +2,7 @@
 //  Button.swift
 //  Adwaita
 //
-//  Created by auto-generation on 21.07.24.
+//  Created by auto-generation on 15.08.24.
 //
 
 import CAdw
@@ -38,12 +38,12 @@ import LevenshteinTransformations
 /// # Accessibility
 /// 
 /// `GtkButton` uses the %GTK_ACCESSIBLE_ROLE_BUTTON role.
-public struct Button: Widget {
+public struct Button: AdwaitaWidget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage, [(View) -> View], Bool) -> Void] = []
+    var updateFunctions: [(ViewStorage, WidgetData, Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage, [(View) -> View]) -> Void] = []
+    var appearFunctions: [(ViewStorage, WidgetData) -> Void] = []
 
     /// The accessible role of the given `GtkAccessible` implementation.
     /// 
@@ -60,7 +60,7 @@ public struct Button: Widget {
     /// property has no effect.
     var canShrink: Bool?
     /// The child widget.
-    var child:  (() -> Body)?
+    var child: (() -> Body)?
     /// Whether the button has a frame.
     var hasFrame: Bool?
     /// The name of the icon used to automatically populate the button.
@@ -80,38 +80,37 @@ public struct Button: Widget {
     var activate: (() -> Void)?
     /// Emitted when the button has been activated (pressed and released).
     var clicked: (() -> Void)?
-    /// The application.
-    var app: GTUIApp?
-    /// The window.
-    var window: GTUIApplicationWindow?
 
     /// Initialize `Button`.
     public init() {
     }
 
-    /// Get the widget's view storage.
-    /// - Parameter modifiers: The view modifiers.
+    /// The view storage.
+    /// - Parameters:
+    ///     - modifiers: Modify views before being updated.
+    ///     - type: The view render data type.
     /// - Returns: The view storage.
-    public func container(modifiers: [(View) -> View]) -> ViewStorage {
+    public func container<Data>(data: WidgetData, type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(gtk_button_new()?.opaque())
         for function in appearFunctions {
-            function(storage, modifiers)
+            function(storage, data)
         }
-        update(storage, modifiers: modifiers, updateProperties: true)
-        if let childStorage = child?().widget(modifiers: modifiers).storage(modifiers: modifiers) {
+        update(storage, data: data, updateProperties: true, type: type)
+        if let childStorage = child?().storage(data: data, type: type) {
             storage.content["child"] = [childStorage]
-            gtk_button_set_child(storage.pointer?.cast(), childStorage.pointer?.cast())
+            gtk_button_set_child(storage.opaquePointer?.cast(), childStorage.opaquePointer?.cast())
         }
 
         return storage
     }
 
-    /// Update the widget's view storage.
+    /// Update the stored content.
     /// - Parameters:
-    ///     - storage: The view storage.
-    ///     - modifiers: The view modifiers.
+    ///     - storage: The storage to update.
+    ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    ///     - type: The view render data type.
+    public func update<Data>(_ storage: ViewStorage, data: WidgetData, updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         if let activate {
             storage.connectSignal(name: "activate", argCount: 0) {
                 activate()
@@ -124,32 +123,35 @@ public struct Button: Widget {
         }
         storage.modify { widget in
 
-            if let actionName, updateProperties {
+            if let actionName, updateProperties, (storage.previousState as? Self)?.actionName != actionName {
                 gtk_actionable_set_action_name(widget, actionName)
             }
-            if let canShrink, updateProperties {
+            if let canShrink, updateProperties, (storage.previousState as? Self)?.canShrink != canShrink {
                 gtk_button_set_can_shrink(widget?.cast(), canShrink.cBool)
             }
             if let widget = storage.content["child"]?.first {
-                child?().widget(modifiers: modifiers).update(widget, modifiers: modifiers, updateProperties: updateProperties)
+                child?().updateStorage(widget, data: data, updateProperties: updateProperties, type: type)
             }
-            if let hasFrame, updateProperties {
+            if let hasFrame, updateProperties, (storage.previousState as? Self)?.hasFrame != hasFrame {
                 gtk_button_set_has_frame(widget?.cast(), hasFrame.cBool)
             }
-            if let iconName, updateProperties {
+            if let iconName, updateProperties, (storage.previousState as? Self)?.iconName != iconName {
                 gtk_button_set_icon_name(widget?.cast(), iconName)
             }
-            if let label, storage.content["child"] == nil, updateProperties {
+            if let label, storage.content["child"] == nil, updateProperties, (storage.previousState as? Self)?.label != label {
                 gtk_button_set_label(widget?.cast(), label)
             }
-            if let useUnderline, updateProperties {
+            if let useUnderline, updateProperties, (storage.previousState as? Self)?.useUnderline != useUnderline {
                 gtk_button_set_use_underline(widget?.cast(), useUnderline.cBool)
             }
 
 
         }
         for function in updateFunctions {
-            function(storage, modifiers, updateProperties)
+            function(storage, data, updateProperties)
+        }
+        if updateProperties {
+            storage.previousState = self
         }
     }
 

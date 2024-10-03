@@ -8,33 +8,56 @@
 import CAdw
 
 /// A submenu widget.
-public struct Submenu: MenuItem {
+public struct Submenu: MenuWidget {
 
-    /// The submenu's label.
+    /// The label of the submenu.
     var label: String
     /// The content of the submenu.
-    var submenuContent: MenuContent
+    var content: Body
 
     /// Initialize a submenu.
     /// - Parameters:
-    ///   - label: The submenu's label.
-    ///   - content: The content of the submenu.
-    public init(_ label: String, @MenuBuilder content: () -> MenuContent) {
+    ///     - label: The submenu's label.
+    ///     - content: The content of the section.
+    public init(_ label: String, @ViewBuilder content: () -> Body) {
         self.label = label
-        self.submenuContent = content()
+        self.content = content()
     }
 
-    /// Add the submenu to a menu.
+    /// The view storage.
     /// - Parameters:
-    ///   - menu: The menu.
-    ///   - app: The application containing the menu.
-    ///   - window: The application window containing the menu.
-    public func addMenuItem(menu: OpaquePointer?, app: GTUIApp, window: GTUIApplicationWindow?) {
-        let submenu = g_menu_new()
-        g_menu_append_submenu(menu, label, submenu?.cast())
-        for element in submenuContent {
-            element.addMenuItems(menu: submenu, app: app, window: window)
+    ///     - modifiers: Modify the views before updating.
+    ///     - type: The type of the views.
+    /// - Returns: The view storage.
+    public func container<Data>(
+        data: WidgetData,
+        type: Data.Type
+    ) -> ViewStorage where Data: ViewRenderData {
+        let storage = ViewStorage(nil)
+        let childStorage = MenuCollection { content }.getMenu(data: data)
+        storage.content[.mainContent] = [childStorage]
+        let pointer = g_menu_item_new_submenu(label, childStorage.opaquePointer?.cast())
+        storage.pointer = pointer
+        return storage
+    }
+
+    /// Update the stored content.
+    /// - Parameters:
+    ///     - storage: The storage to update.
+    ///     - modifiers: Modify the views before updating.
+    ///     - updateProperties: Whether to update the properties.
+    ///     - type: The type of the views.
+    public func update<Data>(
+        _ storage: ViewStorage,
+        data: WidgetData,
+        updateProperties: Bool,
+        type: Data.Type
+    ) where Data: ViewRenderData {
+        guard let content = storage.content[.mainContent]?.first else {
+            return
         }
+        MenuCollection { self.content }
+            .updateStorage(content, data: data, updateProperties: updateProperties, type: MenuContext.self)
     }
 
 }

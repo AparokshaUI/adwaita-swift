@@ -9,7 +9,7 @@ import CAdw
 import LevenshteinTransformations
 
 /// The message dialog widget.
-public struct AlertDialog: Widget {
+public struct AlertDialog: AdwaitaWidget {
 
     /// The ID for the dialog's storage.
     static let dialogID = "alert-dialog"
@@ -31,7 +31,7 @@ public struct AlertDialog: Widget {
     /// The available responses.
     var responses: [Response] = []
     /// The child view.
-    var child: View
+    var child: AnyView
 
     /// Information about a response.
     struct Response: Identifiable {
@@ -71,33 +71,44 @@ public struct AlertDialog: Widget {
 
     }
 
-    /// Get the container of the child.
-    /// - Parameter modifiers: Modify views before being updated.
+    /// The view storage.
+    /// - Parameters:
+    ///     - modifiers: Modify views before being updated.
+    ///     - type: The view render data type.
     /// - Returns: The view storage.
-    public func container(modifiers: [(View) -> View]) -> ViewStorage {
-        let storage = child.storage(modifiers: modifiers)
-        storage.fields[Self.visibleID + id] = _visible
-        update(storage, modifiers: modifiers, updateProperties: true)
+    public func container<Data>(
+        data: WidgetData,
+        type: Data.Type
+    ) -> ViewStorage where Data: ViewRenderData {
+        let storage = child.storage(data: data, type: type)
+        update(storage, data: data, updateProperties: true, type: type)
         return storage
     }
 
-    /// Update the view storage of the child, dialog, and dialog content.
+    /// Update the stored content.
     /// - Parameters:
-    ///     - storage: The view storage.
-    ///     - modifiers: Modify views before being updated.
-    ///     - updateProperties: Whether to update properties.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
-        child.widget(modifiers: modifiers).update(storage, modifiers: modifiers, updateProperties: updateProperties)
+    ///     - storage: The storage to update.
+    ///     - modifiers: Modify views before being updated
+    ///     - updateProperties: Whether to update the view's properties.
+    ///     - type: The view render data type.
+    public func update<Data>(
+        _ storage: ViewStorage,
+        data: WidgetData,
+        updateProperties: Bool,
+        type: Data.Type
+    ) where Data: ViewRenderData {
+        storage.fields[Self.visibleID + id] = _visible
+        child.updateStorage(storage, data: data, updateProperties: updateProperties, type: type)
         guard updateProperties else {
             return
         }
         if visible {
             var present = false
             if storage.content[Self.dialogID + id]?.first == nil {
-                createDialog(storage: storage, modifiers: modifiers)
+                createDialog(storage: storage)
                 present = true
             }
-            let pointer = storage.content[Self.dialogID + id]?.first?.pointer
+            let pointer = storage.content[Self.dialogID + id]?.first?.opaquePointer
             adw_alert_dialog_set_heading(pointer?.cast(), heading)
             adw_alert_dialog_set_body(pointer?.cast(), body)
             let old = storage.fields[Self.responsesID + id] as? [Response] ?? []
@@ -123,12 +134,12 @@ public struct AlertDialog: Widget {
                 gtui_alertdialog_choose(
                     .init(Int(bitPattern: pointer)),
                     unsafeBitCast(storage, to: UInt64.self),
-                    .init(Int(bitPattern: storage.pointer))
+                    .init(Int(bitPattern: storage.opaquePointer))
                 )
             }
         } else {
             if storage.content[Self.dialogID + id]?.first != nil {
-                adw_dialog_close(storage.content[Self.dialogID + id]?.first?.pointer?.cast())
+                adw_dialog_close(storage.content[Self.dialogID + id]?.first?.opaquePointer?.cast())
             }
         }
     }
@@ -167,10 +178,8 @@ public struct AlertDialog: Widget {
     }
 
     /// Create a new instance of the dialog.
-    /// - Parameters:
-    ///     - storage: The wrapped view's storage.
-    ///     - modifiers: The view modifiers.
-    func createDialog(storage: ViewStorage, modifiers: [(View) -> View]) {
+    /// - Parameter storage: The wrapped view's storage.
+    func createDialog(storage: ViewStorage) {
         let pointer = adw_alert_dialog_new(nil, nil)
         let dialog = ViewStorage(pointer?.opaque())
         storage.content[Self.dialogID + id] = [dialog]
@@ -205,7 +214,7 @@ public struct AlertDialog: Widget {
 
 }
 
-extension View {
+extension AnyView {
 
     /// Add an alert dialog to the parent window.
     /// - Parameters:

@@ -2,7 +2,7 @@
 //  LevelBar.swift
 //  Adwaita
 //
-//  Created by auto-generation on 21.07.24.
+//  Created by auto-generation on 15.08.24.
 //
 
 import CAdw
@@ -105,12 +105,12 @@ import LevenshteinTransformations
 /// # Accessibility
 /// 
 /// `GtkLevelBar` uses the %GTK_ACCESSIBLE_ROLE_METER role.
-public struct LevelBar: Widget {
+public struct LevelBar: AdwaitaWidget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage, [(View) -> View], Bool) -> Void] = []
+    var updateFunctions: [(ViewStorage, WidgetData, Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage, [(View) -> View]) -> Void] = []
+    var appearFunctions: [(ViewStorage, WidgetData) -> Void] = []
 
     /// The accessible role of the given `GtkAccessible` implementation.
     /// 
@@ -136,34 +136,33 @@ public struct LevelBar: Widget {
     /// detailed signal "changed::x" in order to only receive callbacks when
     /// the value of offset "x" changes.
     var offsetChanged: (() -> Void)?
-    /// The application.
-    var app: GTUIApp?
-    /// The window.
-    var window: GTUIApplicationWindow?
 
     /// Initialize `LevelBar`.
     public init() {
     }
 
-    /// Get the widget's view storage.
-    /// - Parameter modifiers: The view modifiers.
+    /// The view storage.
+    /// - Parameters:
+    ///     - modifiers: Modify views before being updated.
+    ///     - type: The view render data type.
     /// - Returns: The view storage.
-    public func container(modifiers: [(View) -> View]) -> ViewStorage {
+    public func container<Data>(data: WidgetData, type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(gtk_level_bar_new()?.opaque())
         for function in appearFunctions {
-            function(storage, modifiers)
+            function(storage, data)
         }
-        update(storage, modifiers: modifiers, updateProperties: true)
+        update(storage, data: data, updateProperties: true, type: type)
 
         return storage
     }
 
-    /// Update the widget's view storage.
+    /// Update the stored content.
     /// - Parameters:
-    ///     - storage: The view storage.
-    ///     - modifiers: The view modifiers.
+    ///     - storage: The storage to update.
+    ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    ///     - type: The view render data type.
+    public func update<Data>(_ storage: ViewStorage, data: WidgetData, updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         if let offsetChanged {
             storage.connectSignal(name: "offset-changed", argCount: 1) {
                 offsetChanged()
@@ -171,23 +170,26 @@ public struct LevelBar: Widget {
         }
         storage.modify { widget in
 
-            if let inverted, updateProperties {
+            if let inverted, updateProperties, (storage.previousState as? Self)?.inverted != inverted {
                 gtk_level_bar_set_inverted(widget, inverted.cBool)
             }
-            if let maxValue, updateProperties {
+            if let maxValue, updateProperties, (storage.previousState as? Self)?.maxValue != maxValue {
                 gtk_level_bar_set_max_value(widget, maxValue)
             }
-            if let minValue, updateProperties {
+            if let minValue, updateProperties, (storage.previousState as? Self)?.minValue != minValue {
                 gtk_level_bar_set_min_value(widget, minValue)
             }
-            if let value, updateProperties {
+            if let value, updateProperties, (storage.previousState as? Self)?.value != value {
                 gtk_level_bar_set_value(widget, value)
             }
 
 
         }
         for function in updateFunctions {
-            function(storage, modifiers, updateProperties)
+            function(storage, data, updateProperties)
+        }
+        if updateProperties {
+            storage.previousState = self
         }
     }
 

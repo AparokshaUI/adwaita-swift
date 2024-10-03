@@ -2,7 +2,7 @@
 //  ButtonContent.swift
 //  Adwaita
 //
-//  Created by auto-generation on 21.07.24.
+//  Created by auto-generation on 15.08.24.
 //
 
 import CAdw
@@ -44,12 +44,12 @@ import LevenshteinTransformations
 /// ## Accessibility
 /// 
 /// `AdwButtonContent` uses the `GTK_ACCESSIBLE_ROLE_GROUP` role.
-public struct ButtonContent: Widget {
+public struct ButtonContent: AdwaitaWidget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage, [(View) -> View], Bool) -> Void] = []
+    var updateFunctions: [(ViewStorage, WidgetData, Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage, [(View) -> View]) -> Void] = []
+    var appearFunctions: [(ViewStorage, WidgetData) -> Void] = []
 
     /// Whether the button can be smaller than the natural size of its contents.
     /// 
@@ -69,53 +69,55 @@ public struct ButtonContent: Widget {
     /// 
     /// See [property@ButtonContent:label].
     var useUnderline: Bool?
-    /// The application.
-    var app: GTUIApp?
-    /// The window.
-    var window: GTUIApplicationWindow?
 
     /// Initialize `ButtonContent`.
     public init() {
     }
 
-    /// Get the widget's view storage.
-    /// - Parameter modifiers: The view modifiers.
+    /// The view storage.
+    /// - Parameters:
+    ///     - modifiers: Modify views before being updated.
+    ///     - type: The view render data type.
     /// - Returns: The view storage.
-    public func container(modifiers: [(View) -> View]) -> ViewStorage {
+    public func container<Data>(data: WidgetData, type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(adw_button_content_new()?.opaque())
         for function in appearFunctions {
-            function(storage, modifiers)
+            function(storage, data)
         }
-        update(storage, modifiers: modifiers, updateProperties: true)
+        update(storage, data: data, updateProperties: true, type: type)
 
         return storage
     }
 
-    /// Update the widget's view storage.
+    /// Update the stored content.
     /// - Parameters:
-    ///     - storage: The view storage.
-    ///     - modifiers: The view modifiers.
+    ///     - storage: The storage to update.
+    ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    ///     - type: The view render data type.
+    public func update<Data>(_ storage: ViewStorage, data: WidgetData, updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         storage.modify { widget in
 
-            if let canShrink, updateProperties {
+            if let canShrink, updateProperties, (storage.previousState as? Self)?.canShrink != canShrink {
                 adw_button_content_set_can_shrink(widget, canShrink.cBool)
             }
-            if let iconName, updateProperties {
+            if let iconName, updateProperties, (storage.previousState as? Self)?.iconName != iconName {
                 adw_button_content_set_icon_name(widget, iconName)
             }
-            if let label, updateProperties {
+            if let label, updateProperties, (storage.previousState as? Self)?.label != label {
                 adw_button_content_set_label(widget, label)
             }
-            if let useUnderline, updateProperties {
+            if let useUnderline, updateProperties, (storage.previousState as? Self)?.useUnderline != useUnderline {
                 adw_button_content_set_use_underline(widget, useUnderline.cBool)
             }
 
 
         }
         for function in updateFunctions {
-            function(storage, modifiers, updateProperties)
+            function(storage, data, updateProperties)
+        }
+        if updateProperties {
+            storage.previousState = self
         }
     }
 

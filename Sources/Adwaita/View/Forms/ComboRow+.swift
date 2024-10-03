@@ -11,7 +11,9 @@ import LevenshteinTransformations
 /// A row for selecting an element out of a list of elements.
 extension ComboRow {
 
+    /// The identifier for the values.
     static var values: String { "values" }
+    /// The identifier for the string list.
     static var stringList: String { "string-list" }
 
     /// Initialize a combo row.
@@ -35,7 +37,7 @@ extension ComboRow {
         appearFunctions.append { storage, _ in
             let list = gtk_string_list_new(nil)
             storage.fields[Self.stringList] = list
-            adw_combo_row_set_model(storage.pointer?.cast(), list)
+            adw_combo_row_set_model(storage.opaquePointer?.cast(), list)
             Self.updateContent(storage: storage, values: values, element: Element.self)
         }
         updateFunctions.append { storage, _, _ in
@@ -43,6 +45,11 @@ extension ComboRow {
         }
     }
 
+    /// Update the combo row's content.
+    /// - Parameters:
+    ///     - storage: The view storage.
+    ///     - values: The elements.
+    ///     - element: The type of the elements.
     static func updateContent<Element>(
         storage: ViewStorage,
         values: [Element],

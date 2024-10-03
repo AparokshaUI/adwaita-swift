@@ -5,7 +5,6 @@
 //  Created by david-swift on 15.01.24.
 //
 
-// An extension
 extension Bool {
 
     /// Get the gboolean for C.

@@ -2,7 +2,7 @@
 //  PreferencesPage.swift
 //  Adwaita
 //
-//  Created by auto-generation on 21.07.24.
+//  Created by auto-generation on 15.08.24.
 //
 
 import CAdw
@@ -22,12 +22,12 @@ import LevenshteinTransformations
 /// ## Accessibility
 /// 
 /// `AdwPreferencesPage` uses the `GTK_ACCESSIBLE_ROLE_GROUP` role.
-public struct PreferencesPage: Widget {
+public struct PreferencesPage: AdwaitaWidget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage, [(View) -> View], Bool) -> Void] = []
+    var updateFunctions: [(ViewStorage, WidgetData, Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage, [(View) -> View]) -> Void] = []
+    var appearFunctions: [(ViewStorage, WidgetData) -> Void] = []
 
     /// The description to be displayed at the top of the page.
     var description: String?
@@ -41,55 +41,54 @@ public struct PreferencesPage: Widget {
     var useUnderline: Bool?
     /// The body for the widget "child".
     var child: () -> Body = { [] }
-    /// The application.
-    var app: GTUIApp?
-    /// The window.
-    var window: GTUIApplicationWindow?
 
     /// Initialize `PreferencesPage`.
     public init() {
     }
 
-    /// Get the widget's view storage.
-    /// - Parameter modifiers: The view modifiers.
+    /// The view storage.
+    /// - Parameters:
+    ///     - modifiers: Modify views before being updated.
+    ///     - type: The view render data type.
     /// - Returns: The view storage.
-    public func container(modifiers: [(View) -> View]) -> ViewStorage {
+    public func container<Data>(data: WidgetData, type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(adw_preferences_page_new()?.opaque())
         for function in appearFunctions {
-            function(storage, modifiers)
+            function(storage, data)
         }
-        update(storage, modifiers: modifiers, updateProperties: true)
+        update(storage, data: data, updateProperties: true, type: type)
 
         var childStorage: [ViewStorage] = []
         for view in child() {
-            childStorage.append(view.storage(modifiers: modifiers))
-            adw_preferences_group_add(storage.pointer?.cast(), childStorage.last?.pointer?.cast())
+            childStorage.append(view.storage(data: data, type: type))
+            adw_preferences_group_add(storage.opaquePointer?.cast(), childStorage.last?.opaquePointer?.cast())
         }
         storage.content["child"] = childStorage
         return storage
     }
 
-    /// Update the widget's view storage.
+    /// Update the stored content.
     /// - Parameters:
-    ///     - storage: The view storage.
-    ///     - modifiers: The view modifiers.
+    ///     - storage: The storage to update.
+    ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    ///     - type: The view render data type.
+    public func update<Data>(_ storage: ViewStorage, data: WidgetData, updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         storage.modify { widget in
 
-            if let description, updateProperties {
+            if let description, updateProperties, (storage.previousState as? Self)?.description != description {
                 adw_preferences_page_set_description(widget?.cast(), description)
             }
-            if let iconName, updateProperties {
+            if let iconName, updateProperties, (storage.previousState as? Self)?.iconName != iconName {
                 adw_preferences_page_set_icon_name(widget?.cast(), iconName)
             }
-            if let name, updateProperties {
+            if let name, updateProperties, (storage.previousState as? Self)?.name != name {
                 adw_preferences_page_set_name(widget?.cast(), name)
             }
-            if let title, updateProperties {
+            if let title, updateProperties, (storage.previousState as? Self)?.title != title {
                 adw_preferences_page_set_title(widget?.cast(), title)
             }
-            if let useUnderline, updateProperties {
+            if let useUnderline, updateProperties, (storage.previousState as? Self)?.useUnderline != useUnderline {
                 adw_preferences_page_set_use_underline(widget?.cast(), useUnderline.cBool)
             }
 
@@ -98,8 +97,9 @@ public struct PreferencesPage: Widget {
                     if let storage = childStorage[safe: index] {
                         view.updateStorage(
                             storage,
-                            modifiers: modifiers,
-                            updateProperties: updateProperties
+                            data: data,
+                            updateProperties: updateProperties,
+                            type: type
                         )
                     }
                 }
@@ -107,7 +107,10 @@ public struct PreferencesPage: Widget {
 
         }
         for function in updateFunctions {
-            function(storage, modifiers, updateProperties)
+            function(storage, data, updateProperties)
+        }
+        if updateProperties {
+            storage.previousState = self
         }
     }
 

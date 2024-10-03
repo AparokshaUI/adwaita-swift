@@ -2,7 +2,7 @@
 //  ProgressBar.swift
 //  Adwaita
 //
-//  Created by auto-generation on 21.07.24.
+//  Created by auto-generation on 15.08.24.
 //
 
 import CAdw
@@ -54,12 +54,12 @@ import LevenshteinTransformations
 /// # Accessibility
 /// 
 /// `GtkProgressBar` uses the %GTK_ACCESSIBLE_ROLE_PROGRESS_BAR role.
-public struct ProgressBar: Widget {
+public struct ProgressBar: AdwaitaWidget {
 
     /// Additional update functions for type extensions.
-    var updateFunctions: [(ViewStorage, [(View) -> View], Bool) -> Void] = []
+    var updateFunctions: [(ViewStorage, WidgetData, Bool) -> Void] = []
     /// Additional appear functions for type extensions.
-    var appearFunctions: [(ViewStorage, [(View) -> View]) -> Void] = []
+    var appearFunctions: [(ViewStorage, WidgetData) -> Void] = []
 
     /// The accessible role of the given `GtkAccessible` implementation.
     /// 
@@ -84,56 +84,58 @@ public struct ProgressBar: Widget {
     var showText: Bool?
     /// Text to be displayed in the progress bar.
     var text: String?
-    /// The application.
-    var app: GTUIApp?
-    /// The window.
-    var window: GTUIApplicationWindow?
 
     /// Initialize `ProgressBar`.
     public init() {
     }
 
-    /// Get the widget's view storage.
-    /// - Parameter modifiers: The view modifiers.
+    /// The view storage.
+    /// - Parameters:
+    ///     - modifiers: Modify views before being updated.
+    ///     - type: The view render data type.
     /// - Returns: The view storage.
-    public func container(modifiers: [(View) -> View]) -> ViewStorage {
+    public func container<Data>(data: WidgetData, type: Data.Type) -> ViewStorage where Data: ViewRenderData {
         let storage = ViewStorage(gtk_progress_bar_new()?.opaque())
         for function in appearFunctions {
-            function(storage, modifiers)
+            function(storage, data)
         }
-        update(storage, modifiers: modifiers, updateProperties: true)
+        update(storage, data: data, updateProperties: true, type: type)
 
         return storage
     }
 
-    /// Update the widget's view storage.
+    /// Update the stored content.
     /// - Parameters:
-    ///     - storage: The view storage.
-    ///     - modifiers: The view modifiers.
+    ///     - storage: The storage to update.
+    ///     - modifiers: Modify views before being updated
     ///     - updateProperties: Whether to update the view's properties.
-    public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+    ///     - type: The view render data type.
+    public func update<Data>(_ storage: ViewStorage, data: WidgetData, updateProperties: Bool, type: Data.Type) where Data: ViewRenderData {
         storage.modify { widget in
 
-            if let fraction, updateProperties {
+            if let fraction, updateProperties, (storage.previousState as? Self)?.fraction != fraction {
                 gtk_progress_bar_set_fraction(widget, fraction)
             }
-            if let inverted, updateProperties {
+            if let inverted, updateProperties, (storage.previousState as? Self)?.inverted != inverted {
                 gtk_progress_bar_set_inverted(widget, inverted.cBool)
             }
-            if let pulseStep, updateProperties {
+            if let pulseStep, updateProperties, (storage.previousState as? Self)?.pulseStep != pulseStep {
                 gtk_progress_bar_set_pulse_step(widget, pulseStep)
             }
-            if let showText, updateProperties {
+            if let showText, updateProperties, (storage.previousState as? Self)?.showText != showText {
                 gtk_progress_bar_set_show_text(widget, showText.cBool)
             }
-            if let text, updateProperties {
+            if let text, updateProperties, (storage.previousState as? Self)?.text != text {
                 gtk_progress_bar_set_text(widget, text)
             }
 
 
         }
         for function in updateFunctions {
-            function(storage, modifiers, updateProperties)
+            function(storage, data, updateProperties)
+        }
+        if updateProperties {
+            storage.previousState = self
         }
     }
 
