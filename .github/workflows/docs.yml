@@ -46,7 +46,7 @@ jobs:
       - name: Modify Docs
         run: |
           echo "<script>window.location.href += \"/documentation/adwaita\"</script>" > docs/index.html;
-          sed -i '' 's/#06f/#ea3358/g' docs/css/documentation-topic~topic~tutorials-overview.d6f5411c.css
+          sed -i '' 's/#06f/#ea3358/g' docs/css/documentation-topic~topic~tutorials-overview.*.css
           sed -i '' 's/,2px/,10px/g' docs/css/index.*.css
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3
