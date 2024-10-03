@@ -11,7 +11,8 @@ import Adwaita
 
 struct CounterDemo: View {
 
-    @State private var count = 0
+    @State("count")
+    private var count = 0
 
     var view: Body {
         VStack {

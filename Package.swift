@@ -24,6 +24,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/AparokshaUI/Meta", branch: "main"),
+        .package(url: "https://github.com/AparokshaUI/meta-sqlite", branch: "main"),
         .package(
             url: "https://github.com/david-swift/LevenshteinTransformations",
             from: "0.1.1"
@@ -40,7 +41,8 @@ let package = Package(
             dependencies: [
                 "CAdw",
                 .product(name: "LevenshteinTransformations", package: "LevenshteinTransformations"),
-                .product(name: "Meta", package: "Meta")
+                .product(name: "Meta", package: "Meta"),
+                .product(name: "MetaSQLite", package: "meta-sqlite")
             ]
         ),
         .executableTarget(

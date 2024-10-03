@@ -6,7 +6,9 @@
 //
 
 import CAdw
+import Foundation
 @_exported import Meta
+@_exported import MetaSQLite
 
 /// The Meta app storage for the Adwaita backend.
 public class AdwaitaApp: AppStorage {
@@ -31,12 +33,19 @@ public class AdwaitaApp: AppStorage {
     /// - Parameter id: The identifier.
     public required init(id: String) {
         pointer = adw_application_new(id, G_APPLICATION_DEFAULT_FLAGS)?.cast()
+        DatabaseInformation.setPath(Self.userDataDir().appendingPathComponent("data.sqlite").path)
     }
 
     /// Copy a string to the clipboard.
     public static func copy(_ text: String) {
         let clipboard = gdk_display_get_clipboard(gdk_display_get_default())
         gdk_clipboard_set_text(clipboard, text)
+    }
+
+    /// The directory used for storing user data.
+    /// - Returns: The URL.
+    public static func userDataDir() -> URL {
+        .init(fileURLWithPath: .init(cString: g_get_user_data_dir()))
     }
 
     /// Execute the app.
